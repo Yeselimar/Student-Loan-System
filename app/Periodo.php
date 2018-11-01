@@ -1,0 +1,180 @@
+<?php
+
+namespace avaa;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+
+class Periodo extends Model
+{
+    protected $table='periodos';
+
+    public function becario()//relacion buena
+    {
+        return $this->belongsTo('avaa\Becario','becario_id');
+    }
+
+    public function materias()//relación buena
+    {
+        return $this->hasMany('avaa\Materia','periodo_id');
+    }
+
+    public function aval()//relación buena
+    {
+        return $this->hasOne('avaa\Aval', 'id','aval_id');
+    }
+
+    public function getTotalMaterias()
+    {
+        return $this->materias->count();
+    }
+
+    public function getPromedio()
+    {
+        if($this->getTotalMaterias()!=0)
+        {
+            $suma = 0;
+            foreach($this->materias as $materia)
+            {
+                $suma = $suma + $materia->nota;
+            }
+            //return $this->materias;
+            return number_format($suma/$this->getTotalMaterias(), 2, '.', ',');
+        }
+        else
+        {
+            return 0.00;
+        }
+    }
+
+    public function getNumeroPeriodo()
+    {
+        if($this->becario->esAnual())
+        {
+            switch($this->numero_periodo)
+            {
+                case '1':
+                    return "1 año";
+                break;
+                case '2':
+                    return "2 año";
+                break;
+                case '3':
+                    return "3 año";
+                break;
+                case '4':
+                    return "4 año";
+                break;
+                case '5':
+                    return "5 año";
+                break;
+            }
+        }
+        else
+        {
+            if($this->becario->esAnual())
+            {
+                switch($this->numero_periodo)
+                {
+                    case '1':
+                        return "1 semestre";
+                    break;
+                    case '2':
+                        return "2 semestre";
+                    break;
+                    case '3':
+                        return "3 semestre";
+                    break;
+                    case '4':
+                        return "4 semestre";
+                    break;
+                    case '5':
+                        return "5 semestre";
+                    break;
+                    case '6':
+                        return "6 semestre";
+                    break;
+                    case '7':
+                        return "7 semestre";
+                    break;
+                    case '8':
+                        return "8 semestre";
+                    break;
+                    case '9':
+                        return "9 semestre";
+                    break;
+                    case '10':
+                        return "10 semestre";
+                    break;
+                    }
+            }
+            else
+            {
+                switch($this->numero_periodo)
+                {
+                    case '1':
+                        return "1 trimestre";
+                    break;
+                    case '2':
+                        return "2 trimestre";
+                    break;
+                    case '3':
+                        return "3 trimestre";
+                    break;
+                    case '4':
+                        return "4 trimestre";
+                    break;
+                    case '5':
+                        return "5 trimestre";
+                    break;
+                    case '6':
+                        return "6 trimestre";
+                    break;
+                    case '7':
+                        return "7 trimestre";
+                    break;
+                    case '8':
+                        return "8 trimestre";
+                    break;
+                    case '9':
+                        return "9 trimestre";
+                    break;
+                    case '10':
+                        return "10 trimestre";
+                    break;
+                    case '11':
+                        return "11 trimestre";
+                    break;
+                    case '12':
+                        return "12 trimestre";
+                    break;
+                    case '13':
+                        return "13 trimestre";
+                    break;
+                    case '14':
+                        return "14 trimestre";
+                    break;
+                    case '15':
+                        return "15 trimestre";
+                    break;
+                    case '16':
+                        return "16 trimestre";
+                    break;
+                    case '17':
+                        return "17 trimestre";
+                    break;
+                    case '18':
+                        return "18 trimestre";
+                    break;
+                    case '19':
+                        return "19 trimestre";
+                    break;
+                    case '20':
+                        return "20 trimestre";
+                    break;
+                }
+            }
+        }
+    }
+
+}
