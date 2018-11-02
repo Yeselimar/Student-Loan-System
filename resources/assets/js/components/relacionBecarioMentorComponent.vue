@@ -19,7 +19,6 @@
                       <b-btn :disabled="!filter" @click="filter = ''">Limpiar</b-btn>
                     </b-input-group-append>
                   </b-input-group>
-                </b-form-group>
               </b-col>
               <b-col md="6" class="my-1 text-right">
                 <b-form-group horizontal label="Ordenar" class="mb-0 text-right">
@@ -65,8 +64,8 @@
               {{row.value.becarioName}}
               </template>
               <template slot="mentor" slot-scope="row">
-                  <div v-if="editItems[row.index]">
-              
+                  <template v-if="editItems[row.index]">
+                    <!--
                     <select class="form-control select-mentor" id="mentor" name="mentor" v-model="updateMentors[row.index]">
 
                      <option :value=null>Sin Mentor</option>
@@ -75,10 +74,12 @@
                     </option>
 
                     </select>
-                </div>
-              <div v-else>
+              -->
+<v-select v-model="selected" :options="mentores"></v-select>
+                </template>
+              <template v-else>
               {{(row.value.mentorId != null) ? row.value.mentorName : 'Sin Mentor Asignado' }}
-              </div>
+              </template>
 
               </template>
               <template slot="tieneRelacion" slot-scope="row">{{row.value?'Si :)':'No :('}}</template>
@@ -125,7 +126,7 @@
       </div>
     </section>
 
-    		<!-- Modal para eliminar materia -->
+
 		<div class="modal fade" id="msgModal">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -141,9 +142,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal para eliminar materia -->
+
   </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -152,6 +154,7 @@ export default {
       msgTitle: "",
       becarios: [],
       mentores: [],
+      selected: '',
       items: [
         {
           becario: {
@@ -241,8 +244,15 @@ export default {
       this.currentPage = 1;
     },
     edit(index, row) {
+
       this.editItems.splice(index, 1, !this.editItems[index]);
-    },
+        $('.select-mentor').chosen({
+
+            placeholder_text_single:'Seleccione un Mentor',
+            no_results_text: 'No se encontraron resultados'
+
+        });
+},
     cancel(index, row) {
       this.updateMentors.splice(index, 1, row.item.mentor.mentorId);
       this.editItems.splice(index, 1, !this.editItems[index]);
