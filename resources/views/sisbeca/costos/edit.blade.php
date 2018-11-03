@@ -17,31 +17,31 @@
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="form-group">
                         <label class="control-label">Costo Asesoria (Básica)</label>
-                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Asesoria Básica" size=23 value="{{number_format($costo->costo_ases_basica, 2, ',', '.')}}" name="costo_ases_basica" class="sisbeca-input" required>
+                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Asesoria Básica" size=23  @if(isset($costo)) value="{{number_format($costo->costo_ases_basica, 2, ',', '.')}}" @else value="{{number_format(0, 2, ',', '.')}}" @endif name="costo_ases_basica" class="sisbeca-input" required>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="form-group">
                         <label class="control-label">Costo Asesoria (Intermedia)</label>
-                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Asesoria Intermedia" size=23 value="{{number_format($costo->costo_ases_intermedia, 2, ',', '.')}}" name="costo_ases_intermedia" class="sisbeca-input" required>
+                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Asesoria Intermedia" size=23  @if(isset($costo)) value="{{number_format($costo->costo_ases_intermedia, 2, ',', '.')}}" @else value="{{number_format(0, 2, ',', '.')}}" @endif name="costo_ases_intermedia" class="sisbeca-input" required>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="form-group">
                         <label class="control-label">Costo Asesoria (Completa)</label>
-                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Asesoria Completa" size=23 value="{{number_format($costo->costo_ases_completa, 2, ',', '.')}}" name="costo_ases_completa" class="sisbeca-input" required>
+                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Asesoria Completa" size=23 @if(isset($costo)) value="{{number_format($costo->costo_ases_completa, 2, ',', '.')}}" @else value="{{number_format(0, 2, ',', '.')}}" @endif name="costo_ases_completa" class="sisbeca-input" required>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="form-group">
                         <label class="control-label">Costo Membresia (Ind./VIP)</label>
-                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Membresia Ind./VIP" size=23 value="{{number_format($costo->costo_membresia, 2, ',', '.')}}" name="costo_membresia" class="sisbeca-input" required>
+                        <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Membresia Ind./VIP" size=23 @if(isset($costo)) value="{{number_format($costo->costo_membresia, 2, ',', '.')}}" @else value="{{number_format(0, 2, ',', '.')}}" @endif name="costo_membresia" class="sisbeca-input" required>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="form-group">
                         <label class="control-label">Validos a partir de</label>
-                        <input name="fecha_valido" type="text" id="datepicker" value="{{date('d/m/Y', strtotime($costo->fecha_valido))}}" placeholder="DD/MM/AAAA" class="sisbeca-input" required>
+                        <input name="fecha_valido" type="text" id="datepicker" @if(isset($costo)) value="{{date('d/m/Y', strtotime($costo->fecha_valido))}}" @else value="{{date('d/m/Y', strtotime(date('Y-m-d')))}}" @endif placeholder="DD/MM/AAAA" class="sisbeca-input" required>
                     </div>
                 </div>
             </div>

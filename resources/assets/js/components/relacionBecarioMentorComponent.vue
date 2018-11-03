@@ -22,6 +22,7 @@
                     </b-input-group-append>
                   </b-input-group>
               </b-col>
+              <b-col md="2" class="my-1"> </b-col>
               <b-col md="4" class="my-1 text-right">
                 <b-form-group horizontal label="Paginación" class="mb-0 text-right">
                   <b-form-select :options="pageOptions" v-model="perPage" />

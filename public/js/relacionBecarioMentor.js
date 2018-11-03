@@ -738,6 +738,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1036,6 +1037,8 @@ var render = function() {
             ],
             1
           ),
+          _vm._v(" "),
+          _c("b-col", { staticClass: "my-1", attrs: { md: "2" } }),
           _vm._v(" "),
           _c(
             "b-col",
