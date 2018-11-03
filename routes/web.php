@@ -14,7 +14,7 @@
 //Web Site
 
 Route::get('/prueba','GetPublicController@prueba')->name('prueba');
-Route::get('/prueba','GetPublicController@prueba25')->name('prueba25');
+
 
 Route::get('/generarBD','GetPublicController@generarBD')->name('generarBD');
 
