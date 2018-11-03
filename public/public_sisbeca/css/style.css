@@ -95,6 +95,12 @@
   padding-top: 0px;
 }
 
+.table-vue-warning{
+  background-color: #fffae9;
+}
+.table-vue-success{
+  background-color: #ebf6ef;
+}
 
 /*
     Template: Ela Admin

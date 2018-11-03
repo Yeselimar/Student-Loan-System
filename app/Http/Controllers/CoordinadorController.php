@@ -33,25 +33,25 @@ class CoordinadorController extends Controller
             
             foreach ($becarios as $becario){
                 $becarioId = $becario->user_id;
-                $becarioName = $becario->user->name . " "  . $becario->user->last_name;
+                $becarioName = $becario->user->name ;
+                $becarioLastName= $becario->user->last_name ." | ".$becario->user->cedula." | ".$becario->user->email;
                 $mentorId = null;
-                $mentorName = null;
+                $mentorName = "Sin";
+                $mentorLastName = "Mentor";
                 $rowVariant = 'warning';
-                $tieneRelacion = false;
                 if($becario->mentor_id !== null){
                     $userMentor= User::find($becario->mentor_id);
                     $mentorId = $becario->mentor_id;
-                    $mentorName = $userMentor->name . " " . $userMentor->last_name;
+                    $mentorName = $userMentor->name ;
+                    $mentorLastName = $userMentor->last_name." | ".$userMentor->cedula." | ".$userMentor->email;
                     $rowVariant = 'success';
-                    $tieneRelacion = true;
                 }
                  $collection->push(array(
-                   "becario" => array('becarioId' => $becarioId,
-                   'becarioName' => $becarioName),
+                   "becario" => array('id' => $becarioId,
+                   'name' => $becarioName." ".$becarioLastName),
                    "mentor" => array(
-                   'mentorId' => $mentorId,
-                   'mentorName' => $mentorName),
-                   'tieneRelacion' => $tieneRelacion,
+                   'id' => $mentorId,
+                   'name' => $mentorName." ".$mentorLastName),
                    '_rowVariant' => $rowVariant
 
                ));
@@ -72,14 +72,28 @@ class CoordinadorController extends Controller
         return $becarios;
     }
     public function getMentores()
-    {        
+    {    
+        $collection = collect();    
         $mentores= Mentor::query()->where('status','=','activo')->get();
          $mentores->each(function ($mentores)
             {
                 $mentores->user;
 
             });
-        return $mentores;
+            $collection->push(array(
+                "user_id" =>null,
+                "name" => "Sin Mentor",
+
+            ));
+            foreach ($mentores as $mentor){
+                $collection->push(array(
+                    "user_id" => $mentor->user_id,
+                    "name" => $mentor->user->name." ".$mentor->user->last_name." | ".$mentor->user->cedula." | ".$mentor->user->email
+                ));
+ 
+            }
+
+        return $collection;
     }
     //Fin API
     public function asignarBecarios()

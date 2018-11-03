@@ -8,9 +8,11 @@
   z-index: 1050;
   background-color: rgba(0, 0, 0, 0.2);
 }
+
 </style>
 <template>
     <div class="col-12">
+      <br/><br/>
             <b-row>
               <b-col md="6" class="my-1">
                   <b-input-group>
@@ -20,34 +22,19 @@
                     </b-input-group-append>
                   </b-input-group>
               </b-col>
-              <b-col md="6" class="my-1 text-right">
-                <b-form-group horizontal label="Ordenar" class="mb-0 text-right">
-                  <b-input-group>
-                    <b-form-select v-model="sortBy" :options="sortOptions">
-                      <option slot="first" :value="null"></option>
-                    </b-form-select>
-                    <b-form-select :disabled="!sortBy" v-model="sortDesc" slot="append">
-                      <option :value="false">Asc</option>
-                      <option :value="true">Desc</option>
-                    </b-form-select>
-                  </b-input-group>
-                </b-form-group>
-              </b-col>
-              <b-col md="6" class="my-1">
-              </b-col>
-              <b-col md="6" class="my-1 text-right">
+              <b-col md="4" class="my-1 text-right">
                 <b-form-group horizontal label="Paginación" class="mb-0 text-right">
                   <b-form-select :options="pageOptions" v-model="perPage" />
                 </b-form-group>
               </b-col>
             </b-row>
-            <br/>
+            <br/><br/>
          <b-table
                     show-empty
                     empty-text ="No hay registros para mostrar"
                     empty-filtered-text="
                     No hay registros que coincidan con su busqueda"
-                    class="table-hover"
+                    class="table table-hover datatable"
                     stacked="md"
                     :becarios="becarios"
                     :items="items"
@@ -61,10 +48,10 @@
                     @filtered="onFiltered"
             >
               <template slot="becario" slot-scope="row" >
-              {{row.value.becarioName}}
+              {{row.value.name}}
               </template>
               <template slot="mentor" slot-scope="row">
-                  <template v-if="editItems[row.index]">
+                  <template v-if="idShow == vShow(row)">
                     <!--
                     <select class="form-control select-mentor" id="mentor" name="mentor" v-model="updateMentors[row.index]">
 
@@ -75,18 +62,21 @@
 
                     </select>
               -->
-<v-select v-model="selected" :options="mentores"></v-select>
+                    <v-select :options="mentores" v-model="selected" label="name">
+                      <template slot="option" slot-scope="option">
+                          {{ option.name}}
+                      </template>
+                  </v-select>
                 </template>
               <template v-else>
-              {{(row.value.mentorId != null) ? row.value.mentorName : 'Sin Mentor Asignado' }}
+              {{(row.value.id != null) ? row.value.name : 'Sin Mentor' }}
               </template>
 
               </template>
-              <template slot="tieneRelacion" slot-scope="row">{{row.value?'Si :)':'No :('}}</template>
               <template slot="actions" slot-scope="row">
                 <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
                
-                  <div v-if="editItems[row.index]">
+                  <div v-if="idShow == vShow(row)">
                     <!--
                      <b-button size="sm" @click.stop="edit(row.index)">
                        Guardar 
@@ -99,7 +89,7 @@
                     </button>
                   </div>
                   <div v-else>
-                    <button class="btn btn-sm sisbeca-btn-primary" @click.stop="edit(row.index,row)" data-toggle="tooltip" data-placement="bottom" title="Asignar Relación">
+                    <button class="btn btn-sm sisbeca-btn-primary" @click.stop="edit(row.index,row,$event)" data-toggle="tooltip" data-placement="bottom" title="Asignar Relación">
 								      <i class="fa fa-pencil"></i>
                     </button>
                   </div> 
@@ -115,8 +105,8 @@
             </b-table>
               <br/>
             <b-row>
-              <b-col md="6">
-                <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+              <b-col md="12">
+                <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0  text-right pull-right" />
               </b-col>
             </b-row>
     <section class="loading" id="preloader">
@@ -152,20 +142,28 @@ export default {
     return {
       msgBody: "",
       msgTitle: "",
+      idShow: 0,
       becarios: [],
-      mentores: [],
-      selected: '',
+      mentores: [
+        {
+          id: null,
+          name:''
+        }
+      ],
+      selected: {
+          id: null,
+          name:''
+      },
       items: [
         {
           becario: {
-            becarioId: null,
-            becarioName: ""
+            id: null,
+            name: ""
           },
           mentor: {
-            mentorId: null,
-            mentorName: ""
+            id: null,
+            name: ""
           },
-          tieneRelacion: "",
           _rowVariant: ""
         }
       ],
@@ -181,12 +179,6 @@ export default {
         {
           key: "mentor",
           label: "Mentor",
-          sortable: true,
-          class: "text-center"
-        },
-        {
-          key: "tieneRelacion",
-          label: "¿Tiene Relación?",
           sortable: true,
           class: "text-center"
         },
@@ -223,10 +215,12 @@ export default {
         .get(`http://localhost:8000/sisbeca/getRelacionBecarioMentorApi`)
         .then(response => {
           this.llenarSelects();
+          console.log("response: ", response.data)
           this.items = response.data;
+          
           this.items.forEach(function(item) {
             this.editItems.push(false);
-            this.updateMentors.push(item.mentor.mentorId);
+            //this.selected.push(item.mentor);
           }, this);
           console.log(this.items);
           this.totalRows = this.items.length;
@@ -243,45 +237,52 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    edit(index, row) {
-
-      this.editItems.splice(index, 1, !this.editItems[index]);
-        $('.select-mentor').chosen({
-
-            placeholder_text_single:'Seleccione un Mentor',
-            no_results_text: 'No se encontraron resultados'
-
-        });
+    edit(index, row,e) {
+      console.log('event ',e);
+      console.log('row ', row);
+      //this.editItems.splice(index, 1, !this.editItems[index]);
+      this.selected = row.item.mentor;
+      if(row.item.mentor.id != null) {
+        this.idShow = row.item.becario.id;
+      }
+      else {
+         this.idShow = row.item.mentor.id+row.item.becario.id;
+      }
 },
     cancel(index, row) {
-      this.updateMentors.splice(index, 1, row.item.mentor.mentorId);
-      this.editItems.splice(index, 1, !this.editItems[index]);
+      this.selected= {};
+      //this.editItems.splice(index, 1, !this.editItems[index]);
+      this.idShow= 0;
     },
     save(index, row) {
-      console.log("becario: ", row.item.becario.becarioId);
-      console.log("nuevo Mentor: ", this.updateMentors[index]);
-      if (this.updateMentors[index] !== row.item.mentor.mentorId) {
+      console.log("becario: ", row.item.becario);
+      console.log("nuevo Mentor: ", this.selected);
+      if(this.selected==null){
+        this.selected = {
+          id: null,
+          name: 'Sin Mentor'
+        };
+      }
+      if (this.selected.id !== row.item.mentor.id) {
         $("#preloader").show();
         var dataform = new FormData();
-        dataform.append("becarioId", row.item.becario.becarioId);
-        dataform.append("mentorId", this.updateMentors[index]);
+        dataform.append("becarioId", row.item.becario.id);
+        dataform.append("mentorId", this.selected.id);
         var url = "http://localhost:8000/sisbeca/asignarRelacionBecarioMentor";
         axios
           .post(url, dataform)
           .then(response => {
-            let mentor = this.mentorFind(this.updateMentors[index]);
-            row.item.mentor.mentorId = mentor.id;
-            row.item.mentor.mentorName = mentor.name + ' ' + mentor.last_name;
-            if(mentor.id == null){
+            //let mentor = this.mentorFind(this.updateMentors[index]);
+            row.item.mentor = this.selected
+            if(this.selected.id == null){
               row.item._rowVariant = 'warning';
-              row.item.tieneRelacion = 'No :(';
-              row.item.mentor.mentorId = null;
-              row.item.mentor.mentorName = '';
+              row.item.mentor.id = null;
+              row.item.mentor.name = "Sin Mentor";
             } else {
               row.item._rowVariant = 'success';
-              row.item.tieneRelacion = 'Si :)'
             }
-            this.editItems.splice(index, 1, !this.editItems[index]);
+            //this.editItems.splice(index, 1, !this.editItems[index]);
+            this.idShow= 0;
 
             this.msgTitle = "Registro Actualizado con Exito";
             this.msgBody =
@@ -298,21 +299,32 @@ export default {
             $("#msgModal").modal("show");
           });
       } else {
-        this.editItems.splice(index, 1, !this.editItems[index]);
+        this.idShow = 0;
+        //this.editItems.splice(index, 1, !this.editItems[index]);
       }
+    },
+    vShow(row) {
+      let show = 0;
+      if(row.item.mentor.id != null) {
+        show = row.item.becario.id;
+      }
+      else {
+         show = row.item.mentor.id+row.item.becario.id;
+      }
+
+      return show;
     },
     inicializarData() {
       this.items = [
         {
           becario: {
-            becarioId: null,
-            becarioName: ""
+            id: null,
+            name: ""
           },
           mentor: {
-            mentorId: null,
-            mentorName: ""
+            id: null,
+            name: ""
           },
-          tieneRelacion: "",
           _rowVariant: ""
         }
       ];
@@ -330,11 +342,10 @@ export default {
           auxMentores.forEach(function(mentor, i) {
             this.mentores.push({
               id: mentor.user_id,
-              name: mentor.user.name, 
-              last_name: mentor.user.last_name
+              name: mentor.name
             });
           }, this);
-          console.log(this.mentores);
+          console.log("mentores ",this.mentores);
         })
         .catch(err => {
           console.error("error reject", err);
@@ -349,8 +360,7 @@ export default {
           auxBecarios.forEach(function(becario, i) {
             this.becarios.push({
               id: becario.user_id,
-              name: becario.user.name,
-              last_name: becario.user.last_name
+              name: becario.user.name + " " + becario.user.last_name
             });
           }, this);
           console.log(this.becarios);
