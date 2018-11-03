@@ -198,18 +198,18 @@ class MantenimientoUserController extends Controller
         {
             if($user->rol==='admin')
             {
-                flash('Disculpe, el archivo solicitado no ha sido encontrado')->error()->important();
+                flash('Disculpe, el archivo solicitado no ha sido encontrado.')->error()->important();
                 return back();
             }
         }
 
         if($user->delete())
         {
-            flash('El Usuario ha sido Eliminado Exitosamente', 'info')->important();
+            flash('El usuario fue sido eliminado exitosamente.', 'success')->important();
         }
         else
         {
-            flash('Ha ocurrido un error al tratar de eliminar usuario')->error()->important();
+            flash('Disculpe, hubo un error al eliminar usuario.')->error()->important();
         }
         return  redirect()->route('mantenimientoUser.index');
     }

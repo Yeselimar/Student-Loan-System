@@ -13,9 +13,15 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label for="name" class="control-label">Nombre y Apellido</label>
-                        <input class="sisbeca-input" placeholder="Ingrese Nombre y Apellido..." value="{{old('name')}}"
+                        <label for="name" class="control-label">Nombre</label>
+                        <input class="sisbeca-input" placeholder="John" value="{{old('name')}}"
                             required name="name" type="text" id="name">
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <label for="last_name" class="control-label">Apellido</label>
+                        <input class="sisbeca-input" placeholder="John" value="{{old('name')}}"
+                            required name="last_name" type="text" id="name">
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">

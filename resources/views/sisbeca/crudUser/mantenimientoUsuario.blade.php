@@ -11,7 +11,8 @@
         <thead>
             <tr>
                 <th>Cédula</th>
-                <th>Nombre y Apellido</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
                 <th>Correo Electrónico</th>
                 <th>Rol</th>
                 <th>Acciones</th>
@@ -19,10 +20,12 @@
             
         </thead>
         <tbody>
+            @if($usuarios->count()!=0)
             @foreach($usuarios as $usuario)
             <tr>
                 <td>{{$usuario->cedula}}</td>
-                <td>{{$usuario->nombreyapellido()}}</td>
+                <td>{{$usuario->name}}</td>
+                <td>{{$usuario->last_name}}</td>
                 <td>{{$usuario->email}}</td>
                 <td>{{$usuario->rol}}</td>
                 <td>
@@ -38,6 +41,11 @@
                 </td>
             </tr>
             @endforeach
+            @else
+            <tr>
+                <td colspan="6">No se encontró <strong>usuarios</strong></td>
+            </tr>
+            @endif
         </tbody>
     </table>
 
@@ -60,7 +68,7 @@
                 <strong>Cédula:</strong> <input id="cedula" class="input-modal-none" value="{{$usuario->cedula}}" disabled>
             </div>
             <div class="modal-footer">
-                <a href="" class="btn btn-sm sisbeca-btn-primary pull-left" data-dismiss="modal">Si</a>
+                <a href="{{route('mantenimientoUser.destroy',$usuario->id)}}" class="btn btn-sm sisbeca-btn-primary pull-left">Si</a>
                 <button type="button" class="btn btn-sm sisbeca-btn-default pull-left" data-dismiss="modal">No</button>
             </div>
         </div>
