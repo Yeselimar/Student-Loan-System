@@ -210,6 +210,13 @@ export default {
     }
   },
   methods: {
+    showAlert(title,body){
+            // Use sweetalert2
+            swal(title,
+             body,
+            'success');
+            
+        },
     getDataTable() {
       axios
         .get(`http://localhost:8000/sisbeca/getRelacionBecarioMentorApi`)
@@ -287,7 +294,7 @@ export default {
             this.msgTitle = "Registro Actualizado con Exito";
             this.msgBody =
               "La relación Becario-Mentor ha sido actualizada exitosamente";
-            $("#msgModal").modal("show");
+            this.showAlert(this.msgTitle,this.msgBody);
             $("#preloader").hide();
           })
           .catch(error => {

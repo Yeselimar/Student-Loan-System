@@ -215,8 +215,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_relacionBecarioMentorComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_relacionBecarioMentorComponent_vue__);
 
 
+
 Vue.component('v-select', __WEBPACK_IMPORTED_MODULE_0_vue_select___default.a);
 Vue.use(BootstrapVue);
+
 
 var app = new Vue({
   el: "#relacionBecarioMentorID",
@@ -805,6 +807,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
+    showAlert: function showAlert(title, body) {
+      // Use sweetalert2
+      swal(title, body, 'success');
+    },
     getDataTable: function getDataTable() {
       var _this = this;
 
@@ -879,7 +885,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
           _this2.msgTitle = "Registro Actualizado con Exito";
           _this2.msgBody = "La relación Becario-Mentor ha sido actualizada exitosamente";
-          $("#msgModal").modal("show");
+          _this2.showAlert(_this2.msgTitle, _this2.msgBody);
           $("#preloader").hide();
         }).catch(function (error) {
           $("#preloader").hide();

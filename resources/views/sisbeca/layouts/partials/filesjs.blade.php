@@ -48,6 +48,7 @@
      <script src="{{asset('plugins/datepickerbootstrap/locales/bootstrap-datepicker.es.min.js')}}"></script><!-- Datepicker Bootstrap v1.7.1-->
 
     <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{asset('plugins/sweetalert/sweetalert2.all.min.js')}}"></script> 
     
     <script src="{{asset('js/axios.js')}}"></script>
 
