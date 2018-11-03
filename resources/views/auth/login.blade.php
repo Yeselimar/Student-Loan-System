@@ -35,16 +35,16 @@
           <div class="container-fluid">
 
             <div class="row justify-content-center">
-              <div class="col-lg-5">
+              <div class="col-lg-5 col-md-6 col-sm-7">
                   <div class="login-content panel panel-default">
                     <div class="panel-heading" align="center">
                       <h2 style="color:white"> Iniciar Sesión</h2>
                     </div>
-                    <div class="login-form panel-body">
-                      <form class="" method="POST" action="{{ route('login') }}">
+                    <div class="login-form panel-body" style="padding-top: 0px!important">
+                      <form class="" method="POST" action="{{ route('login') }}" >
                         {{ csrf_field() }}
                           <!--<div class=" {{ $errors->has('email') ? ' has-error' : '' }}">-->
-                             <label for="email" class="control-label">Correo Electronico</label>
+                             <label for="email" class="control-label">Correo Electrónico</label>
                                 <input id="email" type="email" class="sisbeca-input" name="email" value="{{ old('email') }}" >
 
                                 @if ($errors->has('email'))
@@ -55,7 +55,7 @@
                           <!--</div>-->
                           <!--<div class="{{ $errors->has('password') ? ' has-error' : '' }}">-->
                               <label for="password" class="control-label">Contraseña</label>
-                                <input id="password" type="password" class="sisbeca-input" name="password">
+                              <input id="password" type="password" class="sisbeca-input" name="password">
 
                                 @if ($errors->has('password'))
                                   <span class="help-block">
@@ -63,21 +63,31 @@
                                   </span>
                                 @endif
                           <!--</div>-->
-                           
-                          <label class="pull-right">
-                            <a href="{{ route('password.request') }}" style="color:#424242">¿Olvidaste tu contraseña?</a>
-                          </label>
                           
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <label class="pull-left">
+                              <a href="{{ route('password.request') }}" style="color:#424242" >¿Olvidaste tú contraseña?</a>
+                              </label>
+                            </div>
+                            
+                            <div class="col-lg-6">
+                              <button type="submit" class="btn sisbeca-btn-default btn-block pull-right">Ingresar</button>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                              <a href="{{ route('register') }}" class="btn sisbeca-btn-primary btn-block">Postularse a ProExcelencia</a>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                              <a href="{{route('registerMentor')}}" class="btn sisbeca-btn-primary btn-block">Postularse como Mentor</a>
+                            </div>
+                          </div>
                           
-                          <button type="submit" class="btn sisbeca-btn-default btn-block">Ingresar</button>
-
-                          <a href="{{ route('register') }}" class="btn sisbeca-btn-primary btn-block">
-                            Postularse a ProExcelencia
-                          </a>
                             
                           <!--  route('registerMentor') -->
-                          <a href="{{route('registerMentor')}}" class="btn sisbeca-btn-primary btn-block">Postularse como Mentor
-                          </a>
+                          
                           
 
                           @include('flash::message')

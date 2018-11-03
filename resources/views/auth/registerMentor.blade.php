@@ -26,24 +26,31 @@
     <svg class="circular" viewBox="25 25 50 50">
         <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
 </div>
-<!-- Main wrapper  -->
+
 <div id="main-wrapper">
     <div class="header">
         @include('sisbeca.layouts.partials.navtop')
     </div>
 
-    <div class="container">
-        <div class="row">
-            @include('flash::message')
-            <div class="col-lg-12 col-md-9 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading"  align="center"><h2 style="color: white">Postalarse como Mentor</h2></div>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+
+                @include('flash::message')
+
+                <div class="login-content panel panel-default">
+                    <div class="panel-heading"  align="center">
+                        <h2 style="color: white">Postalarse como Mentor</h2>
+                    </div>
                     
-                    <div class="panel-body">
+                    <div class="login-form panel-body" style="padding: 0px 30px 20px">
 
-                        <form role="form" class="f1 formMultiple" method="post" action="{{ route('registerMentor') }}" enctype="multipart/form-data">
+                        <h6 class="text-left">
+                            <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón a ProExcelencia</strong>
+                        </h6>
+
+                        <form role="form" class="f1 formMultiple" method="post" action="{{ route('registerMentor') }}" enctype="multipart/form-data" style="padding: 0px!important">
                             {{ csrf_field() }}
-
 
                             <div class="f1-steps">
                                 <div class="f1-progress">
@@ -59,15 +66,12 @@
                                     <p>Personal</p>
                                 </div>
                             </div>
-                            {{-------------------------------- Datos de Cuenta --------------------------}}
 
+                            <!-- Datos de Cuenta -->
                             <fieldset>
-                                <h4>Creacion de Cuenta:</h4>
-
-
-                                <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label class="sr-only" for="email">Email</label>
-                                    <input type="text" name="email" placeholder="Email..." class="f1-email form-control" id="f1-email" value="{{ old('email') }}" required>
+                                <div class="{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" placeholder="johndoe@dominio.com" class="f1-email sisbeca-input" id="f1-email" value="{{ old('email') }}" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -75,9 +79,11 @@
                                     </span>
                                     @endif
                                 </div>
-                                <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-                                    <label class="sr-only" for="password">Contraseña</label>
-                                    <input type="password" name="password" placeholder="Contraseña..." class="f1-password form-control" id="f1-password" required>
+
+                                <div class="{{ $errors->has('password') ? ' has-error' : '' }}">
+
+                                    <label  for="password">Contraseña</label>
+                                    <input type="password" name="password" placeholder="******" class="f1-password sisbeca-input" id="f1-password" required>
 
                                     @if ($errors->has('password'))
                                         <span class="help-block">
@@ -85,31 +91,36 @@
                                     </span>
                                     @endif
                                 </div>
-                                <div class="form-group">
-                                    <label class="sr-only" for="f1-repeat-password">Repetir Contraseña</label>
-                                    <input type="password" placeholder="Repetir Contraseña..."
-                                           class="f1-repeat-password form-control" id="f1-repeat-password" name="password_confirmation" required>
+
+                                <div>
+                                    <label for="password_confirmation">Repetir Contraseña</label>
+                                    <input type="password" placeholder="******"
+                                           class="f1-repeat-password sisbeca-input" id="f1-repeat-password" name="password_confirmation" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="image">Imagen Perfil</label>
-                                    <input name="image_perfil" accept="image/*"  type="file" id="image">
+
+                                <div>
+                                    <label for="image_perfil">Imagen Perfil</label>
+                                    <input name="image_perfil" accept="image/*"  type="file" id="image" class="sisbeca-input">
                                     @if ($errors->has('image_perfil'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('image_perfil') }}</strong>
                                     </span>
                                     @endif
                                 </div>
-                                <div class="f1-buttons">
 
-                                    <button type="button" class="btn btn-next">Siguiente</button>
+                                <div class="f1-buttons">
+                                    <a class="btn btn-next sisbeca-btn-default" href="/login">Iniciar Sesión</a>
+                                    <button type="button" class="btn btn-next sisbeca-btn-primary">Siguiente</button>
                                 </div>
                             </fieldset>
-                            {{-------------------------------- Datos Personales --------------------------}}
+
+                            <!-- Datos Personales -->
                             <fieldset>
-                                <h4>Complete sus Datos Personales:</h4>
-                                <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                                    <label class="sr-only" for="name">Nombre</label>
-                                    <input type="text" name="name" placeholder="Nombre..." class="f1-first-name form-control" id="f1-first-name" value="{{ old('name') }}" required autofocus>
+                                
+                                <!--<h4>Complete sus Datos Personales:</h4>-->
+                                <div class=" {{ $errors->has('name') ? ' has-error' : '' }}">
+                                    <label for="name">Nombre</label>
+                                    <input type="text" name="name" placeholder="John" class="f1-first-name sisbeca-input" id="f1-first-name" value="{{ old('name') }}" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -118,9 +129,9 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group {{ $errors->has('last_name') ? ' has-error' : '' }}">
-                                    <label class="sr-only" for="last_name">Apellido</label>
-                                    <input type="text" name="last_name" placeholder="Apellido..." class="form-control" id="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <div class="{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                                    <label for="last_name">Apellido</label>
+                                    <input type="text" name="last_name" placeholder="Doe" class="sisbeca-input" id="last_name" value="{{ old('last_name') }}" required autofocus>
 
                                     @if ($errors->has('last_name'))
                                         <span class="help-block">
@@ -129,133 +140,116 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="sr-only" for="cedula">Cedula</label>
-                                    <input type="text" value="{{ old('cedula') }}" name="cedula" placeholder="Cedula..." class="form-control" id="cedula">
-                                    @if ($errors->has('cedula'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('cedula') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="sr-only" for="datepicker">Fecha de Nacimiento</label>
-                                    <input  name="fecha_nacimiento" type="text" id="datepicker" required placeholder="Fecha de Nacimiento..." class="form-control">
-                                    @if ($errors->has('fecha_nacimiento'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('fecha_nacimiento') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="edad">Edad:</label>
-                                    <div>
-                                        <input required name="edad" readonly="true" type="number" id="edad">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                                        <input  name="fecha_nacimiento" type="text" id="fecha_nacimiento"  placeholder="DD/MM/AAAA" class="sisbeca-input" required>
+                                        @if ($errors->has('fecha_nacimiento'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('fecha_nacimiento') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
-                                    @if ($errors->has('edad'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('edad') }}</strong>
-                                    </span>
-                                    @endif
+                                    <div class="col-lg-6">
+                                        <label for="edad">Edad</label>
+                                        <input name="edad" type="text" id="edad" class="sisbeca-input sisbeca-disabled" value="0">
+                                        @if ($errors->has('edad'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('edad') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="url_pdf">Sexo:</label>
-                                    <div>
-                                        <select class="form-control " required id="sexo" name="sexo">
-                                            <option value=''>Seleccione</option>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="cedula">Cédula</label>
+                                        <input type="text" value="{{ old('cedula') }}" name="cedula" placeholder="11222333" class="sisbeca-input" id="cedula">
+                                        @if ($errors->has('cedula'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('cedula') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="sexo">Sexo</label>
+                                        <select class="sisbeca-input " id="sexo" name="sexo">
                                             <option value='masculino'>Masculino</option>
                                             <option value='femenino'>Femenino</option>
                                         </select>
+                                        @if ($errors->has('sexo'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('sexo') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
-                                    @if ($errors->has('sexo'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('sexo') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-                                <div class="form-group">
-                                     <label for="url_pdf">Cargue su Hoja de Vida:</label>
-                                      <div>
-                                          <input required name="url_pdf" accept="application/pdf" type="file" id="url_pdf">
-                                      </div>
-                                    @if ($errors->has('url_pdf'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('url_pdf') }}</strong>
-                                    </span>
-                                    @endif
+                                    
+                                    <div class="col-lg-12">
+                                        <label for="url_pdf">Cargue su Hoja de Vida</label>
+                                        <input name="url_pdf" accept="application/pdf" type="file" id="url_pdf" class="sisbeca-input" required>
+                                        @if ($errors->has('url_pdf'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('url_pdf') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
 
                                 <div class="f1-buttons">
-                                    <button type="button" class="btn btn-previous">Anterior</button>
-                                    <button type="submit" class="btn btn-primary">Postularse</button>
+                                    <button type="button" class="btn btn-previous sisbeca-btn-default">Anterior</button>
+                                    <button type="submit" class="btn sisbeca-btn-primary">Postularse</button>
                                 </div>
-
-
                             </fieldset>
 
                         </form>
-
                     </div>
-                    
-
-
                 
                 </div>
             </div>
         </div>
     </div>
-<!-- Modal -->
-<div class="modal fade" id="modal" role="dialog">
-       <div class="modal-dialog">
-           <div class="modal-content-ment">
-               
 
-               <p align="center"> <img src="images/postulacion-mentor.png"></p>
-
-           </div>
-
-
-       </div>
-
-       
-   </div>
-   <!-- /.modal-content -->
+    <!-- Modal -->
+    <div class="modal fade" id="modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content-ment">
+                <div class="text-center">
+                <img src="images/postulacion-mentor.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin Modal -->
 
 </div>
-<!-- End Wrapper -->
-<!-- All Jquery -->
 
 @include('sisbeca.layouts.partials.filesjs')
 <script>
-    $( function() {
-        $( "#datepicker" ).datepicker({maxDate: "-192M +0D",orientation: "bottom" });
-    } );
+    $('#fecha_nacimiento').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        orientation: 'bottom',
+        autoclose: true,
+        endDate : '+0',
+    });
 
     $(document).ready(function(){
 
-        var mivalor= $("#datepicker").val();
+        var mivalor= $("#fecha_nacimiento").val();
 
 
-        $("#datepicker").change(function() {
-            mivalor =   $("#datepicker").val();
-
+        $("#fecha_nacimiento").change(function() {
+            mivalor =   $("#fecha_nacimiento").val();
             var valor=mivalor.split("/");
 
             var ano = valor[2];
             var mes = valor[1];
             var dia = valor[0];
-
             // cogemos los valores actuales
             var fecha_hoy = new Date();
             var ahora_ano = fecha_hoy.getFullYear();
             var ahora_mes = fecha_hoy.getMonth()+1;
             var ahora_dia = fecha_hoy.getDate();
-
             // realizamos el calculo
             var edad = ahora_ano  - ano;
             if ( ahora_mes < mes )
@@ -267,7 +261,6 @@
                 edad--;
             }
 
-
             if(!isNaN(edad))
             {
                 document.getElementById("edad").value=edad;
@@ -275,23 +268,15 @@
             else
             {
                 document.getElementById("edad").value=null;
-
             }
-
-
         });
-
-
-
-
-
     });
 
 
-   $(document).ready(function()
-   {
+    $(document).ready(function()
+    {
       $("#modal").modal("show");
-   });
+    });
 
 </script>
 </body>
