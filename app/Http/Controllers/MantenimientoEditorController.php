@@ -14,8 +14,41 @@ class MantenimientoEditorController extends Controller
         $this->middleware('editor');
     }
 
-    public function createOrUpdateCostos(Request $request, $id)
+    public function index()
     {
+        $costos= Costo::first();
+        if(is_null($costos))
+        {
+            $costos = new Costo();
+            $id=0;
+            flash('No se han definido los Costos Actualmente, Por favor definelos')->error()->important();
+        }
+        else
+        {
+            $id=$costos->id;
+        }
+        return view('sisbeca.costos.index')->with('costo',$costos)->with('id',$id);
+    }
+
+    public function edit($id)
+    {
+        $costos= Costo::first();
+        if(is_null($costos))
+        {
+            $costos = new Costo();
+            $id=0;
+            flash('Disculpe, no se han definido los costos, por favor defínelos.')->error()->important();
+        }
+        else
+        {
+            $id=$costos->id;
+        }
+        return view('sisbeca.costos.edit')->with('costo',$costos)->with('id',$id);
+    }
+
+    public function update(Request $request, $id)
+    {
+        //return $request->all();
         if(is_null($request->get('sueldo_becario')))
         {
             if($id==0)
@@ -23,7 +56,7 @@ class MantenimientoEditorController extends Controller
                 $costo = new Costo($request->all());
                 $costo->fecha_valido=  DateTime::createFromFormat('d/m/Y H:i:s', $request->get('fecha_valido').' 00:00:00');
                 $costo->save();
-                flash('Costos Definidos Exitosamente','success')->important();
+                flash('Los costos fueron definidos exitosamente.','success')->important();
             }
             else
             {
@@ -43,29 +76,15 @@ class MantenimientoEditorController extends Controller
                 $costoAux= str_replace(",",".",$costoAux);
                 $costo->costo_membresia=$costoAux;
                 $costo->save();
-                flash('Costos Actualizados Exitosamente','success')->important();
-
+                flash('Los costos fueron actualizados exitosamente','success')->important();
             }
-        }
-        else {
-            flash('Ocurrio un error inesperado','danger')->important();
-        }
-        return  redirect()->route('costos.show');
-    }
-
-    public function viewCostos()
-    {
-        $costos= Costo::first();
-        if(is_null($costos))
-        {
-            $costos = new Costo();
-            $id=0;
-            flash('No se han definido los Costos Actualmente, Por favor definelos')->error()->important();
         }
         else
         {
-            $id=$costos->id;
+            flash('Error: Ocurrio un error inesperado.','danger')->important();
         }
-        return view('sisbeca.costos.costo')->with('costo',$costos)->with('id',$id);
+        return  redirect()->route('costos.index');
     }
+
+    
 }

@@ -27,31 +27,26 @@
         <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
 </div>
 
-<!-- Main wrapper  -->
 <div id="main-wrapper">
     <div class="header">
         @include('sisbeca.layouts.partials.navtop')
     </div>
 
-
     <div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-lg-5">
-    
-            @include('flash::message')
-            
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+        
+                @include('flash::message')
+
                 <div class="login-content panel panel-default" >
                     <div class="panel-heading" align="center">
                         <h2 style="color: white">Postulación ProExcelencia</h2>
                     </div>
  
-
                     <div class="login-form panel-body" style="padding: 0px 30px 20px">
-                        <div>
-                            <h6 class="text-left">
-                                <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón a ProExcelencia</strong>
-                            </h6>
-                        </div>
+                        <h6 class="text-left">
+                            <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón a ProExcelencia</strong>
+                        </h6>
                         
                         <!-- form tenia una clase f1-->
                         <form role="form" class="f1 formMultiple" method="post" action="{{ route('register') }}" enctype="multipart/form-data" style="padding: 0px!important">
@@ -86,6 +81,7 @@
                                     </span>
                                     @endif
                                 </div>
+
                                 <div  class="{{ $errors->has('password') ? ' has-error' : '' }}">
                                     <label for="password">Contraseña</label>
                                     <input type="password" name="password" placeholder="******" class="f1-password sisbeca-input" id="f1-password" required>
@@ -96,11 +92,13 @@
                                     </span>
                                     @endif
                                 </div>
+
                                 <div>
-                                    <label for="f1-repeat-password">Repetir Contraseña</label>
+                                    <label for="password_confirmation">Repetir Contraseña</label>
                                     <input type="password" placeholder="******"
                                            class="f1-repeat-password sisbeca-input" id="f1-repeat-password" name="password_confirmation" required>
                                 </div>
+
                                 <div>
                                     <label for="image_perfil">Imagen Perfil</label>
                                     <input name="image_perfil" accept="image/*" type="file" id="image" class="sisbeca-input">
@@ -110,11 +108,13 @@
                                         </span>
                                     @endif
                                 </div>
+
                                 <div class="f1-buttons">
                                     <a class="btn btn-next sisbeca-btn-default" href="/login">Iniciar Sesión</a>
                                     <button type="button" class="btn btn-next sisbeca-btn-primary">Siguiente</button>
                                 </div>
                             </fieldset>
+
                             <!-- Datos Personales -->
                             <fieldset>
                                 <!--<h4>Complete sus Datos Personales:</h4>-->
@@ -141,7 +141,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <label for="cedula">Cedula</label>
+                                        <label for="cedula">Cédula</label>
                                         <input type="text" value="{{ old('cedula') }}" name="cedula" placeholder="11222333" class="sisbeca-input " id="cedula" required>
                                         @if ($errors->has('cedula'))
                                             <span class="help-block">
@@ -184,11 +184,7 @@
                                     </div>
                                     <strong>{{ $errors->first('fecha_nacimiento') }}</strong>
                                 </div>
-
-                                <div>
-                                   
-                                </div>
-
+                        
                                 <div class="f1-buttons">
                                     <button type="button" class="btn btn-previous sisbeca-btn-default">Anterior</button>
                                     <button type="submit" class="btn sisbeca-btn-primary">Registrarse</button>
@@ -199,25 +195,23 @@
                     </div>
                    
                 </div>
-            
+            </div>
         </div>
     </div>
-     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="modal" role="dialog">
        <div class="modal-dialog">
            <div class="modal-content-ment">
-               <p align="center"> <img src="images/postulacion-becario.png"></p>
+                <div class="text-center"> 
+                    <img src="images/postulacion-becario.png">
+                </div>
            </div>
        </div>
     </div>
    <!-- Fin Modal -->
 
-
 </div>
-<!-- End Wrapper -->
-<!-- All Jquery -->
 
 @include('sisbeca.layouts.partials.filesjs')
 <script>
@@ -260,26 +254,19 @@
             if(!isNaN(edad))
             {
                 document.getElementById("edad").value=edad;
-
             }
             else
             {
                 document.getElementById("edad").value=null;
-
             }
-
         });
-
-
-
-
 
     });
 
-     $(document).ready(function()
-   {
+    $(document).ready(function()
+    {
       $("#modal").modal("show");
-   });
+    });
 </script>
 </body>
 

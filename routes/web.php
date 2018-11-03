@@ -89,14 +89,20 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'noticia.destroy'
         ]);
 
-        Route::get('viewCostos', [
-            'uses' => 'MantenimientoEditorController@viewCostos',
-            'as' => 'costos.show'
+        //costos
+        Route::get('costos', [
+            'uses' => 'MantenimientoEditorController@index',
+            'as' => 'costos.index'
         ]);
 
-        Route::any('costos/createOrUpdate/{id?}', [
-            'uses' => 'MantenimientoEditorController@createOrUpdateCostos',
-            'as' => 'costos.createOrUpdate'
+        Route::get('costos/{id}/editar', [
+            'uses' => 'MantenimientoEditorController@edit',
+            'as' => 'costos.edit'
+        ]);
+
+        Route::post('costos/{id}/actualizar', [
+            'uses' => 'MantenimientoEditorController@update',
+            'as' => 'costos.update'
         ]);
 
         Route::Resource('mantenimientoConcurso', 'MantenimientoConcursoController');
