@@ -18,8 +18,8 @@
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
-                    <label for="name"  class="control-label">Apellido</label>
-                    <input class="sisbeca-input" placeholder="Doe" value="{{$user->last_name}}" name="name" type="text" id="name" required>
+                    <label for="last_name"  class="control-label">Apellido</label>
+                    <input class="sisbeca-input" placeholder="Doe" value="{{$user->last_name}}" name="last_name" type="text" id="name" required>
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
