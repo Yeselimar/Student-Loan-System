@@ -34,7 +34,6 @@ class MantenimientoUserController extends Controller
     }
     public function create()
     {
-        //formulario para registrar nuevos usuarios
         return view('sisbeca.crudUser.crearUsuario');
     }
 
@@ -42,7 +41,7 @@ class MantenimientoUserController extends Controller
     {
         if($request->get('password') !== $request->get('password-repeat'))
         {
-            flash('Su Contraseña no coincide','danger')->important();
+            flash('Disculpe, su contraseña no coincide.','danger')->important();
             return back();
         }
         //para guardar esos datos del formulario de creacion
@@ -98,7 +97,7 @@ class MantenimientoUserController extends Controller
         $user = User::find($id);
         if(is_null($user))
         {
-            flash('El Archivo solicitado no ha sido encontrado','error')->important();
+            flash('Disculpe, el archivo no fue encontrado.','error')->important();
             return back();
         }
 
@@ -109,7 +108,7 @@ class MantenimientoUserController extends Controller
     {
         if($request->get('password') !== $request->get('password-repeat'))
         {
-            flash('Su Contraseña no coincide','danger')->important();
+            flash('Disculpe, su contraseña no coincide.','danger')->important();
             return back();
         }
         //encargado de recibir los datos que mandemos del usuario que indiquemos en edit y poder actualizarlo
@@ -145,7 +144,7 @@ class MantenimientoUserController extends Controller
         $user->fill($request->all());
         $user->password = bcrypt($request->password);
         $user->save();
-        flash('Usuario Actualizado Exitosamente','success')->important();
+        flash('El usuario fue actualizado exitosamente.','success')->important();
 
         //Si al actualizar se quiere cambiar de rol  a uno que tenga una relacion con tablas distintas se manejan estas condiciones
 
@@ -192,14 +191,14 @@ class MantenimientoUserController extends Controller
         //reconfirmar que rol que esta asociado al id
         if(is_null($user))
         {
-            flash('El Archivo solicitado no ha sido encontrado')->error()->important();
+            flash('Disculpe, el archivo solicitado no ha sido encontrado.')->error()->important();
             return back();
         }
         else
         {
             if($user->rol==='admin')
             {
-                flash('El Archivo solicitado no ha sido encontrado')->error()->important();
+                flash('Disculpe, el archivo solicitado no ha sido encontrado')->error()->important();
                 return back();
             }
         }
