@@ -80,7 +80,7 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-$('#usuarios').DataTable({
+    $('#usuarios').DataTable({
         "ordering": true,
 
         "language": {
