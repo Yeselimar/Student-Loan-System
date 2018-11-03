@@ -12,7 +12,8 @@
                     <li class="nav-label">Inicio</li>
                     <li> <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Usuarios</span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{asset(route('mantenimientoUser.index'))}}">Mantenimiento</a></li>
+                            <li><a href="{{asset(route('mantenimientoUser.index'))}}">Listar Usuarios</a></li>
+                            <li><a href="{{asset(route('mantenimientoUser.create'))}}">Crear Usuario</a></li>
                             @if(\Request::route()->getName()==='mantenimientoUser.create')
                                 <li class="opcion-menu-oculta"><a href="{{route('mantenimientoUser.create')}}"></a></li>
                             @endif
