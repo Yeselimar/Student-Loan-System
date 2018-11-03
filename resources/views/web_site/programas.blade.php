@@ -192,7 +192,19 @@
                            </div>
                            <div id="collapse1" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="heading1">
                               <div class="col-lg-12">
-                                 <img src="{{$charla->imagen}}" alt="Calendario de Charla {{$charla->anho}}" style="width: 100%;height: auto">
+                                 @if(isset($charla))
+                                    <img src="{{$charla->imagen}}" alt="Calendario de Charla {{$charla->anho}}" style="width: 100%;height: auto;border:1px solid #eee">
+                                    <br><br>
+                                    <p class="h6 text-center">Calendario de Charlas del año {{$charla->anho}}</p>
+                                    <br>
+                                 @else
+                                    <div class="col">
+                                       <div class="text-center">
+                                          <span class="badge badge-danger">No hay calendarios de charlas disponibles</span>
+                                       </div>
+                                       <br>
+                                    </div>
+                                 @endif
                               </div>
                               
                            </div>

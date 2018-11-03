@@ -74,8 +74,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'MantenimientoUserController@destroy',
             'as' => 'mantenimientoUser.destroy'
         ]);
-            // Get Data
-            Route::get('datatable/getdata', 'MantenimientoUserController@getUsers')->name('datatable/getdata');
+        // Get Data
+        Route::get('datatable/getdata', 'MantenimientoUserController@getUsers')->name('datatable/getdata');
 
     });
 

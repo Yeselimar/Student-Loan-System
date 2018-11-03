@@ -52,7 +52,7 @@
       </div>
    </section>
    <!-- Fin Principal -->  
-   <div class="linea-sobra"  id="noticias"></div>
+   <div style="height: 50px"  id="noticias"></div>
    <!-- Noticias -->
    <div class="container">
     	<div class="row">
@@ -225,7 +225,7 @@
 
 
    <!-- Organizaciones -->
-   <div class="container" style="padding-top: 50px;">
+   <div class="container" style="padding-top: 50px;padding-bottom: 50px">
       <div class="section-header">
          <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Organizaciones</h2>
          <hr class="lines wow zoomIn" data-wow-delay="0.3s">
@@ -251,9 +251,9 @@
    <!-- Fin Organizaciones -->
 
 
-   <div class="linea-sobra"></div>
-   
 
+   @if($banners->count()!=0)
+   <div class="linea-sobra"></div>
    <div class="container" style="padding-top: 50px;">
       <div class="carousel-banner owl-carousel owl-theme">
          @foreach($banners as $banner)
@@ -270,6 +270,7 @@
           @endforeach
       </div>
    </div>
+   @endif
 
 @endsection
 

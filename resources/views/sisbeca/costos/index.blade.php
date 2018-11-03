@@ -18,7 +18,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Costo Membresias<br />(ind./VIP)</span>
-                    <span class="info-box-number">{{number_format($costo->costo_membresia, 2, ',', '.')}}</span>
+                    <span class="info-box-number">
+                        @if(isset($costo))
+                            {{number_format($costo->costo_membresia, 2, ',', '.')}}
+                        @else
+                            {{number_format(0, 2, ',', '.')}}
+                        @endif
+                    </span>
                 </div>
             </div>
         </div>
@@ -31,7 +37,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Costo Asesoria<br />(Básica)</span>
-                    <span class="info-box-number">{{number_format($costo->costo_ases_basica, 2, ',', '.')}}</span>
+                    <span class="info-box-number">
+                    @if(isset($costo))
+                        {{number_format($costo->costo_ases_basica, 2, ',', '.')}}
+                    @else
+                        {{number_format(0, 2, ',', '.')}}
+                    @endif
+                    </span>
                 </div>
             </div>
         </div>
@@ -44,7 +56,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Costo Asesoria<br />(Intermedia)</span>
-                    <span class="info-box-number">{{number_format($costo->costo_ases_intermedia, 2, ',', '.')}}</span>
+                    <span class="info-box-number">
+                    @if(isset($costo))
+                        {{number_format($costo->costo_ases_intermedia, 2, ',', '.')}}
+                    @else
+                        {{number_format(0, 2, ',', '.')}}
+                    @endif
+                    </span>
                 </div>
             </div>
         </div>
@@ -57,13 +75,25 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Costo Asesoria<br/>(Completa)</span>
-                    <span class="info-box-number">{{number_format($costo->costo_ases_completa, 2, ',', '.')}}</span>
+                    <span class="info-box-number">
+                    @if(isset($costo))
+                        {{number_format($costo->costo_ases_completa, 2, ',', '.')}}
+                    @else
+                        {{number_format(0, 2, ',', '.')}}
+                    @endif
+                    </span>
                 </div>
             </div>
         </div>
     </div>
     <hr>
-    <p class="text-right">Fecha válido: <strong>{{ $costo->getFechaValido() }}</strong></p>
+    <p class="text-right">Fecha válido: 
+        @if(isset($costo))
+            <strong>{{ $costo->getFechaValido() }}</strong>
+        @else
+            <strong>DD/MM/AAAA</strong>
+        @endif
+    </p>
 </div>
 
 

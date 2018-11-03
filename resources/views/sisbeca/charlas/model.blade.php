@@ -31,7 +31,7 @@
                 	<label for="imagen" class="control-label">
                 		{{ $model=='crear' ? '*Imagen' : 'Actualizar Imagen' }}
                     </label>
-                    {{ Form::file('imagen',['class' => 'sisbeca-input ', 'accept'=>'image/jpeg,image/jpg/image/png' ] ) }}
+                    {{ Form::file('imagen',['class' => 'sisbeca-input ', 'accept'=>'image/*' ] ) }}
                     <span class="errors">{{ $errors->first('imagen') }}</span>
                 </div>
 
@@ -65,8 +65,9 @@
 	</div>
 </div>
 
+@if(isset($charla))
 <!-- Modal para ver imagen -->
-<div class="modal fade" id="ver">
+<div class="modal fade" id="ver">|
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -85,6 +86,7 @@
     </div>
 </div>
 <!-- Fin Modal para ver imagen -->
+@endif
 
 @endsection
 

@@ -19,9 +19,9 @@ class MantenimientoEditorController extends Controller
         $costos= Costo::first();
         if(is_null($costos))
         {
-            $costos = new Costo();
+            $costos = null;
             $id=0;
-            flash('No se han definido los Costos Actualmente, Por favor definelos')->error()->important();
+            flash('Disculpe, no se han definido los costos, por favor defínalos.')->error()->important();
         }
         else
         {
@@ -35,9 +35,9 @@ class MantenimientoEditorController extends Controller
         $costos= Costo::first();
         if(is_null($costos))
         {
-            $costos = new Costo();
+            $costos = null;
             $id=0;
-            flash('Disculpe, no se han definido los costos, por favor defínelos.')->error()->important();
+            flash('Disculpe, no se han definido los costos, por favor defínalos.')->error()->important();
         }
         else
         {
@@ -81,7 +81,7 @@ class MantenimientoEditorController extends Controller
         }
         else
         {
-            flash('Error: Ocurrio un error inesperado.','danger')->important();
+            flash('Disculpe, ocurrio un error inesperado.','danger')->important();
         }
         return  redirect()->route('costos.index');
     }

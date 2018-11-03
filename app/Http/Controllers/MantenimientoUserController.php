@@ -22,12 +22,12 @@ class MantenimientoUserController extends Controller
 
     public function index()
     {
-        return view('sisbeca.crudUser.mantenimientoUsuario');
+        $usuarios = User::select(['id','cedula','name','last_name','email','rol'])->where('rol', '=', "coordinador")->orWhere('rol','editor')->orWhere('rol','directivo')->orWhere('rol','entrevistador')->get();
+        return view('sisbeca.crudUser.mantenimientoUsuario')->with(compact('usuarios'));
     }
 
     public function getUsers()
     {
-       
         $users = User::select(['id','cedula','name','email','rol'])->where('rol', '=', "coordinador")->orWhere('rol','editor')->orWhere('rol','directivo')->orWhere('rol','entrevistador')->get();
         return Datatables::of($users)
             ->make(true);
