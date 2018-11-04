@@ -176,7 +176,7 @@
 
                                     <div class="col-lg-6">
                                         <label for="edad">Edad</label>
-                                        <input  name="edad" readonly="true" type="number" id="edad" class="sisbeca-input sisbeca-disabled" disabled="disabled" value="0" required>
+                                        <input name="edad" readonly="true" type="text" id="edad" class="sisbeca-input sisbeca-disabled" disabled="disabled" value="0" required>
                                         @if ($errors->has('edad'))
                                             <span class="help-block">
                                         </span>

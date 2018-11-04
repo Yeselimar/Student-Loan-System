@@ -71,11 +71,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $concurso= Concurso::query()->where('status','=','abierto')->first();
-        if(is_null($concurso) || !($concurso->noCerroConcurso()) || !($concurso->abrioConcurso()) )
-        {
-            return redirect()->route('login');
-        }
+        dd($data);
         $user = new User;
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -89,9 +85,7 @@ class RegisterController extends Controller
 
         $becario = new Becario;
         $becario->user_id = $user->id;
-        $becario->coordinador_id = Coordinador::first()->user_id;
-        $becario->mentor_id = Mentor::first()->user_id;
-
+        $becario->mentor_id = null;
         $becario->save();
 
         return ($user);

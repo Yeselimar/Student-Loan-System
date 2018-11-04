@@ -29,6 +29,7 @@ trait RegistersUsers
      */
   public function register(Request $request)
     {
+        dd($request->all());
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
@@ -37,7 +38,9 @@ trait RegistersUsers
 
 
         $file= $request->file('image_perfil');
-        if(!is_null($file)) {
+        if(!is_null($file))
+        {
+            dd($user);
             $name = 'img-user_' . $user->cedula . time() . '.' . $file->getClientOriginalExtension();
             $path = public_path() . '/images/perfil/';
             $file->move($path, $name);

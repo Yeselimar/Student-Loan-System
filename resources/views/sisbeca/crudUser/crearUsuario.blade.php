@@ -20,12 +20,12 @@
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label for="last_name" class="control-label">Apellido</label>
-                        <input class="sisbeca-input" placeholder="John" value="{{old('name')}}"
+                        <input class="sisbeca-input" placeholder="Doe" value="{{old('name')}}"
                             required name="last_name" type="text" id="name">
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label for="cedula" class="control-label">Cedula</label>
+                        <label for="cedula" class="control-label">Cédula</label>
                         <input class="sisbeca-input" placeholder=" Ingrese Cedula..." value="{{old('cedula')}}"
                                 name="cedula" type="text" id="cedula">
                     </div>
@@ -42,20 +42,20 @@
                     </div>
                 
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label for="cedula" class="control-label">Correo Electronico</label>
-                        <input class="sisbeca-input" placeholder="Ingrese Email..." value="{{old('email')}}"
+                        <label for="cedula" class="control-label">Correo Electrónico</label>
+                        <input class="sisbeca-input" placeholder="jonhdoe@dominio.com" value="{{old('email')}}"
                                 name="email" type="email" id="email" required>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label for="password" class="control-label">Contraseña</label>
-                        <input class="sisbeca-input" placeholder="Ingrese Contraseña..." name="password"
+                        <input class="sisbeca-input" placeholder="******" name="password"
                                 type="password" id="password" required>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label for="password-repeat"  class="control-label">Repetir Contraseña</label>
-                        <input class="sisbeca-input" placeholder="Repita Contraseña..." name="password-repeat"
+                        <input class="sisbeca-input" placeholder="*****" name="password-repeat"
                                 type="password" id="password-repeat" required>
                     </div>
                 </div>
