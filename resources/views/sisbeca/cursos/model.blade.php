@@ -23,7 +23,7 @@
 				<div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Becario</label>
-                        {{ Form::text('becario', $becario->user->nombreyapellido(), ['class' => 'sisbeca-input', 'disabled'=>'disabled'])}}
+                        {{ Form::text('becario', $becario->user->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Tipo Curso</label>
@@ -93,7 +93,7 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-lg-12 text-right" >
-						<a href="{{route('periodos.listar')}}" class="btn sisbeca-btn-default">Cancelar</a>
+						<a href="{{route('cursos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
 						&nbsp;&nbsp;
 
                         <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">

@@ -39,7 +39,7 @@
 						    		@break;
 						    		
 						    		@case( 'aceptada')
-						    			<span class="label badge-success">aceptada</span>
+						    			<span class="label label-success">aceptada</span>
 						    		@break
 
 						    		@case ('negada')

@@ -67,14 +67,15 @@ class CursoController extends Controller
 		$curso->save();
 		
 		flash("El curso fue creado exitosamente.",'success');
-    	return redirect()->route('cursos.listar');
+    	return redirect()->route('cursos.index');
     }
 
     public function editar($id)
     {
     	$curso = Curso::find($id);
     	$model = "editar";
-    	return view('sisbeca.cursos.model')->with(compact('curso','model'));
+        $becario = $curso->becario;
+    	return view('sisbeca.cursos.model')->with(compact('curso','model','becario'));
     }
 
     public function actualizar(Request $request,$id)
@@ -111,6 +112,6 @@ class CursoController extends Controller
 		$curso->save();
 		
 		flash("El curso fue actualizado exitosamente.",'success');
-    	return redirect()->route('cursos.listar');
+    	return redirect()->route('cursos.index');
     }
 }

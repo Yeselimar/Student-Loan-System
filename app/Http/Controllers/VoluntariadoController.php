@@ -62,7 +62,7 @@ class VoluntariadoController extends Controller
 		$voluntariado->aval_id = $aval->id;
 		$voluntariado->save();
 		flash("El voluntariado fue creado exitosamente.",'success');
-    	return redirect()->route('voluntariados.listar');
+    	return redirect()->route('voluntariados.index');
     }
 
     public function editar($id)
@@ -103,6 +103,6 @@ class VoluntariadoController extends Controller
         $voluntariado->horas = $request->get('horas');
         $voluntariado->save();
         flash("El voluntariado fue actualizado exitosamente.",'success');
-        return redirect()->route('voluntariados.listar');
+        return redirect()->route('voluntariados.index');
     }
 }

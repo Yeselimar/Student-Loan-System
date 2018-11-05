@@ -23,7 +23,7 @@
 				<div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Becario</label>
-                        {{ Form::text('becario', Auth::user()->nombreyapellido(), ['class' => 'sisbeca-input', 'disabled'=>'disabled'])}}
+                        {{ Form::text('becario', Auth::user()->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Fecha</label>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label class="control-label">*Descripción</label>
-                        {{ Form::textarea('descripcion', ($model=='crear') ? null : $voluntariado->descripcion , ['class' => 'sisbeca-input', 'placeholder'=>'Ingrese descripción'])}}
+                        {{ Form::textarea('descripcion', ($model=='crear') ? null : $voluntariado->descripcion , ['class' => 'sisbeca-input sisbeca-textarea', 'placeholder'=>'Ingrese descripción'])}}
                         <span class="errors">{{ $errors->first('descripcion') }}</span>
                     </div>
                     

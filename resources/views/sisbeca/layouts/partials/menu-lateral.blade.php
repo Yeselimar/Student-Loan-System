@@ -340,7 +340,7 @@
                 @endif
 
 
-                @if(Auth::user()->rol==='admin' || Auth::user()->rol==='becario')
+                 @if(Auth::user()->rol==='becario')
 
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
@@ -348,24 +348,47 @@
                         <span class="hide-menu">Notas Académicas</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{route('periodos.listar')}}">Mis Periodos</a></li>
+                        <li><a href="{{route('periodos.index')}}">Mis Periodos</a></li>
                     </ul>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{route('periodos.todos')}}">Todos los Periodos</a></li>
+                        <li><a href="{{route('periodos.crear',Auth::user()->id)}}">Cargar Periodo</a></li>
                     </ul>
                 </li>
                 <li>
                     <a class="has-arrow  " href="{{route('cursos.index')}}" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
-                        <span class="hide-menu">Cursos</span>
+                        <span class="hide-menu">CVA</span>
                     </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('cursos.index')}}">Mis CVA</a></li>
+                    </ul>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('cursos.crear',Auth::user()->id)}}">Cargar CVA</a></li>
+                    </ul>
                 </li>
                 <li>
-                    <a class="has-arrow  " href="{{route('voluntariados.index')}}" aria-expanded="false">
+                    <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
                         <span class="hide-menu">Voluntariado</span>
                     </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('voluntariados.index')}}">Mis Voluntariados</a></li>
+                    </ul>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('voluntariados.crear',Auth::user()->id)}}">Cargar Voluntariado</a></li>
+                    </ul>
                 </li> 
+                @endif
+                @if(Auth::user()->rol==='admin')
+                 <li>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Notas Académicas</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('periodos.todos')}}">Listar Periodos</a></li>
+                    </ul>
+                </li>
                 @endif
 
                 {{-- Fin de Vista Compartida Becarios/Mentores--}}

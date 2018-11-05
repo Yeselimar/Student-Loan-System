@@ -1999,10 +1999,11 @@ textarea {
 .label {
   padding: 1px 8px;
   line-height: 13px;
-  color: #ffffff;
+  color: #fff;
   font-weight: 400;
-  border-radius: 10px;
+  border-radius: 1.25em;
   font-size: 75%;
+  font-weight: 700;
 }
 .label-rounded {
   border-radius: 60px;
@@ -2011,16 +2012,17 @@ textarea {
   background-color: #00897b;
 }
 .label-success {
-  background-color: #26dad2;
+  background-color: #28a745;
 }
 .label-info {
   background-color: #1976d2;
 }
 .label-warning {
-  background-color: #ffb22b;
+  color: #212529;
+  background-color: #ffc107;
 }
 .label-danger {
-  background-color: #ef5350;
+  background-color: #dc3545;
 }
 .label-megna {
   background-color: #00897b;

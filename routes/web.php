@@ -62,6 +62,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>'admin'],function ()
     {
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
+        Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
 
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
@@ -170,7 +171,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         //periodos
         //->middleware('becario');
-        Route::get('/periodos', 'PeriodosController@listar')->name('periodos.listar');
+        Route::get('/periodos', 'PeriodosController@index')->name('periodos.index');
         Route::get('/periodo/{id}/ver-constancia', 'PeriodosController@verconstancia')->name('periodos.constancia');
         Route::get('/becario/{id}/crear-periodo/', 'PeriodosController@crear')->name('periodos.crear');
         Route::post('/becario/{id}/;-periodo/', 'PeriodosController@guardar')->name('periodos.guardar');

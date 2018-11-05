@@ -23,10 +23,15 @@ class PeriodosController extends Controller
 		return response()->json(['estatusaval'=>$estatusaval]);
 	}
 
+	public function obtenertodos()
+	{
+		$periodos = Periodo::with("becario")->with("usuario")->with("aval")->with("materias")->get();
+		return response()->json(['periodos'=>$periodos]);
+	}
+
 	public function todosperiodos()
 	{
-		$periodos = Periodo::orderby('created_at','desc')->get();
-		return view('sisbeca.periodos.todos')->with(compact('periodos'));
+		return view('sisbeca.periodos.todos');
 	}
 
 	public function verconstancia($id)
@@ -35,7 +40,7 @@ class PeriodosController extends Controller
 		//return  response(asset(Periodo::find($id)->aval->url), 200)->header('Content-Type', 'image/jpg');
 	}
 
-    public function listar()
+    public function index()
     {
     	$periodos = Periodo::where('becario_id','=',Auth::user()->id)->get();
     	return view('sisbeca.periodos.index')->with(compact('periodos'));
@@ -50,48 +55,41 @@ class PeriodosController extends Controller
 
     public function guardar(Request $request,$id)
     {
-    	if( (Auth::user()->esBecario() and Auth::user()->id==$id) )
-    	{
-	    	$validation = Validator::make($request->all(), PeriodosRequest::rulesCreate());
-			if ( $validation->fails() )
-			{
-				flash("Por favor, verifique el formulario.",'danger');
-				return back()->withErrors($validation)->withInput();
-			}
-	        
-            if($request->file('constancia'))
-            {
-        		$archivo= $request->file('constancia');
-	            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
-	            $ruta = public_path().'/'.Aval::carpetaConstancia();
-	            $archivo->move($ruta, $nombre);
-            }
-            
-			$aval = new Aval;
-			$aval->url = Aval::carpetaConstancia().$nombre;
-			$aval->estatus = "pendiente";
-			$aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
-			$aval->tipo = "constancia";
-			$aval->becario_id = $id;
-			$aval->save();
-
-			$periodo = new Periodo;
-			$periodo->numero_periodo = $request->get('numero_periodo');
-    		$periodo->anho_lectivo = $request->get('anho_lectivo');
-    		$periodo->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
-    		$periodo->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
-    		$periodo->becario_id = $id;
-    		$periodo->aval_id = $aval->id;
-    		$periodo->save();
-			
-			flash("El periodo fue creado exitosamente.",'success');
-	    	return redirect()->route('periodos.listar');
-	    	
-	    }
-		else
+    	$validation = Validator::make($request->all(), PeriodosRequest::rulesCreate());
+		if ( $validation->fails() )
 		{
-			return  "error 404";
+			flash("Por favor, verifique el formulario.",'danger');
+			return back()->withErrors($validation)->withInput();
 		}
+        
+        if($request->file('constancia'))
+        {
+    		$archivo= $request->file('constancia');
+            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+            $ruta = public_path().'/'.Aval::carpetaConstancia();
+            $archivo->move($ruta, $nombre);
+        }
+        
+		$aval = new Aval;
+		$aval->url = Aval::carpetaConstancia().$nombre;
+		$aval->estatus = "pendiente";
+		$aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
+		$aval->tipo = "constancia";
+		$aval->becario_id = $id;
+		$aval->save();
+
+		$periodo = new Periodo;
+		$periodo->numero_periodo = $request->get('numero_periodo');
+		$periodo->anho_lectivo = $request->get('anho_lectivo');
+		$periodo->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
+		$periodo->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
+		$periodo->becario_id = $id;
+		$periodo->aval_id = $aval->id;
+		$periodo->save();
+		
+		flash("El periodo fue creado exitosamente.",'success');
+    	return redirect()->route('periodos.index');
+	    	
 	}
 
 	public function editar($id)
@@ -146,7 +144,7 @@ class PeriodosController extends Controller
 			$periodo->save();
 			
 			flash("El periodo fue actualizado exitosamente.",'success');
-	    	return redirect()->route('periodos.listar');
+	    	return redirect()->route('periodos.index');
 	    //}
 		//else
 		//{

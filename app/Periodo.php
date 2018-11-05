@@ -14,6 +14,11 @@ class Periodo extends Model
         return $this->belongsTo('avaa\Becario','becario_id');
     }
 
+    public function usuario()//relacion buena
+    {
+        return $this->belongsTo('avaa\User','becario_id');
+    }
+
     public function materias()//relación buena
     {
         return $this->hasMany('avaa\Materia','periodo_id');
