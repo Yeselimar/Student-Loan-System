@@ -20,7 +20,7 @@
 			</thead>
 			<tbody>
 				<tr v-for="periodo in periodos">
-					<td>@{{ periodo.usuario.name }} @{{ periodo.usuario.last_name }}</td>
+					<td>@{{ periodo.usuario.name }} @{{ periodo.usuario.last_name }} @{{ periodo.aval.id}}</td>
 					<td>@{{ periodo.anho_lectivo}} 
 						<span v-if="periodo.becario.regimen=='anual'">(@{{ periodo.numero_periodo }} año)</span>
 						<span v-if="periodo.becario.regimen=='semestral'">(@{{ periodo.numero_periodo }} semestre)</span>
@@ -33,9 +33,11 @@
 						<span v-if="periodo.aval.estatus=='negada'" class="label label-danger">negada</span>
 					</td>
 					<td>
-						<button type="button" class="btn btn-xs sisbeca-btn-primary">
-							
-						</button>
+						
+						<select v-model="periodo.aval.estatus" @change="actualizarestatus(periodo.aval.estatus,periodo.aval.id)" class="sisbeca-input input-sm">
+							<option v-for="estatu in estatus" v-bind:value="estatu" >@{{ estatu}}</option>
+						</select>
+						@{{ seleccionado }}
 					</td>
 				</tr>
 			</tbody>
@@ -60,11 +62,14 @@ $(document).ready(function(){
 	created: function()
 	{
 		this.obtenerperiodos();
-
+		this.obtenetestatusaval();
 	},
 	data:
 	{
 		periodos:[],
+		estatus:[],
+		seleccionado:'',
+		tmp:'',
 	},
 	methods:
 	{
@@ -75,8 +80,28 @@ $(document).ready(function(){
 			{
 				this.periodos = response.data.periodos;
 			});
-			
 		},
+		obtenetestatusaval: function()
+		{
+			var url = '{{route('aval.getEstatus')}}';
+			axios.get(url).then(response => 
+			{
+				this.estatus = response.data.estatus;
+			});	
+		},
+		actualizarestatus(estatu,id)
+		{
+			var dataform = new FormData();
+            dataform.append('estatus', estatu);
+            var url = '{{route('aval.actualizarestatus',':id')}}';
+            url = url.replace(':id', id);
+			axios.post(url,dataform).then(response => 
+			{
+				this.obtenerperiodos();
+				toastr.success(response.data.success);
+			});
+			
+		}
 	}
 });
 </script>

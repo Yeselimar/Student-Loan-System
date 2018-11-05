@@ -45,7 +45,7 @@ Route::get('/foo', function ()
     $exitCode = Artisan::call('cache:clear');
 });
 
-Route::get('/aval/estatus', 'PeriodosController@getEstatusAval')->name('aval.estatus');//borrar
+
 
 // Get Noticia para obtener todas las noticias en el datatable
 Route::get('datatable/getNoticia/{tip?}', 'GetPublicController@getNoticias')->name('datatable/getNoticia');
@@ -63,6 +63,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     {
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
+        //aval 
+        Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
+        Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
 
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
@@ -170,7 +173,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
 
         //periodos
-        //->middleware('becario');
+        //->middleware('admin');
         Route::get('/periodos', 'PeriodosController@index')->name('periodos.index');
         Route::get('/periodo/{id}/ver-constancia', 'PeriodosController@verconstancia')->name('periodos.constancia');
         Route::get('/becario/{id}/crear-periodo/', 'PeriodosController@crear')->name('periodos.crear');
