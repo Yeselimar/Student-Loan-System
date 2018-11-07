@@ -6,6 +6,13 @@
 */
 
 //Web Site
+Route::get('cache', function(){
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return '<h1> Las Caches fueron Limpiadas con exito </h1>';
+    });
 
 Route::get('/prueba','GetPublicController@prueba')->name('prueba');
 
