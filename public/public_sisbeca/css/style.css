@@ -86,6 +86,10 @@
   border:1px solid #eee;
 }
 
+.sisbeca-select
+{
+  padding-left: 0em !important;
+}
 /*costos*/
 
 .costos-icon
@@ -2040,7 +2044,9 @@ textarea {
   background-color: #2f3d4a;
 }
 .label-default {
+  color:#2f3d4a;
   background-color: #f2f4f8;
+  border:1px solid #2f3d4a;
 }
 .label-white {
   background-color: #ffffff;

@@ -34,6 +34,16 @@ class Periodo extends Model
         return $this->materias->count();
     }
 
+    public function fechaActualizacion()
+    {
+        return date("d/m/Y h:i:s a", strtotime($this->updated_at));
+    }
+
+    public function fechaCreacion()
+    {
+        return date("d/m/Y h:i:s a", strtotime($this->created_at));
+    }
+
     public function getPromedio()
     {
         if($this->getTotalMaterias()!=0)

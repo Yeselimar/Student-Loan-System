@@ -13,6 +13,11 @@ class Curso extends Model
         return $this->belongsTo('avaa\Becario','becario_id');
     }
 
+    public function usuario()//relacion buena
+    {
+        return $this->belongsTo('avaa\User','becario_id');
+    }
+    
     public function tipocurso() //relacion buena
     {
         return $this->hasOne('avaa\TipoCurso', 'id','tipocurso_id');

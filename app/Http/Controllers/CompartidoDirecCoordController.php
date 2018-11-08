@@ -32,10 +32,10 @@ class CompartidoDirecCoordController extends Controller
         {
             $becarios = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();        
         }
-
         if($becarios->count()>0)
         {
-            $becarios->each(function ($becarios) {
+            $becarios->each(function ($becarios)
+            {
                 if($becarios->mentor_id!=null)
                 {
                     $becarios->mentor->user;
@@ -45,22 +45,21 @@ class CompartidoDirecCoordController extends Controller
         }
         else
         {
-            flash('Aún no Existen Becarios Registrados','danger');
+            flash('Disculpe, no existen becarios registrados.','danger');
         }
-
         return view('sisbeca.becarios.listar')->with('becarios',$becarios);
     }
 
     public function listarMentores()
     {
         $mentores = Mentor::all();
-
-        if($mentores->count()>0) {
-
-            $mentores->each(function ($mentores) {
+        if($mentores->count()>0)
+        {
+            $mentores->each(function ($mentores)
+            {
                 $mentores->becarios;
-
-                foreach ($mentores->becarios as $becario) {
+                foreach ($mentores->becarios as $becario)
+                {
 
                     $becario->user;
                 }
@@ -69,49 +68,39 @@ class CompartidoDirecCoordController extends Controller
         }
         else
         {
-            flash('Aún no Existen Mentores Registrados','danger');
+            flash('Disculpe, no existen mentores registrados.','danger');
         }
-
         return view('sisbeca.mentores.listar')->with('mentores',$mentores);
     }
 
 
     public function listarSolicitudes()
     {
-
         $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();   
         $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
-
-
         if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
             $mentoresNuevos= Mentor::all();
-
-
             $collection = collect();
-            foreach ($mentoresNuevos as $mentor) {
-
+            foreach ($mentoresNuevos as $mentor)
+            {
                 if($mentor->becarios()->count()==0)
                 {
                     $collection->push($mentor);
                 }
-
             }
         }
         else
         {
             $collection = collect();
-            foreach ($becariosAsignados as $beca) {
-
+            foreach ($becariosAsignados as $beca)
+            {
                 $collection->push($beca->mentor);
             }
-
         }
         $listMentoresA = $collection->pluck('user_id')->toArray();
-
         $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
         $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray();
-
         $solicitudes = Solicitud::query()->whereIn('user_id',$listaBecariosA)->orWhereIn('user_id',$listaMentoresA)->get();
         return view('sisbeca.gestionSolicitudes.listarSolicitudes')->with('solicitudes',$solicitudes);
     }
@@ -120,10 +109,9 @@ class CompartidoDirecCoordController extends Controller
     {
         $solicitudes = Solicitud::find($id);
 
-        $alerta= Alerta::query()->select()->where('solicitud','=',$id)->first();
-
+        /*$alerta= Alerta::query()->select()->where('solicitud','=',$id)->first();
         $alerta->leido=true;
-        $alerta->save();
+        $alerta->save();*/
 
         $img_perfil_postulante=Imagen::query()->where('user_id','=',$solicitudes->user_id)->where('titulo','=','img_perfil')->get();
 
@@ -288,7 +276,6 @@ class CompartidoDirecCoordController extends Controller
 
     public function formularioReporteSolicitudes()
     {
-
         $users= User::query()->whereIn('rol',['mentor','becario'])->get();
         return view('sisbeca.solicitudes.formularioReporteSolicitudes')->with('users',$users);
     }

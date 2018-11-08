@@ -379,13 +379,22 @@
                 </li> 
                 @endif
                 @if(Auth::user()->rol==='admin')
-                 <li>
+                <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
                         <span class="hide-menu">Notas Académicas</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('periodos.todos')}}">Listar Periodos</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">CVA</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('cursos.todos')}}">Listar CVA</a></li>
                     </ul>
                 </li>
                 @endif

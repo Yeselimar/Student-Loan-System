@@ -13,6 +13,18 @@ use File;
 
 class CursoController extends Controller
 {
+    public function obtenertodos()
+    {
+        $cursos = Curso::with("becario")->with("usuario")->with("aval")->orderby('created_at','desc')->get();
+        return response()->json(['cursos'=>$cursos]);
+    }
+
+    public function todoscursos()
+    {
+        return view('sisbeca.cursos.todos');
+    }
+
+
     public function index()
     {
     	$cursos = Curso::where('becario_id','=',Auth::user()->id)->get();

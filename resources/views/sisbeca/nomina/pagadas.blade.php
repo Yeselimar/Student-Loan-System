@@ -1,18 +1,13 @@
 @extends('sisbeca.layouts.main')
-@section('title','Nómina')
-@section('subtitle','Nóminas Pagadas')
+@section('title','Nóminas Pagadas')
 @section('content')
-
-<div class="row">
 	
-	<div class="col-lg-12" style="padding-top: 15px; padding-bottom: 15px;">
-		Nóminas Pagadas
-		<hr/>
+<div class="col-lg-12">
+	<strong>Nóminas Pagadas</strong>
 
-	</div>
-	<div class="col-lg-12 table-responsive">
-		@if($nominas->count() > 0)
-		<table id="myTable" data-order='[[ 0, "asc" ]]' data-page-length='10' class="display" style="width:100%">
+	<div class="table-responsive">
+		
+		<table id="nomina" class="table table-bordered table-hover">
 			<thead>
 				<tr>
 					<th class="text-center">Mes/Año</th>
@@ -24,41 +19,59 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($nominas as $nomina)
-				<tr>
-					<td class="text-center">{{ $nomina->mes.'/'.$nomina->year }}</td>
-					<td class="text-center">{{ $nomina->total_becarios }}</td>
-					<td class="text-right">{{ number_format($nomina->sueldo_base, 2, ',', '.') }}</td>
-					<td class="text-right">{{ number_format($nomina->total_pagado, 2, ',', '.') }}</td>
-					<td class="text-center">{{ date("d/m/Y", strtotime($nomina->fecha_pago)) }}</td>
-					<td class="text-center">
-						<a href="{{ route('nomina.listar.pagadas',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs btn-info">Consultar</a>
-						<a href="{{ route('nomina.pagado.pdf',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs btn-info" target="_blank">Generar PDF</a>
-					</td>
-				</tr>
-				@endforeach
+				@if($nominas->count() > 0)
+					@foreach($nominas as $nomina)
+					<tr>
+						<td class="text-center">{{ $nomina->mes.'/'.$nomina->year }}</td>
+						<td class="text-center">{{ $nomina->total_becarios }}</td>
+						<td class="text-right">{{ number_format($nomina->sueldo_base, 2, ',', '.') }}</td>
+						<td class="text-right">{{ number_format($nomina->total_pagado, 2, ',', '.') }}</td>
+						<td class="text-center">{{ date("d/m/Y", strtotime($nomina->fecha_pago)) }}</td>
+						<td class="text-center">
+							<a href="{{ route('nomina.listar.pagadas',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary">Consultar</a>
+							<a href="{{ route('nomina.pagado.pdf',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" target="_blank">Generar PDF</a>
+						</td>
+					</tr>
+					@endforeach
+				@else
+					<tr>
+						<td class="text-center" colspan="6">No hay <strong>nóminas pagadas</strong>.</td>
+					</tr>
+				@endif
 			</tbody>
 		</table>
-		@else
-			<p class="text-center">No hay <strong>nóminas</strong> pagadas.</p>
-		@endif
 		
 	</div>
 </div>
 @endsection
 
 @section('personaljs')
-	<script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            $('#myTable').DataTable( {
-                columnDefs: [
-                    { targets: [5], searchable: false}
-                ]
-            } );
-        } );
+<script>
+$(document).ready(function() {
+	$('#nomina').DataTable({
 
-        $('#myTable')
-            .removeClass( 'display' )
-            .addClass('table table-hover');
-	</script>
+        "language": {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "No hay resultados encontrados",
+        "paginate":
+            {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+});
+</script>
 @endsection

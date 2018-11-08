@@ -12,12 +12,10 @@ use Timestamp;
 
 class CompartidoMentorBecarioController extends Controller
 {
-    //
     public function __construct()
     {
         $this->middleware('compartido_mentor_becario');
     }
-
 
     public function solicitud()
     {

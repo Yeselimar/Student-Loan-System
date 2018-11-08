@@ -68,11 +68,31 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
     Route::group(['middleware'=>'admin'],function ()
     {
+        //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
-        //aval 
+
+        //cursos ó cva
+        Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
+        Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
+
+        //aval
         Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
+
+
+        // postulantes 
+        Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
+
+        //entrevistadores
+        Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
+
+        Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
+
+
+        Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
+        
+
 
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
