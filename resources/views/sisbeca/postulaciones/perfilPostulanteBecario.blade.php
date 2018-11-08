@@ -111,29 +111,10 @@
                <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
                    {{csrf_field()}}
                    {{method_field('PUT')}}
-                   <input type="hidden" id='valor' name="valor" value="1">
-                   <label for="entrevistador-1" class="control-label ">Por Favor Selecciones el Primer Entrevistador:</label>
-                   <select class="form-control" id="entrevistador1" name="entrevistador1"> 
-                    <option>Opcion1</option> 
-                    <option>Opcion2</option> 
-                    <option>Opcion3</option> 
-                    <option>Opcion4</option>
-                    <option>Opcion1</option> 
-                    <option>Opcion2</option> 
-                    <option>Opcion3</option> 
-                    <option>Opcion4</option> 
-                </select>
+                
                 <label for="entrevistador-2" class="control-label ">Por Favor Selecciones el Segundo Entrevistador:</label>
-                <select class="form-control" id="entrevistador2" name="entrevistador2"> 
-                    <option>Opcion1</option> 
-                    <option>Opcion2</option> 
-                    <option>Opcion3</option> 
-                    <option>Opcion4</option>
-                    <option>Opcion1</option> 
-                    <option>Opcion2</option> 
-                    <option>Opcion3</option> 
-                    <option>Opcion4</option> 
-                </select>
+                  
+                  
                 <p align="center">¿Esta seguro que desea Aprobar a {{$postulante->user->name}} para la entrevista?</p>
                <div class="modal-footer">
                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
