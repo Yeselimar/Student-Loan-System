@@ -101,19 +101,15 @@ class BecarioController extends Controller
 
     public function verCuentaBancaria()
     {
-
         $becario = User::find(Auth::user()->id)->becario;
         if (is_null($becario->cuenta_bancaria)) {
             flash('No se ha Cargado su Cuenta Bancaria, Por favor Cargue su Cuenta Bancaria')->error()->important();
         }
-
         return view('sisbeca.becarios.cuentaBancaria')->with('becario', $becario);
-
     }
 
     public function cuentaBancariaUpdated(Request $request, $id)
     {
-
         if(Auth::user()->id==$id)
         {
             $becario= Becario::find($id);
@@ -126,14 +122,12 @@ class BecarioController extends Controller
             }
 
         }
-        else{
+        else
+        {
             flash('Error al acceder a la pagina solicitada', 'danger')->important();
             return back();
         }
-
-
         return redirect()->route('verCuentaBancaria');
-
     }
 
     public function crearVerFacturas()
@@ -181,5 +175,6 @@ class BecarioController extends Controller
         return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
     }
 
-    
+   
+
 }

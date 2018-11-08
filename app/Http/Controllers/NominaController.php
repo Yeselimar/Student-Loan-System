@@ -70,7 +70,8 @@ class NominaController extends Controller
         
             $nominasfiltro->becarios;
 
-            foreach ($nominasfiltro->becarios as $becario) {
+            foreach ($nominasfiltro->becarios as $becario)
+            {
 
                 $becario->user;
             }

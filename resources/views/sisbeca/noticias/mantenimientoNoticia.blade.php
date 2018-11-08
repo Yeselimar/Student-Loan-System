@@ -114,7 +114,6 @@ $(document).ready(function(){
 $(document).ready(function() {
 $('#noticias').DataTable(
     {
-        "ordering": false,
 
         "language": {
         "decimal": "",

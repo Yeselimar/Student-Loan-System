@@ -43,11 +43,11 @@ class DirectivoController extends Controller
         {
             $becario->status= 'entrevistado';
             $becario->save();
-            flash($becario->user->name.' '.$becario->user->last_name.' Ha sido marcado como entrevistado!!','success')->important();
+            flash($becario->user->name.' '.$becario->user->last_name.' ha sido marcado como entrevistado.','success')->important();
         }
         else
         {
-            flash('**Error** Ha forzado la información incorrecta','danger')->important();
+            flash('Disculpe, ha forzado la información incorrecta','danger')->important();
         }
 
         return  redirect()->route('listarPostulantesBecarios',"1");
@@ -63,13 +63,13 @@ class DirectivoController extends Controller
                 $postulante->status = 'entrevista';
                 $postulante->acepto_terminos ='0';
                 $postulante->save();
-            flash( $postulante->user->name . ' ha sido aprobado para ir a Entrevista! ', 'success')->important();
+            flash( $postulante->user->name . ' ha sido aprobado para ir a entrevista. ', 'success')->important();
             }
             else
             {
                 $postulante->status='rechazado';
                 $postulante->save();
-                flash( $postulante->user->name . ' ha sido rechazado como para ir a Entrevista! ', 'danger')->important();
+                flash( $postulante->user->name . ' ha sido rechazado como para ir a entrevista. ', 'danger')->important();
             }
         }
         return  redirect()->route('listarPostulantesBecarios',"2");
@@ -108,11 +108,11 @@ class DirectivoController extends Controller
 
         if($i>0)
         {
-            flash('Se ha agregado becario(s) exitosamente!','success');
+            flash('Se ha agregado becario(s) exitosamente.','success');
         }
         else
         {
-            flash('Debe seleccionar al menos un postulante!', 'danger');
+            flash('Disculpe, debe seleccionar al menos un postulante', 'danger');
         }
         return  redirect()->route('listarPostulantesBecarios',"3");
     }
@@ -127,12 +127,12 @@ class DirectivoController extends Controller
         {
             $concursos->status='finalizado';
             $concursos->save();
-            flash('El proceso de postulaciones a Mentor ha finalizado satisfactoriamente', 'success')->important();
+            flash('El proceso de postulaciones a mentor ha finalizado satisfactoriamente', 'success')->important();
                  return redirect()->route('sisbeca');
         }
         else
         {
-            flash('El proceso de postulaciones a Mentor se encuentra finalizado')->important();
+            flash('El proceso de postulaciones a mentor se encuentra finalizado')->important();
              return redirect()->route('sisbeca');
         }
     }
@@ -239,7 +239,7 @@ class DirectivoController extends Controller
        
         if(is_null($documentos))
         {
-           flash('El postulante seleccionado no tiene documentos', 'danger')->important();
+           flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
         }
         else
         {
@@ -262,15 +262,21 @@ class DirectivoController extends Controller
 
     public function listarPostulantesBecarios($data)
     {
-    $concursos = Concurso::query()->get();
-    if($data==0)
-        { //Lista los q no tienen entrevista
+        $concursos = Concurso::query()->get();
+        if($data==0)
+        { 
+            //Lista los q no tienen entrevista
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',$data)->get();
         }
-        if($data==2){ //Lista a todos los postulantes
-		$becarios = Becario::query()->where('status','=','postulante')->orwhere('status','=','entrevista')->orwhere('status','=','rechazado')->get(); //Falta cuando en user esta rechazado
-    }
-        else if(($data==1)){ //lista los que ya tienen entrevista
+
+        if($data==2)
+        { 
+            //Lista a todos los postulantes
+		    $becarios = Becario::query()->where('status','=','postulante')->orwhere('status','=','entrevista')->orwhere('status','=','rechazado')->get(); //Falta cuando en user esta rechazado
+        }
+        else if(($data==1))
+        { 
+        //lista los que ya tienen entrevista
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();	    
 
         }
@@ -330,7 +336,7 @@ class DirectivoController extends Controller
         }
         else
         {
-            flash('Debe seleccionar al menos un postulante a Becario.', 'danger');
+            flash('Disculpe, debe seleccionar al menos un postulante a becario.', 'danger');
 
         }
         return  redirect()->route('listarPostulantesBecarios',"0");
@@ -360,11 +366,11 @@ class DirectivoController extends Controller
         }
         if($i>0)
         {
-            flash('Se han Re-asignado las citas para el día '. $request->get('fechaentrevista'). ' exitosamente!');
+            flash('Se han re-asignado las citas para el día '. $request->get('fechaentrevista'). ' exitosamente!');
         }
         else
         {
-            flash('Debe seleccionar al menos un postulante a Becario.', 'danger');
+            flash('Disculpe, debe seleccionar al menos un postulante a becario', 'danger');
         }
 
         return  redirect()->route('listarPostulantesBecarios',"1");
@@ -386,7 +392,7 @@ class DirectivoController extends Controller
         }
         else
         {
-            flash('Aún no Existen Mentores Registrados','danger');
+            flash('Disculpe, no existen mentores registrados','danger');
         }
         return view('sisbeca.mentores.listar')->with('mentores',$mentores);
     }
@@ -403,14 +409,14 @@ class DirectivoController extends Controller
                 $mentor = new Mentor();
                 $mentor->user_id = $id;
                 $mentor->save();
-                flash($postulante->name . ' ha sido registrado como mentor exitosamente!! ', 'success')->important();
+                flash($postulante->name . ' ha sido registrado como mentor exitosamente', 'success')->important();
                 //FALTA: AQUI SE ENVIA UN CORREO AL NUEVO MENTOR
             }
             else
             {
                 // $postulante->delete();
                 $postulante->rol='rechazado';
-                flash('!' . $postulante->name . ' ha sido rechazado como mentor! ', 'danger')->important();
+                flash('!' . $postulante->name . ' ha sido rechazado como mentor.', 'danger')->important();
                 $postulante->save();
             }
         }
@@ -425,11 +431,11 @@ class DirectivoController extends Controller
         {
             if($concursos->status=='cerrado')
             {
-                flash('El proceso de Postulación de Mentores se encuentra cerrado, y apertura el '.$concursos->fecha_inicio,'info');
+                flash('Disculpe, el proceso de postulación de mentores se encuentra cerrado, y apertura el '.$concursos->fecha_inicio,'info');
             }  
             else if(($concursos->status=='abierto')&&($postulantes->count()==0))
             {
-                flash('Aún no Existen Mentores Postulados','warning');
+                flash('Disculpe, no existen mentores postulados','danger');
                 
             }
         }
@@ -443,7 +449,7 @@ class DirectivoController extends Controller
         if(!is_null($postulante) &&$postulante->rol==='postulante_mentor'||$postulante->rol==='rechazado')
         {
             if (is_null($postulante)) {
-                flash('El Archivo solicitado no ha sido encontrado', 'danger')->important();
+                flash('Disculpe, el archivo solicitado no fue encontrado', 'danger')->important();
                 return back();
             }
             $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->id)->where('titulo','=','img_perfil')->get();
@@ -452,7 +458,7 @@ class DirectivoController extends Controller
         }
         else
         {
-            flash('El Archivo solicitado no ha sido encontrado', 'danger')->important();
+            flash('Disculpe, el archivo solicitado no fue encontrado', 'danger')->important();
             return  redirect()->route('listarPostulantesMentores');
         }
 
@@ -462,11 +468,11 @@ class DirectivoController extends Controller
 
     public function listarBecariosInactivos()
     {
-     $becarios = Becario::query()->where('acepto_terminos', '=', true)->where('status', ['inactivo'])->get();
+        $becarios = Becario::query()->where('acepto_terminos', '=', true)->where('status', ['inactivo'])->get();
         if($becarios->count()==0)
         {
 
-            flash('Aún no Existen Becarios Inactivos en el sistema','danger');
+            flash('Disculpe, no existen becarios inactivos en el sistema','danger');
         }
         return view('sisbeca.becarios.egresados.listarInactivos')->with('becarios',$becarios);
     }
@@ -476,7 +482,7 @@ class DirectivoController extends Controller
         $becarios = Becario::query()->where('acepto_terminos', '=', true)->where('status', ['egresado'])->get();
         if($becarios->count()==0) {
 
-            flash('Aún no Existen Becarios Graduados en el sistema','danger');
+            flash('Disculpe, no existen becarios graduados en el sistema.','danger');
         }
         return view('sisbeca.becarios.egresados.listarGraduados')->with('becarios',$becarios);
     }
@@ -492,7 +498,7 @@ class DirectivoController extends Controller
                 $nomina=Nomina::query()->where('status','=','pendiente')->get();
                 if($nomina->count()>0)
                 {
-                    flash('Error** Actualmente tiene nomina(s) pendiente(s) por ser procesada(s) le invitamos procesar dicha(s) nominas y luego proceder con la desincorporacion del becario','danger')->important();
+                    flash('Disculpe, actualmente tiene nomina(s) pendiente(s) por ser procesada(s) le invitamos procesar dicha(s) nominas y luego proceder con la desincorporacion del becario','danger')->important();
                 }
                 else
                 {
@@ -500,7 +506,7 @@ class DirectivoController extends Controller
                     $user->save();
                     $desincorporacion->status='ejecutada';
                     $desincorporacion->save();
-                    flash('El Becario '.$user->name.' '.$user->last_name.' Ha sido desincorporado exitosamente','info')->important();
+                    flash('El Becario '.$user->name.' '.$user->last_name.' ha sido desincorporado exitosamente.','danger')->important();
 
                 }
             }
@@ -515,23 +521,22 @@ class DirectivoController extends Controller
                     $user->save();
                     $desincorporacion->status='ejecutada';
                     $desincorporacion->save();
-                    flash('El Mentor '.$user->name.' '.$user->last_name.' Ha sido desincorporado exitosamente','info')->important();
+                    flash('El Mentor '.$user->name.' '.$user->last_name.' ha sido desincorporado exitosamente.','info')->important();
                 }
             }
             else
             {
-                flash('Error ** Archivo no encontrado','danger')->important();
+                flash('Disculpe, el archivo no fue encontrado','danger')->important();
                 return back();
             }
         }
         return redirect()->route('desincorporaciones.listar');
     }
 
-    public function listarDesincorporaciones() {
-
+    public function listarDesincorporaciones()
+    {
         $desincorporacionesSolicitud = Desincorporacion::query()->where('tipo','solicitud')->get();
         $desincorporacionesSistema = Desincorporacion::query()->where('tipo','sistema')->get();
         return view('sisbeca.desincorporaciones.procesarDesincorporaciones')->with('desincorporacionesSolicitud',$desincorporacionesSolicitud)->with('desincorporacionesSistema',$desincorporacionesSistema);
-
     }
 }

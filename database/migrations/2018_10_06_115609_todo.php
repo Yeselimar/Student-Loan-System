@@ -143,6 +143,8 @@ class Todo extends Migration
             $table->unsignedInteger('cedula');
             $table->string('correo')->nullable();
             $table->string('telefono')->nullable();
+
+            $table->timestamps();
         });
 
         Schema::create('becarios_entrevistadores', function (Blueprint $table)
@@ -154,6 +156,8 @@ class Todo extends Migration
             $table->foreign('entrevistador_id')->references('id')->on('entrevistadores')->onDelete('cascade');
 
             $table->datetime('fecha')->nullable();//cuando creo la relacion becario - entrevistador asigno fecha entrevista
+
+            $table->timestamps();
         });
         
         Schema::create('alertas', function (Blueprint $table)
@@ -271,6 +275,8 @@ class Todo extends Migration
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->string('nombreyapellido')->nullable();
+
+            $table->timestamps();
         });
 
         Schema::create('aval', function (Blueprint $table)

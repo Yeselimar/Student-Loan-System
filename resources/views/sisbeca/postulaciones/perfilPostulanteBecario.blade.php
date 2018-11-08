@@ -1,20 +1,17 @@
 @extends('sisbeca.layouts.main')
-@section('title','Postulaciones')
-@section('subtitle','Detalle de la Postulación')
-
+@section('title','Postulante: '.$postulante->user->last_name.' '.$postulante->user->last_name)
 @section('content')
    
      
 <div class="card">
-             
-        <div class="card-body">
+        <div class="text-right col-12" align="right" >
+          <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-default">Atrás</a>
+        </div>
+        <div class="card-body" style="border: 1px solid #eee">
             <div class="card-two">
-                    <div class="text-right col-12" align="right">
-                <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-default">Atrás</a>
-                    </div>
+                
+
                 <div class="text-right col-12" align="right">
-                    
-                    
 
                 </div>
                 
@@ -38,12 +35,14 @@
                     
                 </header>
 
-                <h3>{{$postulante->user->name}}</h3>
+                <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
+
                 <div class="desc">
                    
                    Postulante Becario
                    
                 </div>
+
                 <div class="desc">
               
                     @if($postulante->status==='postulante')
@@ -56,6 +55,7 @@
                         @endif
                     @endif
                 </div>
+
                 <div class="text-center">
                    <span class="fa fa-venus-mars"> </span> {{ucwords($postulante->user->sexo)}} &nbsp;&nbsp;&nbsp;
                     <span class="fa fa-calendar"></span> {{$postulante->user->edad}} Años &nbsp;&nbsp;&nbsp;

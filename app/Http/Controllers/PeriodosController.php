@@ -25,7 +25,7 @@ class PeriodosController extends Controller
 
 	public function obtenertodos()
 	{
-		$periodos = Periodo::with("becario")->with("usuario")->with("aval")->with("materias")->get();
+		$periodos = Periodo::with("becario")->with("usuario")->with("aval")->with("materias")->orderby('created_at','desc')->get();
 		return response()->json(['periodos'=>$periodos]);
 	}
 
