@@ -91,7 +91,6 @@ class Todo extends Migration
             $table->enum('medio_proexcelencia',['amigo/pariente','internet','medios_comunicacion','otros'])->default('amigo/pariente');
             $table->string('otro_medio_proexcelencia')->nullable();
             $table->text('motivo_beca')->nullable();
-            $table->datetime('fecha_entrevista')->nullable();
             $table->datetime('fecha_egresado')->nullable();
             $table->datetime('fecha_inactivo')->nullable();
             $table->datetime('fecha_desincorporado')->nullable();
@@ -132,6 +131,10 @@ class Todo extends Migration
                 ->onDelete('cascade');
 
             $table->text('observacion');//entrevistadores pone este ca|
+
+            //campos de la entrevista
+            $table->datetime('fecha_entrevista')->nullable();
+            $table->text('lugar_entrevista')->nullable();
 
             $table->timestamps();
         });
