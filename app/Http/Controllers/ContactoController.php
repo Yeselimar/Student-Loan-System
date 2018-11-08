@@ -34,19 +34,6 @@ class ContactoController extends Controller
         $contacto->asunto = $request->asunto;
         $contacto->mensaje = $request->mensaje;
         $contacto->save();
-
-        Mail::send('emails.send',  
-            array(
-                'name'          => 'Rafael Delgado',
-                'addressee'     => 'delgadorafael2011@gmail.com',
-                'message'       => 'prueba',
-                'location'      => 'sdsdsd'
-            ), function($message) use ($request)
-        {
-            $message->from('no-reply@bdc.com.co');
-            $message->to('sdsdsd', 'sdsdsd')->subject('Avvaa.');   
-        });
-        
         return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactaremos!']);
     }
 

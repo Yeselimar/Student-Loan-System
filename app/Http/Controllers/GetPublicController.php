@@ -24,25 +24,66 @@ use avaa\Entrevistador;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
-
+use Mail; 
 
 class GetPublicController extends Controller
 {
 
     public function prueba()
     {
+        $request= "";
         Mail::send('emails.base',  
             array(
                 'name'          => 'Rafael Delgado',
                 'addressee'     => 'delgadorafael2011@gmail.com',
                 'message'       => 'prueba',
-                'location'      => 'sdsdsd'
+                'location'      => 'delgadorafael2011@gmail.com'
             ), function($message) use ($request)
         {
             $message->from('no-reply@bdc.com.co');
-            $message->to('sdsdsd', 'sdsdsd')->subject('Avvaa.');   
+            $message->to('delgadorafael2011@gmail.com', 'delgadorafael2011@gmail.com')->subject('Avvaa.');   
         });
 
+        //otra forma
+        /*Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+        {
+            $message->subject('stmp and Laravel are awesome!');
+            $message->from('soporte@genesyzgroup.com', 'Website Name');
+            $message->to('delgadorafael2011@gmail.com');
+        });*/
+        return "exito";
+        /*
+        $mail = new PHPMailer(true);
+                try
+                {
+                    $mail->isSMTP();  
+                    $mail->CharSet = "utf-8";
+                    $mail->SMTPAuth = true; 
+                    $mail->SMTPSecure = "SSL";
+                    $mail->Host = "mail.hotelcoralsuites.com";
+                    $mail->Port = 25;
+                    $mail->Username = "webmaster@hotelcoralsuites.com";
+                    $mail->Password = "Mars$2905";
+                    $mail->setFrom("info@hotelcoralsuites.com", "Hotel Coral Suites");
+                    $mail->Subject = "Contacto";
+                    $mail->MsgHTML($body);
+                    foreach($correos as $correo)
+                    {
+                        $mail->addAddress($correo, " ");
+                    }
+                    $mail->send();
+                }
+                catch (phpmailerException $e)
+                {
+                    $enviado = false;
+                    $error = "01";
+                }
+                catch (Exception $e)
+                {
+                    $enviado = false;
+                    $error = "02";
+                }
+        return "enviado";
         //relación de becarios a actividades
         /*
         $becario = Becario::find(5);

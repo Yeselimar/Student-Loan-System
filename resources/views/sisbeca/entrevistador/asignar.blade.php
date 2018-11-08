@@ -39,8 +39,9 @@
 			</tbody>
 		</table>
 	</div>
+
 	<!-- Modal para añadir materia -->
-	<form method="POST" @submit.prevent="asignarentrevistadores(id,seleccionados)" class="form-horizontal">
+	<form method="POST" @submit.prevent="asignarentrevistadores(id,seleccionados)">
 	{{ csrf_field() }}
 		<div class="modal fade" id="asignarmodal">
 			<div class="modal-dialog">
@@ -52,8 +53,25 @@
 						</button>
 				    </div>
 					<div class="modal-body">
-						<label class="control-label " for="nombreyapellido">Postulante Becario</label>
-						<input type="text" name="nombreyapellido" class="sisbeca-input input-sm sisbeca-disabled" :value="nombreyapellido" style="margin-bottom: 0px" disabled="disabled">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+								<label class="control-label " for="nombreyapellido" style="margin-bottom: 0px !important">Postulante Becario</label>
+								<input type="text" name="nombreyapellido" class="sisbeca-input input-sm sisbeca-disabled" :value="nombreyapellido" style="margin-bottom: 0px" disabled="disabled">
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+								<label class="control-label " for="hora" style="margin-bottom: 0px !important">Fecha</label>
+						  		<input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" v-model="fecha" id="fecha">
+						  	</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+								<label class="control-label " for="hora" style="margin-bottom: 0px !important">Hora</label>
+						  		<input type="text" name="hora" class="sisbeca-input input-sm" placeholder="HH:MM:SS">
+						  	</div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
+						  		<input type="text" name="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
+						  	</div>
+						</div>
+						
+
 						<div class="row">
 							<div class="col-lg-12">
 								<label class="control-label" for="nota">Entrevistadores</label>
@@ -66,6 +84,7 @@
 												  		<label :for="entrevistador.nombre_apellido" class="label label-default">@{{ entrevistador.nombre_apellido}}</label>
 													</div>
 											  	</div>
+											  	
 										</template>
 									</template>
 									<template v-else>
@@ -78,10 +97,10 @@
 											  	</div>
 										</template>
 									</template>
-								  	<!--
+								  	
 								  	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								  	<span>Entrevistadores Seleccionadoss:  @seleccionados</span>
-								  	</div>-->
+								  	<span>Entrevistadores Seleccionadoss:  @{{seleccionados}}</span>
+								  	</div>
 								</div>
 							</div>
 						</div>
@@ -119,6 +138,9 @@ const app = new Vue({
 		nombreyapellido:'',
 		id:0,
 		seleccionados:[],
+		fecha:'',
+		hora:'',
+		lugar:'',
 	},
 	methods:
 	{
@@ -148,6 +170,9 @@ const app = new Vue({
 			this.seleccionados = seleccionados;
 			var dataform = new FormData();
             dataform.append('seleccionados', this.seleccionados);
+            dataform.append('fecha', this.fecha);
+            dataform.append('hora', this.hora);
+            dataform.append('lugar', this.lugar);
             var url = '{{route('entrevistador.asignar.guardar',':id')}}';
             url = url.replace(':id', id);
 			axios.post(url,dataform).then(response => 
@@ -179,4 +204,12 @@ $(document).ready(function(){
 });
 </script>
 
+<script>
+	$('#fecha').datepicker({
+		format: 'dd/mm/yyyy',
+		language: 'es',
+		orientation: 'bottom',
+		autoclose: true,
+	});
+</script>
 @endsection

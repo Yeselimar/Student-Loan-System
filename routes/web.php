@@ -90,7 +90,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
 
 
-        Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
+        Route::post('/becario/{id}/guarda-asignacion-entrevistadores', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
         
 
 

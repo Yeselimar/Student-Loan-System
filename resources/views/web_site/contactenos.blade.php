@@ -277,6 +277,7 @@ const app = new Vue({
                   }
                }
             }
+
             toastr.error(this.aviso);
             //console.log(this.aviso);
          });
