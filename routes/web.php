@@ -66,7 +66,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware
     // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
-    Route::group(['middleware'=>'admin'],function ()
+    Route::group(['middleware'=>['admin']],function ()
     {
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
@@ -422,6 +422,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@procesardetalle',
             'as' => 'nomina.procesar.detalle'
+        ]);
+
+        // para el servicio con vuejs
+        Route::get('nomina/procesar/mes/{mes}/anho/{anho}/servicio', [
+            'uses' => 'NominaController@procesardetalleservicio',
+            'as' => 'nomina.procesar.detalle.servicio'
         ]);
 
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}/becarios/{id}/ver-facturas', [

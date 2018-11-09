@@ -32,7 +32,12 @@
 					@endif
 					@else
 					<p> Bienvenido al Sistema de Becarios AVAA </p>
-					<img src="{{asset('images/becarios.jpg')}}" class="img-responsive">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4">
+						<img src="{{asset('images/becarios.jpg')}}" class="img-responsive">
+					</div>
+					<div class="col-lg-4"></div>
+					
 				@endif
 			</div>
 		</div>

@@ -16,6 +16,7 @@
                 <thead>
                     <tr>
                         <th class="text-center">Nombre y Apellido</th>
+                        <th class="text-center">CVA</th>
                         <th class="text-right">Retroactivo</th>
                         <th class="text-right">Libros</th>
                         <th class="text-right">Sueldo</th>

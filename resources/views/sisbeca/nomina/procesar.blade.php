@@ -45,7 +45,9 @@
 
 					@endif
 					<td class="text-center">
-						<a href="{{ route('nomina.procesar.detalle',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary">Procesar</a>
+						<span data-toggle="tooltip" data-placement="bottom" title="Ver">
+							<a href="{{ route('nomina.procesar.detalle',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary">Ver</a>
+						</span>
 					</td>
 				</tr>
 				@endforeach
@@ -109,4 +111,11 @@
         });
     }
 </script>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+
 @endsection

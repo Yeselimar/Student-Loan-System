@@ -136,6 +136,11 @@ class Todo extends Migration
             $table->datetime('fecha_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
 
+            //campos para la nómina
+            $table->datetime('fecha_ingreso')->nullable();//debe ser igual al created_at
+            $table->datetime('fecha_aprobado')->nullable();//modificar cuando pasa de postulante becario a becario
+            $table->datetime('fecha_egreso')->nullable();
+
             $table->timestamps();
         });
         
@@ -451,6 +456,7 @@ class Todo extends Migration
         Schema::create('nominas', function (Blueprint $table)
         {
             $table->increments('id');
+            $table->double('cva',20,2)->default(0);//según lo que dijo bapssy
             $table->double('retroactivo',20,2)->default(0);
             $table->double('sueldo_base',20,2)->default(0);
             $table->double('monto_libros',20,2)->default(0);
