@@ -15,7 +15,7 @@ class EntrevistadorController extends Controller
 
     public function obtenerpostulantes()
     {
-        $becarios = Becario::where('status','=','postulante')->with("user")->with('entrevistadores')->get();
+        $becarios = Becario::where('status','=','entrevista')->with("user")->with('entrevistadores')->get();
         return response()->json(['becarios'=>$becarios]);
     }
 

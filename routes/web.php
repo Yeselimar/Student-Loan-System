@@ -81,9 +81,6 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
 
 
-        // postulantes 
-        Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
-
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
             'uses' => 'MantenimientoUserController@destroy',
@@ -580,6 +577,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
 
         Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
+          // postulantes 
+          Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()
