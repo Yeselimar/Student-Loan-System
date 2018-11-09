@@ -52,9 +52,10 @@ class Becario extends Model
         return $this->hasMany('avaa\Periodo','becario_id');
     }
 
-    public function entrevistadores()//relacion buena
+    //busco mis entrevistados a 
+    public function entrevistadores()//buena relacion
     {
-        return $this->belongsToMany('avaa\Entrevistador','becarios_entrevistadores','becario_id','entrevistador_id');
+        return $this->belongsToMany('avaa\User','becarios_entrevistadores','becario_id','entrevistador_id');
     }
     
     public function notas()//creo que no va

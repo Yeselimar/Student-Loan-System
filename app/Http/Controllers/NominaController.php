@@ -170,7 +170,9 @@ class NominaController extends Controller
 
     public function procesardetalleservicio($mes,$anho)
     {
-
+        //este metodo es igual al procesadetalle
+        $nominasfiltro = Nomina::where('mes','=',$mes)->where('year',$anho)->with("becario")->with("user")->get();
+        return response()->json(['nominas'=>$nominasfiltro]);
     }
     public function generartodo($mes,$anho)
     {
