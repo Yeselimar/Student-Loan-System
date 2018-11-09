@@ -31,6 +31,18 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        Mail::send('emails.base',  
+            array(
+                'name'          => 'Rafael Delgado',
+                'addressee'     => 'delgadorafael2011@gmail.com',
+                'message'       => 'prueba',
+                'location'      => 'sdsdsd'
+            ), function($message) use ($request)
+        {
+            $message->from('no-reply@bdc.com.co');
+            $message->to('sdsdsd', 'sdsdsd')->subject('Avvaa.');   
+        });
+
         //relación de becarios a actividades
         /*
         $becario = Becario::find(5);
