@@ -23,11 +23,24 @@
             </thead>
             <tbody>
                 <tr v-for="nomina in nominas">
-                    <td > @{{nomina.user.name }} @{{nomina.user.last_name }}</td>
-                    <td > @{{nomina.cva }} </td>
-                    <td > @{{nomina.retroactivo }} </td>
-                    <td > @{{nomina.libros_cva }} </td>
-                    <td > @{{nomina.id }} </td>
+                    <td> @{{nomina.user.name }} @{{nomina.user.last_name }}</td>
+                    <td>
+                        <span >
+                        <button type="button" class=" btn btn-xs sisbeca-btn-primary" @click.prevent="mostrarModalCVAa(nomina.user.id)"> @{{nomina.cva }}
+                        </button>
+                        </span>
+                    </td>
+                    <td> @{{nomina.retroactivo }} </td>
+                    <td> @{{nomina.monto_libros }} </td>
+                    <td> @{{nomina.sueldo_base }} </td>
+                    <td> 
+                        @{{nomina.total }}
+                     </td>
+                    <td> 
+                        
+                        <a href="@{{ getRuta(nomina.user.id)}}" class="btn btn-xs sisbeca-btn-primary">Aprobar Facturas</a>
+                        <span v-model="getRuta(nomina.user.id)"></span>
+                    </td>
 
                 </tr>
             </tbody>
@@ -56,10 +69,29 @@
     },
     data:
     {
+        
         nominas:[],
     },
     methods:
     {
+        getFacturasenNomina: function(id)
+        {
+            var url = '{{route('factlibros.contar',array('id'=>':id','mes'=>$mes, 'anho'=>$anho))}}';
+            url = url.replace(':id', id);
+            var total = -1;
+            axios.get(url).then(response => 
+            {
+                total = response.data.total;
+                console.log(total);
+            });
+            return total;
+        },
+        getRuta: function(id)
+        {
+            var url = '{{ route('factlibros.verfacturas',array('id'=>':id', 'mes'=>$mes, 'anho'=>$anho) ) }}';
+            url = url.replace(':id', id);
+            return url;
+        },
         getNomina: function()
         {
             var url = '{{route('nomina.procesar.detalle.servicio',array('mes'=>$mes, 'anho'=>$anho))}}';
@@ -67,7 +99,6 @@
             axios.get(url).then(response => 
             {
                 this.nominas = response.data.nominas;
-                console.log(this.nominas);
             });
         }
     }

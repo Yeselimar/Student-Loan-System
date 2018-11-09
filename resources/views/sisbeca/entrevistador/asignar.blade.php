@@ -22,7 +22,7 @@
 					<td>
 						<template v-if="postulante.entrevistadores">
 						  	<template v-for="entrevistador in postulante.entrevistadores">
-						  			<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span> 
+						  			<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>&nbsp;
 							</template>
 						</template>
 						<template v-if="postulante.entrevistadores.length==0">

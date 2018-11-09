@@ -30,4 +30,10 @@ class FactLibrosController extends Controller
             return back();
         }
     }
+
+    public function contarfacturaslibros($mes,$anho,$id)
+    {
+        $total = FactLibro::where('mes','=',$mes)->where('year','=',$anho)->where('becario_id','=',$id)->count();
+        return response()->json(['total'=>$total]);
+    }
 }

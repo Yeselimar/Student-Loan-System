@@ -417,6 +417,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'nomina.procesar.detalle.servicio'
         ]);
 
+        //servicios
+        Route::get('nomina/mes/{mes}/anho/{anho}/becarios/{id}/contar-facturas', [
+            'uses' => 'FactLibrosController@contarfacturaslibros',
+            'as' => 'factlibros.contar'
+        ]);
+
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}/becarios/{id}/ver-facturas', [
             'uses' => 'FactLibrosController@verfacturas',
             'as' => 'factlibros.verfacturas'
