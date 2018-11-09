@@ -20,7 +20,6 @@ use avaa\Periodo;
 use avaa\Coordinador;
 use avaa\Mentor;
 use avaa\Aval;
-use avaa\Entrevistador;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -31,7 +30,11 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        $request= "";
+        /*$entrevistadores = User::entrevistadores()->get();
+        return $entrevistadores;
+        */
+        //prueba para enviar email
+        /*$request= "";
         Mail::send('emails.base',  
             array(
                 'name'          => 'Rafael Delgado',
@@ -42,7 +45,7 @@ class GetPublicController extends Controller
         {
             $message->from('no-reply@bdc.com.co');
             $message->to('delgadorafael2011@gmail.com', 'delgadorafael2011@gmail.com')->subject('Avvaa.');   
-        });
+        });/*
 
         //otra forma
         /*Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
@@ -50,8 +53,12 @@ class GetPublicController extends Controller
             $message->subject('stmp and Laravel are awesome!');
             $message->from('soporte@genesyzgroup.com', 'Website Name');
             $message->to('delgadorafael2011@gmail.com');
-        });*/
+        });
         return "exito";
+
+        */
+
+
         /*
         $mail = new PHPMailer(true);
                 try
@@ -165,14 +172,14 @@ class GetPublicController extends Controller
         */
 
         //relacion de becario a entrevistador
-        /*
-        $becario = Becario::find(4);
+        
+        /*$becario = Becario::find(4);
         return $becario->entrevistadores;
-        */
+        
         //relacion de entrevistador a becario
-        /*
-        $entrevistador = Entrevistador::find(1);
-        return $entrevistador->becarios->count();
+        
+        $entrevistador = User::find(47)->;
+        return $entrevistador->entrevistados;
         */
 
 

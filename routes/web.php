@@ -573,7 +573,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'solicitudes.pdf'
         ]);
 
-         //entrevistadores
+        //entrevistadores
         Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
 
         Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');

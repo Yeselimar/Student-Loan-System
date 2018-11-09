@@ -76,6 +76,20 @@ class User extends Authenticatable
         return $this->hasMany('avaa\Documento','user_id');
     }
 
+    // cuando el rol es entrevistador puedo acceder a mis entrevistados
+    public function entrevistados()//probar relacion 
+    {
+        return $this->belongsToMany('avaa\Becario','becarios_entrevistadores','entrevistador_id','becario_id');
+    }
+
+
+    //scope para buscar los usuario con rol entrevistadores
+    public function scopeEntrevistadores($query)
+    {
+        return $query->where('rol','=','entrevistador');
+    }
+
+
     public function getFechaNacimiento()
     {
         return date("d/m/Y", strtotime($this->fecha_nacimiento)); 

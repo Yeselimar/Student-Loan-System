@@ -144,6 +144,7 @@ class Todo extends Migration
             $table->timestamps();
         });
         
+        /*
         Schema::create('entrevistadores', function (Blueprint $table)
         {
             $table->increments('id');
@@ -154,6 +155,7 @@ class Todo extends Migration
 
             $table->timestamps();
         });
+        */
 
         Schema::create('becarios_entrevistadores', function (Blueprint $table)
         {
@@ -161,9 +163,9 @@ class Todo extends Migration
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->unsignedInteger('entrevistador_id');
-            $table->foreign('entrevistador_id')->references('id')->on('entrevistadores')->onDelete('cascade');
+            $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->datetime('fecha')->nullable();//cuando creo la relacion becario - entrevistador asigno fecha entrevista
+            //$table->datetime('fecha')->nullable();//cuando creo la relacion becario - entrevistador asigno fecha entrevista
 
             $table->timestamps();
         });

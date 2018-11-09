@@ -4,7 +4,6 @@ namespace avaa\Http\Controllers;
 
 use Illuminate\Http\Request;
 use avaa\Becario;
-use avaa\Entrevistador;
 use avaa\BecarioEntrevistador;
 class EntrevistadorController extends Controller
 {
@@ -21,7 +20,7 @@ class EntrevistadorController extends Controller
 
     public function obtenerentrevistadores()
     {
-        $entrevistadores = Entrevistador::all();
+        $entrevistadores = User::entrevistadores()->get();
         return response()->json(['entrevistadores'=>$entrevistadores]);
     }
 
