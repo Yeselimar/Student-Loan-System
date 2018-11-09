@@ -48,7 +48,7 @@
             <!-- Bread crumb -->
             <div class="row page-titles">
                 
-                <div class="col-md-5 align-self-center">
+                <div class="col-lg-12 align-self-center">
                     <h3 class="text-primary">@yield('title')</h3>
                 </div>
                 <!--

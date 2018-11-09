@@ -214,7 +214,7 @@
         <div class="modal-dialog">
             <div class="modal-content-ment">
                 <div class="text-center">
-                <img src="images/postulacion-mentor.png">
+                <img src="images/postulacion-mentor.png" class="img-responsive">
                 </div>
             </div>
         </div>

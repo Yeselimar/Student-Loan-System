@@ -12,8 +12,7 @@
                     <li class="nav-label">Inicio</li>
                     <li> <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Usuarios</span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{asset(route('mantenimientoUser.index'))}}">Listar Usuarios</a></li>
-                            <li><a href="{{asset(route('mantenimientoUser.create'))}}">Crear Usuario</a></li>
+                            <li><a href="{{asset(route('mantenimientoUser.index'))}}">Mantenimiento</a></li>
                             @if(\Request::route()->getName()==='mantenimientoUser.create')
                                 <li class="opcion-menu-oculta"><a href="{{route('mantenimientoUser.create')}}"></a></li>
                             @endif
@@ -154,8 +153,9 @@
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
-                                    <li><a href="{{route('listarPostulantesBecarios',"0")}}">Asignar Entrevistas</a></li>
-                                    <li><a href="{{route('listarPostulantesBecarios',"1")}}">Gestion Entrevistas</a></li>
+                                    <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
+                                   <!-- <li><a href="{{route('listarPostulantesBecarios',"0")}}">Asignar Entrevistas</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"1")}}">Gestion-viejo</a></li> -->
                                     <li><a href="{{route('listarPostulantesBecarios',"3")}}">Asignar Nuevo Ingreso</a></li>
                                 </ul>
 

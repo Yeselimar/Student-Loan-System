@@ -38,6 +38,7 @@ class NominaController extends Controller
         }
         $anho = date ( 'Y' , strtotime($fechagenerar) );
         $mes = date ( 'm' , strtotime($fechagenerar) );
+
         $nominas = DB::table('nominas')
                      ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,fecha_generada, fecha_pago,sueldo_base, status, id'))
                      ->where('status','=','generado')
@@ -96,6 +97,7 @@ class NominaController extends Controller
         }
         $anho = '2018';
         $mes = '04';
+        $generar = true;//quitar esto, Eso lo agrego Rafael
         $nominas = DB::table('nominas')
             ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,created_at,fecha_generada, fecha_pago,sueldo_base, status, id'))
             ->where('status','=','pendiente')
@@ -161,11 +163,17 @@ class NominaController extends Controller
         {
            // flash('Error en la nomina a Consultar no existen registros','danger');
         }
-     
+        
     	return View('sisbeca.nomina.procesardetalle')->with('nominas',$nominasfiltro)->with('mes',$mes)->with('anho',$anho);
     	
     }
 
+    public function procesardetalleservicio($mes,$anho)
+    {
+        //este metodo es igual al procesadetalle
+        $nominasfiltro = Nomina::where('mes','=',$mes)->where('year',$anho)->with("becario")->with("user")->get();
+        return response()->json(['nominas'=>$nominasfiltro]);
+    }
     public function generartodo($mes,$anho)
     {
     	//validar que no se haya generado para una fecha

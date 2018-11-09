@@ -66,7 +66,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware
     // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
-    Route::group(['middleware'=>'admin'],function ()
+    Route::group(['middleware'=>['admin']],function ()
     {
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
@@ -79,19 +79,6 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         //aval
         Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
-
-
-        // postulantes 
-        Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
-
-        //entrevistadores
-        Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
-
-        Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
-
-
-        Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
-        
 
 
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
@@ -424,6 +411,18 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'nomina.procesar.detalle'
         ]);
 
+        // para el servicio con vuejs
+        Route::get('nomina/procesar/mes/{mes}/anho/{anho}/servicio', [
+            'uses' => 'NominaController@procesardetalleservicio',
+            'as' => 'nomina.procesar.detalle.servicio'
+        ]);
+
+        //servicios
+        Route::get('nomina/mes/{mes}/anho/{anho}/becarios/{id}/contar-facturas', [
+            'uses' => 'FactLibrosController@contarfacturaslibros',
+            'as' => 'factlibros.contar'
+        ]);
+
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}/becarios/{id}/ver-facturas', [
             'uses' => 'FactLibrosController@verfacturas',
             'as' => 'factlibros.verfacturas'
@@ -576,6 +575,16 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CompartidoDirecCoordController@pdfSolicitud',
             'as' => 'solicitudes.pdf'
         ]);
+
+        //entrevistadores
+        Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
+
+        Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
+
+        Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
+
+        // postulantes 
+        Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()

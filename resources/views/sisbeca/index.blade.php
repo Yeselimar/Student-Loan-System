@@ -26,13 +26,18 @@
 				@if((Auth::user()->rol==='postulante_becario')||(Auth::user()->rol==='postulante_mentor'))
 					<p> Pasos a Seguir </p>
 					@if(Auth::user()->rol==='postulante_becario')
-						<img src="{{asset('images/postulacion-becario.png')}}">
+						<img src="{{asset('images/postulacion-becario.png')}}" class="img-responsive">
 					@else
-						<img src="{{asset('images/postulacion-mentor.png')}}">
+						<img src="{{asset('images/postulacion-mentor.png')}}" class="img-responsive">
 					@endif
 					@else
 					<p> Bienvenido al Sistema de Becarios AVAA </p>
-					<img src="{{asset('images/becarios.jpg')}}">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4">
+						<img src="{{asset('images/becarios.jpg')}}" class="img-responsive">
+					</div>
+					<div class="col-lg-4"></div>
+					
 				@endif
 			</div>
 		</div>

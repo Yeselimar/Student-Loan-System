@@ -91,7 +91,6 @@ class Todo extends Migration
             $table->enum('medio_proexcelencia',['amigo/pariente','internet','medios_comunicacion','otros'])->default('amigo/pariente');
             $table->string('otro_medio_proexcelencia')->nullable();
             $table->text('motivo_beca')->nullable();
-            $table->datetime('fecha_entrevista')->nullable();
             $table->datetime('fecha_egresado')->nullable();
             $table->datetime('fecha_inactivo')->nullable();
             $table->datetime('fecha_desincorporado')->nullable();
@@ -133,9 +132,19 @@ class Todo extends Migration
 
             $table->text('observacion');//entrevistadores pone este ca|
 
+            //campos de la entrevista
+            $table->datetime('fecha_entrevista')->nullable();
+            $table->text('lugar_entrevista')->nullable();
+
+            //campos para la nómina
+            $table->datetime('fecha_ingreso')->nullable();//debe ser igual al created_at
+            $table->datetime('fecha_aprobado')->nullable();//modificar cuando pasa de postulante becario a becario
+            $table->datetime('fecha_egreso')->nullable();
+
             $table->timestamps();
         });
         
+        /*
         Schema::create('entrevistadores', function (Blueprint $table)
         {
             $table->increments('id');
@@ -146,6 +155,7 @@ class Todo extends Migration
 
             $table->timestamps();
         });
+        */
 
         Schema::create('becarios_entrevistadores', function (Blueprint $table)
         {
@@ -153,9 +163,9 @@ class Todo extends Migration
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->unsignedInteger('entrevistador_id');
-            $table->foreign('entrevistador_id')->references('id')->on('entrevistadores')->onDelete('cascade');
+            $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->datetime('fecha')->nullable();//cuando creo la relacion becario - entrevistador asigno fecha entrevista
+            //$table->datetime('fecha')->nullable();//cuando creo la relacion becario - entrevistador asigno fecha entrevista
 
             $table->timestamps();
         });
@@ -448,6 +458,7 @@ class Todo extends Migration
         Schema::create('nominas', function (Blueprint $table)
         {
             $table->increments('id');
+            $table->double('cva',20,2)->default(0);//según lo que dijo bapssy
             $table->double('retroactivo',20,2)->default(0);
             $table->double('sueldo_base',20,2)->default(0);
             $table->double('monto_libros',20,2)->default(0);

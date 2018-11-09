@@ -41,3 +41,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/datatable-bootstrap/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/sweetalert/sweetalert2.min.css')}}"/> 
 
+     
+   <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet"/>
+   <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker-standalone.min.css')}}" rel="stylesheet"/>
+    
+
