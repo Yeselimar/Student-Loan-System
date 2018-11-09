@@ -84,16 +84,6 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         // postulantes 
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
 
-        //entrevistadores
-        Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
-
-        Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
-
-
-        Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
-        
-
-
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
             'uses' => 'MantenimientoUserController@destroy',
@@ -576,6 +566,14 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CompartidoDirecCoordController@pdfSolicitud',
             'as' => 'solicitudes.pdf'
         ]);
+
+         //entrevistadores
+        Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
+
+        Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
+
+
+        Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()

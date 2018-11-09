@@ -111,14 +111,13 @@
                <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
                    {{csrf_field()}}
                    {{method_field('PUT')}}
+                   <input type="hidden" id='valor' name="valor"  value="1">
                 
-                <label for="entrevistador-2" class="control-label ">Por Favor Selecciones el Segundo Entrevistador:</label>
-                  
-                  
-                <p align="center">¿Esta seguro que desea Aprobar a {{$postulante->user->name}} para la entrevista?</p>
+                <label for="entrevistador-2" class="control-label " align="center">¿Esta seguro que desea Aprobar a {{$postulante->user->name}} {{$postulante->user->last_name}} para la entrevista?</label>
+                
                <div class="modal-footer">
-                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                   <button type="submit" class="btn btn-info pull-left">Si</button>
+                   <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                   <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
                
                </div>
 
@@ -150,8 +149,8 @@
                <input type="hidden" id='valor' name="valor"  value="0">
 
                <div class="modal-footer">
-                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                   <button type="submit" class="btn btn-info pull-left" >Si</button>
+                   <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                   <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right" >Si</button>
                </div>
 
           </form>
