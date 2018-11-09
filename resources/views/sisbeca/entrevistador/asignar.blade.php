@@ -65,14 +65,10 @@
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " for="hora" style="margin-bottom: 0px !important">Hora</label>
-						  	
-							  
-												  
-							  
-								  <input type="text" name="hora" class="sisbeca-input input-sm" placeholder="HH:MM:SS" id='datetimepicker3'>
-                    			<span class="input-group-addon">
-                       				 <span class="glyphicon glyphicon-time"></span>
-                   				 </span>
+								
+								<input type="text" name="hora" class="sisbeca-input input-sm" placeholder="HH:MM:SS" id='datetimepicker3'>
+                    										
+
 						  	</div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
 						  		<input type="text" name="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
