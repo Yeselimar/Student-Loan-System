@@ -575,10 +575,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
 
-
         Route::post('/becario/{id}/rafael', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
-          // postulantes 
-          Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
+
+        // postulantes 
+        Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()

@@ -5,10 +5,13 @@ namespace avaa\Http\Controllers;
 use Illuminate\Http\Request;
 use avaa\Becario;
 use avaa\BecarioEntrevistador;
+use avaa\User;
+
 class EntrevistadorController extends Controller
 {
     public function asignarentrevistadores()
     {
+      
     	return view('sisbeca.entrevistador.asignar')->with(compact('becarios'));
     }
 
