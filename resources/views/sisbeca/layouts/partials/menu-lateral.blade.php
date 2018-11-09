@@ -153,8 +153,9 @@
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
+                                    <li><a href="{{route('entrevistador.asignar')}}">Gestion Entrevistas</a></li>
                                     <li><a href="{{route('listarPostulantesBecarios',"0")}}">Asignar Entrevistas</a></li>
-                                    <li><a href="{{route('listarPostulantesBecarios',"1")}}">Gestion Entrevistas</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"1")}}">Gestion-viejo</a></li>
                                     <li><a href="{{route('listarPostulantesBecarios',"3")}}">Asignar Nuevo Ingreso</a></li>
                                 </ul>
 
