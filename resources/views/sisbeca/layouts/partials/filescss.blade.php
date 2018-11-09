@@ -44,5 +44,6 @@
      
    <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet"/>
    <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker-standalone.min.css')}}" rel="stylesheet"/>
+   <link href="{{asset('plugins/datetimepicker-bootstrap/mdtimepicker.css')}}" rel="stylesheet" type="text/css"/>
     
 
