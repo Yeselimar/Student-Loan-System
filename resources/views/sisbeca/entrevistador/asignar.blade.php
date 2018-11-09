@@ -22,7 +22,7 @@
 					<td>
 						<template v-if="postulante.entrevistadores">
 						  	<template v-for="entrevistador in postulante.entrevistadores">
-						  			<span class="label label-default">@{{ entrevistador.nombre_apellido }}</span> 
+						  			<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span> 
 							</template>
 						</template>
 						<template v-if="postulante.entrevistadores.length==0">
@@ -85,7 +85,7 @@
 												<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 													<div class="checkbox">
 														<input type="checkbox" :id="entrevistador.id" :value="entrevistador.id" v-model="seleccionados" >
-												  		<label :for="entrevistador.nombre_apellido" class="label label-default">@{{ entrevistador.nombre_apellido}}</label>
+												  		<label :for="entrevistador.nombre_apellido" class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</label>
 													</div>
 											  	</div>
 											  	
@@ -96,7 +96,7 @@
 												<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 													<div class="checkbox">
 														<input type="checkbox" :id="entrevistador.id" :value="entrevistador.id" v-model="seleccionados" >
-												  		<label :for="entrevistador.nombre_apellido" class="label label-default">@{{ entrevistador.nombre_apellido}}</label>
+												  		<label :for="entrevistador.nombre_apellido" class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</label>
 													</div>
 											  	</div>
 										</template>
@@ -214,6 +214,7 @@ $(document).ready(function(){
 	});
 </script>
 
+<!--
 <script>
 	$(function () {
 		$('#datetimepicker3').datetimepicker({
@@ -221,4 +222,5 @@ $(document).ready(function(){
 		});
 	});
 </script>
+-->
 @endsection
