@@ -30,9 +30,11 @@ class EntrevistadorController extends Controller
     public function guardarasignarentrevistadores(Request $request,$id)
     {
     	$becario = Becario::find($id);
-      $becario->fecha = $request->fecha;
+     // $becario->fecha_entrevista = DateTime::createFromFormat('d/m/Y H:i:00', $request->get('fecha').' '.$request->get('hora') )->format('Y-m-d h:i:s'); 
       //DateTime::createFromFormat('d/m/Y h:i:s', $request->get('fecha_inicio'))->format('Y-m-d');
-      $becario->lugar = $request->lugar;
+      $becario->lugar_entrevista = $request->lugar;
+      $becario->save();
+     
     	foreach ($becario->entrevistadores as $entrevistador)
     	{
     		$entrevistador_becario = BecarioEntrevistador::where('becario_id','=',$id)->where('entrevistador_id','=',$entrevistador->id)->delete();

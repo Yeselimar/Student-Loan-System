@@ -41,14 +41,14 @@
 		</table>
 	</div>
 
-	<!-- Modal para añadir materia -->
+	<!-- Modal para añadir entrevistadores -->
 	<form method="POST" @submit.prevent="asignarentrevistadores(id,seleccionados)">
 	{{ csrf_field() }}
 		<div class="modal fade" id="asignarmodal">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title pull-left"><strong>Asignar Entrevistadores@{{ id}}</strong></h5>
+						<h5 class="modal-title pull-left"><strong>Asignar Entrevistadores @{{id}}</strong></h5>
 						<button class="close" data-dimiss="modal" type="button" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -60,18 +60,17 @@
 								<input type="text" name="nombreyapellido" class="sisbeca-input input-sm sisbeca-disabled" :value="nombreyapellido" style="margin-bottom: 0px" disabled="disabled">
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
-								<label class="control-label " for="hora" style="margin-bottom: 0px !important">Fecha</label>
-						  		<input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" v-model="fecha" id="fecha">
+								<label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
+						  		<input type="date" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" v-model="fecha">
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
-								<label class="control-label " for="hora" style="margin-bottom: 0px !important">Hora</label>
-								
-								<input type="text" name="hora" class="sisbeca-input input-sm" placeholder="HH:MM:SS" id='datetimepicker3'>
-                    										
-
-						  	</div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
+								<input type="time" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM:SS" >
+							
+							</div>
+							  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
-						  		<input type="text" name="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
+						  		<input type="text" name="lugar" v-model="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
 						  	</div>
 						</div>
 						
@@ -173,7 +172,10 @@ const app = new Vue({
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
             dataform.append('hora', this.hora);
-            dataform.append('lugar', this.lugar);
+			dataform.append('lugar', this.lugar);
+			
+			console.log('la hora es: '+this.hora);
+			console.log('la fecha es: '+this.fecha);
             var url = '{{route('entrevistador.asignar.guardar',':id')}}';
             url = url.replace(':id', id);
 			axios.post(url,dataform).then(response => 
@@ -214,7 +216,7 @@ $(document).ready(function(){
 	});
 </script>
 
-<!--
+
 <script>
 	$(function () {
 		$('#datetimepicker3').datetimepicker({
@@ -222,5 +224,6 @@ $(document).ready(function(){
 		});
 	});
 </script>
--->
+
+
 @endsection
