@@ -48,7 +48,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title pull-left"><strong>Asignar Entrevistadores</strong></h5>
+						<h5 class="modal-title pull-left"><strong>Asignar Entrevistadores@{{ id}}</strong></h5>
 						<button class="close" data-dimiss="modal" type="button" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
