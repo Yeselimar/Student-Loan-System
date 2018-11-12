@@ -25,15 +25,16 @@ class FactLibrosController extends Controller
         }
         else
         {
-            $becario= User::find($id);
-            flash('El becario '.$becario->name.' No ha cargado factura de libros en este mes')->warning()->important();
+            $user = User::find($id);
+            flash('El becario '.$user->nombreyapellido().' no ha cargado factura de libros en este mes')->warning()->important();
             return back();
         }
     }
 
     public function contarfacturaslibros($mes,$anho,$id)
     {
-        $total = FactLibro::where('mes','=',$mes)->where('year','=',$anho)->where('becario_id','=',$id)->count();
+        $total = FactLibro::where('mes','=',$mes)->where('year','=',$anho)->where('becario_id','=',$id)->get();
+        return $total;
         return response()->json(['total'=>$total]);
     }
 }

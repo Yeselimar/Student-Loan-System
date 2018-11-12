@@ -423,12 +423,24 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'factlibros.contar'
         ]);
 
-        Route::get('nomina/procesar/mes/{mes}/anho/{anho}/becarios/{id}/ver-facturas', [
+        //guardar CVA 
+        Route::post('nomina/{id}/guardar-cva', [
+            'uses' => 'NominaController@guardarcva',
+            'as' => 'nomina.guardarcva'
+        ]);
+
+        Route::post('nomina/{id}/guardar-retroactivo', [
+            'uses' => 'NominaController@guardarretroactivo',
+            'as' => 'nomina.guardarretroactivo'
+        ]);
+
+
+        Route::get('nomina/procesar/mes/{mes}/anho/{anho}/becario/{id}/ver-facturas', [
             'uses' => 'FactLibrosController@verfacturas',
             'as' => 'factlibros.verfacturas'
         ]);
 
-        Route::post('nomina/procesar/mes/{mes}/anho/{anho}/generar', [
+        Route::get('nomina/procesar/mes/{mes}/anho/{anho}/generar', [
             'uses' => 'NominaController@generar',
             'as' => 'nomina.generar'
         ]);

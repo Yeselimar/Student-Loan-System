@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <label for="edad">Edad</label>
-                                        <input name="edad" type="text" id="edad" class="sisbeca-input sisbeca-disabled" value="0">
+                                        <input name="edad" type="text" id="edad" class="sisbeca-input sisbeca-disabled" value="0" readonly="true">
                                         @if ($errors->has('edad'))
                                             <span class="help-block">
                                             <strong>{{ $errors->first('edad') }}</strong>

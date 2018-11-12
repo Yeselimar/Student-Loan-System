@@ -5,6 +5,7 @@
     <strong>Procesar Nómina: {{ $mes.'/'.$anho }}</strong>
     <a href="{{route('nomina.procesar')}}" class="btn btn-sm sisbeca-btn-primary pull-right ">Atrás</a>
     
+    <br>
 
     <div class="table-responsive">
 
@@ -23,23 +24,25 @@
             </thead>
             <tbody>
                 <tr v-for="nomina in nominas">
-                    <td> @{{nomina.user.name }} @{{nomina.user.last_name }}</td>
+                    <td> @{{nomina.user.name }} @{{nomina.user.last_name }} </td>
                     <td>
-                        <span >
-                        <button type="button" class=" btn btn-xs sisbeca-btn-primary" @click.prevent="mostrarModalCVAa(nomina.user.id)"> @{{nomina.cva }}
+                        <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalCVA(nomina)"> @{{nomina.cva }}
                         </button>
-                        </span>
                     </td>
-                    <td> @{{nomina.retroactivo }} </td>
-                    <td> @{{nomina.monto_libros }} </td>
+                    <td>
+                        <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalRetroactivo(nomina)"> @{{nomina.retroactivo }}
+                        </button>
+                    </td>
+                    <td> 
+                        @{{nomina.monto_libros }} 
+                        <!--<span class="label label-default">@{{nomina.numero_facturas }} facturas</span>-->
+                    </td>
                     <td> @{{nomina.sueldo_base }} </td>
                     <td> 
-                        @{{nomina.total }}
+                        @{{nomina.cva + nomina.retroactivo + nomina.monto_libros + nomina.sueldo_base }}
                      </td>
                     <td> 
-                        
-                        <a href="@{{ getRuta(nomina.user.id)}}" class="btn btn-xs sisbeca-btn-primary">Aprobar Facturas</a>
-                        <span v-model="getRuta(nomina.user.id)"></span>
+                        <a :href="getRuta(nomina.user.id)" class="btn btn-xs sisbeca-btn-primary">Aprobar Facturas</a>
                     </td>
 
                 </tr>
@@ -51,7 +54,61 @@
     <br>
     <br>
     <a class="btn btn-md sisbeca-btn-primary pull-right"  style="margin-left: 5px;" href="{{ route('nomina.generar', array('mes'=>$mes, 'anho'=>$anho) ) }}" >Generar o Procesar</a>
-   
+    
+
+    <!-- Modal para CVA -->
+    <div class="modal fade" id="modalCVA">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><strong>Modificar CVA</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label " for="becario">Nombre</label>
+                        <input type="text" name="becario" class="sisbeca-input input-sm sisbeca-disabled" v-model="becario"  style="margin-bottom: 0px" disabled="disabled">
+                    </div>
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label " for="cva">CVA</label>
+                        <input type="text" name="cva" class="sisbeca-input input-sm" v-model="cva" placeholder="0" style="margin-bottom: 0px">
+                        <span v-if="errores.cva" :class="['label label-danger']">@{{ errores.cva[0] }}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click.prevent="guardarCVA(id)">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para CVA -->
+
+    <!-- Modal para Retroactivo -->
+    <div class="modal fade" id="modalRetroactivo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><strong>Modificar Retroactivo</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label " for="becario">Nombre</label>
+                        <input type="text" name="becario" class="sisbeca-input input-sm sisbeca-disabled" v-model="becario"  style="margin-bottom: 0px" disabled="disabled">
+                    </div>
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label " for="retroactivo">Retroactivo</label>
+                        <input type="text" name="retroactivo" class="sisbeca-input input-sm" v-model="retroactivo" placeholder="0" style="margin-bottom: 0px">
+                        <span v-if="errores.retroactivo" :class="['label label-danger']">@{{ errores.retroactivo[0] }}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click.prevent="guardarRetroactivo(id)">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Retroactivo -->
    
 </div>
 @endsection
@@ -69,36 +126,79 @@
     },
     data:
     {
-        
+        id: 0,
+        becario: '',
+        cva: 0,
+        retroactivo: 0,
         nominas:[],
+        errores:[],
     },
     methods:
     {
-        getFacturasenNomina: function(id)
-        {
-            var url = '{{route('factlibros.contar',array('id'=>':id','mes'=>$mes, 'anho'=>$anho))}}';
-            url = url.replace(':id', id);
-            var total = -1;
-            axios.get(url).then(response => 
-            {
-                total = response.data.total;
-                console.log(total);
-            });
-            return total;
-        },
         getRuta: function(id)
         {
-            var url = '{{ route('factlibros.verfacturas',array('id'=>':id', 'mes'=>$mes, 'anho'=>$anho) ) }}';
+            var url = "{{ route('factlibros.verfacturas',array('id'=>':id', 'mes'=>$mes, 'anho'=>$anho) ) }}";
             url = url.replace(':id', id);
             return url;
         },
         getNomina: function()
         {
-            var url = '{{route('nomina.procesar.detalle.servicio',array('mes'=>$mes, 'anho'=>$anho))}}';
-            console.log(url);
+            var url = "{{route('nomina.procesar.detalle.servicio',array('mes'=>$mes, 'anho'=>$anho))}}";
             axios.get(url).then(response => 
             {
                 this.nominas = response.data.nominas;
+            });
+        },
+        modalCVA: function(nomina)
+        {
+            this.id = nomina.id;
+            this.becario = nomina.user.name+' '+nomina.user.last_name;
+            this.cva = nomina.cva;
+            this.errores = [];
+            $('#modalCVA').modal('show');
+        },
+        guardarCVA: function(id)
+        {
+            var url = '{{route('nomina.guardarcva',':id')}}';
+            url = url.replace(':id', id);
+            var dataform = new FormData();
+            dataform.append('cva', this.cva);
+            axios.post(url,dataform).then(response => 
+            {
+                this.errores = [];
+                this.getNomina();
+                $('#modalCVA').modal('hide');
+                toastr.success(response.data.success);
+
+            }).catch( error =>
+            {
+                this.errores = error.response.data.errors;
+            });
+        },
+        modalRetroactivo: function(nomina)
+        {
+            this.id = nomina.id;
+            this.becario = nomina.user.name+' '+nomina.user.last_name;
+            this.retroactivo = nomina.retroactivo;
+            this.errores = [];
+            $('#modalRetroactivo').modal('show');
+        },
+        guardarRetroactivo: function(id)
+        {
+            var url = '{{route('nomina.guardarretroactivo',':id')}}';
+            url = url.replace(':id', id);
+            var dataform = new FormData();
+            dataform.append('retroactivo', this.retroactivo);
+            axios.post(url,dataform).then(response => 
+            {
+                this.errores = [];
+                this.getNomina();
+                $('#modalRetroactivo').modal('hide');
+                toastr.success(response.data.success);
+
+            }).catch( error =>
+            {
+                this.errores = error.response.data.errors;
             });
         }
     }

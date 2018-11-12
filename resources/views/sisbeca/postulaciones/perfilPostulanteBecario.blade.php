@@ -1,119 +1,132 @@
 @extends('sisbeca.layouts.main')
-@section('title','Postulante: '.$postulante->user->last_name.' '.$postulante->user->last_name)
+@section('title','Postulante Becario: '.$postulante->user->name.' '.$postulante->user->last_name)
 @section('content')
    
-     
+<div class="text-right col-12" align="right" >
+  <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+</div>
 <div class="card">
-        <div class="text-right col-12" align="right" >
-          <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-default">Atrás</a>
-        </div>
-        <div class="card-body" style="border: 1px solid #eee">
-            <div class="card-two">
-                
+       
+    <div class="card-body" style="border: 1px solid #eee">
+        <div class="card-two">
+            
+            <div class="text-right col-12" align="right">
 
-                <div class="text-right col-12" align="right">
+            </div>
+            
+            <header>
+                <div class="avatar">
+                  {{$img_perfil}}
+                    @if($img_perfil->count()>0)
+                        <img src="{{asset($img_perfil[0]->url)}}" style="height: 95px !important;">
 
-                </div>
-                
-                <header>
-                    <div class="avatar">
-                      {{$img_perfil}}
-                        @if($img_perfil->count()>0)
-                            <img src="{{asset($img_perfil[0]->url)}}" style="height: 95px !important;">
-
-                        @else
-
-                            @if($postulante->user->sexo==='femenino')
-                                <img src="{{asset('images/perfil/femenino.png')}}" style="height: 95px !important;">
-                            @else
-                                <img src="{{asset('images/perfil/masculino.png')}}" style="height: 95px !important;">
-
-                            @endif
-
-                        @endif
-                    </div>
-                    
-                </header>
-
-                <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
-
-                <div class="desc">
-                   
-                   Postulante Becario
-                   
-                </div>
-
-                <div class="desc">
-              
-                    @if($postulante->status==='postulante')
-                        <span class="label label-info">Postulante</span>
                     @else
-                        @if($postulante->status==='entrevista')
-                            <span class="label label-warning">Aprobado para Entrevista</span>
+
+                        @if($postulante->user->sexo==='femenino')
+                            <img src="{{asset('images/perfil/femenino.png')}}" style="height: 95px !important;">
                         @else
-                            <span class="label label-danger">Rechazado</span>
+                            <img src="{{asset('images/perfil/masculino.png')}}" style="height: 95px !important;">
+
                         @endif
+
                     @endif
                 </div>
+                
+            </header>
 
-                <div class="text-center">
-                   <span class="fa fa-venus-mars"> </span> {{ucwords($postulante->user->sexo)}} &nbsp;&nbsp;&nbsp;
-                    <span class="fa fa-calendar"></span> {{$postulante->user->edad}} Años &nbsp;&nbsp;&nbsp;
-                    <span class="fa fa-birthday-cake"></span> {{ date("d/m/Y", strtotime($postulante->user->fecha_nacimiento)) }}
-                    <div class="clear"></div>
-                    <br>
-                </div>
+            <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
+
+            <div class="desc">
+               
+               Postulante Becario
                
             </div>
-        </div>
-        <div class="col-lg-12" style="border:1px solid #eee">
-            <div class="row">
-                <div class="col-md-3 col-xs-6 b-r"> <strong>Nombre Completo</strong>
-                    <br>
-                    <p class="text-muted">{{$postulante->user->name.' '.$postulante->user->last_name}}</p>
-                </div>
-                <div class="col-md-3 col-xs-6 b-r"> <strong>Cedula</strong>
-                    <br>
-                    <p class="text-muted">{{$postulante->user->cedula}}</p>
-                </div>
-                <div class="col-md-3 col-xs-6 b-r"> <strong>Email</strong>
-                    <br>
-                    <p class="text-muted">{{$postulante->user->email}}</p>
-                </div>
-                <div class="col-md-3 col-xs-6"> <strong>Dirección</strong>
-                    <br>
-                    <p class="text-muted">{{$postulante->direccion_permanente}}</p>
-                </div>
+
+            <div class="desc">
+          
+                @if($postulante->status==='postulante')
+                    <span class="label label-info">Postulante</span>
+                @else
+                    @if($postulante->status==='entrevista')
+                        <span class="label label-warning">Aprobado para Entrevista</span>
+                    @else
+                        <span class="label label-danger">Rechazado</span>
+                    @endif
+                @endif
             </div>
+
+            <div class="text-center">
+                <span class="fa fa-venus-mars"> </span> 
+                {{ucwords($postulante->user->sexo)}} &nbsp;&nbsp;&nbsp;
+
+                <span class="fa fa-calendar"></span>
+                {{$postulante->user->edad}} Años &nbsp;&nbsp;&nbsp;
+
+                <span class="fa fa-birthday-cake"></span>
+                {{ date("d/m/Y", strtotime($postulante->user->fecha_nacimiento)) }}
+
+                <div class="clear"></div>
+                <br>
+            </div>
+           
         </div>
-        <br>
-        @if($postulante->status==='postulante')
-        <div align="center">
-            <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
-            <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
-        </div>
-         @endif
-         
     </div>
 
+    <div class="col-lg-12" style="border:1px solid #eee">
+        <div class="row">
+            <div class="col-md-3 col-xs-6 b-r"> <strong>Nombre Completo</strong>
+                <br>
+                <p class="">{{$postulante->user->name.' '.$postulante->user->last_name}}</p>
+            </div>
+            <div class="col-md-3 col-xs-6 b-r"> <strong>Cédula</strong>
+                <br>
+                <p class="text-muted">{{$postulante->user->cedula}}</p>
+            </div>
+            <div class="col-md-3 col-xs-6 b-r"> <strong>Correo Electrónico</strong>
+                <br>
+                <p class="text-muted">{{$postulante->user->email}}</p>
+            </div>
+            <div class="col-md-3 col-xs-6"> <strong>Dirección</strong>
+                <br>
+                <p class="text-muted">{{$postulante->direccion_permanente}}</p>
+            </div>
+        </div>
+    </div>
 
-   <div class="modal fade" id="modal">
-       <div class="modal-dialog">
-           <div class="modal-content">
-               <div class="modal-header">
-                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <span aria-hidden="true"> &times;</span>
-                    </button>
+    <br>
+
+    @if($postulante->status==='postulante')
+      <div align="center">
+          <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
+          <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
+      </div>
+    @endif
+     
+     <br>
+</div>
+
+    <!-- Modal para aprobar --> 
+    <div class="modal fade" id="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"> &times;</span>
+                  </button>
                 
-                    <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
+                  <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
+
                </div>
-               <div class="modal-body">
+               
                <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
-                   {{csrf_field()}}
-                   {{method_field('PUT')}}
-                   <input type="hidden" id='valor' name="valor"  value="1">
-                
-                <label for="entrevistador-2" class="control-label " align="center">¿Esta seguro que desea Aprobar a {{$postulante->user->name}} {{$postulante->user->last_name}} para la entrevista?</label>
+                  {{csrf_field()}}
+                  {{method_field('PUT')}}
+                  <input type="hidden" id='valor' name="valor"  value="1">
+                  
+                  <div class="modal-body">
+                    <br>
+                    ¿Está seguro que desea <strong>aprobar</strong> a <strong>{{$postulante->user->name}} {{$postulante->user->last_name}}</strong> para la entrevista?
+                  </div>
                 
                <div class="modal-footer">
                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
@@ -122,15 +135,13 @@
                </div>
 
                </form>
-               </div>
-           </div>
-       </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para aprobar --> 
 
-       <!-- /.modal-content -->
-   </div>
-
-
-   <div class="modal fade" id="modal-default">
+    <!-- Modal para rechazar --> 
+    <div class="modal fade" id="modal-default">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -138,9 +149,10 @@
                    <span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">Confirmación</h4>
           </div>
-
-          <p align="center">¿Esta seguro que desea Rechazar a {{$postulante->user->name}} para la entrevista?</p>
-
+          <div class="modal-body">
+            <br>
+            ¿Está seguro que desea <strong>rechazar</strong> a <strong>{{$postulante->user->name}} {{ $postulante->user->last_name}}</strong> para la entrevista?
+          </div>
           <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
 
                {{csrf_field()}}
@@ -156,8 +168,9 @@
           </form>
         </div>
       </div>
-      <!-- /.modal-content -->
-   </div>
+      
+    </div>
+    <!-- Modal para rechazar --> 
 
    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="panel-group Material-default-accordion" id="datos-personales" role="tablist" aria-multiselectable="true">

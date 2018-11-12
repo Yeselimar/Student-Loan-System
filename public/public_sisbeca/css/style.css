@@ -2996,8 +2996,8 @@ panel-default>.panel-heading {
   font-size: 12px;
 }
 .btn-xs {
-  padding: 0.25rem 0.5rem;
-  font-size: 10px;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 10px !important;
 }
 .button-list a {
   margin: 5px 12px 5px 0;

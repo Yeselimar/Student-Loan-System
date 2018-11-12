@@ -311,11 +311,12 @@
                             <li><a href="#">Notas(Periodo Lectivo)</a></li>
                         </ul>
                     </li> --}}
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-book"></i><span class="hide-menu">Libros</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('crearVerFacturas')}}">Cargar Facturas</a></li>
-                            </ul>
-                        </li>
+                    
+                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-book"></i><span class="hide-menu">Libros</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="{{route('crearVerFacturas')}}">Cargar Facturas</a></li>
+                        </ul>
+                    </li>
 
                     <li class="nav-label">Opciones</li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-file-pdf-o"></i><span class="hide-menu">Consultas y Reportes</span></a>
