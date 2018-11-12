@@ -134,6 +134,7 @@ class Todo extends Migration
 
             //campos de la entrevista
             $table->datetime('fecha_entrevista')->nullable();
+            $table->text('hora_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
 
             //campos para la nómina

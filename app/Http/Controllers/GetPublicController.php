@@ -24,12 +24,24 @@ use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
 use Mail; 
+use DateTime;
 
 class GetPublicController extends Controller
 {
 
     public function prueba()
     {
+        $becario = Becario::find(34);
+        $becario->hora_entrevista = "3:23 PM";
+        $becario->lugar_entrevista = "miami";
+        $becario->fecha_entrevista = DateTime::createFromFormat('d/m/Y', "14/02/2019" )->format('Y-m-d');
+        $becario->save();
+        return "exito";
+        //$hora = DateTime::createFromFormat('H:i a', "3:22 pm" )->format('H:i:s');
+        //$hora = date("h:i A", strtotime("3:22 PM"));
+        //$fecha = "14/02/1993".' '.date("h:i a", strtotime("3:22 PM"));
+        //$fechan = DateTime::createFromFormat('d/m/Y h:i A', $fecha )->format('Y-m-d H:i:s');
+        return response()->json( date("H:i:s a", strtotime($hora)) ); 
         /*$entrevistadores = User::entrevistadores()->get();
         return $entrevistadores;
         */

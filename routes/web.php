@@ -585,6 +585,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         // postulantes 
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
+
+        //obtener becario para entrevista
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()
