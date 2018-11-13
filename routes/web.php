@@ -170,15 +170,21 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'cuentaBancaria.update'
         ]);
 
-        Route::get('libros/crearVerFacturas', [
-            'uses' => 'BecarioController@crearVerFacturas',
-            'as' => 'crearVerFacturas'
+        Route::get('libros/listar-facturas', [
+            'uses' => 'FactLibrosController@listar',
+            'as' => 'facturas.listar'
         ]);
 
-        Route::post('facturasStore', [
-            'uses' => 'BecarioController@facturasStore',
-            'as' => 'facturas.store'
+        Route::get('libros/crear-factura', [
+            'uses' => 'FactLibrosController@crear',
+            'as' => 'facturas.crear'
         ]);
+
+        Route::post('libros/guardar-factura', [
+            'uses' => 'FactLibrosController@guardar',
+            'as' => 'facturas.guardar'
+        ]);
+
 
         Route::get('ver/mentorAsignado', [
             'uses' => 'BecarioController@verMentorAsignado',
@@ -603,6 +609,16 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()
     {
+
+        Route::get('solicitud/listar', [
+            'uses' => 'CompartidoMentorBecarioController@listarsolicitudes',
+            'as' => 'solicitud.listar'
+        ]);
+
+        Route::get('solicitud/crear-solicitud', [
+            'uses' => 'CompartidoMentorBecarioController@crearsolicitud',
+            'as' => 'solicitud.crear'
+        ]);
 
         Route::get('solicitud', [
             'uses' => 'CompartidoMentorBecarioController@solicitud',

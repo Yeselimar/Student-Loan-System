@@ -152,21 +152,17 @@
 
 
 @section('personaljs')
-    <script type="text/javascript">
+    <script >
 
-        $(document).ready(function(){
+        $(document).ready(function()
+        {
 
-            $('#myTable').DataTable( {
-                columnDefs: [
-                    { targets: [3], searchable: false}
-                ]
-            } );
-
-
+           
             var mivalor= $("#titulo").val();
 
 
-            $("#titulo").change(function() {
+            $("#titulo").change(function()
+            {
                 mivalor =   $("#titulo").val();
                 if(mivalor=='desincorporacion temporal')
                 {
@@ -235,19 +231,24 @@
 
         });
 
+        $('#datepicker1').datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'es',
+            orientation: 'bottom',
+            autoclose: true,
+            minDate: 0,
+            maxDate: "+1M +0D",
+            orientation: "bottom"
+        });
 
-
-        $( function() {
-            $( "#datepicker1" ).datepicker({ minDate: 0, maxDate: "+1M +0D",orientation: "bottom" });
-        } );
-
-
-        $( function() {
-            $( "#datepicker2" ).datepicker({ minDate: 0, maxDate: "+1M +0D",orientation: "bottom" });
-        } );
-
-        $('#myTable')
-            .removeClass( 'display' )
-            .addClass('table table-hover');
+        $('#datepicker2').datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'es',
+            orientation: 'bottom',
+            autoclose: true,
+            minDate: 0,
+            maxDate: "+1M +0D",
+        });
+        
     </script>
 @endsection

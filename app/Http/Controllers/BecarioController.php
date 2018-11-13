@@ -92,7 +92,7 @@ class BecarioController extends Controller
 
             flash('Ha Aceptado Terminos y Condiciones Exitosamente', 'success')->important();
         } else {
-            flash('Ha Ocurrido un Error Inesperado', 'success')->important();
+            flash('Disculpe, ha ocurrido un error inesperado.', 'success')->important();
         }
 
 
@@ -103,7 +103,7 @@ class BecarioController extends Controller
     {
         $becario = User::find(Auth::user()->id)->becario;
         if (is_null($becario->cuenta_bancaria)) {
-            flash('No se ha Cargado su Cuenta Bancaria, Por favor Cargue su Cuenta Bancaria')->error()->important();
+            flash('Disculpe, por favor cargue su cuenta bancaria')->error()->important();
         }
         return view('sisbeca.becarios.cuentaBancaria')->with('becario', $becario);
     }
@@ -116,9 +116,9 @@ class BecarioController extends Controller
 
             $becario->cuenta_bancaria= $request->get('cuenta_bancaria');
 
-            if($becario->save()){
-
-                flash('Su numero de Cuenta ha sido cargada exitosamente!!','success')->important();
+            if($becario->save())
+            {
+                flash('Su número de duenta fue actualizado exitosamente.','success')->important();
             }
 
         }
@@ -128,39 +128,6 @@ class BecarioController extends Controller
             return back();
         }
         return redirect()->route('verCuentaBancaria');
-    }
-
-    public function crearVerFacturas()
-    {
-        $id_user=Auth::user()->id;
-        $facturas = FactLibro::query()->where('becario_id','=',$id_user)->get();
-        return view('sisbeca.factlibros.cargarVerFacturas')->with('facturas',$facturas);
-    }
-
-    public function facturasStore(Request $request)
-    {
-
-        $file= $request->file('url_factura');
-        $name = 'fact_'.Auth::user()->cedula . time() . '.' . $file->getClientOriginalExtension();
-        $path = public_path() . '/documentos/facturas/';
-        $file->move($path, $name);
-        $factura = new FactLibro();
-        $costoAux = str_replace(".","",$request->get('costo'));
-        $costoAux= str_replace(",",".",$costoAux);
-        $factura->costo=$costoAux;
-        $factura->name= $request->get('name');
-        $factura->curso= $request->get('curso');
-        $factura->becario_id = Auth::user()->id;
-        $factura->url= '/documentos/facturas/'.$name;
-        if($factura->save())
-        {
-            flash('La Factura fue cargada exitosamente.','success')->important();
-        }
-        else
-        {
-            flash('Ha ocurrido un error al cargar factura')->error()->important();
-        }
-        return redirect()->route('crearVerFacturas');
     }
 
     public function verMentorAsignado()

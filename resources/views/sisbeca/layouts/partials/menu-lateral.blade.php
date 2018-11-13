@@ -314,7 +314,8 @@
                     
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-book"></i><span class="hide-menu">Libros</span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{route('crearVerFacturas')}}">Cargar Facturas</a></li>
+                            <li><a href="{{route('facturas.listar')}}">Listar Facturas</a></li>
+                            <li><a href="{{route('facturas.crear')}}">Cargar Facturas</a></li>
                         </ul>
                     </li>
 
@@ -335,7 +336,9 @@
                     <li class="nav-label">Solicitudes y Reclamos</li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope-square"></i><span class="hide-menu">Solicitud/Reclamo</span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{route('solicitud.showlist')}}">Petición</a></li>
+                            <li><a href="{{route('solicitud.listar')}}">Listar Solicitudes</a></li>
+                            <li><a href="{{route('solicitud.crear')}}">Registrar Solicitud</a></li>
+                            <li><a href="{{route('solicitud.showlist')}}">Ver/Guardar Solicitud</a></li>
                         </ul>
                     </li>
                 @endif
