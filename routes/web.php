@@ -68,6 +68,15 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
     Route::group(['middleware'=>['admin']],function ()
     {
+        //talleres y chat clubs
+        Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
+        Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
+        Route::get('/actividades/{id}/editar', 'ActividadController@editar')->name('actividad.editar');
+        Route::post('/actividades/{id}/actualizar', 'ActividadController@actualizar')->name('actividad.actualizar');
+
+        Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
+
+
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
@@ -80,12 +89,16 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
 
+        //voluntariado
+
 
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
             'uses' => 'MantenimientoUserController@destroy',
             'as' => 'mantenimientoUser.destroy'
         ]);
+
+
         // Get Data
         Route::get('datatable/getdata', 'MantenimientoUserController@getUsers')->name('datatable/getdata');
 
@@ -219,6 +232,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
         Route::get('/becario/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
         Route::post('/becario/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
+
+        
     });
 
     Route::group(['middleware'=>['mentor']],function ()

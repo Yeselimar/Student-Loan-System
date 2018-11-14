@@ -68,6 +68,11 @@ class Becario extends Model
         return $this->belongsToMany('avaa\Nomina','becarios_nominas','user_id','nomina_id','user_id',null)->withTimestamps();
     }
 
+    public function scopeActivos($query)
+    {
+        return $query->where('status','=','activo');
+    }
+
     public function nomBorradores() // ?
     {
         return $this->belongsToMany('avaa\NomBorrador','becarios_nomborradores','becario_id','nomborrador_id','user_id')->withTimestamps();

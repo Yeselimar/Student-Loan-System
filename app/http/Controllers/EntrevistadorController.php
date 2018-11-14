@@ -30,9 +30,10 @@ class EntrevistadorController extends Controller
 
 		public function guardarasignarentrevistadores(Request $request,$id)
 		{
+			//validar hora y fecha
 			$becario = Becario::find($id);
 			$becario->lugar_entrevista = $request->lugar;
-			$becario->hora_entrevista = $request->hora;
+			$becario->hora_entrevista = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
 			$becario->fecha_entrevista = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
 			$becario->save();
 		 
@@ -43,14 +44,14 @@ class EntrevistadorController extends Controller
 			
 			if($request->has('seleccionados') and $request->get('seleccionados')!=null)
 			{
-					$tmp = explode(',', $request->get('seleccionados'));
-					foreach ($tmp as $index=>$seleccion)
-					{
-						$nuevo = new BecarioEntrevistador;
-						$nuevo->becario_id = $id;
-						$nuevo->entrevistador_id = $seleccion;
-						$nuevo->save();
-					}
+				$tmp = explode(',', $request->get('seleccionados'));
+				foreach ($tmp as $index=>$seleccion)
+				{
+					$nuevo = new BecarioEntrevistador;
+					$nuevo->becario_id = $id;
+					$nuevo->entrevistador_id = $seleccion;
+					$nuevo->save();
+				}
 			}
 			return response()->json(['success'=>'Los entrevistadores fueron actualizados']);
 		}

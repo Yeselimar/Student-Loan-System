@@ -62,6 +62,9 @@
 						</span>
 					</td>
 				</tr>
+				<tr v-if="postulantes.length==0">
+					<td colspan="4" class="text-center">No hay <strong>postulantes a entrevistas</strong></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -90,7 +93,7 @@
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
-								<input type="text" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="03:30pm">
+								<input type="text" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
 							
 							</div>
 							  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
@@ -170,7 +173,11 @@ const app = new Vue({
 	},
 	mounted()
 	{
-	    
+	    $('#hora').datetimepicker({
+            format: 'hh:mm A',
+        }).on('dp.change', function(e) {
+            this.hora = $('#hora').val();
+        });
   	},
 	methods:
 	{
@@ -208,6 +215,9 @@ const app = new Vue({
 		asignarentrevistadores: function(id,seleccionados)
 		{
 			this.seleccionados = seleccionados;
+			//console.log("value: "+$('#hora').val());
+			this.hora = $('#hora').val();
+			//console.log("model: "+this.hora);
 			var dataform = new FormData();
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
