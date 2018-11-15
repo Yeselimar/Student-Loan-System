@@ -1,25 +1,31 @@
-@extends('sisbeca.layouts.main')
-@section('title',"Todos los talleres y chat clubs")
-@section('content')
-
-<div class="col-lg-12" id="app" style="border:1px solid black">
-	<div id="calendar" style="border:2px solid red"></div>
-</div>
-
-@endsection
-
-@section('personaljs')
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link href='../fullcalendar.min.css' rel='stylesheet' />
+<link href='../fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<script src='../lib/moment.min.js'></script>
+<script src='../lib/jquery.min.js'></script>
+<script src='../fullcalendar.min.js'></script>
 <script>
 
   $(document).ready(function() {
 
     $('#calendar').fullCalendar({
-    	defaultView: 'month'
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay,listWeek'
+        right: 'listDay,listWeek,month'
       },
+
+      // customize the button names,
+      // otherwise they'd all just say "list"
+      views: {
+        listDay: { buttonText: 'list day' },
+        listWeek: { buttonText: 'list week' }
+      },
+
+      defaultView: 'listWeek',
       defaultDate: '2018-03-12',
       navLinks: true, // can click day/week names to navigate views
       editable: true,
@@ -27,7 +33,7 @@
       events: [
         {
           title: 'All Day Event',
-          start: '2018-03-01',
+          start: '2018-03-01'
         },
         {
           title: 'Long Event',
@@ -85,4 +91,25 @@
   });
 
 </script>
-@endsection
+<style>
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='calendar'></div>
+
+</body>
+</html>
