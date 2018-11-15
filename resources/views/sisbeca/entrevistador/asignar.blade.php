@@ -219,6 +219,7 @@ const app = new Vue({
 			this.hora = $('#hora').val();
 			console.log("model: "+this.hora);
 			var dataform = new FormData();
+		
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
             dataform.append('hora', this.hora);
