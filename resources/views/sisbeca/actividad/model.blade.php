@@ -41,7 +41,7 @@
                                         @{{ becario.user.name }} @{{ becario.user.last_name }}
                                     </option>
                                 </select>
-                                 @{{ input.id}} 
+                                <!-- @{{ input.id}} -->
                             </template>
                             <!-- @{{ input.nombre }}-->
                             <div class="input-group-append">
@@ -155,9 +155,9 @@ const app = new Vue({
         descripcion:'',
         becarios:[],
         inputs: [{
-            becario: 'no',
-            nombre: '',
-            id: ''}
+            "becario": 'no',
+            "nombre": '',
+            "id": ''}
         ],
         errores:[],
     },
@@ -204,9 +204,9 @@ const app = new Vue({
             if(this.inputs.length<3)
             {
                 this.inputs.push({
-                    becario: 'no',
-                    nombre: '',
-                    id: ''
+                    "becario": 'no',
+                    "nombre": '',
+                    "id": ''
                 })
             }
             else
@@ -220,33 +220,40 @@ const app = new Vue({
         },
         guardaractividad()
         {
-            //console.log(this.inputs);
-            //console.log(this.nivel);
-            //console.log(this.tipo);
-            //console.log(this.modalidad);
-            var dataform = new FormData();
-            dataform.append('nombre', this.nombre);
-            dataform.append('tipo', this.tipo);
-            dataform.append('modalidad', this.modalidad);
-            dataform.append('nivel', this.nivel);
-            dataform.append('anho_academico', this.anho_academico);
-            dataform.append('limite', this.limite_participantes);
-            dataform.append('horas', this.horas_voluntariados);
-            dataform.append('fecha', this.fecha);
             this.hora_inicio = $('#hora_inicio').val();
             this.hora_fin = $('#hora_fin').val();
-            console.log(this.hora_inicio);
-            console.log(this.hora_fin);
-            dataform.append('hora_inicio', this.hora_inicio);
-            dataform.append('hora_fin', this.hora_fin);
-            dataform.append('descripcion', this.descripcion);
             var url = '{{route('actividad.guardar')}}';
-            axios.post(url,dataform).then(response => 
-            {   
+            let data = JSON.stringify({
+                facilitadores: this.inputs,
+                nombre: this.nombre,
+                tipo: this.tipo,
+                modalidad:this.modalidad,
+                nivel:this.nivel,
+                anho_academico:this.anho_academico,
+                limite:this.limite_participantes,
+                horas:this.horas_voluntariados,
+                fecha:this.fecha,
+                hora_inicio:this.hora_inicio,
+                hora_fin:this.hora_fin,
+                descripcion:this.descripcion
+            });
+            axios.post(url,data,{
+            headers:
+            {
+                'Content-Type': 'application/json',
+            } 
+            }).then(response => 
+            {
                 this.errores=[];this.nombre='';this.tipo='taller'; this.modalidad='presencial';
                 this.nivel='inicio';this.anho_academico='';this.limite_participantes='';
                 this.horas_voluntariados='';this.fecha='';this.hora_inicio='';this.hora_fin='';
                 this.descripcion='';
+                //console.log(typeof(response.data.index));
+                console.log("imprimiendo lo que devvuelve el controlador");
+                console.log(response.data.count);
+                console.log(response.data.primero);
+                console.log(response.data.tipo);
+                console.log(response.data.objetos);
                 toastr.success(response.data.success);
             }).catch( error =>
             {

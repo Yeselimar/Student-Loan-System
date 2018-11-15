@@ -35,6 +35,7 @@ class ActividadController extends Controller
             'hora_fin'				=> 'required|date_format:h:i A',
             'descripcion'			=> 'min:0,max:10000',
         ]);
+    	
     	$actividad = new Actividad;
     	$actividad->nombre = $request->nombre;
     	$actividad->tipo = $request->tipo;
@@ -49,8 +50,35 @@ class ActividadController extends Controller
     	$actividad->descripcion = $request->descripcion;
     	$actividad->status = "disponible";
     	$actividad->save();
+    	
+    	//$index=0;
+    	//$aux  = $request->get('facilitadores');
+    	//$i=0;
+    	//$tipo = gettype($request->facilitadores);
+    	//$jsons = json_decode($request->facilitadores, true);
+    	foreach($request->facilitadores as $facilitador)
+    	{
+    		//$i++;
+    		//$primero = $facilitador["id"];
+    		if($facilitador["becario"]=="no")
+    		{
+    			$af = new ActividadFacilitador;
+    			$af->actividad_id = $actividad->id;
+    			$af->nombreyapellido =  $facilitador["nombre"];
+    			$af->save();
+    		}
+    		else
+    		{
+    			$af = new ActividadFacilitador;
+    			$af->actividad_id = $actividad->id;
+    			$af->becario_id = $facilitador["id"];
+    			$af->save();
+    		}
+    	
+    	}
     	//crear actividad_facilitador
-    	return response()->json(['success'=>'El '.$actividad->tipo.' fue creado exitosamente.']);
+    	//$count = count($request->facilitadores);
+    	return response()->json(['success'=>'La actividad fue creada exitosamente.']);
     }
 
     //becarios activos son los que pueden ser facilitador
