@@ -69,12 +69,14 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>['admin']],function ()
     {
         //talleres y chat clubs
+        Route::get('/actividades/', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
         Route::get('/actividades/{id}/editar', 'ActividadController@editar')->name('actividad.editar');
         Route::post('/actividades/{id}/actualizar', 'ActividadController@actualizar')->name('actividad.actualizar');
 
         Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
+
 
 
         //periodos
