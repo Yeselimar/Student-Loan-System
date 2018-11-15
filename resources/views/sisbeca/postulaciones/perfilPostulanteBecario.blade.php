@@ -96,7 +96,10 @@
     <br>
 
     @if($postulante->status==='postulante')
+   
       <div align="center">
+      <h3>¿Que Acción Tomar para la Entrevista de {{$postulante->user->name.' '.$postulante->user->last_name}} ?</h3>
+      <br>
           <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
           <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
       </div>
@@ -630,7 +633,7 @@
                    
             <div class="form-group">
                 <div class="col">
-                    <label for="exampleFormControlTextarea1">Observaciones</label>
+                    <label for="exampleFormControlTextarea1">Observaciones: (Visible al Postulante)</label>
                     <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
                   
                     <button type='submit' title="Aprobar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>
