@@ -20,7 +20,13 @@ use Illuminate\Support\Facades\Auth;
 class CompartidoDirecCoordController extends Controller
 {
     //
-
+    public function obtener_entrevistados()
+    {
+      
+        $postulantes = Becario::where('status','=','entrevistado')->with("user")->with('entrevistadores')->get();
+        return response()->json(['postulantes'=>$postulantes]);
+    
+    }
     public function __construct()
     {
         $this->middleware('compartido_direc_coord');

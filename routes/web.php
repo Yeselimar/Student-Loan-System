@@ -571,6 +571,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'gestionSolicitudes.listar'
         ]);
 
+        Route::get('postulantes/entrevistados', [
+            'uses' => 'CompartidoDirecCoordController@obtener_entrevistados',
+            'as' => 'postulantes.entrevistados'
+        ]);
+
         Route::get('gestionSolicitud/revisar/{id}', [
             'uses' => 'CompartidoDirecCoordController@revisarSolicitud',
             'as' => 'solicitud.revisar'
