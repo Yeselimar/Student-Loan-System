@@ -415,6 +415,7 @@ class DirectivoController extends Controller
             else
             {
                 // $postulante->delete();
+                //falta borrar su hoja de vida si es rechazado
                 $postulante->rol='rechazado';
                 flash('!' . $postulante->name . ' ha sido rechazado como mentor.', 'danger')->important();
                 $postulante->save();
@@ -426,19 +427,13 @@ class DirectivoController extends Controller
     public function listarPostulantesMentores()
     {
         $postulantes = User::query()->where('rol','=','postulante_mentor')->orWhere('rol','=','rechazado')->get();
-        $concursos = Concurso::query()->where('tipo','=','mentores')->where('status','<>','finalizado')->first();
-        if(!is_null($concursos))
-        {
-            if($concursos->status=='cerrado')
-            {
-                flash('Disculpe, el proceso de postulación de mentores se encuentra cerrado, y apertura el '.$concursos->fecha_inicio,'info');
-            }  
-            else if(($concursos->status=='abierto')&&($postulantes->count()==0))
+      
+             if(($postulantes->count()==0))
             {
                 flash('Disculpe, no existen mentores postulados','danger');
                 
             }
-        }
+       
         return view('sisbeca.postulaciones.postulantesMentores')->with('users',$postulantes);   
     }
 

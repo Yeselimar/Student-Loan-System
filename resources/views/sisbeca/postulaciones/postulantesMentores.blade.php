@@ -29,7 +29,7 @@
                         </td>
                         @else
                         <td class="text-center">
-                            <span class="label label-warning">sin Revisar</span></td>
+                            <span class="label label-inverse">sin Revisar</span></td>
                         @endif                                
 
                         <td class="text-center">

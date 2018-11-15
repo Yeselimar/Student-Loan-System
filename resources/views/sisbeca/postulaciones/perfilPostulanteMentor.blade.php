@@ -95,6 +95,8 @@
       @if(Auth::user()->rol==='directivo')
         @if($postulanteMentor->rol!='rechazado')
           <div align="center">
+          <h3>¿Que Acción Tomar para el Postulante {{$postulanteMentor->name.' '.$postulanteMentor->last_name}} ?</h3>
+          <br>
              <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
              <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
           </div>

@@ -44,7 +44,7 @@
                                 </td>
                                 @else
                                 <td class="text-center">
-                                    <span class="label label-warning">Sin Revisar</span>
+                                    <span class="label label-inverse">Sin Revisar</span>
                                 </td>
                                 @endif
 
