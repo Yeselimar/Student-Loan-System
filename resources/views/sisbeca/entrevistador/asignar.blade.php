@@ -215,9 +215,9 @@ const app = new Vue({
 		asignarentrevistadores: function(id,seleccionados)
 		{
 			this.seleccionados = seleccionados;
-			//console.log("value: "+$('#hora').val());
+			console.log("value: "+$('#hora').val());
 			this.hora = $('#hora').val();
-			//console.log("model: "+this.hora);
+			console.log("model: "+this.hora);
 			var dataform = new FormData();
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
