@@ -171,9 +171,17 @@ class NominaController extends Controller
     public function procesardetalleservicio($mes,$anho)
     {
         //este metodo es igual al procesadetalle
+
         $nominasfiltro = Nomina::where('mes','=',$mes)->where('year',$anho)->with("becario")->with("user")->get();
+        foreach($nominasfiltro as $nomina)
+        {
+            //$nomina["total_facturas"] = DB::select('select *, sum(precio_unitario*cantidad) AS preciototal, sum(precio_unitario) AS preciounitario, sum(precio_unitario*alicuota) AS iva from reservas_items where id_reserva="'.$reserva->id_reserva.'" group by id_tipohabitacion, pax');;
+            $nomina["numero_facturas"] = FactLibro::where('mes','=',$mes)->where('year','=',$anho)->where('becario_id','=',$nomina->datos_id)->count();
+        }
+       
         return response()->json(['nominas'=>$nominasfiltro]);
     }
+
     public function generartodo($mes,$anho)
     {
     	//validar que no se haya generado para una fecha
@@ -273,7 +281,7 @@ class NominaController extends Controller
         {
             $nomina->status = 'generado';
             $nomina->fecha_generada = date('Y-m-d H:m:s');
-            $nomina->total = $nomina->sueldo_base+$nomina->retroactivo+$nomina->monto_libros;
+            $nomina->total = $nomina->cva+$nomina->sueldo_base+$nomina->retroactivo+$nomina->monto_libros;
             $nomina->save();
         }
         flash('La nómina fue generada exitosamente.','success');
@@ -363,5 +371,29 @@ class NominaController extends Controller
             flash('Las Facturas de '.$becario->user->name.' '.$becario->user->apellido.' Han sido revisadas y procesadas exitosamente!','success')->important();
         }
         return redirect()->route('nomina.procesar.detalle',array('$mes'=>$mes, 'anho'=>$anho));
+    }
+
+    //servicio para guardar CVA
+    public function guardarCVA(Request $request, $id)
+    {
+        $request->validate([
+            'cva' => 'required|numeric|between:0,9999999999',
+        ]);
+        $nomina = Nomina::find($id);
+        $nomina->cva = $request->cva;
+        $nomina->save();
+        return response()->json(['success'=>'El monto CVA para '.$nomina->datos_nombres.' '.$nomina->datos_apellidos.' fue guardado exitosamente']);
+    }
+
+    //servicio para guardar CVA
+    public function guardarRetroactivo(Request $request, $id)
+    {
+        $request->validate([
+            'retroactivo' => 'required|numeric|between:0,9999999999',
+        ]);
+        $nomina = Nomina::find($id);
+        $nomina->retroactivo = $request->retroactivo;
+        $nomina->save();
+        return response()->json(['success'=>'El monto retroactivo para '.$nomina->datos_nombres.' '.$nomina->datos_apellidos.' fue guardado exitosamente']);
     }
 }

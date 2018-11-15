@@ -8,6 +8,32 @@
 @import url(spinners.css);
 @import url(animate.css);
 /*Estilos personalizados sisbeca */
+.sisbeca-btn-primary-especial
+{
+    background: #003865 !important;
+    color: white !important;
+    border: 1px solid #003865;
+    border-radius: 5px;
+}
+.sisbeca-btn-default-especial
+{
+    background: #dc3545;
+    color: white !important;
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+}
+.sisbeca-select-especial
+{
+    border-radius: 5px !important;
+    border: 1px solid #021f3a !important;
+}
+
+.sisbeca-select-especial:focus
+{
+    background-color: #f8fbfe !important;
+    border: 2px solid #021f3a !important;
+    box-shadow: none !important;
+}
 .sisbeca-input {
     font-size: 14px;
     height: 40px;
@@ -22,7 +48,7 @@
 }
 .sisbeca-input:focus {
     background-color: #f8fbfe !important;
-     border: 2px solid #021f3a;
+    border: 2px solid #021f3a !important;
 }
 .sisbeca-btn-primary {
     background: #003865;
@@ -2996,8 +3022,8 @@ panel-default>.panel-heading {
   font-size: 12px;
 }
 .btn-xs {
-  padding: 0.25rem 0.5rem;
-  font-size: 10px;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 10px !important;
 }
 .button-list a {
   margin: 5px 12px 5px 0;

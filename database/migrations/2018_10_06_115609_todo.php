@@ -134,6 +134,7 @@ class Todo extends Migration
 
             //campos de la entrevista
             $table->datetime('fecha_entrevista')->nullable();
+            $table->time('hora_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
 
             //campos para la nómina
@@ -263,15 +264,19 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->string('nombre');
-            $table->enum('tipo',['taller','chat club',])->default('taller');
+            $table->string('anho_academico')->nullable();
+            $table->enum('tipo',['taller','chat club'])->default('taller');
+            $table->enum('nivel',['inicio','intermedio','avanzado'])->default('inicio');
+            $table->enum('modalidad',['presencial','virtual'])->default('presencial');
             $table->text('descripcion');
             $table->unsignedInteger('limite_participantes');
             $table->unsignedInteger('horas_voluntariado');//horas en voluntariado
+            $table->datetime('fecha')->nullable();
+            $table->time('hora_inicio')->nullable();
+            $table->time('hora_fin')->nullable();
             $table->enum('status',['suspendido','bloqueado','disponible'])->default('disponible');
-            $table->datetime('fecha_inicio')->nullable();
-            $table->datetime('fecha_fin')->nullable();
-            $table->enum('nivel',['inicio','intermedio','avanzado'])->default('inicio');
-            $table->enum('modalidad',['presencial','virtual'])->default('presencial');
+            
+            
 
             $table->timestamps();
         });

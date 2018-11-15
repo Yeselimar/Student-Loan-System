@@ -31,7 +31,7 @@
                                 @else
                                 <td class="text-center"><a class="btn btn-warning btn-xs"><span style="display:none">..</span> </td></a>
                                 @endif -->
-                                <td class="text-center">{{ $becario->user->name.' '.$becario->user->lastname }}</td>
+                                <td class="text-center">{{ $becario->user->name.' '.$becario->user->last_name }}</td>
                                 <td class="text-center">{{ $becario->user->cedula }}</td>
 
                                 @if($becario->status=='entrevista')                                        

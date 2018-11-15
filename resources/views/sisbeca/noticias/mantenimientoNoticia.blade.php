@@ -112,8 +112,7 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function() {
-$('#noticias').DataTable(
-    {
+    $('#noticias').DataTable({
 
         "language": {
         "decimal": "",

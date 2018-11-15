@@ -13,6 +13,7 @@
 				<tr>
 					<th class="text-left">Postulante Becario</th>
 					<th>Entrevistadores</th>
+					<th>Fecha Hora Lugar</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
@@ -26,8 +27,32 @@
 							</template>
 						</template>
 						<template v-if="postulante.entrevistadores.length==0">
-							<span class="label label-danger">sin entrevistadores</span>
+							<span class="label label-inverse">sin entrevistadores</span>
 						</template>
+					</td>
+					<td>
+						<div class="col-lg-12 row">
+							<div v-if="postulante.fecha_entrevista!=null">
+								<span class="label label-warning">@{{ postulante.fecha_entrevista }}</span>
+							</div>
+							<div v-else>
+								<span class="label label-default">Sin Fecha</span>
+							</div>
+							&nbsp;
+							<div v-if="postulante.hora_entrevista!=null">
+								<span class="label label-info">@{{ postulante.hora_entrevista }}</span>
+							</div>
+							<div v-else>
+								<span class="label label-default">Sin Hora</span>
+							</div>
+							&nbsp;
+							<div v-if="postulante.lugar_entrevista!=null">
+								<span class="label label-danger">@{{ postulante.lugar_entrevista }}</span>
+							</div>
+							<div v-else>
+								<span class="label label-default">Sin Lugar</span>
+							</div>
+						</div>
 					</td>
 					<td>
 						<span data-toggle="tooltip" data-placement="bottom" title="Asignar Entrevistadores" >
@@ -36,6 +61,9 @@
 							</button>
 						</span>
 					</td>
+				</tr>
+				<tr v-if="postulantes.length==0">
+					<td colspan="4" class="text-center">No hay <strong>postulantes a entrevistas</strong></td>
 				</tr>
 			</tbody>
 		</table>
@@ -61,11 +89,11 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
-						  		<input type="date" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" v-model="fecha">
+						  		<input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha">
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
-								<input type="text" name="hora" class="sisbeca-input input-sm" @click="asignarentrevistadores(hora)" id="datetimepicker3" v-model="hora" placeholder="HH:MM:SS" >
+								<input type="text" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
 							
 							</div>
 							  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
@@ -141,7 +169,16 @@ const app = new Vue({
 		fecha:'',
 		hora:'',
 		lugar:'',
+		fechaseleccionada:'',
 	},
+	mounted()
+	{
+	    $('#hora').datetimepicker({
+            format: 'hh:mm A',
+        }).on('dp.change', function(e) {
+            this.hora = $('#hora').val();
+        });
+  	},
 	methods:
 	{
 		mostrarModal: function(postulante,entrevistadores)
@@ -150,6 +187,16 @@ const app = new Vue({
 			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
 			this.entrevistadores = entrevistadores;
 			this.seleccionados = [];
+			var d = new Date(postulante.fecha_entrevista);
+	        var dia = d.getDate();
+	        var mes = d.getMonth() + 1;
+	        var anho = d.getFullYear();
+	        var fecha = dia + "/" + this.zfill(mes,2) + "/" + anho;
+	        this.fecha = fecha;
+	        this.hora = postulante.hora_entrevista;
+	        this.lugar = postulante.lugar_entrevista;
+	        $('#fecha').datepicker('setDate', new Date(anho, d.getMonth(), this.zfill(dia)));
+			$('#fecha').datepicker('update');  //update the bootstrap datepicker
 			for (var i = 0; i < this.entrevistadores.length; i++)
 			{
 				this.seleccionados[i] = entrevistadores[i].id;
@@ -168,15 +215,15 @@ const app = new Vue({
 		asignarentrevistadores: function(id,seleccionados)
 		{
 			this.seleccionados = seleccionados;
+			//console.log("value: "+$('#hora').val());
+			this.hora = $('#hora').val();
+			//console.log("model: "+this.hora);
 			var dataform = new FormData();
 		
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
             dataform.append('hora', this.hora);
 			dataform.append('lugar', this.lugar);
-			
-			console.log('la hora es: '+this.hora);
-			console.log('la fecha es: '+this.fecha);
             var url = '{{route('entrevistador.asignar.guardar',':id')}}';
             url = url.replace(':id', id);
 			axios.post(url,dataform).then(response => 
@@ -186,7 +233,6 @@ const app = new Vue({
 
 				toastr.success(response.data.success);
 			});
-			
 		},
 		obtenerentrevistadores: function()
 		{
@@ -196,7 +242,26 @@ const app = new Vue({
 				this.todosentrevistadores = response.data.entrevistadores;
 			});
 		},
-		
+		zfill: function(number, width)
+		{
+			var numberOutput = Math.abs(number); /* Valor absoluto del número */
+    		var length = number.toString().length; /* Largo del número */ 
+		    var zero = "0"; /* String de cero */  
+		    
+		    if (width <= length) {
+		        if (number < 0) {
+		             return ("-" + numberOutput.toString()); 
+		        } else {
+		             return numberOutput.toString(); 
+		        }
+		    } else {
+		        if (number < 0) {
+		            return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); 
+		        } else {
+		            return ((zero.repeat(width - length)) + numberOutput.toString()); 
+		        }
+		    }
+		}
 	},
 	
 });
@@ -216,15 +281,5 @@ $(document).ready(function(){
 		autoclose: true,
 	});
 </script>
-
-
-<script>
-	$(function () {
-		$('#datetimepicker3').datetimepicker({
-			format: 'LT'
-		});
-	});
-</script>
-
 
 @endsection

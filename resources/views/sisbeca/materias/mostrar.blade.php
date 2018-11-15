@@ -1,6 +1,5 @@
 @extends('sisbeca.layouts.main')
 @section('title','Periodo: '.$periodo->anho_lectivo)
-@section('subtitle',$periodo->anho_lectivo)
 @section('content')
 	<div class="col-lg-12" id="app">
 		<div class="text-right">

@@ -16,6 +16,7 @@
             <thead>
                 <tr>
                     <th class="text-center">Nombre y Apellido</th>
+                    <th class="text-right">CVA</th>
                     <th class="text-right">Retroactivo</th>
                     <th class="text-right">Libros</th>
                     <th class="text-right">Sueldo</th>
@@ -28,6 +29,7 @@
                     @foreach($nominas as $nomina)
                         <tr>
                             <td class="text-center"> {{ $nomina->datos_nombres.' '.$nomina->datos_apellidos}}</td>
+                             <td class="text-right">{{ number_format($nomina->cva, 2, ',', '.') }}</td>
                             <td class="text-right">{{ number_format($nomina->retroactivo, 2, ',', '.') }}</td>
                             <td class="text-right">{{ number_format($nomina->monto_libros, 2, ',', '.') }}</td>
                             <td class="text-right">{{ number_format($nomina->sueldo_base, 2, ',', '.')}}</td>
@@ -37,7 +39,7 @@
                     @endforeach
                 @else
                     <tr>
-                         <td class="text-center" colspan="6">No hay registros en esta<strong>nómina</strong>.</td>
+                         <td class="text-center" colspan="7">No hay registros en esta<strong>nómina</strong>.</td>
                     </tr>
                     
                 @endif

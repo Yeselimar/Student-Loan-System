@@ -16,4 +16,9 @@ class Solicitud extends Model
     protected $fillable = [
         'titulo', 'descripcion','fecha_inactividad','fecha_desincorporacion',
     ];
+
+    public function fechaActualizacion()
+    {
+    	return date("d/m/Y h:i:s a", strtotime($this->updated_at));
+    }
 }
