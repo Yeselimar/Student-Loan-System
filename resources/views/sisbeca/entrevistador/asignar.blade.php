@@ -65,7 +65,7 @@
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
-								<input type="time" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM:SS" >
+								<input type="text" name="hora" class="sisbeca-input input-sm" @click="asignarentrevistadores(hora)" id="datetimepicker3" v-model="hora" placeholder="HH:MM:SS" >
 							
 							</div>
 							  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
@@ -169,6 +169,7 @@ const app = new Vue({
 		{
 			this.seleccionados = seleccionados;
 			var dataform = new FormData();
+		
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
             dataform.append('hora', this.hora);
