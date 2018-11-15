@@ -53,7 +53,7 @@ class EntrevistadorController extends Controller
 					$nuevo->save();
 				}
 			}
-			return response()->json(['success'=>'Los entrevistadores fueron actualizados']);
+			return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
 		}
 
 		public function obtenerbecario($id)

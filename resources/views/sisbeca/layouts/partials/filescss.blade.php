@@ -42,8 +42,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/sweetalert/sweetalert2.min.css')}}"/> 
 
      
-   <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet"/>
-   <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker-standalone.min.css')}}" rel="stylesheet"/>
-   <link href="{{asset('plugins/datetimepicker-bootstrap/mdtimepicker.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker-standalone.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('plugins/datetimepicker-bootstrap/mdtimepicker.css')}}" rel="stylesheet" type="text/css"/>
     
-
+    <link href="{{asset('plugins/bootstrap-year/css/bootstrap-year-calendar.min.css')}}" /> <!--Boostrap Year Calendar -->

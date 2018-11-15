@@ -33,14 +33,14 @@
 					<td>
 						<div class="col-lg-12 row">
 							<div v-if="postulante.fecha_entrevista!=null">
-								<span class="label label-warning">@{{ postulante.fecha_entrevista }}</span>
+								<span class="label label-warning">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
 							</div>
 							<div v-else>
 								<span class="label label-default">Sin Fecha</span>
 							</div>
 							&nbsp;
 							<div v-if="postulante.hora_entrevista!=null">
-								<span class="label label-info">@{{ postulante.hora_entrevista }}</span>
+								<span class="label label-info">@{{ horaformatear(postulante.hora_entrevista) }}</span>
 							</div>
 							<div v-else>
 								<span class="label label-default">Sin Hora</span>
@@ -92,14 +92,14 @@
 						  		<input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha">
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
+						  		<input type="text" name="lugar" v-model="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
+						  	</div>
+						  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
 								<input type="text" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
 							
 							</div>
-							  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
-								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
-						  		<input type="text" name="lugar" v-model="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
-						  	</div>
 						</div>
 						
 
@@ -115,7 +115,6 @@
 												  		<label :for="entrevistador.nombre_apellido" class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</label>
 													</div>
 											  	</div>
-											  	
 										</template>
 									</template>
 									<template v-else>
@@ -147,7 +146,9 @@
 @endsection
 
 @section('personaljs')
-
+<script>
+	moment().format();
+</script>
 
 <script>
 const app = new Vue({
@@ -181,22 +182,39 @@ const app = new Vue({
   	},
 	methods:
 	{
+		fechaformartear: function (fecha)
+		{
+			var d = new Date(fecha);
+			var dia = d.getDate();
+	        var mes = d.getMonth() + 1;
+	        var anho = d.getFullYear();
+	        var fecha = this.zfill(dia,2) + "/" + this.zfill(mes,2) + "/" + anho;
+	        return fecha;
+		},
+		horaformatear: function (hora)
+		{
+			var cadena = "2018-11-11 "+hora;
+			var dia = new Date (cadena);
+			return moment(dia).format('hh:mm A');
+		},
 		mostrarModal: function(postulante,entrevistadores)
 		{
-			this.id = postulante.user_id;
-			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
-			this.entrevistadores = entrevistadores;
-			this.seleccionados = [];
 			var d = new Date(postulante.fecha_entrevista);
 	        var dia = d.getDate();
 	        var mes = d.getMonth() + 1;
 	        var anho = d.getFullYear();
 	        var fecha = dia + "/" + this.zfill(mes,2) + "/" + anho;
-	        this.fecha = fecha;
-	        this.hora = postulante.hora_entrevista;
+	        var cadena = "2018-11-11 "+postulante.hora_entrevista;
+			var diahora = new Date (cadena);
+			this.id = postulante.user_id;
+			this.fecha = fecha;
+			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
+			this.entrevistadores = entrevistadores;
+			this.seleccionados = [];
+	        this.hora = moment(diahora).format('hh:mm A');
 	        this.lugar = postulante.lugar_entrevista;
 	        $('#fecha').datepicker('setDate', new Date(anho, d.getMonth(), this.zfill(dia)));
-			$('#fecha').datepicker('update');  //update the bootstrap datepicker
+			$('#fecha').datepicker('update');
 			for (var i = 0; i < this.entrevistadores.length; i++)
 			{
 				this.seleccionados[i] = entrevistadores[i].id;
@@ -214,12 +232,11 @@ const app = new Vue({
 		},
 		asignarentrevistadores: function(id,seleccionados)
 		{
-			this.seleccionados = seleccionados;
+			//this.seleccionados = seleccionados;
 			console.log("value: "+$('#hora').val());
-			this.hora = $('#hora').val();
+			//this.hora = $('#hora').val();
 			console.log("model: "+this.hora);
 			var dataform = new FormData();
-		
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
             dataform.append('hora', this.hora);

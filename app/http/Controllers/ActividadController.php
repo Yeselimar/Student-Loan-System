@@ -11,7 +11,8 @@ class ActividadController extends Controller
 {
 	public function listar()
 	{
-
+        $actividades = Actividad::all();
+        return view('sisbeca.actividad.listar')->with(compact('actividades'));
 	}
 
     public function crear()
