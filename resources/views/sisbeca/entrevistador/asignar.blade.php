@@ -199,12 +199,26 @@ const app = new Vue({
 		},
 		mostrarModal: function(postulante,entrevistadores)
 		{
-			var d = new Date(postulante.fecha_entrevista);
+			if(postulante.fecha_entrevista!=null)
+	        {
+				var d = new Date(postulante.fecha_entrevista);
+			}
+			else
+			{
+				var d = new Date("2018-01-01");
+			}
 	        var dia = d.getDate();
 	        var mes = d.getMonth() + 1;
 	        var anho = d.getFullYear();
 	        var fecha = dia + "/" + this.zfill(mes,2) + "/" + anho;
-	        var cadena = "2018-11-11 "+postulante.hora_entrevista;
+	        if(postulante.hora_entrevista!=null)
+	        {
+	        	var cadena = "2018-11-11 "+postulante.hora_entrevista;
+	        }
+	        else
+	        {
+	        	var cadena = "2018-11-11 12:00:00";
+	        }
 			var diahora = new Date (cadena);
 			this.id = postulante.user_id;
 			this.fecha = fecha;

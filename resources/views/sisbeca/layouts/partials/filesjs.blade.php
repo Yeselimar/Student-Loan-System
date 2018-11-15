@@ -60,7 +60,7 @@
    
     <!--<script type="text/javascript" src="{{asset('plugins/datetimepicker-bootstrap/mdtimepicker.js')}}"></script>-->
     
-    <script src="{{asset('/packages/bootstrap-year/js/bootstrap-year-calendar.min.js')}}"></script><!--Boostrap Year Calendar -->
-    <script src="{{asset('/packages/bootstrap-year/js/languages/bootstrap-year-calendar.es.js')}}"></script> <!-- Boostrapp Year Calendar -->
+    <script src="{{asset('/plugins/full-calendar/fullcalendar.min.js')}}"></script><!--Boostrap Full Calendar -->
+   
    
     

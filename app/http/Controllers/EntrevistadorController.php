@@ -24,8 +24,8 @@ class EntrevistadorController extends Controller
 
 		public function obtenerentrevistadores()
 		{
-				$entrevistadores = User::entrevistadores()->get();
-				return response()->json(['entrevistadores'=>$entrevistadores]);
+			$entrevistadores = User::entrevistadores()->get();
+			return response()->json(['entrevistadores'=>$entrevistadores]);
 		}
 
 		public function guardarasignarentrevistadores(Request $request,$id)
