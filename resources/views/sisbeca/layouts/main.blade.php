@@ -16,7 +16,7 @@
 
     @include('sisbeca.layouts.partials.filescss')
 
-    <script src="{{asset('js/dt.js')}}"></script>
+    <!--<script src="{{asset('js/dt.js')}}"></script>-->
 
     @yield('personalcss')
 

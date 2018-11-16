@@ -1,87 +1,191 @@
 @extends('sisbeca.layouts.main')
 @section('title',"Todos los talleres y chat clubs")
+@section('personalcss')
+
+<link href="{{asset('plugins/full-calendar/fullcalendar-bootsnipp.css')}}" rel="stylesheet"><!--Boostrap Full Calendar de Bootsnipp -->
+<link href="{{asset('plugins/full-calendar/fullcalendar-custom.css')}}" rel="stylesheet"><!--Boostrap Full Calendar de Bootsnipp -->
+
+@endsection
 @section('content')
+  
+  <div class="col-lg-12">
+    <div id='calendar' style="border:1px solid #003865">
+    </div>
 
-<div class="col-lg-12" id="app" style="border:1px solid black">
-	<div id="calendar" style="border:2px solid red"></div>
-</div>
-
+    <div style='clear:both'>
+    </div>
+  </div>
 @endsection
 
 @section('personaljs')
+
+<script src="{{asset('js/jquery-ui.js')}}"></script> <!--Borrar--> 
+
+<script src="{{asset('/plugins/full-calendar/fullcalendar-bootsnipp.js')}}"></script><!--Boostrap Full Calendar de Bootsnipp -->
+
+
 <script>
 
   $(document).ready(function() {
-
-    $('#calendar').fullCalendar({
-    	defaultView: 'month'
+      var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+    
+    /*  className colors
+    
+    className: default(transparent), important(red), chill(pink), success(green), info(blue)
+    
+    */    
+    
+      
+    /* initialize the external events
+    -----------------------------------------------------------------*/
+  
+    $('#external-events div.external-event').each(function() {
+    
+      // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+      // it doesn't need to have a start or end
+      var eventObject = {
+        title: $.trim($(this).text()) // use the element's text as the event title
+      };
+      
+      // store the Event Object in the DOM element so we can get to it later
+      $(this).data('eventObject', eventObject);
+      
+      // make the event draggable using jQuery UI
+      $(this).draggable({
+        zIndex: 999,
+        revert: true,      // will cause the event to go back to its
+        revertDuration: 0  //  original position after the drag
+      });
+      
+    });
+  
+  
+    /* initialize the calendar
+    -----------------------------------------------------------------*/
+    
+    var calendar =  $('#calendar').fullCalendar({
       header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay,listWeek'
+        left: 'title',
+        center: 'agendaDay,agendaWeek,month',
+        right: 'prev,next today'
       },
-      defaultDate: '2018-03-12',
-      navLinks: true, // can click day/week names to navigate views
       editable: true,
-      eventLimit: true, // allow "more" link when too many events
+      firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+      selectable: true,
+      defaultView: 'month',
+      
+      axisFormat: 'h:mm',
+      columnFormat: {
+                month: 'ddd',    // Mon
+                week: 'ddd d', // Mon 7
+                day: 'dddd M/d',  // Monday 9/7
+                agendaDay: 'dddd d'
+            },
+            titleFormat: {
+                month: 'MMMM yyyy', // September 2009
+                week: "MMMM yyyy", // September 2009
+                day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
+            },
+      allDaySlot: false,
+      selectHelper: true,
+      select: function(start, end, allDay) {
+        var title = prompt('Event Title:');
+        if (title) {
+          calendar.fullCalendar('renderEvent',
+            {
+              title: title,
+              start: start,
+              end: end,
+              allDay: allDay
+            },
+            true // make the event "stick"
+          );
+        }
+        calendar.fullCalendar('unselect');
+      },
+      droppable: true, // this allows things to be dropped onto the calendar !!!
+      drop: function(date, allDay) { // this function is called when something is dropped
+      
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject');
+        
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+        
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+        copiedEventObject.allDay = allDay;
+        
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+        
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove();
+        }
+        
+      },
+      
       events: [
         {
           title: 'All Day Event',
-          start: '2018-03-01',
-        },
-        {
-          title: 'Long Event',
-          start: '2018-03-07',
-          end: '2018-03-10'
+          start: new Date(y, m, 1)
         },
         {
           id: 999,
           title: 'Repeating Event',
-          start: '2018-03-09T16:00:00'
+          start: new Date(y, m, d-3, 16, 0),
+          allDay: false,
+          className: 'info'
         },
         {
           id: 999,
           title: 'Repeating Event',
-          start: '2018-03-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2018-03-11',
-          end: '2018-03-13'
+          start: new Date(y, m, d+4, 16, 0),
+          allDay: false,
+          className: 'info'
         },
         {
           title: 'Meeting',
-          start: '2018-03-12T10:30:00',
-          end: '2018-03-12T12:30:00'
+          start: new Date(y, m, d, 10, 0),
+          allDay: false,
+          className: 'important'
         },
         {
           title: 'Lunch',
-          start: '2018-03-12T12:00:00'
+          start: new Date(y, m, d, 12, 0),
+          end: new Date(y, m, d, 14, 0),
+          allDay: false,
+          className: 'important'
         },
         {
-          title: 'Meeting',
-          start: '2018-03-12T14:30:00'
+          title: 'Birthday Party long long long long',
+          start: new Date(y, m, d+1, 19, 0),
+          end: new Date(y, m, d+1, 22, 30),
+          allDay: false,
         },
         {
-          title: 'Happy Hour',
-          start: '2018-03-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2018-03-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2018-03-13T07:00:00'
+          title: 'Programing',
+          start: new Date(y, m, d+1, 22,45),
+          end: new Date(y, m, d+1, 23, 0),
+          allDay: false,
         },
         {
           title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2018-03-28'
+          start: new Date(y, m, 28),
+          end: new Date(y, m, 29),
+          url: 'https://google.co.ve',
+          className: 'success'
         }
-      ]
+      ],      
     });
-
+    
+    
   });
 
 </script>
