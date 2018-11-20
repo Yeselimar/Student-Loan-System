@@ -12,4 +12,9 @@ class ActividadFacilitador extends Model
     {
         return $this->hasOne('avaa\Becario', 'user_id','becario_id');
     }
+
+    public function user()// probar
+    {
+        return $this->belongsTo('avaa\User','becario_id');
+    }
 }

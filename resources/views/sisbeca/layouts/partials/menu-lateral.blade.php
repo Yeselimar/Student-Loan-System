@@ -344,8 +344,14 @@
                 @endif
 
 
-                 @if(Auth::user()->rol==='becario')
-
+                @if(Auth::user()->rol==='becario')
+                <li class="nav-label">Actividades Becarias</li>
+                <li>
+                    <a class="has-arrow  " href="{{route('actividad.listar')}}" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Taller/Chat Club</span>
+                    </a>
+                </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>

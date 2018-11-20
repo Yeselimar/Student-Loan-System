@@ -27,7 +27,7 @@
 <script>
 
   $(document).ready(function() {
-      var date = new Date();
+      var date = new Date("2018-12-31");
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
@@ -61,8 +61,23 @@
       });
       
     });
-  
-  
+    var eventos = [];
+    
+    @foreach($actividades as $actividad)
+    var dia = new Date("{{$actividad->fecha}}");
+    var cadena1 = "2050-01-01 "+"{{$actividad->hora_inicio}}";
+    var cadena2 = "2050-01-01 "+"{{$actividad->hora_fin}}";
+    var horainicio = new Date (cadena1);
+    var horafin = new Date (cadena2);
+    eventos.push({
+      title: '{{$actividad->nombre}}',
+      start: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horainicio.getHours(),horainicio.getMinutes()),
+      end: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horafin.getHours(),horafin.getMinutes()),
+      allDay: false,
+      url: '{{route('actividad.detalles',$actividad->id)}}',
+    });
+    @endforeach
+      
     /* initialize the calendar
     -----------------------------------------------------------------*/
     
@@ -72,9 +87,9 @@
         center: 'agendaDay,agendaWeek,month',
         right: 'prev,next today'
       },
-      editable: true,
+      editable: false,
       firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
-      selectable: true,
+      selectable: false,
       defaultView: 'month',
       
       axisFormat: 'h:mm',
@@ -92,7 +107,7 @@
       allDaySlot: false,
       selectHelper: true,
       select: function(start, end, allDay) {
-        var title = prompt('Event Title:');
+        var title /*= prompt('Event Title:')*/;
         if (title) {
           calendar.fullCalendar('renderEvent',
             {
@@ -106,7 +121,7 @@
         }
         calendar.fullCalendar('unselect');
       },
-      droppable: true, // this allows things to be dropped onto the calendar !!!
+      droppable: false, // this allows things to be dropped onto the calendar !!!
       drop: function(date, allDay) { // this function is called when something is dropped
       
         // retrieve the dropped element's stored Event Object
@@ -131,58 +146,7 @@
         
       },
       
-      events: [
-        {
-          title: 'All Day Event',
-          start: new Date(y, m, 1)
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: new Date(y, m, d-3, 16, 0),
-          allDay: false,
-          className: 'info'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: new Date(y, m, d+4, 16, 0),
-          allDay: false,
-          className: 'info'
-        },
-        {
-          title: 'Meeting',
-          start: new Date(y, m, d, 10, 0),
-          allDay: false,
-          className: 'important'
-        },
-        {
-          title: 'Lunch',
-          start: new Date(y, m, d, 12, 0),
-          end: new Date(y, m, d, 14, 0),
-          allDay: false,
-          className: 'important'
-        },
-        {
-          title: 'Birthday Party long long long long',
-          start: new Date(y, m, d+1, 19, 0),
-          end: new Date(y, m, d+1, 22, 30),
-          allDay: false,
-        },
-        {
-          title: 'Programing',
-          start: new Date(y, m, d+1, 22,45),
-          end: new Date(y, m, d+1, 23, 0),
-          allDay: false,
-        },
-        {
-          title: 'Click for Google',
-          start: new Date(y, m, 28),
-          end: new Date(y, m, 29),
-          url: 'https://google.co.ve',
-          className: 'success'
-        }
-      ],      
+      events: eventos,      
     });
     
     

@@ -15,8 +15,8 @@
 		<div class="form-group">
 			<div class="row">
                 
-                <template v-for="(input, index) in inputs" >
-                    <div class="col-lg-4 col-md-4 col-sm-6" style="border:1px solid red">
+                <template v-for="(input, index) in inputs">
+                    <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Tipo Facilitador @{{index+1}}</label>
                         <select v-model="input.becario" class="sisbeca-input" name="">
                             <option value="no">No es Becario</option>
@@ -24,7 +24,7 @@
                         </select>   
                         <!-- @{{ input.becario }} -->
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-6" style="border:1px solid blue">
+                    <div class="col-lg-8 col-md-8 col-sm-6">
                         <div v-if="input.becario==='no'">
                             <label class="control-label">*Nombre y Apellido @{{index+1}}</label>
                         </div>
@@ -46,18 +46,22 @@
                             <!-- @{{ input.nombre }}-->
                             <div class="input-group-append">
                                 <template v-if="inputs.length!=1">
-                                    <button @click="eliminar(index)" class="btn sisbeca-btn-default-especial" type="button">Eliminar</button>
+                                    <button @click="eliminar(index)" class="btn sisbeca-btn-default-especial" type="button"><i class="fa fa-trash"></i></button>
                                 </template>
                                 <template v-else>
-                                    <button @click="eliminar(index)" class="btn sisbeca-btn-default-especial" type="button" disabled="disabled">Eliminar</button>
+                                    <button @click="eliminar(index)" class="btn sisbeca-btn-default-especial" type="button" disabled="disabled"><i class="fa fa-trash"></i></button>
                                 </template>
-                                <button @click="anadir" type="button" class="btn sisbeca-btn-primary-especial">Añadir</button>
                             </div>
                         </div>
-
                     </div>
                 </template>
-                    
+                <div class="col-lg-12">
+                    <div class="text-right">
+                        <button @click="anadir" type="button" class="btn sisbeca-btn-primary-especial">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <label class="control-label">*Nombre</label>
                     {{ Form::text('nombre', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: The Last Game','v-model'=>'nombre'])}}
