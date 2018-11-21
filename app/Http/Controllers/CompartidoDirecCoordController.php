@@ -19,18 +19,41 @@ use Illuminate\Support\Facades\Auth;
 
 class CompartidoDirecCoordController extends Controller
 {
-    //
-    public function obtener_entrevistados()
-    {
-      
-        $postulantes = Becario::where('status','=','entrevistado')->with("user")->with('entrevistadores')->get();
-        return response()->json(['postulantes'=>$postulantes]);
-    
-    }
     public function __construct()
     {
         $this->middleware('compartido_direc_coord');
     }
+    //
+    public function obtener_entrevistados()
+    {
+      
+        $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->with("user")->with('entrevistadores')->with('imagenes')->get();
+        //$postulantes = Becario::where('status','=','entrevistado')->orwhere('acepto_terminos','=',false)->where('status','=','activo')->with("user")->with('entrevistadores')->with('imagenes')->get();
+       
+        //dd($postulantes);
+        return response()->json(['postulantes'=>$postulantes]);
+    
+    }
+    public function veredictoPostulantesBecarios(Request $request, $id)
+    {
+      //  $postulantes = Becario::where('status','=','entrevistado')->with("user")->with('entrevistadores')->with('imagenes')->first();
+      
+        $postulanteBecario = Becario::find($id);
+        $postulanteBecario->status='activo';
+        $postulanteBecario->acepto_terminos=false;
+       $postulanteBecario->save();
+       /* $usuario=User::find($id);
+        $usuario->rol = 'becario';
+        $usuario->save();*/
+       // return response()->json(['postulante'=>$postulanteBecario]);
+      //dd($funcion);
+       if($request->funcion=='Aprobar'){
+       return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
+       }else{
+        return response()->json(['success'=>'RECHAZADOOOOOOO']);
+       }
+    }
+   
 
     public function listarBecarios()
     {

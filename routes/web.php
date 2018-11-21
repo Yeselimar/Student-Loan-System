@@ -570,6 +570,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CompartidoDirecCoordController@listarSolicitudes',
             'as' => 'gestionSolicitudes.listar'
         ]);
+        Route::post('veredicto/postulantesBecario/{id}', [
+            'uses' => 'CompartidoDirecCoordController@veredictoPostulantesBecarios',
+            'as' => 'veredicto.postulantes.becarios'
+        ]);
 
         Route::get('postulantes/entrevistados', [
             'uses' => 'CompartidoDirecCoordController@obtener_entrevistados',

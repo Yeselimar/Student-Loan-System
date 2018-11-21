@@ -82,6 +82,10 @@ class Becario extends Model
     {
         return '/images/becarios/';
     }
+    public function imagenes()//relacion becario-imagen
+    {
+        return $this->hasMany('avaa\Imagen','user_id');
+    }
 
     public static function getCarpetaDocumentos()
     {
