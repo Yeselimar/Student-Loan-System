@@ -29,6 +29,11 @@
 					<button type="button" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Desinscribirme</button>
 				@endif
 			</template>
+			@if($actividad->lapsoparajustificar())
+				<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificación</a>
+			@else
+				<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Subir Justificación</a>
+			@endif
 		@else <!-- Para el Administrador -->
 			<a href="{{route('actividad.inscribir.becario',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Inscribir Becario</a>
 		@endif
@@ -173,10 +178,12 @@
 						Estatus
 					</th>
 					@if(Auth::user()->admin() )
+					<th class="text-center">Cambiar Estatus</th>
 					<th class="text-center">
 						Acciones
 					</th>
 					@endif
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -203,12 +210,18 @@
 					</td>
 					@if(Auth::user()->admin() )
 					<td>
+						<select v-model="becario.estatus" @change="actualizarestatusbecario(becario.estatus,becario.user.id)" class="sisbeca-input input-sm sisbeca-select">
+							<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
+						</select>
+					</td>
+					<td>
+						<template v-if="becario.estatus=='por justificar'">
+							<a :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">Subir Justificación</a>
+						</template>
 						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)">Eliminar Inscripción</button>
-						<div v-if="becario.estatus=='por justificar'">
-							<a href="#" class="btn btn-xs sisbeca-btn-primary">Subir Justificación</a>
-						</div>
 					</td>
 					@endif
+
 				</tr>
 				<tr v-if="becarios && becarios.length==0">
 					<td class="text-left" @if(Auth::user()->admin() ) colspan="3" @else colspan="2" @endif>
@@ -263,6 +276,7 @@ const app = new Vue({
         facilitadores:'',
         becarios:'',
         inscrito:true,
+        estatus:'',
     },
     created: function()
     {
@@ -271,6 +285,28 @@ const app = new Vue({
     },
     methods:
     {	
+    	actualizarestatusbecario: function(estatus,b_id)
+    	{
+    		var a_id = {{$actividad->id}};
+    		var url = "{{ route('actividad.actulizarestatus',array('actividad_id'=>':a_id', 'becario_id'=>':b_id') ) }}";
+    		url = url.replace(':a_id', a_id);
+            url = url.replace(':b_id', b_id);
+            var dataform = new FormData();
+            dataform.append('estatus', estatus);
+			axios.post(url,dataform).then(response => 
+			{
+				this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+			});
+    	},
+    	obtenerRutaJustificacion: function(b_id)
+    	{
+    		var a_id = {{$actividad->id}};
+    		var url = "{{ route('actividad.subirjustificacion',array('actividad_id'=>':a_id', 'becario_id'=>':b_id') ) }}";
+            url = url.replace(':a_id', a_id);
+            url = url.replace(':b_id', b_id);
+            return url;
+    	},
     	desinscribirme: function()
     	{
     		var actividad_id = '{{$actividad->id}}';
@@ -350,6 +386,7 @@ const app = new Vue({
                 this.facilitadores = response.data.facilitadores;
                 this.becarios = response.data.becarios;
                 this.inscrito = response.data.inscrito;
+                this.estatus = response.data.estatus;
             });
     	},
     	fechaformartear: function (fecha)

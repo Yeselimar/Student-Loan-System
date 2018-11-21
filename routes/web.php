@@ -76,6 +76,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/actividades/{id}/detalles/servicio', 'ActividadController@detallesservicio')->name('actividad.detalles.servicio');
 
         Route::get('/actividad/{actividad_id}/becario/{becario_id}/describir', 'ActividadController@desinscribir')->name('actividad.desinscribir');
+
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/subir-justificacion', 'ActividadController@subirjustificacion')->name('actividad.subirjustificacion');
+
+        Route::post('/actividad/{actividad_id}/becario/{becario_id}/actualizar-estatus', 'ActividadController@actulizarestatus')->name('actividad.actulizarestatus');
         
     });
 

@@ -7,6 +7,7 @@ use avaa\Actividad;
 use avaa\ActividadBecario;
 use avaa\ActividadFacilitador;
 use DateTime;
+use DateTimeImmutable;
 use Illuminate\Support\Facades\Auth;
 
 class ActividadController extends Controller
@@ -16,6 +17,28 @@ class ActividadController extends Controller
         $actividades = Actividad::orderby('fecha','asc')->get();
         return view('sisbeca.actividad.listar')->with(compact('actividades'));
 	}
+
+    public function actulizarestatus(Request $request,$actividad_id,$becario_id)
+    {
+        $becario = Becario::find($becario_id);
+        $ab = ActividadBecario::where('actividad_id','=',$actividad_id)->where('becario_id','=',$becario_id)->first();
+        $ab->estatus = $request->estatus;
+        $ab->save();
+        return response()->json(['success'=>'Al becario '.$becario->user->nombreyapellido().' fue actualizado con el estatus '.strtoupper($request->estatus).'.']);
+    }
+
+    public function subirjustificacion($actividad_id,$becario_id)
+    {
+        $actividad = Actividad::find($actividad_id);
+        $becario = Becario::find($becario_id);
+        $model = "crear";
+        return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model'));
+    }
+
+    public function subirjustificacionguardaar($actividad_id,$becario_id)
+    {
+
+    }
 
     public function detalles($id)
     {
@@ -30,7 +53,8 @@ class ActividadController extends Controller
         $becarios = ActividadBecario::where('actividad_id','=',$id)->with("user")->with("aval")->get();
         $inscrito = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->count();
         $inscrito = ($inscrito==0) ? false : true;
-        return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito]);
+        $estatus = (object)["0"=>"asistira", "1"=>"en espera", "2"=>"por justificar", "3"=>"asistio","4"=>"no asistio"];
+        return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito,'estatus'=>$estatus]);
     }
 
     public function actividadinscribirme($actividad_id,$becario_id)
