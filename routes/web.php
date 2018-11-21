@@ -62,22 +62,37 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 {
     Route::get('/',['uses'=> 'SisbecaController@index','as' =>'sisbeca']);
      
-
-
     //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware
     // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
-    Route::group(['middleware'=>['admin']],function ()
+
+    Route::group(['middleware'=>['admin_becario']],function ()
     {
         //talleres y chat clubs
-        Route::get('/actividades/', 'ActividadController@listar')->name('actividad.listar');
+        Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
+        Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
+
+        //talleres y chat club: servicios
+        Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
+        Route::get('/actividades/{id}/detalles/servicio', 'ActividadController@detallesservicio')->name('actividad.detalles.servicio');
+
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/describir', 'ActividadController@desinscribir')->name('actividad.desinscribir');
+
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/subir-justificacion', 'ActividadController@subirjustificacion')->name('actividad.subirjustificacion');
+
+        Route::post('/actividad/{actividad_id}/becario/{becario_id}/actualizar-estatus', 'ActividadController@actulizarestatus')->name('actividad.actulizarestatus');
+        
+    });
+
+    Route::group(['middleware'=>['admin']],function ()
+    {
+        //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
         Route::get('/actividades/{id}/editar', 'ActividadController@editar')->name('actividad.editar');
         Route::post('/actividades/{id}/actualizar', 'ActividadController@actualizar')->name('actividad.actualizar');
 
-        Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
-
-
+        Route::get('/actividad/{id}/inscribir-becario', 'ActividadController@inscribirbecario')->name('actividad.inscribir.becario');
+        Route::post('/actividad/{id}/inscribir-becario-guardar', 'ActividadController@inscribirbecarioguardar')->name('actividad.inscribir.guardar');
 
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
@@ -92,7 +107,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
 
         //voluntariado
-
+        
 
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
@@ -160,7 +175,6 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     //le agregue admin,
     Route::group(['middleware'=>'becario'],function ()
     {
-
         Route::get('carta/bancaria', [
             'uses' => 'BecarioController@bancariapdf',
             'as' => 'carta.bancaria'
@@ -206,9 +220,13 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'ver.mentorAsignado'
         ]);
 
+        //talleres y chat club
+        Route::get('/actividades/{actividad_id}/becario/{becario_id}/inscribirme', 'ActividadController@actividadinscribirme')->name('actividad.inscribirme');
+       
+        //link para inscribirme y salirme.  justificar
+
 
         //periodos
-        //->middleware('admin');
         Route::get('/periodos', 'PeriodosController@index')->name('periodos.index');
         Route::get('/periodo/{id}/ver-constancia', 'PeriodosController@verconstancia')->name('periodos.constancia');
         Route::get('/becario/{id}/crear-periodo/', 'PeriodosController@crear')->name('periodos.crear');
@@ -234,13 +252,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
         Route::get('/becario/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
         Route::post('/becario/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
-
-        
     });
 
     Route::group(['middleware'=>['mentor']],function ()
     {
-
         Route::get('listar/becariosAsignados', [
             'uses' => 'MentorController@listarBecariosAsignados',
             'as' => 'listar.becariosAsignados'
@@ -250,12 +265,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'MentorController@verMiPerfil',
             'as' => 'ver.miPerfilMentor'
         ]);
-
-
-
     });
 
-    Route::group(['middleware'=>['postulante_mentor']],function () {
+    Route::group(['middleware'=>['postulante_mentor']],function ()
+    {
         Route::get('postulanteMentor/status', [
             'uses' => 'SisbecaController@statusPostulanteMentor',
             'as' => 'status.postulanteMentor'
@@ -332,9 +345,6 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'PostulanteBecarioController@documentosguardar',
             'as' => 'postulantebecario.documentosguardar'
         ]);
-        
-
-
     });
 
     Route::get('perfil/{id}', [

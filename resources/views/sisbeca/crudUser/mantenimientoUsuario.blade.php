@@ -7,47 +7,49 @@
         <a href="{{ route('mantenimientoUser.create') }}" class="btn btn-sm sisbeca-btn-primary">Registrar Nuevo Usuario</a>
     </div>
     
-    <table class="table table-hover table-bordered" id="usuarios">
-        <thead>
-            <tr>
-                <th>Cédula</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Correo Electrónico</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-            </tr>
-            
-        </thead>
-        <tbody>
-            @if($usuarios->count()!=0)
-            @foreach($usuarios as $usuario)
-            <tr>
-                <td>{{$usuario->cedula}}</td>
-                <td>{{$usuario->name}}</td>
-                <td>{{$usuario->last_name}}</td>
-                <td>{{$usuario->email}}</td>
-                <td>{{$usuario->rol}}</td>
-                <td>
-                    <a href="{{route('mantenimientoUser.edit',$usuario->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar" > 
-                            <i class="fa fa-pencil"></i>
-                    </a>
+    <div clas="table-responsive">
+        <table class="table table-hover table-bordered" id="usuarios">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo Electrónico</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                @if($usuarios->count()!=0)
+                @foreach($usuarios as $usuario)
+                <tr>
+                    <td>{{$usuario->cedula}}</td>
+                    <td>{{$usuario->name}}</td>
+                    <td>{{$usuario->last_name}}</td>
+                    <td>{{$usuario->email}}</td>
+                    <td>{{$usuario->rol}}</td>
+                    <td>
+                        <a href="{{route('mantenimientoUser.edit',$usuario->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar" > 
+                                <i class="fa fa-pencil"></i>
+                        </a>
 
-                    <span data-toggle="modal" data-target="#eliminar{{$usuario->id}}">
-                        <button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </span>
-                </td>
-            </tr>
-            @endforeach
-            @else
-            <tr>
-                <td colspan="6">No se encontró <strong>usuarios</strong></td>
-            </tr>
-            @endif
-        </tbody>
-    </table>
+                        <span data-toggle="modal" data-target="#eliminar{{$usuario->id}}">
+                            <button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                    <td colspan="6">No se encontró <strong>usuarios</strong></td>
+                </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
 
 </div>
 

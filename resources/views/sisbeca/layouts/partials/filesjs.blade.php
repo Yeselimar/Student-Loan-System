@@ -54,13 +54,13 @@
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> -->
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    
 
     <script src="{{asset('plugins/datetimepicker-bootstrap/js/bootstrap-datetimepicker.min.js')}}"></script>
    
     <!--<script type="text/javascript" src="{{asset('plugins/datetimepicker-bootstrap/mdtimepicker.js')}}"></script>-->
-    
-    <script src="{{asset('/plugins/full-calendar/fullcalendar.min.js')}}"></script><!--Boostrap Full Calendar -->
-   
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
    
     

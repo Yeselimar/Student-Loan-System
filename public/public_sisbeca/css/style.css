@@ -2044,7 +2044,21 @@ textarea {
 }
 .badge-inverse {
   background-color: #2f3d4a;
+  color:#fff;
 }
+.badge-azul
+{
+  background-color: #003865;
+  color:#fff;
+  /*border:1px solid #003865;*/
+}
+.badge-rojo
+{
+  background-color: #dc3545;
+  color:#fff;
+  /*border:1px solid #dc3545;*/
+}
+
 .label {
   padding: 1px 8px;
   line-height: 13px;
@@ -2058,7 +2072,7 @@ textarea {
   border-radius: 60px;
 }
 .label-custom {
-  background-color: #00897b;
+  background-color: #793006;
 }
 .label-success {
   background-color: #28a745;
@@ -2123,6 +2137,11 @@ textarea {
 .label-light-inverse {
   background-color: #f6f6f6;
   color: #2f3d4a;
+}
+.label-personal {
+  background-color: #fff;
+  color: #424242;
+  border:1px solid #424242;
 }
 .breadcrumb {
   margin-bottom: 0;
@@ -5940,7 +5959,7 @@ thead tr th {
   font-weight: 500;
 }
 thead tr th:last-child {
-  text-align: right;
+  /*text-align: right;*/
 }
 tbody tr th {
   color: #455a64;
