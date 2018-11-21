@@ -17,6 +17,8 @@ use avaa\Imagen;
 use avaa\Events\SolicitudesAlerts;
 use Illuminate\Support\Facades\Auth;
 
+use avaa\Concurso;
+
 class CompartidoDirecCoordController extends Controller
 {
     public function __construct()
@@ -34,11 +36,12 @@ class CompartidoDirecCoordController extends Controller
         return response()->json(['postulantes'=>$postulantes]);
     
     }
-    public function veredictoPostulantesBecarios(Request $request, $id)
+    public function veredictoPostulantesBecarios(Request $request)
     {
       //  $postulantes = Becario::where('status','=','entrevistado')->with("user")->with('entrevistadores')->with('imagenes')->first();
       
-        $postulanteBecario = Becario::find($id);
+        $postulanteBecario = Becario::find($request->id);
+        if($request->funcion=='Aprobar'){
         $postulanteBecario->status='activo';
         $postulanteBecario->acepto_terminos=false;
        $postulanteBecario->save();
@@ -47,13 +50,63 @@ class CompartidoDirecCoordController extends Controller
         $usuario->save();*/
        // return response()->json(['postulante'=>$postulanteBecario]);
       //dd($funcion);
-       if($request->funcion=='Aprobar'){
-       return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
+       
+       return response()->json(['success'=>'El Postulante ha sido Aceptado Exitosamente']);
        }else{
-        return response()->json(['success'=>'RECHAZADOOOOOOO']);
+        $postulanteBecario->status='rechazado';
+        $postulanteBecario->acepto_terminos=false;
+       $postulanteBecario->save();
+        return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
        }
     }
-   
+    public function listarPostulantesBecarios($data)
+    {
+        $concursos = Concurso::query()->get();
+        if($data==0)
+        { 
+            //Lista los q no tienen entrevista
+            $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',$data)->get();
+        }
+
+        if($data==2)
+        { 
+            //Lista a todos los postulantes
+            //$becarios = Becario::query()->where('status','=','postulante')->orwhere('status','=','entrevista')->orwhere('status','=','rechazado')->get(); //Falta cuando en user esta rechazado
+            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            //dd($becarios);
+        }
+        else if(($data==1))
+        { 
+        //lista los que ya tienen entrevista
+            $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();	    
+
+        }
+        else if($data==3)
+        {
+            $becarios = Becario::query()->where('status','=','entrevistado')->where('acepto_terminos','=',true)->get();
+        }
+
+        if($data==0)
+        { 
+            return view('sisbeca.postulaciones.entrevistas')->with('becarios',$becarios)->with('becarios',$becarios)->with('concursos',$concursos);
+        }
+        else if($data==1)
+        { 
+            //Ver y Editar Entrevistas
+            return view('sisbeca.postulaciones.verModificarEntrevistas')->with('becarios',$becarios)->with('becarios',$becarios)->with('concursos',$concursos);
+        }
+        else if($data==2)
+        { 
+            //ver todos los postulantes
+            return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios)->with('becarios',$becarios)->with('concursos',$concursos);
+        }
+
+        else if($data==3)
+        { 
+            //Asignar a los nuevos becarios
+            return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('concursos',$concursos);
+        }
+    }
 
     public function listarBecarios()
     {

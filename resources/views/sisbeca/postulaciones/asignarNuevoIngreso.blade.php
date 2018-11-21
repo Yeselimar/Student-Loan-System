@@ -31,7 +31,7 @@
                         </span>
                     </template>
                     <template v-else-if="postulante.status=='rechazado'">
-                        <span class="label label-warning">
+                        <span class="label label-danger">
                             <strong> Rechazado</strong>
                         </span>
                     </template>
@@ -67,10 +67,10 @@
                         </button>
                        
                         <button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
-                            <i class="fa fa-gavel" data-target="modal-asignar"></i>
+                            <i class="fa fa-check" data-target="modal-asignar"></i>
                          </button>
                          <button class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarModal(postulante,postulante.imagenes,0)">
-                            <i class="fa fa-gavel" data-target="modal-asignar"></i>
+                            <i class="fa fa-times" data-target="modal-asignar"></i>
                          </button>
                     </td>
                 </tr>
@@ -142,22 +142,17 @@
             {
                 console.log('FUNCION:');
                 console.log(this.funcion);
-                var url = '{{route('veredicto.postulantes.becarios',':id')}}';
-                //var url = route('veredictoPostulantesBecarios','['id' => $id, 'funcion' => $funcion]);
-                url = url.replace(':id', id);
-                
-                axios.post(url).then(response => 
-                {
-                    
+                console.log('ID:');
+                console.log(id);
+                var url = '{{route('veredicto.postulantes.becarios')}}';
+                axios.post(url,{
+                   id:this.id,
+                    funcion:this.funcion
+                    }).then(response=>{
                     $('#modal-asignar').modal('hide');
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });
-           
-               /* axios.get(url).then(response => 
-                {
-                    this.postulantes = response.data.postulantes;
-                });*/
             },
 
             mostrarModal:function(postulante,imagenes,funcion)

@@ -10,6 +10,10 @@ use DateTime;
 
 class EntrevistadorController extends Controller
 {
+		public function listarpostulantesaentrevistar(Request $request)
+		{
+			flash('Holaaaaaa');
+		}
 		public function asignarentrevistadores()
 		{
 			

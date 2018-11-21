@@ -42,6 +42,10 @@
                                 <td class="text-center">
                                     <span class="label label-danger">Rechazado</span>
                                 </td>
+                                @elseif($becario->status=='activo')
+                                <td class="text-center">
+                                    <span class="label label-success">Aprobado</span>
+                                </td>
                                 @else
                                 <td class="text-center">
                                     <span class="label label-inverse">Sin Revisar</span>
@@ -50,19 +54,13 @@
 
                                 <td class="text-center">{{ $becario->user->email }}</td>
 
-                                @if(($becario->status=='entrevista')||($becario->status=='rechazado'))
+                                
                                 <td class="text-center">
                                     <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Expediente" >
                                         <i class='fa fa-eye' ></i>
                                     </a>
                                 </td>
-                                @else
-                                <td class="text-center">
-                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs  sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Expediente">
-                                        <i class='fa fa-eye'></i>
-                                    </a>
-                                </td>
-                                @endif
+                                
                             </tr>
                         @endif
                     @endforeach

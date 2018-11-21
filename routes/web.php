@@ -405,10 +405,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'verModificarEntrevistas'
         ]);
 
-        Route::get('listarPostulantesBecarios/{data}', [
+        /*Route::get('listarPostulantesBecarios/{data}', [
             'uses' => 'DirectivoController@listarPostulantesBecarios',
             'as' => 'listarPostulantesBecarios'
-        ]);
+        ]);*/
 
         Route::post('asignacionEntrevistas', [
             'uses' => 'DirectivoController@asignacionEntrevistas',
@@ -576,11 +576,20 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {
+        Route::get('listaDeEntrevistasDePostulantes', [
+            'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
+            'as' => 'lista.Entrevistas.Postlantes'
+        ]);
+        Route::get('listarPostulantesBecarios/{data}', [
+            'uses' => 'CompartidoDirecCoordController@listarPostulantesBecarios',
+            'as' => 'listarPostulantesBecarios'
+        ]);
+
         Route::get('gestionSolicitud/listar', [
             'uses' => 'CompartidoDirecCoordController@listarSolicitudes',
             'as' => 'gestionSolicitudes.listar'
         ]);
-        Route::post('veredicto/postulantesBecario/{id}', [
+        Route::post('veredicto/postulantesBecario', [
             'uses' => 'CompartidoDirecCoordController@veredictoPostulantesBecarios',
             'as' => 'veredicto.postulantes.becarios'
         ]);
@@ -641,6 +650,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
 
         //obtener becario para entrevista
+    });
+
+    Route::group(['middleware'=>'entrevistador'],function ()
+    {
+        
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()
