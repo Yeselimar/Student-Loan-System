@@ -8,6 +8,16 @@ class Aval extends Model
 {
     protected $table='aval';
 
+    public function user()//para vuejs
+    {
+        return $this->belongsTo('avaa\User','becario_id');
+    }
+
+    public function becario()// para vuejs
+    {
+        return $this->belongsTo('avaa\Becario','becario_id');
+    }
+
     public static function carpetaConstancia()
     {
         return 'aval/constancias/';
@@ -21,6 +31,11 @@ class Aval extends Model
     public static function carpetaComprobante()
     {
         return 'aval/comprobantes/';
+    }
+
+    public static function carpetaJustificacion()
+    {
+        return 'aval/justificaciones/';
     }
 
     public function esImagen()
@@ -49,6 +64,10 @@ class Aval extends Model
     			return "<span style='border:1px solid black; border-radius:50px;background-color:red;color:#424242'>negada</span>";
     		break;
     	}
-    	
+    }
+
+    public function scopeJustificativos($query)
+    {
+        return $query->where('tipo','=','justificacion');
     }
 }

@@ -1,14 +1,18 @@
 <?php
 
 namespace avaa\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use avaa\Http\Requests\ActividadRequest;
+use File;
+use DateTime;
+use Validator;
+use DateTimeImmutable;
+use avaa\Aval;
 use avaa\Becario;
 use avaa\Actividad;
 use avaa\ActividadBecario;
 use avaa\ActividadFacilitador;
-use DateTime;
-use DateTimeImmutable;
-use Illuminate\Support\Facades\Auth;
 
 class ActividadController extends Controller
 {
@@ -17,6 +21,34 @@ class ActividadController extends Controller
         $actividades = Actividad::orderby('fecha','asc')->get();
         return view('sisbeca.actividad.listar')->with(compact('actividades'));
 	}
+
+    //todos los justificativos
+    public function listarjustificativos()
+    {
+        return view('sisbeca.actividad.listarjustificativos');
+    }
+
+    //todos los justificativos
+    public function obtenerjustificativos()
+    {
+        $justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
+        return response()->json(['justificativos'=>$justificativos]);
+    }
+
+
+    //justificativos por actividad
+    public function listarjustificativosactividad($id)
+    {
+        $actividad = Actividad::find($id);
+        return view('sisbeca.actividad.justificadosporactividad')->with(compact('actividad'));
+    }
+
+    //justificativos por actividad
+    public function justificativosactividad($id)
+    {
+        $justificativos = ActividadBecario::where('actividad_id','=',$id)->where('aval_id','!=','null')->orderby('updated_at','desc')->with("user")->with("actividad")->with("aval")->get();
+        return response()->json(['justificativos'=>$justificativos]);
+    }
 
     public function actulizarestatus(Request $request,$actividad_id,$becario_id)
     {
@@ -35,9 +67,75 @@ class ActividadController extends Controller
         return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model'));
     }
 
-    public function subirjustificacionguardaar($actividad_id,$becario_id)
+    public function guardarjustificacion(Request $request,$actividad_id,$becario_id)
     {
+        $actividad = Actividad::find($actividad_id);
+        $becario = Becario::find($becario_id);
 
+        $validation = Validator::make($request->all(), ActividadRequest::cargarJustificativo());
+        if ( $validation->fails() )
+        {
+            flash("Por favor, verifique el formulario.",'danger');
+            return back()->withErrors($validation)->withInput();
+        }
+
+        $archivo= $request->file('justificativo');
+        $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+        $ruta = public_path().'/'.Aval::carpetaJustificacion();
+        $archivo->move($ruta, $nombre);
+        
+        $aval = new Aval;
+        $aval->url = Aval::carpetaJustificacion().$nombre;
+        $aval->estatus = "pendiente";
+        $aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg" or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
+        $aval->tipo = "justificacion";
+        $aval->becario_id = $becario->user_id;
+        $aval->save();
+
+        $ab = ActividadBecario::where('actividad_id','=',$actividad_id)->where('becario_id','=',$becario_id)->first();
+        $ab->estatus = "por justificar";//chequear que sea asi
+        $ab->aval_id = $aval->id;
+        $ab->save();
+
+        flash("El justificativo del becario ".$becario->user->nombreyapellido()." al ".$actividad->tipo." ".$actividad->nombre." fue cargado.",'success');
+        return redirect()->route('actividad.detalles',$actividad->id);
+    }
+
+    public function editarjustificacion($actividad_id,$becario_id)
+    {
+        $actividad = Actividad::find($actividad_id);
+        $becario = Becario::find($becario_id);
+        $justificativo = ActividadBecario::where('becario_id','=',$becario->user_id)->where('actividad_id','=',$actividad->id)->first();
+        $model = "crear";
+        return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model','justificativo'));
+    }
+
+    public function actualizarjustificacion(Request $request,$actividad_id,$becario_id)
+    {
+        $actividad = Actividad::find($actividad_id);
+        $becario = Becario::find($becario_id);
+        $ab = ActividadBecario::where('becario_id','=',$becario->user_id)->where('actividad_id','=',$actividad->id)->first();
+        
+        $model = "crear";
+        $validation = Validator::make($request->all(), ActividadRequest::actualizarJustificativo());
+        
+        if($request->file('justificativo'))
+        {
+            File::delete($ab->aval->url);
+            
+            $archivo= $request->file('justificativo');
+            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+            $ruta = public_path().'/'.Aval::carpetaJustificacion();
+            $archivo->move($ruta, $nombre);
+            
+            $aval = $ab->aval;
+            $aval->url = Aval::carpetaJustificacion().$nombre;
+            $aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
+            $aval->save();
+        }
+
+        flash("El justificativo del becario ".$becario->user->nombreyapellido()." al ".$actividad->tipo." ".$actividad->nombre." fue actualizado.",'success');
+        return redirect()->route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>$becario->user_id));
     }
 
     public function detalles($id)
@@ -60,7 +158,7 @@ class ActividadController extends Controller
     public function actividadinscribirme($actividad_id,$becario_id)
     {
         $actividad = Actividad::find($actividad_id);
-        //para inscribir verificar estatus, limite y fecha
+        //para inscribir: verificar estatus, limite y fecha
         if( $actividad->inscribionabierta() )
         {
             $becario = Becario::find($becario_id);
@@ -70,6 +168,7 @@ class ActividadController extends Controller
                 $ab = new ActividadBecario;
                 $ab->actividad_id = $actividad_id;
                 $ab->becario_id = $becario->user_id;
+                //verificar la cantidad con estatus asistira
                 if($actividad->totalbecarios()>=$actividad->limite_participantes)
                 {
                     $ab->estatus = "en espera";
@@ -213,7 +312,6 @@ class ActividadController extends Controller
     			$af->becario_id = $facilitador["id"];
     			$af->save();
     		}
-    	
     	}
     	//crear actividad_facilitador
     	//$count = count($request->facilitadores);

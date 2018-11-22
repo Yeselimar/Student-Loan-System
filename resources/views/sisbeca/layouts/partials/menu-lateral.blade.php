@@ -41,7 +41,6 @@
                    </li>
                     <li>
                         <a href="{{route('postulantebecario.enviarPostulacion', Auth::user()->id)}}" >  <i class="fa fa-send-o"></i><span class="hide-menu">Enviar Postulación</span></a>
-
                    </li>
 
 
@@ -416,6 +415,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
                         <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
                     </ul>
 
                 </li>
