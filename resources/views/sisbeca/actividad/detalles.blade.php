@@ -29,11 +29,18 @@
 					<button type="button" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Desinscribirme</button>
 				@endif
 			</template>
-			@if($actividad->lapsoparajustificar())
-				<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificación</a>
-			@else
+			<template v-if="lapso_justificar==true">
+				<template v-if="estatus_becario==='por justificar'">
+					<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificación</a>
+				</template>
+				<template v-else>
+					<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificación</a>
+				</template>
+				
+			</template>
+			<template v-else>
 				<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Subir Justificación</a>
-			@endif
+			</template>
 		@else <!-- Para el Administrador -->
 			<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
 			<a href="{{route('actividad.inscribir.becario',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip"  title="Inscribir Becario" data-placement="bottom">Inscribir Becario</a>
@@ -184,7 +191,6 @@
 						Acciones
 					</th>
 					@endif
-					
 				</tr>
 			</thead>
 			<tbody>
@@ -236,7 +242,6 @@
 						</button>
 					</td>
 					@endif
-
 				</tr>
 				<tr v-if="becarios && becarios.length==0">
 					<td class="text-left" @if(Auth::user()->admin() ) colspan="3" @else colspan="2" @endif>
@@ -286,6 +291,9 @@ const app = new Vue({
     el: '#app',
     data:
     {
+    	id_autenticado:0,
+    	estatus_becario:0,
+    	lapso_justificar:0,
     	id:0,
     	nombrebecario:'',
         actividad:'',
@@ -412,6 +420,9 @@ const app = new Vue({
                 this.becarios = response.data.becarios;
                 this.inscrito = response.data.inscrito;
                 this.estatus = response.data.estatus;
+                this.id_autenticado = response.data.id_autenticado;
+                this.lapso_justificar = response.data.lapso_justificar;
+                this.estatus_becario = response.data.estatus_becario;
             });
     	},
     	fechaformartear: function (fecha)

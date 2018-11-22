@@ -35,7 +35,6 @@ class ActividadController extends Controller
         return response()->json(['justificativos'=>$justificativos]);
     }
 
-
     //justificativos por actividad
     public function listarjustificativosactividad($id)
     {
@@ -106,7 +105,7 @@ class ActividadController extends Controller
         $actividad = Actividad::find($actividad_id);
         $becario = Becario::find($becario_id);
         $justificativo = ActividadBecario::where('becario_id','=',$becario->user_id)->where('actividad_id','=',$actividad->id)->first();
-        $model = "crear";
+        $model = "editar";
         return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model','justificativo'));
     }
 
@@ -152,7 +151,10 @@ class ActividadController extends Controller
         $inscrito = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->count();
         $inscrito = ($inscrito==0) ? false : true;
         $estatus = (object)["0"=>"asistira", "1"=>"en espera", "2"=>"por justificar", "3"=>"asistio","4"=>"no asistio"];
-        return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito,'estatus'=>$estatus]);
+        $id_autenticado = Auth::user()->id;
+        $estatus_becario = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first()->estatus;
+        $lapso_justificar = $actividad->lapsoparajustificar();
+        return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito,'estatus'=>$estatus,'id_autenticado'=>$id_autenticado,'lapso_justificar'=>$lapso_justificar,'estatus_becario'=>$estatus_becario]);
     }
 
     public function actividadinscribirme($actividad_id,$becario_id)

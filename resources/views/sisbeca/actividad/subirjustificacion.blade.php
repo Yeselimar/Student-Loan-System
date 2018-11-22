@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title',($model="editar") ? ucwords($actividad->tipo).': '.$actividad->nombre.', Justificativo '.$becario->user->nombreyapellido() : 'Editar')
+@section('title',($model=="editar") ? ucwords($actividad->tipo).': '.$actividad->nombre.', Justificativo '.$becario->user->nombreyapellido() : 'Editar')
 @section('content').
 	<div class="col-lg-12">
         <div class="text-right">
@@ -30,7 +30,6 @@
                         {{ Form::select('estatus', array('asistira'=>'Asistira','en espera'=>'En Espera','por justificar'=>'Por Justificar','asistio'=>'Asistio','no asistio'=>'No Asistio'),($model=='crear') ? 'basico' : null,['class' =>'sisbeca-input']) }}
                     </div> 
                     -->
-                    
                     <div class="col-lg-4 col-md-4 col-sm-6">
                     	<label for="justificativo" class="control-label">
                     		{{ $model=='crear' ? 'Justificativo' : 'Actualizar Justificativo' }}
