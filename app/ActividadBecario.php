@@ -17,4 +17,9 @@ class ActividadBecario extends Model
     {
         return $this->belongsTo('avaa\User','becario_id');
     }
+
+    public function actividad()// probar
+    {
+        return $this->hasOne('avaa\Actividad','id','actividad_id');
+    }
 }

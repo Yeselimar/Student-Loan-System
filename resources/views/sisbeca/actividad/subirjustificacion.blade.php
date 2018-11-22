@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title',ucwords($actividad->tipo).': '.$actividad->nombre.', Justificación '.$becario->user->nombreyapellido())
+@section('title',($model="editar") ? ucwords($actividad->tipo).': '.$actividad->nombre.', Justificativo '.$becario->user->nombreyapellido() : 'Editar')
 @section('content').
 	<div class="col-lg-12">
         <div class="text-right">
@@ -9,14 +9,14 @@
 		<div class="col sisbeca-container-formulario">
 
 			@if($model=='crear')
-				{{ Form::open(['route' => ['actividad.inscribir.guardar',$actividad->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
+				{{ Form::open(['route' => ['actividad.guardarjustificacion',$actividad->id,$becario->user->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
 			@else
-
+                {{ Form::open(['route' => ['actividad.actualizarjustificacion',$actividad->id,$becario->user->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
 			@endif
 
 			<div class="form-group">
 				<div class="row">
-                     <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Actividad</label>
                         {{ Form::text('actividad', $actividad->nombre, ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                     </div>
@@ -32,18 +32,18 @@
                     -->
                     
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                    	<label for="aval" class="control-label">
-                    		{{ $model=='crear' ? 'Justificación' : 'Actualizar Justificación' }}
+                    	<label for="justificativo" class="control-label">
+                    		{{ $model=='crear' ? 'Justificativo' : 'Actualizar Justificativo' }}
                         </label>
-                        {{ Form::file('aval',['class' => 'sisbeca-input ', 'accept'=>'image/jpeg,image/jpg/image/png,application/pdf' ] ) }}
-                        <span class="errors">{{ $errors->first('aval') }}</span>
+                        {{ Form::file('justificativo',['class' => 'sisbeca-input ', 'accept'=>'image/*,application/pdf' ] ) }}
+                        <span class="errors">{{ $errors->first('justificativo') }}</span>
                     </div>
                     
                     @if($model=='editar')
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                    	<label for="constancia" class="control-label">Justificación Actual</label>
-                        <a href="#" target="_blank" class="btn sisbeca-btn-primary btn-block">
-                        	@if( true )
+                    	<label for="justificativo" class="control-label">Justificativo Actual</label>
+                        <a href="{{url($justificativo->aval->url)}}" target="_blank" class="btn sisbeca-btn-primary btn-block">
+                        	@if( $justificativo->aval->esImagen() )
                         		<i class="fa fa-photo"></i>
                         	@else
                         		<i class="fa fa-file-pdf-o"></i>

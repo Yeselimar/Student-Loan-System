@@ -35,7 +35,8 @@
 				<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Subir Justificación</a>
 			@endif
 		@else <!-- Para el Administrador -->
-			<a href="{{route('actividad.inscribir.becario',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Inscribir Becario</a>
+			<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
+			<a href="{{route('actividad.inscribir.becario',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip"  title="Inscribir Becario" data-placement="bottom">Inscribir Becario</a>
 		@endif
 	</div>
 	<div class="table-responsive">
@@ -209,16 +210,30 @@
 						</span>
 					</td>
 					@if(Auth::user()->admin() )
+					
 					<td>
-						<select v-model="becario.estatus" @change="actualizarestatusbecario(becario.estatus,becario.user.id)" class="sisbeca-input input-sm sisbeca-select">
+						<select v-model="becario.estatus" @change="actualizarestatusbecario(becario.estatus,becario.user.id)" class="sisbeca-input input-sm sisbeca-select" style="margin-bottom: 0px !important">
 							<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
 						</select>
 					</td>
 					<td>
-						<template v-if="becario.estatus=='por justificar'">
-							<a :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">Subir Justificación</a>
+						<template v-if="becario.aval_id==null">
+							<span data-toggle="tooltip"  title="Subir Justificativo" >
+								<a :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
+									<i class="fa fa-upload" aria-hidden="true"></i>
+								</a>
+							</span>
 						</template>
-						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)">Eliminar Inscripción</button>
+						<template v-else>
+							<span data-toggle="tooltip"  title="Editar Justificativo">
+								<a :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
+									<i class="fa fa-edit"></i>
+								</a>
+							</span>
+						</template>
+						<button data-toggle="tooltip"  title="Eliminar Inscripción" type="button" class="btn btn-xs sisbeca-btn-primary" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
+							<i class="fa fa-trash" ></i>
+						</button>
 					</td>
 					@endif
 
@@ -264,6 +279,7 @@
 
 @section('personaljs')
 
+
 <script>
 const app = new Vue({
 
@@ -283,8 +299,20 @@ const app = new Vue({
         this.obtenerdetallesactividad();
 
     },
-    methods:
+    mounted: function()
+    {
+    	$('[data-toggle="tooltip"]').tooltip(); 
+    },
+    methods: 
     {	
+    	getRutaEditarJustificativos: function(b_id)
+    	{
+    		var a_id = {{$actividad->id}};
+    		var url = "{{ route('actividad.editarjustificacion',array('actividad_id'=>':a_id', 'becario_id'=>':b_id') ) }}";
+    		url = url.replace(':a_id', a_id);
+    		url = url.replace(':b_id', b_id);
+    		return url;
+    	},
     	actualizarestatusbecario: function(estatus,b_id)
     	{
     		var a_id = {{$actividad->id}};
@@ -353,7 +381,6 @@ const app = new Vue({
                 	toastr.success(response.data.mensaje);
                 }
             });
-    		
     	},
     	actividadinscribirme: function()
     	{
@@ -362,7 +389,6 @@ const app = new Vue({
     		var url = '{{route('actividad.inscribirme',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
     		url = url.replace(':a_id', actividad_id);
     		url = url.replace(':b_id', becario_id);
-            //console.log(url);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
@@ -375,7 +401,6 @@ const app = new Vue({
                 	toastr.success(response.data.mensaje);
                 }
             });
-    		//console.log(becario_id+' '+actividad_id);
     	},
     	obtenerdetallesactividad()
     	{
