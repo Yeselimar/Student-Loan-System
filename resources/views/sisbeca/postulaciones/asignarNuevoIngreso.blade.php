@@ -8,39 +8,69 @@
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
+                    <th class="text-center">Estatus</th>
                     <th class="text-center">Nombre y Apellido</th>
                     <th class="text-center">Cédula</th>
                     <th class="text-center">Entrevistadores</th>
                     <th class="text-center">Fecha de Entrevista</th>
                     <th class="text-center">Acciones</th>
+                    
                 </tr>
             </thead>
             <tbody>                        
                 <tr v-for="postulante in postulantes">                           
-                    <td class="text-center"> @{{postulante.user.name}} @{{postulante.user.last_name}}</td>
+                <td class="text-center"> 
+                    <template v-if="postulante.status=='activo'">
+                                <span class="label label-success">
+                                     Aprobado
+                                </span>
+                    </template>
+                    <template v-else-if="postulante.status=='entrevistado'">
+                        <span class="label label-inverse">
+                            Pendiente
+                        </span>
+                    </template>
+                    <template v-else-if="postulante.status=='rechazado'">
+                        <span class="label label-danger">
+                            Rechazado
+                        </span>
+                    </template>
+                </td>
+                    <td class="text-center"> @{{postulante.user.name}} @{{postulante.user.last_name}} </td>
                     <td class="text-center">@{{postulante.user.cedula}}</td>
                     <td class="text-center">
                         <template v-if="postulante.entrevistadores.length!=0">
                             <template v-for="entrevistador in postulante.entrevistadores">
                                     <span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>&nbsp;
                             </template>
-                             <template>
-                                    <span>No hay Entrevistador</span>&nbsp;
-                            </template>
+                             
+                        </template>
+                        <template v-else>
+                                    <span class="label label-inverse">Sin Entrevistadores</span>&nbsp;
                         </template>
                     </td>
                     <td class="text-center">
-                        <span class="label label-success">
-                            <strong> @{{postulante.fecha_entrevista}}</strong>
-                        </span>
+                        <template v-if="postulante.fecha_entrevista">
+                           @{{postulante.fecha_entrevista}}
+                        </template>
+                        <template v-else>
+                            <span class="label label-inverse">
+                                Sin fecha
+                            </span>
+                        </template>
                     </td>
                     <td>
-                        <a href="#" class="btn sisbeca-btn-primary">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a href="#" class="btn sisbeca-btn-primary">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                       <button class="btn btn-xs sisbeca-btn-primary">
+                           <a href="">
+                           <i class="fa fa-eye"></i></a>
+                        </button>
+                       
+                        <button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
+                            <i class="fa fa-check" data-target="modal-asignar"></i>
+                         </button>
+                         <button class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarModal(postulante,postulante.imagenes,0)">
+                            <i class="fa fa-times" data-target="modal-asignar"></i>
+                         </button>
                     </td>
                 </tr>
                 <tr v-if="postulantes.length==0">
@@ -51,6 +81,29 @@
             </tbody>
         </table>
     </div>
+<!-- Modal para aprobar becario -->
+    <form method="POST" @submit.prevent="veredictopostulantesbecarios(id)">
+        {{ csrf_field() }}
+            <div class="modal fade" id="modal-asignar">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title pull-left"><strong>Decisión de la Postulación</strong></h5>
+                            <button class="close" data-dimiss="modal" type="button" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <h5 class="modal-title pull-left"><strong>¿Esta Seguro que desea @{{funcion}} a @{{nombreyapellido}}</strong></h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
+                            <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 </div>
  
 @endsection
@@ -62,27 +115,68 @@
         el: '#app',
         created: function()
         {
-            this.obtenerpostulantes();          
+            this.obtenerpostulantes();
+                      
         },
         data:
         {
             postulantes:[],
+            imagenes:[],
+            imagen_postulante:'',
+            id:'0',
+            funcion:'',
+            nombreyapellido:'',
            
         },
         methods:{
-
-            obtenerpostulantes:function(){
-            var url = '{{route('postulantes.entrevistados')}}';
-			axios.get(url).then(response => 
-			{
-				this.postulantes = response.data.postulantes;
-			});
-
-            }
+            obtenerpostulantes:function()
+            {
+                var url = '{{route('postulantes.entrevistados')}}';
+                axios.get(url).then(response => 
+                {
+                    this.postulantes = response.data.postulantes;
+                });
+            },
+            veredictopostulantesbecarios:function(id)
+            {
+                console.log('FUNCION:');
+                console.log(this.funcion);
+                console.log('ID:');
+                console.log(id);
+                var url = '{{route('veredicto.postulantes.becarios')}}';
+                axios.post(url,{
+                   id:this.id,
+                    funcion:this.funcion
+                    }).then(response=>{
+                    $('#modal-asignar').modal('hide');
+                    this.obtenerpostulantes();
+                    toastr.success(response.data.success);
+                });
+            },
+            mostrarModal:function(postulante,imagenes,funcion)
+		    {
+                if(funcion=='1'){
+                    this.funcion='Aprobar';
+                }else if(funcion=='0'){
+                    this.funcion='Rechazar';
+                }
+                this.id = postulante.user_id;
+                this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
+                for (var i = 0; i < imagenes.length; i++)
+                {
+                    console.log('AQUI:');
+                    console.log(imagenes[i].titulo);
+                    if(imagenes[i].titulo=='img_perfil'){
+                        this.imagen_postulante=imagenes[i].titulo;
+                        console.log(this.imagen_postulante);
+                    }
+                }
+                    $('#modal-asignar').modal('show');
+		    }
         }
     });
 </script>
-
+  
  @endsection
 
 

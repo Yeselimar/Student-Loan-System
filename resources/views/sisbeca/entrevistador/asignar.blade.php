@@ -140,7 +140,7 @@
 			</div>
 		</div>
 	</form>
-	<!-- Modal para añadir materia -->
+	
 </div>
 
 @endsection
