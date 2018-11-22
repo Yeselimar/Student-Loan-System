@@ -30,8 +30,11 @@
 					<td>@{{fechaformartear(justificativo.created_at)}}</td>
 					<td>@{{justificativo.updated_at}}</td>
 					<td>
-						<button type="button" class="btn btn-xs sisbeca-btn-primary">
+						<a :href="getRutaVerJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary">
 							<i class="fa fa-eye"></i>
+						</a>
+						<button type="button" class="btn btn-xs sisbeca-btn-primary">
+							<i class="fa fa-legal"></i>
 						</button>
 					</td>
 				</tr>
@@ -64,6 +67,12 @@ const app = new Vue({
     },
     methods: 
     {
+    	getRutaVerJustificativo: function(url_justificativo)
+    	{
+    		var url = "{{url(':slug')}}";
+    		url = url.replace(':slug', url_justificativo);
+            return url;
+    	},
     	obtenerjustificativos: function()
     	{
     		var url = '{{route('actividad.justificativos.servicio',$actividad->id)}}';

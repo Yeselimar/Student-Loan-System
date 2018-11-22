@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title',"Justificativos de Talleres y Chat Club")
+@section('title',"Listar justificativos")
 @section('personalcss')
 <style>
 
