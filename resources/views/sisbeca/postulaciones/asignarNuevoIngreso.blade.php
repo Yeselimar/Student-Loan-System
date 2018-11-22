@@ -22,21 +22,21 @@
                 <td class="text-center"> 
                     <template v-if="postulante.status=='activo'">
                                 <span class="label label-success">
-                                    <strong> Aprobado</strong>
+                                     Aprobado
                                 </span>
                     </template>
                     <template v-else-if="postulante.status=='entrevistado'">
                         <span class="label label-inverse">
-                            <strong> Pendiente</strong>
+                            Pendiente
                         </span>
                     </template>
                     <template v-else-if="postulante.status=='rechazado'">
                         <span class="label label-danger">
-                            <strong> Rechazado</strong>
+                            Rechazado
                         </span>
                     </template>
                 </td>
-                    <td class="text-center"> @{{postulante.user.name}} @{{postulante.user.last_name}} @{{postulante.user_id}}</td>
+                    <td class="text-center"> @{{postulante.user.name}} @{{postulante.user.last_name}} </td>
                     <td class="text-center">@{{postulante.user.cedula}}</td>
                     <td class="text-center">
                         <template v-if="postulante.entrevistadores.length!=0">
@@ -51,19 +51,18 @@
                     </td>
                     <td class="text-center">
                         <template v-if="postulante.fecha_entrevista">
-                            <span class="label label-success">
-                                <strong> @{{postulante.fecha_entrevista}}</strong>
-                            </span>
+                           @{{postulante.fecha_entrevista}}
                         </template>
                         <template v-else>
                             <span class="label label-inverse">
-                                <strong> Sin fecha</strong>
+                                Sin fecha
                             </span>
                         </template>
                     </td>
                     <td>
                        <button class="btn btn-xs sisbeca-btn-primary">
-                           <i class="fa fa-eye"></i>
+                           <a href="">
+                           <i class="fa fa-eye"></i></a>
                         </button>
                        
                         <button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
@@ -127,9 +126,9 @@
             id:'0',
             funcion:'',
             nombreyapellido:'',
+           
         },
         methods:{
-
             obtenerpostulantes:function()
             {
                 var url = '{{route('postulantes.entrevistados')}}';
@@ -154,13 +153,8 @@
                     toastr.success(response.data.success);
                 });
             },
-
             mostrarModal:function(postulante,imagenes,funcion)
 		    {
-                console.log('Hola aqui empiezo:');
-              
-                console.log(imagenes);
-               
                 if(funcion=='1'){
                     this.funcion='Aprobar';
                 }else if(funcion=='0'){

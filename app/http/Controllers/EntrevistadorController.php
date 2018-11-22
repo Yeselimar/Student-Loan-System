@@ -12,8 +12,13 @@ class EntrevistadorController extends Controller
 {
 		public function listarpostulantesaentrevistar(Request $request)
 		{
-			flash('Holaaaaaa');
+			
+			$becarios = BecarioEntrevistador::where('entrevistador_id','=','82')->get();
+			dd($becarios);
+			dd('holaass');
+			//return response()->json(['becarios'=>$becarios]);
 		}
+		
 		public function asignarentrevistadores()
 		{
 			
