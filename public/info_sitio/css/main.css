@@ -33,7 +33,7 @@
    ========================================================================== */
 body
 {
-  font-family: 'Poppins', sans-serif;
+  font-family: Verdana, Geneva, sans-serif;
   color: #333;
   font-size: 14px;
   font-weight: 400;
@@ -67,7 +67,7 @@ a
 
 h1, h2, h3, h4, h5
 {
-  font-family: 'Poppins', sans-serif;
+  font-family: Verdana, Geneva, sans-serif;
   font-size: 40px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -285,9 +285,14 @@ button:focus
 /*GENERAL*/
 .btn-common:hover 
 {
-  background: #364D9B;
-  border-color: #364D9B;
+  background: #dc3545;
+  border-color: #dc3545;
 }
+.btn-common:hover i
+{
+  color: #fff !important;
+}
+
 .linea-sobra
 {
 
@@ -298,7 +303,7 @@ background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 
 background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
 background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f7f7f7', GradientType=0 );
-height: 40px;
+height: 30px;
 }
 
 /*CONTACTO*/
@@ -2484,3 +2489,31 @@ table#tablaUnica
   width: 100%;
   float: left;
 }
+
+/*Cabecerca para las secciones  de la página*/
+.container-cabecera
+{
+    position: relative;
+}
+
+.cabecera-titulo
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-shadow: 3px 3px 3px #000;
+}
+
+.cabecera-titulo  p
+{
+  width: 100%;
+  text-align: center !important;
+}
+.cabecera-imagen
+{
+    width: 100% !important;
+    height: auto;
+}
+/*Cabecera para las seccioens de la página*/
