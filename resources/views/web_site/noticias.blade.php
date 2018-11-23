@@ -9,10 +9,18 @@
          
       </div>
   </section>
-  <!-- Fi Principal -->
+  <!-- Fin Principal -->
 
-   
-   <div class="linea-sobra"  id="noticias"></div>
+  <div class="linea-sobra"></div>
+  
+  <div class="container-cabecera">
+    <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - Noticias" class="cabecera-imagen">
+    <div class="cabecera-titulo">
+      <p class="h1">Noticias</p>
+    </div>
+  </div>
+
+  <div style="height: 50px" id="noticias"></div>
 
   <!-- Noticias -->
   <div id="Noticias" class="section">
@@ -35,9 +43,11 @@
                   <strong>{{ $noticia->titulo }}</strong>
                 </p>
                 <hr>
+                <div data-mh="noticia-informacion">
                 <p class="h6" style="color:#9E9E9E">
-                  04/02/2019 02:05 pm - Pedro Perez
+                  {{$noticia->fechaActualizacion()}} - {{$noticia->informacion_contacto}}
                 </p>
+                </div>
               </div>
             </div>
             </a>
@@ -53,19 +63,4 @@
 @endsection
 
 @section('personaljs')
-   <script type="text/javascript">
-       $(document).ready(function() {
-           $('#myTable').DataTable( {
-               columnDefs: [
-                   { targets: [0], searchable: false}
-               ]
-           } );
-       } );
-
-       $('#myTable')
-           .removeClass( 'display' )
-           .addClass('table-hover');
-
-   </script>
-
 @endsection

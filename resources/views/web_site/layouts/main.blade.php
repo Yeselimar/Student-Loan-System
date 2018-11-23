@@ -28,7 +28,7 @@
       <link href="{{asset('plugins/owlcarousel/assets/owl.theme.default.min.css')}}" rel="stylesheet"/>
 
       <link href="{{asset('plugins/toastr/toastr.min.css')}}" rel="stylesheet" />
-
+      @yield('personalcss')
    </head>
    <body>
       <!-- Header Section Start -->
