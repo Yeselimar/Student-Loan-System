@@ -2,8 +2,9 @@
 @section('title','Inicio')
 @section('content')
    <!-- Principal -->
-   <section id="seccionPrincipal" class="section" data-stellar-background-ratio="0.2">
+   <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
+      <!--
       <div class="container">
          <div class="section-header">
             <h2 class="section-title">AVAA</h2>
@@ -50,9 +51,21 @@
          </div>
 
       </div>
+      -->
    </section>
-   <!-- Fin Principal -->  
-   <div style="height: 50px"  id="noticias"></div>
+   <!-- Fin Principal --> 
+
+   <div class="linea-sobra"></div>
+  
+   <div class="container-cabecera">
+      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="cabecera-imagen">
+      <div class="cabecera-titulo">
+         <p class="h1"> -AVAA-<br> Asociación Venezolano Americana de Amistad</p>
+      </div>
+   </div>
+
+   <div style="height: 50px" id="noticias"></div>
+
    <!-- Noticias -->
    <div class="container">
     	<div class="row">
@@ -83,8 +96,7 @@
                            </a>
                         </div>
                         <hr>
-                        <p class="h6" style="color:#9E9E9E">24/09/2018</p>
-
+                        <p class="h6" style="color:#9E9E9E">{{$noticia->informacion_contacto}} - {{$noticia->fechaActualizacionCorta()}}</p>
                         <!--<a href="{{route('showNoticia',$noticia->slug)}}" title="Mas Información" class="btn btn-common btn-sm"><i class="fa fa-plus"></i> <span class="mas-informacion">Ver más</span></a>-->
                      </div>
                      </div>
@@ -146,7 +158,7 @@
             <div class="col-md-4 col-sm-6 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
-                     <h2 class="title-miembros-institucionales" data-mh="programa-titulo">AVAA INC</h2>
+                     <h2 class="title-miembros-institucionales" data-mh="programa-titulo">AVAA US</h2>
 
                      <img src="{{asset('info_sitio/img/testimonial/avaainc.jpg')}}" alt="Avaa Internacional" / style="min-width: 100%;height: auto">
                      

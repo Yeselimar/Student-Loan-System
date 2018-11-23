@@ -18,7 +18,7 @@
                      <li class="contacto-letra h6"><strong>Ubícanos</strong></li>
                      <li class="h6"><i class="fa fa-map-marker contacto-letra"></i>&nbsp;&nbsp;Av. Francisco de Miranda esquina con Av. Diego Cisneros, Edif Centro Empresarial Miranda, piso 1 Ofic. D Los Ruíces, Caracas.</li>
                      <li class="h6"><i class="fa fa-phone contacto-letra"></i>&nbsp;&nbsp;(+58)0212-235.78.21</li>
-                     <li class="h6"><i class="fa fa-envelope contacto-letra"></i>&nbsp;&nbsp;info@avaa.org</li>
+                     <li class="h6"><i class="fa fa-envelope contacto-letra"></i>&nbsp;&nbsp;<a href="mailto:comunicaciones@avaa.org" style="color:#fff">comunicaciones@avaa.org</a>, <a href="mailto:prensa.avaa@gmail.com" style="color:#fff">prensa.avaa@gmail.com</a></li>
                   </ul>
                </div>
                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 contacto-rrss text-right" data-mh="footer">

@@ -59,11 +59,21 @@
                     <input name="url_imagen" accept="image/*" type="file" id="url_imagen" class="sisbeca-input">
                     <span class="errors" style="color:red">{{ $errors->first('url_imagen') }}</span>
                 </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <label for="destacada" class="control-label">Destacada</label>
+                    <div class="col-lg-12" style="border-radius: 5px;border:1px solid #021f3a;height: 40px;">
+                        <div class="checkbox text-center" >
+                            <input type="checkbox" value="1" name='destacada'>
+                            ¿Destacado en carrousel?
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="contenido" class="control-label">*Contenido</label>
-                <textarea class="textarea sisbeca-textarea" placeholder="Ingrese el contenido" name="contenido" id="contenido" style="width: 100%; height: 400px; font-size: 12px; line-height: 18px; border: 1px solid #003865; padding: 15px; border-radius: 5px;" >
+                <textarea class="textarea" placeholder="Ingrese el contenido" name="contenido" id="contenido" style="width: 100%; height: 400px;" required>
                     {{old('contenido')}}
                 </textarea>
                 <span class="errors" style="color:red">{{ $errors->first('contenido') }}</span>
@@ -82,7 +92,8 @@
 @endsection
 
 @section('personaljs')
-<script type="text/javascript">
+
+<script>
 
     $(document).ready(function () {
 
@@ -127,17 +138,12 @@
     });
 
 </script>
+<script >
+    $(document).ready(function()
+    {
+        textboxio.replace('textarea');
+
+    });
+</script>
 @endsection
 
-@section('editorjs')
-@include('sisbeca.layouts.partials.editorjs')
-
-
-
-@endsection
-@section('personalcss')
-@include('sisbeca.layouts.partials.editorcss')
-
-
-
-@endsection

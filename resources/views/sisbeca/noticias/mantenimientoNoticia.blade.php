@@ -10,10 +10,10 @@
         <table class="table table-bordered table-hover" id="noticias">
             <thead>
                 <tr>
-                    <th>Titulo</th>
+                    <th>Título</th>
                     <th>Tipo</th>
                     <th>Creado por</th>
-                    <th>Fecha Actualizacion</th>
+                    <th>Actualizado el</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -21,14 +21,25 @@
                 @if($noticias->count()!=0)
                     @foreach($noticias as $noticia)
                     <tr>
-                        <td>{{$noticia->titulo}}</td>
+                        <td>
+                            {{$noticia->titulo}}
+                            @if($noticia->esDestacada())
+                                <span class="label label-success">Destacada</span>
+                            @else
+                                <span class="label label-danger">No destacada</span>
+                            @endif
+
+                        </td>
                         <td>{{$noticia->tipo}}</td>
                         <td>{{$noticia->editor->nombreyapellido()}}</td>
                         <td>{{$noticia->fechaActualizacion()}}</td>
                         <td>
+                            <a href="{{route('showNoticia',$noticia->slug)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Publicación">
+                                <i class="fa fa-eye"></i>
+                            </a>
                             <span data-toggle="modal" data-target="#ver{{$noticia->id}}">
                                 <button type="button" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver imagen">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-photo"></i>
                                 </button>
                             </span>
                             <a href="{{route('noticia.edit',$noticia->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar" > 
