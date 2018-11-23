@@ -37,7 +37,17 @@ class Noticia extends Model
 
     public function fechaActualizacion()
     {
-        return date("d/m/Y h:i:s a", strtotime($this->updated_at));
+        return date("d/m/Y h:iA", strtotime($this->updated_at));
+    }
+
+    public function fechaActualizacionCorta()
+    {
+        return date("d/m/Y", strtotime($this->updated_at));
+    }
+
+    public function esDestacada()
+    {
+        return $this->al_carrousel==1;
     }
     
 }

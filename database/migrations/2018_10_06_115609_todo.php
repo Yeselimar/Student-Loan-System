@@ -244,6 +244,8 @@ class Todo extends Migration
             $table->string('email_contacto')->nullable();
             $table->string('telefono_contacto')->nullable();
 
+            $table->boolean('al_carrousel')->default(1);
+
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
