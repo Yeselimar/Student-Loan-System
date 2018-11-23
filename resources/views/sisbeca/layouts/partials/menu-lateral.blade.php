@@ -388,7 +388,7 @@
                     </ul>
                 </li> 
                 @endif
-                @if(Auth::user()->rol==='admin')
+                @if(Auth::user()->admin())
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
@@ -421,8 +421,16 @@
                 </li>
                 @endif
 
-                {{-- Fin de Vista Compartida Becarios/Mentores--}}
-
+                <!-- Rutas para entrevistadores -->
+                @if(Auth::user()->esEntrevistador())
+                <li class="nav-label">Gestión de Entrevistas</li>
+                <li>
+                    <a class="has-arrow" href="{{route('entrevistador.misentrevistados')}}" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Entrevistas</span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

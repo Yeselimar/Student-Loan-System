@@ -31,10 +31,14 @@
 			</template>
 			<template v-if="lapso_justificar==true">
 				<template v-if="estatus_becario==='por justificar'">
-					<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificación</a>
+					<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
+						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificativo</a>
+					</span>
 				</template>
 				<template v-else>
-					<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificación</a>
+					<span data-toggle="tooltip"  title="Subir Justificativo" data-placement="bottom">
+						<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificativo</a>
+					</span>
 				</template>
 				
 			</template>
@@ -244,7 +248,7 @@
 					@endif
 				</tr>
 				<tr v-if="becarios && becarios.length==0">
-					<td class="text-left" @if(Auth::user()->admin() ) colspan="3" @else colspan="2" @endif>
+					<td class="text-center" @if(Auth::user()->admin() ) colspan="4" @else colspan="2" @endif>
 						No hay <strong>becarios</strong> para este <strong>@{{ actividad.tipo }}</strong>
 					</td>
 				</tr>

@@ -136,6 +136,7 @@ class Todo extends Migration
             $table->datetime('fecha_entrevista')->nullable();
             $table->time('hora_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
+            $table->text('documento_final_entrevista')->nullable();
 
             //campos para la nómina
             $table->datetime('fecha_ingreso')->nullable();//debe ser igual al created_at
@@ -160,13 +161,15 @@ class Todo extends Migration
 
         Schema::create('becarios_entrevistadores', function (Blueprint $table)
         {
+            $table->increments('id');
+
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->unsignedInteger('entrevistador_id');
             $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
 
-            //$table->datetime('fecha')->nullable();//cuando creo la relacion becario - entrevistador asigno fecha entrevista
+            $table->text('documento')->nullable();
 
             $table->timestamps();
         });
@@ -266,7 +269,7 @@ class Todo extends Migration
             $table->string('nombre');
             $table->string('anho_academico')->nullable();
             $table->enum('tipo',['taller','chat club'])->default('taller');
-            $table->enum('nivel',['inicio','intermedio','avanzado'])->default('inicio');
+            $table->enum('nivel',['inicio','intermedio','avanzado','cualquier nivel'])->default('inicio');
             $table->enum('modalidad',['presencial','virtual'])->default('presencial');
             $table->text('descripcion');
             $table->unsignedInteger('limite_participantes');

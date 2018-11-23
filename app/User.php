@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->rol==='becario';
     }
     
+    public function esEntrevistador()
+    {
+        return $this->rol==='entrevistador';
+    }
+
     public function coordinador()//para la relación de 1 a 1 que tiene con la tabla coordinadores (de llegar a tener)
     {
         return $this->hasOne('avaa\Coordinador','user_id');

@@ -152,8 +152,15 @@ class ActividadController extends Controller
         $inscrito = ($inscrito==0) ? false : true;
         $estatus = (object)["0"=>"asistira", "1"=>"en espera", "2"=>"por justificar", "3"=>"asistio","4"=>"no asistio"];
         $id_autenticado = Auth::user()->id;
-        $estatus_becario = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first()->estatus;
         $lapso_justificar = $actividad->lapsoparajustificar();
+        if(Auth::user()->esBecario())
+        {
+            $estatus_becario = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first();
+        }
+        else
+        {
+            $estatus_becario = null;
+        }
         return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito,'estatus'=>$estatus,'id_autenticado'=>$id_autenticado,'lapso_justificar'=>$lapso_justificar,'estatus_becario'=>$estatus_becario]);
     }
 
