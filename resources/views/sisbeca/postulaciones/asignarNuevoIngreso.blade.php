@@ -17,7 +17,8 @@
                     
                 </tr>
             </thead>
-            <tbody>                        
+            <tbody>
+                               
                 <tr v-for="postulante in postulantes">                           
                 <td class="text-center"> 
                     <template v-if="postulante.status=='activo'">
@@ -73,6 +74,7 @@
                          </button>
                     </td>
                 </tr>
+               
                 <tr v-if="postulantes.length==0">
                     <td colspan="5" class="text-center">  
                         No hay <strong>postulantes a entrevistados</strong>

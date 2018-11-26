@@ -114,7 +114,8 @@ class CompartidoDirecCoordController extends Controller
         }
         else if($data==3)
         {
-            $becarios = Becario::query()->where('status','=','entrevistado')->where('acepto_terminos','=',true)->get();
+            $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+           // $becarios = Becario::query()->where('status','=','entrevistado')->where('acepto_terminos','=',false)->get();
         }
 
         if($data==0)
