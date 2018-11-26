@@ -55,10 +55,10 @@
                         </a>
                         <ul class="dropdown-menu nivel2">
                            <li class="nav-item">
-                              <a class="dropdown-item page-scroll" href="#asesoria-educativa">Asesorías Educativas</a>
+                              <a class="dropdown-item page-scroll" href="#proexcelencia">ProExelencia AVAA</a>
                            </li>
                            <li class="nav-item">
-                              <a class="dropdown-item page-scroll" href="#proexcelencia">ProExelencia AVAA</a>
+                              <a class="dropdown-item page-scroll" href="#asesoria-educativa">Asesorías Educativas</a>
                            </li>
                         </ul>
 
@@ -69,10 +69,10 @@
                         </a>
                         <ul class="dropdown-menu nivel2">
                            <li class="nav-item">
-                              <a class="dropdown-item" href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
+                              <a class="dropdown-item" href="{{asset('programas')}}#proexcelencia">ProExelencia AVAA</a>
                            </li>
                            <li class="nav-item">
-                              <a class="dropdown-item" href="{{asset('programas')}}#proexcelencia">ProExelencia AVAA</a>
+                              <a class="dropdown-item" href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
                            </li>
                         </ul>
 
@@ -184,10 +184,10 @@
                   </a>
                   <ul class="dropdown-menu">
                      <li class="dropdown-item">
-                        <a class="page-scroll" href="#asesoria-educativa">Asesorías Educativas</a>
+                        <a class="page-scroll" href="#proexcelencia">ProExcelencia AVAA</a>
                      </li>
                      <li class="dropdown-item">
-                        <a class="page-scroll" href="#proexcelencia">ProExcelencia AVAA</a>
+                        <a class="page-scroll" href="#asesoria-educativa">Asesorías Educativas</a>
                      </li>
                   </ul>
                   @else
@@ -196,10 +196,10 @@
                   </a>
                   <ul class="dropdown-menu">
                      <li class="dropdown-item">
-                        <a  href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
+                        <a href="{{asset('programas')}}#proexcelencia">ProExcelencia AVAA</a>
                      </li>
                      <li class="dropdown-item">
-                        <a href="{{asset('programas')}}#proexcelencia">ProExcelencia AVAA</a>
+                        <a  href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
                      </li>
                   </ul>
 

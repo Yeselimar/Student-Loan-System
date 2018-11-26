@@ -13,9 +13,16 @@
    </section>
    <!-- Fi Principal -->
 
+   <div class="linea-sobra"></div>
 
-   <div class="linea-sobra"  id="noticias"></div>
-   
+   <div class="container-cabecera">
+      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - Contáctecnos" class="cabecera-imagen">
+      <div class="cabecera-titulo">
+         <p class="h1">Contáctenos</p>
+      </div>
+   </div>
+
+   <div style="height: 50px" id="contacto"></div>
 
    <!-- Contactenos -->
    <section id="contactenos" class="section">
@@ -70,7 +77,8 @@
                                        </span>
                                     </a>
                                     &nbsp;&nbsp;
-                                    <a href="mailto:prensa@avaa.org">prensa@avaa.org</a>
+                                    <a href="mailto:comunicaciones@avaa.org">comunicaciones@avaa.org</a>
+                                    <a href="mailto:prensa.avaa@gmail.com">prensa.avaa@gmail.com</a>
                                  </li>
                               </ul>
                            </div>
@@ -246,7 +254,6 @@ const app = new Vue({
             }
             else
             {
-               
                if(this.errores.correo)
                {
                   this.aviso = this.errores.correo[0];

@@ -13,7 +13,7 @@ class SitioWebController extends Controller
 {
     public function index()
     {
-        $noticias = Noticia::query()->where('tipo', '=', "noticia")->orderBy('updated_at','desc')->limit(5)->get();
+        $noticias = Noticia::query()->where('tipo', '=', "noticia")->where('al_carrousel','=','1')->orderBy('updated_at','desc')->limit(5)->get();
         $miembros=  Noticia::query()->where('tipo', '=', "miembroins")->orderBy('updated_at','desc')->get();
         $banners = Banner::all();
         return view('index')->with('route',"home")->with(compact('noticias','cantidad','miembros','banners'));

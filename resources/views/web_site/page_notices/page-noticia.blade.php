@@ -29,7 +29,7 @@
                 <p style="color:#424242">
                 <i class="fa fa-user"></i> <strong>{{$noticia->informacion_contacto}}</strong> - 
                 
-                <i class="fa fa-calendar"></i> <strong>{{ date("d/m/Y h:i:m A", strtotime($noticia->created_at))}}</strong>
+                <i class="fa fa-calendar"></i> <strong>{{$noticia->fechaActualizacion()}}</strong>
                 </p>
                 
 

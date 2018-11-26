@@ -26,8 +26,8 @@
 					<td>@{{ justificativo.id}}</td>
 					<td>@{{ justificativo.user.name}} @{{ justificativo.user.last_name}}</td>
 					<td>@{{justificativo.estatus}}</td>
-					<td>@{{justificativo.created_at}}</td>
-					<td>@{{justificativo.updated_at}}</td>
+					<td>@{{fechaformartear(justificativo.created_at)}}</td>
+					<td>@{{fechaformartear(justificativo.updated_at)}}</td>
 					<td></td>
 				</tr>
 			</tbody>
@@ -57,6 +57,12 @@ const app = new Vue({
     },
     methods: 
     {
+    	getRutaVerJustificativo: function(url_justificativo)
+    	{
+    		var url = "{{url(':slug')}}";
+    		url = url.replace(':slug', url_justificativo);
+            return url;
+    	},
     	obtenerjustificativos: function()
     	{
     		var url = '{{route('actividad.obtenerjustificativos')}}';
@@ -64,7 +70,12 @@ const app = new Vue({
             {
             	this.justificativos = response.data.justificativos;
             });
-    	}
+    	},
+    	fechaformartear: function (fecha)
+		{
+			var d = new Date(fecha);
+			return moment(d).format('DD/MM/YYYY hh:mm A');
+		}
     }
 });
 </script>

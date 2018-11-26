@@ -2,8 +2,9 @@
 @section('title', "Membresias")
 @section('content')
    <!-- Seccion Principal -->
-   <section id="seccionPrincipal" class="section" data-stellar-background-ratio="0.2">
+   <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
+      <!--
       <div class="container">
          <div class="section-header">
             <h2 class="section-title">Membresías</h2>
@@ -43,8 +44,18 @@
             </div>
          </div>
       </div>
+      -->
    </section>
    <!-- Fin Seccion Principal -->
+
+   <div class="linea-sobra"></div>
+  
+   <div class="container-cabecera">
+      <img src="{{asset("info_sitio/img/cabeceras/membresia.png")}}" alt="AVAA - Membresías" class="cabecera-imagen">
+      <div class="cabecera-titulo">
+      <p class="h1">Membresías</p>
+    </div>
+   </div>
 
    <div style="height: 50px" id="membresias-corporativas"></div>
 

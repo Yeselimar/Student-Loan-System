@@ -2,9 +2,10 @@
 @section('title', "Programas")
 @section('content')
    <!-- Seccion Principal -->
-   <section id="seccionPrincipal" class="section" data-stellar-background-ratio="0.2">
+   <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
       <div class="container">
+         <!--
          <div class="section-header">
             <h2 class="section-title">Programas</h2>
             <hr class="lines">
@@ -40,12 +41,139 @@
          </div>
             
          </div>
+         -->
       </div>
    </section>
    <!-- Fin Seccion Principal -->  
 
-   <div style="height: 50px" id="asesoria-educativa"></div>
+   <div class="linea-sobra"></div>
+  
+   <div class="container-cabecera">
+      <img src="{{asset("info_sitio/img/cabeceras/programa.png")}}" alt="AVAA - Programas" class="cabecera-imagen">
+      <div class="cabecera-titulo">
+         <p class="h1">Programas</p>
+      </div>
+   </div>
 
+   <div  style="height: 50px" id="proexcelencia"></div>
+
+   <!--ProExelencia -->
+   <section  class="section">
+      <div class="container">
+         <div class="section-header">
+            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">ProExcelencia AVAA</h2>
+            <hr class="lines wow zoomIn" data-wow-delay="0.3s">
+            <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">En esta seccion se describe el programa Exelencia AVAA</p>
+         </div>
+         <section class="welcome-section section-padding section-dark">
+            <div class="container">
+               <div class="row letrasResponsive">
+                  <div class="col-md-12 col-lg-12 col-xs-12">
+                     <div class="Material-tab">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs justify-content-left" id="myTab" role="tablist">
+                           <li class="nav-item">
+                              <a class="nav-link active" data-toggle="tab" href="#programa-avaa" role="tab"><i class="fa fa-graduation-cap"></i><br/><strong>Programa Exelencia AVAA</strong></a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" data-toggle="tab" href="#componentes" role="tab"><i class="fa fa-puzzle-piece"></i><br/><strong>Componentes del Programa</strong></a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" data-toggle="tab" href="#requisitos" role="tab"><i class="fa fa-list-alt"></i><br/><strong>Requisitos para Postularse</strong></a>
+                           </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                           <div  align="justify" class="tab-pane fade show active" id="programa-avaa" role="tabpanel">
+                              <ul class="list-group">
+                                 <li class="list-group-item">
+                                    <br/>
+                                    <p> El Programa Excelencia AVAA promueve la educación y formación integral de jóvenes venezolanos de medianos o bajos recursos económicos durante los cinco años de carrera universitaria.</p>
+                                    <p>Además de apoyar a los estudiantes beneficiarios a completar su carrera con los más altos índices académicos, ProExcelencia AVAA desarrolla una serie de componentes que permiten formarlos con valores asociados al progreso, con capacidades profesionales y personales.</p>
+                                    <p>Actualmente, el programa tiene a 250 beneficiarios de alto índice académico, vocación social y potencial de liderazgo; todos cursantes de carreras de 5 años en universidades públicas o privadas en la Gran Caracas.</p>
+                                 </li>
+                              </ul>
+                           </div>
+                           <div class="contenidoDeList tab-pane fade" id="componentes" role="tabpanel" >
+                              <li class="list-group-item">
+                                 <br/>
+                              <ul>
+                                    <li><p >Aporte económico mensual.</p></li>
+                                 <li>  <p><strong>Formación en inglés: </strong></p>
+                                    <ul>
+                                        <li>      <p >Apoyo de un mentor, con mínimo 10 años de experiencia profesional, como modelo de vida y guía profesional.</p></li>
+
+                                        <li>     <p >Curso completo de inglés en el Centro Venezolano Americano.</p></li>
+
+                                       <li>      <p >Participación en el programa Práctica de Conversación en Inglés. </p></li>
+
+                                        <li>       <p >Oportunidad de ganar una beca de inglés en USA o Canadá para los becarios con el rendimiento más destacado.</p></li>
+                                    </ul>
+                                 </li>
+
+
+                                 <li>  <p>Formación en áreas extracurriculares y competencias organizacionales.</p></li>
+                                 <li>  <p>Refuerzo de consciencia social y ciudadana con la participación en actividades de voluntariado. </p></li>
+                              </ul>
+                              </li>
+
+                           </div>
+                           <div  class="contenidoDeList tab-pane fade" id="requisitos" role="tabpanel">
+                              <li class="list-group-item">
+                                 <br/>
+                              <ul class="list-group">
+                                 <li> <p>Ser Venezolano.</p></li>
+                                 <li><p >Ser estudiante universitario y estar máximo iniciando segundo año de estudio, quienes cursen carreras de 5 años.</p></li>
+                                 <li> <p >Haber culminado al menos el primer periodo académico universitario y consignar la constancia de notas del mismo.</p></li>
+                                 <li> <p >Poseer promedio de calificaciones igual o superior a 16 puntos en la escala de 20.</p></li>
+                                 <li> <p >Comprometerse a estudiar el idioma inglés en el Centro Venezolano Americano o en otra institución de idiomas que determine la Asociación.</p></li>
+                                 <li> <p>Tener una conducta intachable.</p></li>
+                                 <li>  <p>Mostrar dotes de liderazgo y espíritu comunitario.</p></li>
+                                 <li> <p>Estar dispuesto a participar en las actividades educativas, culturales y deportivas de AVAA. </p></li>
+                                 <li>  <p>Demostrar necesidad de ayuda económica. </p></li>
+
+                              </ul>
+                              </li>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+
+         <section id="planillas" class="col-md-12 col-lg-12 col-xs-12" >
+            <div class="col-lg-12 col-md-12 col-xs-12">
+               <div class="row">
+                  <div class="col-lg-6 col-sm-12 col-xs-12 box-item">
+                     <a target="_blank" href="{{asset('planillas/pdf/Planilla1actsep2017.pdf')}}">
+                        <span class="icon icon-contenedor-programas">
+                           <i class="fa fa-file-pdf-o icon-programas"></i>
+                        </span>
+                        <div class="text letra-programas">
+                           <p>Descargar Planilla</p>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-lg-6 col-sm-12 col-xs-12 box-item">
+                     <a target="_blank" href="{{asset(route('register'))}}">
+                        <span class="icon icon-contenedor-programas">
+                           <i class="fa fa-registered icon-programas"></i>
+                        </span>
+                        <div class="text letra-programas">
+                           <p>Postulate Aqui!</p>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+   </section>
+   <!--fin ProExelencia AVAA -->
+
+   <div class="linea-sobra" id="asesoria-educativa"></div>
+   
    <!--Inicio Asesorias Educativas -->
    <section  class="section">
       <div class="container">
@@ -238,121 +366,6 @@
    </section>
    <!--Fin Asesorias Educativas -->
 
-   <div class="linea-sobra" id="proexcelencia"></div>
-
-   <!--ProExelencia -->
-   <section  class="section">
-      <div class="container">
-         <div class="section-header">
-            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">ProExcelencia AVAA</h2>
-            <hr class="lines wow zoomIn" data-wow-delay="0.3s">
-            <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">En esta seccion se describe el programa Exelencia AVAA</p>
-         </div>
-         <section class="welcome-section section-padding section-dark">
-            <div class="container">
-               <div class="row letrasResponsive">
-                  <div class="col-md-12 col-lg-12 col-xs-12">
-                     <div class="Material-tab">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs justify-content-left" id="myTab" role="tablist">
-                           <li class="nav-item">
-                              <a class="nav-link active" data-toggle="tab" href="#programa-avaa" role="tab"><i class="fa fa-graduation-cap"></i><br/><strong>Programa Exelencia AVAA</strong></a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" data-toggle="tab" href="#componentes" role="tab"><i class="fa fa-puzzle-piece"></i><br/><strong>Componentes del Programa</strong></a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" data-toggle="tab" href="#requisitos" role="tab"><i class="fa fa-list-alt"></i><br/><strong>Requisitos para Postularse</strong></a>
-                           </li>
-                        </ul>
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                           <div  align="justify" class="tab-pane fade show active" id="programa-avaa" role="tabpanel">
-                              <ul class="list-group">
-                                 <li class="list-group-item">
-                                    <br/>
-                                    <p> El Programa Excelencia AVAA promueve la educación y formación integral de jóvenes venezolanos de medianos o bajos recursos económicos durante los cinco años de carrera universitaria.</p>
-                                    <p>Además de apoyar a los estudiantes beneficiarios a completar su carrera con los más altos índices académicos, ProExcelencia AVAA desarrolla una serie de componentes que permiten formarlos con valores asociados al progreso, con capacidades profesionales y personales.</p>
-                                    <p>Actualmente, el programa tiene a 250 beneficiarios de alto índice académico, vocación social y potencial de liderazgo; todos cursantes de carreras de 5 años en universidades públicas o privadas en la Gran Caracas.</p>
-                                 </li>
-                              </ul>
-                           </div>
-                           <div class="contenidoDeList tab-pane fade" id="componentes" role="tabpanel" >
-                              <li class="list-group-item">
-                                 <br/>
-                              <ul>
-                                    <li><p >Aporte económico mensual.</p></li>
-                                 <li>  <p><strong>Formación en inglés: </strong></p>
-                                    <ul>
-                                        <li>      <p >Apoyo de un mentor, con mínimo 10 años de experiencia profesional, como modelo de vida y guía profesional.</p></li>
-
-                                        <li>     <p >Curso completo de inglés en el Centro Venezolano Americano.</p></li>
-
-                                       <li>      <p >Participación en el programa Práctica de Conversación en Inglés. </p></li>
-
-                                        <li>       <p >Oportunidad de ganar una beca de inglés en USA o Canadá para los becarios con el rendimiento más destacado.</p></li>
-                                    </ul>
-                                 </li>
-
-
-                                 <li>  <p>Formación en áreas extracurriculares y competencias organizacionales.</p></li>
-                                 <li>  <p>Refuerzo de consciencia social y ciudadana con la participación en actividades de voluntariado. </p></li>
-                              </ul>
-                              </li>
-
-                           </div>
-                           <div  class="contenidoDeList tab-pane fade" id="requisitos" role="tabpanel">
-                              <li class="list-group-item">
-                                 <br/>
-                              <ul class="list-group">
-                                 <li> <p>Ser Venezolano.</p></li>
-                                 <li><p >Ser estudiante universitario y estar máximo iniciando segundo año de estudio, quienes cursen carreras de 5 años.</p></li>
-                                 <li> <p >Haber culminado al menos el primer periodo académico universitario y consignar la constancia de notas del mismo.</p></li>
-                                 <li> <p >Poseer promedio de calificaciones igual o superior a 16 puntos en la escala de 20.</p></li>
-                                 <li> <p >Comprometerse a estudiar el idioma inglés en el Centro Venezolano Americano o en otra institución de idiomas que determine la Asociación.</p></li>
-                                 <li> <p>Tener una conducta intachable.</p></li>
-                                 <li>  <p>Mostrar dotes de liderazgo y espíritu comunitario.</p></li>
-                                 <li> <p>Estar dispuesto a participar en las actividades educativas, culturales y deportivas de AVAA. </p></li>
-                                 <li>  <p>Demostrar necesidad de ayuda económica. </p></li>
-
-                              </ul>
-                              </li>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </section>
-
-         <section id="planillas" class="col-md-12 col-lg-12 col-xs-12" >
-            <div class="col-lg-12 col-md-12 col-xs-12">
-               <div class="row">
-                  <div class="col-lg-6 col-sm-12 col-xs-12 box-item">
-                     <a target="_blank" href="{{asset('planillas/pdf/Planilla1actsep2017.pdf')}}">
-                        <span class="icon icon-contenedor-programas">
-                           <i class="fa fa-file-pdf-o icon-programas"></i>
-                        </span>
-                        <div class="text letra-programas">
-                           <p>Descargar Planilla</p>
-                        </div>
-                     </a>
-                  </div>
-                  <div class="col-lg-6 col-sm-12 col-xs-12 box-item">
-                     <a target="_blank" href="{{asset(route('register'))}}">
-                        <span class="icon icon-contenedor-programas">
-                           <i class="fa fa-registered icon-programas"></i>
-                        </span>
-                        <div class="text letra-programas">
-                           <p>Postulate Aqui!</p>
-                        </div>
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </section>
-      </div>
-   </section>
-   <!--fin ProExelencia AVAA -->
+   
 
 @endsection

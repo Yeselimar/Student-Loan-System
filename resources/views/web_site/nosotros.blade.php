@@ -1,11 +1,12 @@
 @extends('web_site.layouts.main')
 @section('title', "Nosotros")
 @section('content')
-      
+   
    <!-- Principal -->
-   <section id="seccionPrincipal" class="section" data-stellar-background-ratio="0.2">
+   <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
       <div class="container">
+      <!--
          <div class="section-header">
             <h2 class="section-title">Nosotros</h2>
             <hr class="lines">
@@ -40,9 +41,19 @@
                </div>
             </div>
          </div>
+      -->
       </div>
    </section>
    <!-- Fin Principal-->
+
+   <div class="linea-sobra"></div>
+
+   <div class="container-cabecera">
+      <img src="{{asset("info_sitio/img/cabeceras/nosotros.png")}}" alt="AVAA - Nosotros" class="cabecera-imagen">
+      <div class="cabecera-titulo">
+         <p class="h1">Nosotros</p>
+      </div>
+   </div>
 
    <div style="height: 50px" id="objetivos"></div>
 

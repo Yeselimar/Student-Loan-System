@@ -669,9 +669,18 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>'entrevistador'],function ()
     {
+        Route::get('/mis-entrevistados', 'EntrevistadorController@misentrevistados')->name('entrevistador.misentrevistados');
+
+        Route::get('/postulante/{id}/cargar-documento/', 'EntrevistadorController@cargardocumento')->name('entrevistador.cargardocumento');
+        Route::post('/postulante/{id}/guardar-documento/', 'EntrevistadorController@guardardocumento')->name('entrevistador.guardardocumento');
+
+        Route::get('/postulante/{id}/editar-documento/', 'EntrevistadorController@editardocumento')->name('entrevistador.editardocumento');
+        Route::post('/postulante/{id}/actualizar-documento/', 'EntrevistadorController@actualizardocumento')->name('entrevistador.actualizardocumento');
+
+
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
-            'as' => 'lista.Entrevistas.Postlantes'
+            'as' => 'lista.Entrevistas.Postulantes'
         ]);  
     });
 

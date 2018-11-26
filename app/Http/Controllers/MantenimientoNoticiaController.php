@@ -32,7 +32,6 @@ class MantenimientoNoticiaController extends Controller
 
     public function store(NoticiaRequest $request)
     {
-
         $file= $request->file('url_imagen');
         $name = 'noticiasAVAA_' . time() . '.' . $file->getClientOriginalExtension();
         $path = public_path() . '/images/noticias/';
@@ -41,6 +40,7 @@ class MantenimientoNoticiaController extends Controller
         $noticia->slug = Noticia::getSlug($noticia->titulo);
         $noticia->user_id = \Auth::user()->id;
         $noticia->url_imagen = '/images/noticias/'.$name;
+        $noticia->al_carrousel = ($request->destacada=='1') ? 1 : 0;
         $tipo= ( 'noticia' === $noticia->tipo ) ? 'Noticia' : 'Miembro Institucional';
         if($noticia->save())
         {
@@ -97,8 +97,9 @@ class MantenimientoNoticiaController extends Controller
 
         $noticia->fill($request->all());
         $noticia->slug = Noticia::getSlug($noticia->titulo);
-        $noticia->editor_id = \Auth::user()->id;
+        $noticia->user_id = \Auth::user()->id;
         $noticia->url_imagen = '/images/noticias/'.$name;
+        $noticia->al_carrousel = ($request->destacada=='1') ? 1 : 0;
         if($noticia->save())
         {
             flash('La publicación fue actualizada exitosamente.','success')->important();
