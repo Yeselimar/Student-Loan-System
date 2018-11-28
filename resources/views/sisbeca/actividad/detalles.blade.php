@@ -46,8 +46,20 @@
 				<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Subir Justificación</a>
 			</template>
 		@else <!-- Para el Administrador -->
+			<a href="{{route('actividad.listaasistente',$actividad->id)}}" target="_blank" data-toggle="tooltip"  title="PDF Lista de Asistentes" data-placement="bottom" class="btn btn-sm sisbeca-btn-primary">
+				<i class="fa fa-file-pdf-o"></i>
+			</a>
+			<span data-toggle="tooltip"  title="Eliminar Taller/Chat Club" data-placement="bottom">
+				<button type="button" class="btn btn-sm sisbeca-btn-primary" @click="eliminarActividad()" >
+					<i class="fa fa-trash"></i>
+				</button>	
+			</span>
+			<a href="{{route('actividad.editar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
+				<i class="fa fa-pencil"></i>
+			</a>
 			<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
 			<a href="{{route('actividad.inscribir.becario',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip"  title="Inscribir Becario" data-placement="bottom">Inscribir Becario</a>
+
 		@endif
 	</div>
 	<div class="table-responsive">
@@ -175,6 +187,9 @@
 						</template>
 					</td>
 				</tr>
+				<tr v-if="facilitadores.length==0">
+					<td class="text-left">No hay <strong>facilitador(es)</strong> para este <strong>@{{ actividad.tipo}}</strong>.</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -283,6 +298,29 @@
 		</div>
 	</form>
 	<!-- Modal para eliminar inscripición -->
+
+	<!-- Modal para eliminar actividad -->
+		<div class="modal fade" id="mostrareliminar">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+				    	<h5 class="modal-title"><strong>Eliminar @{{actividad.tipo}}</strong></h5>
+				    </div>
+					<div class="modal-body">
+						<div class="col-lg-12">
+							<br>
+							<p class="h6 text-center">¿Está seguro que desea eliminar el <strong>@{{actividad.tipo}}</strong> <strong>@{{actividad.nombre}}</strong>?</p>
+						</div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+						<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Si</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal para eliminar actividad -->
 </div>
 @endsection
 
@@ -295,6 +333,7 @@ const app = new Vue({
     el: '#app',
     data:
     {
+    	nombreactividad:'',
     	id_autenticado:0,
     	estatus_becario:0,
     	lapso_justificar:0,
@@ -428,6 +467,10 @@ const app = new Vue({
                 this.lapso_justificar = response.data.lapso_justificar;
                 this.estatus_becario = response.data.estatus_becario;
             });
+    	},
+    	eliminarActividad: function()
+    	{
+    		$('#mostrareliminar').modal('show');
     	},
     	fechaformartear: function (fecha)
 		{

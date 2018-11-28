@@ -4,7 +4,9 @@
 
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="#" class="btn btn-sm sisbeca-btn-primary">Descargar Planilla </a>
+		<a href="#" class="btn btn-sm sisbeca-btn-primary" target="_blank">
+			<i class="fa fa-file-pdf-o"></i> Descargar Planilla 
+		</a>
 	</div>
 	<br>
 	<div class="table-responsive">
@@ -57,7 +59,7 @@
 						</div>
 					</td>
 					<td>
-						<template v-if="postulante.documento==null">
+						<template v-if="postulante.documento_final_entrevista==null">
 							<a :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-upload"></i> Cargar Documento
 							</a>
@@ -68,13 +70,13 @@
 							</a>
 						</template>
 						<template v-if="postulante.becario.documento_final_entrevista==null">
-							<a href="#" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Cargar Documento Compartido
+							<a :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-upload"></i> Cargar Documento Conjunto
 							</a>
 						</template>
 						<template v-else>
-							<a href="#" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Editar Documento Compartido
+							<a :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-upload"></i> Editar Documento Conjunto
 							</a>
 						</template>
 					</td>
@@ -106,6 +108,18 @@ const app = new Vue({
 	},
 	methods:
 	{
+		getRutaCargarDocumentoConjunto: function(id)
+		{
+			var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
+			url = url.replace(':id', id);
+            return url;
+		},
+		getRutaEditarDocumentoConjunto:function(id)
+		{
+			var url = "{{route('entrevistador.editardocumentoconjunto',array('id'=>':id'))}}";
+			url = url.replace(':id', id);
+            return url;
+		},
 		getRutaCargarDocumento: function(id)
 		{
 			var url = "{{route('entrevistador.cargardocumento',array('id'=>':id'))}}";
