@@ -90,6 +90,67 @@ class EntrevistadorController extends Controller
         return redirect()->route('entrevistador.misentrevistados');
 	}
 
+	public function documentoconjunto($id)
+	{
+		$becario =  Becario::find($id);
+		$model = "crear";
+		return view('sisbeca.entrevistador.modeldocumentoconjunto')->with(compact('becario','model'));
+	}
+
+	public function guardardocumentoconjunto(Request $request, $id)
+	{
+		$becario = Becario::find($id);
+        $validation = Validator::make($request->all(), EntrevistadorRequest::cargarDocumentoConjunto());
+        if ( $validation->fails() )
+        {
+            flash("Por favor, verifique el formulario.",'danger');
+            return back()->withErrors($validation)->withInput();
+        }
+
+        $archivo= $request->file('documento');
+        $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+        $ruta = public_path().'/'.BecarioEntrevistador::carpetaDocumentoConjunto();
+        $archivo->move($ruta, $nombre);
+
+        $becario->documento_final_entrevista = BecarioEntrevistador::carpetaDocumentoConjunto().$nombre;
+        $becario->save();
+
+        flash("El documento conjunto del becario ".$becario->user->nombreyapellido()." fue cargado exitosamente.",'success');
+        return redirect()->route('entrevistador.misentrevistados');
+	}
+
+	public function editardocumentoconjunto($id)
+	{
+		$becario =  Becario::find($id);
+		$model = "editar";
+		return view('sisbeca.entrevistador.modeldocumentoconjunto')->with(compact('becario','model'));
+	}
+
+	public function actualizardocumentoconjunto(Request $request, $id)
+	{
+		$becario = Becario::find($id);
+        $validation = Validator::make($request->all(), EntrevistadorRequest::actualizarDocumentoConjunto());
+        if ( $validation->fails() )
+        {
+            flash("Por favor, verifique el formulario.",'danger');
+            return back()->withErrors($validation)->withInput();
+        }
+        if($request->file('documento'))
+        {
+            File::delete($becario->documento_final_entrevista);
+
+	        $archivo= $request->file('documento');
+	        $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+	        $ruta = public_path().'/'.BecarioEntrevistador::carpetaDocumentoConjunto();
+	        $archivo->move($ruta, $nombre);
+
+	        $becario->documento_final_entrevista = BecarioEntrevistador::carpetaDocumentoConjunto().$nombre;
+	        $becario->save();
+	    }
+        flash("El documento conjunto del becario ".$becario->user->nombreyapellido()." fue actualizado exitosamente.",'success');
+        return redirect()->route('entrevistador.misentrevistados');
+	}
+
 	public function asignarentrevistadores()
 	{
 		return view('sisbeca.entrevistador.asignar')->with(compact('becarios'));
@@ -140,4 +201,10 @@ class EntrevistadorController extends Controller
 		$becario = Becario::find($id);
 		return response()->json(['becario'=>$becario]);	
 	}
+
+	public function documentoindividual()
+	{
+
+	}
+
 }
