@@ -31,6 +31,7 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        return ActividadBecario::paraActividad(1)->conEstatus('asistira')->count();
         /*$becario = Becario::find(34);
         $becario->hora_entrevista = "3:23 PM";
         $becario->lugar_entrevista = "miami";
