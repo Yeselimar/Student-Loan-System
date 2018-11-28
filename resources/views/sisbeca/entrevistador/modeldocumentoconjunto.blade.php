@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title',($model=="crear") ? "Cargar documento postulante":'Editar documento postulante')
+@section('title',($model=="crear") ? "Cargar documento conjunto postulante":'Editar documento conjunto  postulante')
 @section('content').
 	<div class="col-lg-12">
         <div class="text-right">
@@ -9,9 +9,9 @@
 		<div class="col sisbeca-container-formulario">
 
 			@if($model=='crear')
-				{{ Form::open(['route' => ['entrevistador.guardardocumento',$becario->user->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
+				{{ Form::open(['route' => ['entrevistador.guardardocumentoconjunto',$becario->user->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
 			@else
-                {{ Form::open(['route' => ['entrevistador.actualizardocumento',$becario->user->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
+                {{ Form::open(['route' => ['entrevistador.actualizardocumentoconjunto',$becario->user->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
 			@endif
 
 			<div class="form-group">
@@ -32,7 +32,7 @@
                     @if($model=='editar')
                     <div class="col-lg-4 col-md-4 col-sm-6">
                     	<label for="documento" class="control-label">Documento Actual</label>
-                        <a href="{{url($be->documento)}}" target="_blank" class="btn sisbeca-btn-primary btn-block">
+                        <a href="{{url($becario->documento_final_entrevista)}}" target="_blank" class="btn sisbeca-btn-primary btn-block">
                         	<i class="fa fa-photo"></i>
                     	</a>
                     </div>

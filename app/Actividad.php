@@ -4,6 +4,8 @@ namespace avaa;
 
 use Illuminate\Database\Eloquent\Model;
 use DateTime;
+use avaa\ActividadBecario;
+use avaa\ActividadFacilitador;
 
 class Actividad extends Model
 {
@@ -24,9 +26,20 @@ class Actividad extends Model
         return $this->belongsTo('avaa\Editor','editor_id','user_id');
     }
 
+    public function scopeParaActividad($query,$id)
+    {
+        return $query->where('actividad_id','=',$id);
+    }
+
     public function totalbecarios()
     {
         return $this->becarios->count();
+    }
+
+
+    public function totalbecariosasistira()
+    {
+        return ActividadBecario::paraActividad($this->id)->conEstatus('asistira')->count();
     }
 
     //verifica que la inscripción se antes de las 24 horas y que esté disponible el curso.
@@ -70,6 +83,71 @@ class Actividad extends Model
         }
     }
     
+    public function getTipo()
+    {
+        return ucwords($this->tipo);
+    }
+
+    public function getFecha()
+    {
+        return date("d/m/Y", strtotime($this->fecha));
+    }
+
+    public function getHoraInicio()
+    {
+        return date("h:i A", strtotime($this->hora_inicio));
+    }
+
+    public function getHoraFin()
+    {
+        return date("h:i A", strtotime($this->hora_fin));
+    }
+
+    public function getModalidad()
+    {
+        return ucwords($this->modalidad);
+    }
+
+    public function getNivel()
+    {
+        return ucwords($this->nivel);
+    }
+
+    public function getEstatus()
+    {
+        return ucwords($this->status);
+    }
+
+    public function getDiaFecha()
+    {
+        $dia =  date("N", strtotime($this->fecha));
+        switch ($dia)
+        {
+            case 1:
+                $resultado = 'Lunes';
+                break;
+            case 2:
+                $resultado = 'Martes';
+                break;
+            case 3:
+                $resultado = 'Miércoles';
+                break;
+            case 4:
+                $resultado = 'Jueves';
+                break;
+            case 5:
+                $resultado = 'Viernes';
+                break;
+            case 6:
+                $resultado = 'Sábado';
+                break;
+            case 7:
+                $resultado = 'Domingo';
+                break;
+        }
+        return $resultado;
+    }
+
     public function estaDisponible()
     {
         return $this->status=='disponible';

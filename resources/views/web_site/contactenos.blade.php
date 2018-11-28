@@ -67,8 +67,7 @@
                                        </span>
                                     </a>
                                     &nbsp;&nbsp;
-                                    <a  href="mailto:info@avaa.org">info@avaa.org</a>
-                                    
+                                    <a href="mailto:comunicaciones@avaa.org">comunicaciones@avaa.org</a>
                                  </li>
                                  <li>
                                     <a href="mailto:info@avaa.org">
@@ -77,7 +76,6 @@
                                        </span>
                                     </a>
                                     &nbsp;&nbsp;
-                                    <a href="mailto:comunicaciones@avaa.org">comunicaciones@avaa.org</a>
                                     <a href="mailto:prensa.avaa@gmail.com">prensa.avaa@gmail.com</a>
                                  </li>
                               </ul>

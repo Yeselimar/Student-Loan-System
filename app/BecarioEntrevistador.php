@@ -22,4 +22,9 @@ class BecarioEntrevistador extends Model
     {
         return 'documentos/entrevistados/';
     }
+
+    public static function carpetaDocumentoConjunto()
+    {
+        return 'documentos/entrevistados/conjunto/';
+    }
 }

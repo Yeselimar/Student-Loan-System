@@ -13,6 +13,7 @@ use avaa\Becario;
 use avaa\Actividad;
 use avaa\ActividadBecario;
 use avaa\ActividadFacilitador;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ActividadController extends Controller
 {
@@ -178,7 +179,7 @@ class ActividadController extends Controller
                 $ab->actividad_id = $actividad_id;
                 $ab->becario_id = $becario->user_id;
                 //verificar la cantidad con estatus asistira
-                if($actividad->totalbecarios()>=$actividad->limite_participantes)
+                if($actividad->totalbecariosasistira()>=$actividad->limite_participantes)
                 {
                     $ab->estatus = "en espera";
                 }
@@ -224,7 +225,7 @@ class ActividadController extends Controller
                 $ab = new ActividadBecario;
                 $ab->actividad_id = $id;
                 $ab->becario_id = $request->becario_id;
-                if($actividad->totalbecarios()>=$actividad->limite_participantes)
+                if($actividad->totalbecariosasistira()>=$actividad->limite_participantes)
                 {
                     $ab->estatus = "en espera";
                 }
@@ -264,7 +265,8 @@ class ActividadController extends Controller
     public function crear()
     {
     	$model = "crear";
-    	return view('sisbeca.actividad.model')->with(compact('model'));
+        $actividad = null;
+    	return view('sisbeca.actividad.model')->with(compact('model','actividad'));
     }
 
     public function guardar(Request $request)
@@ -327,10 +329,117 @@ class ActividadController extends Controller
     	return response()->json(['success'=>'La actividad fue creada exitosamente.']);
     }
 
+    public function editar($id)
+    {
+        $model = "editar";
+        $actividad = Actividad::find($id);
+        return view('sisbeca.actividad.model')->with(compact('actividad','model'));
+    }
+
+    public function actualizar(Request $request, $id)
+    {
+        $actividad = Actividad::find($id);
+        $request->validate([
+            'nombre'                => 'required|min:5,max:255',
+            'tipo'                  => 'required',
+            'modalidad'             => 'required',
+            'nivel'                 => 'required',
+            'anho_academico'        => 'min:0,max:255',
+            'limite'                => 'required|integer|between:0,100',
+            'horas'                 => 'required|integer|between:0,100',
+            'fecha'                 => 'required|date_format:d/m/Y',
+            'hora_inicio'           => 'required|date_format:h:i A',
+            'hora_fin'              => 'required|date_format:h:i A',
+            'descripcion'           => 'min:0,max:10000',
+        ]);
+        $actividad->nombre = $request->nombre;
+        $actividad->tipo = $request->tipo;
+        $actividad->modalidad = $request->modalidad;
+        $actividad->nivel = $request->nivel;
+        $actividad->anho_academico = $request->anho_academico;
+        $actividad->limite_participantes = $request->limite;
+        $actividad->horas_voluntariado = $request->horas;
+        $actividad->fecha = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
+        $actividad->hora_inicio = DateTime::createFromFormat('H:i a', $request->hora_inicio )->format('H:i:s');
+        $actividad->hora_fin = DateTime::createFromFormat('H:i a', $request->hora_fin )->format('H:i:s');
+        $actividad->descripcion = $request->descripcion;
+        $actividad->save();
+        //borramos los facilitadores
+        foreach($actividad->facilitadores as $facilitador)
+        {
+            $facilitador->delete();
+        }
+        //actualizamos los facilitadores
+        foreach($request->facilitadores as $facilitador)
+        {
+            if($facilitador["becario"]=="no")
+            {
+                $af = new ActividadFacilitador;
+                $af->actividad_id = $actividad->id;
+                $af->nombreyapellido =  $facilitador["nombre"];
+                $af->save();
+            }
+            else
+            {
+                $af = new ActividadFacilitador;
+                $af->actividad_id = $actividad->id;
+                $af->becario_id = $facilitador["id"];
+                $af->save();
+            }
+        }
+        
+        return response()->json(['success'=>'El '.$actividad->tipo.' fue actualizado exitosamente.']);
+    }
+
+    public function obteneractividad($id)
+    {
+        //$actividad = Actividad::find($id);
+        //return $actividad->facilitadores;
+        $actividad = Actividad::where("id","=",$id)->with("facilitadores")->first();
+        return response()->json(['actividad'=>$actividad]);
+    }
     //becarios activos son los que pueden ser facilitador
     public function obtenerbecarios()
     {
     	$becarios = Becario::activos()->with("user")->get();
     	return response()->json(['becarios'=>$becarios]);
+    }
+
+    public function eliminar($id)
+    {
+        //opcion de borrado blando
+        //eliminar facilitadores,becarios,aval o justificativos
+        //recorrer en Actividad becario para eliminar justificativos
+        $actividad = Actividad::find($id);
+        $tipo = $actividad->tipo;
+        if($actividad->becarios->count()==0 )
+        {
+            foreach($actividad->facilitadores as $facilitador)
+            {
+                $facilitador->delete();
+            }
+            $actividad->delete();
+            flash("El ".$tipo." fue eliminado exitosamente.",'success');
+            return redirect()->route('actividad.listar');
+        }
+        else
+        {
+            flash("El ".$tipo." no puede ser eliminado. Existen información relacionado al mismo.",'danger');
+            return redirect()->route('actividad.listar');
+        }
+    }
+
+    public function listaasistente($id)
+    {
+        /*
+        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','generado')->get(); 
+        $pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho'));
+        return $pdf->stream('listado.pdf','PDF xasa');
+        */
+        $actividad = Actividad::find($id);
+        $facilitadores = ActividadFacilitador::where("actividad_id",'=',$id)->with("user")->get();
+        $becarios = ActividadBecario::where("actividad_id",'=',$id)->with("user")->get();
+        $pdf = PDF::loadView('pdf.actividad.listaasistentes', compact('actividad','facilitadores','becarios'));
+        return $pdf->stream('listado.pdf');
     }
 }

@@ -7,7 +7,11 @@
 
 @endsection
 @section('content')
-  
+  <div class="col-lg-12 text-right">
+    @if(Auth::user()->admin() )
+      <a href="{{route('actividad.crear')}}" class="btn btn-sm sisbeca-btn-primary">Crear Taller/ChatClub</a>
+    @endif
+  </div>
   <div class="col-lg-12">
     <div id='calendar' style="border:1px solid #003865">
     </div>

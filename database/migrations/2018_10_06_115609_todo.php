@@ -288,6 +288,7 @@ class Todo extends Migration
 
         Schema::create('actividades_facilitadores', function (Blueprint $table)
         {
+            $table->increments('id');
             $table->unsignedInteger('actividad_id');
             $table->foreign('actividad_id')->references('id')->on('actividades')->onDelete('cascade');
 
