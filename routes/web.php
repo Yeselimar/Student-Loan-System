@@ -97,6 +97,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/actividades/{id}/editar', 'ActividadController@editar')->name('actividad.editar');
         Route::post('/actividades/{id}/actualizar', 'ActividadController@actualizar')->name('actividad.actualizar');
 
+        Route::get('/actividades/{id}/eliminar', 'ActividadController@eliminar')->name('actividad.eliminar');
+
+        Route::get('/actividades/{id}/lista-asistentes', 'ActividadController@listaasistente')->name('actividad.listaasistente');
+
+        Route::get('/actividades/{id}/obtener', 'ActividadController@obteneractividad')->name('actividad.obtener');
         Route::get('/actividad/{id}/inscribir-becario', 'ActividadController@inscribirbecario')->name('actividad.inscribir.becario');
         Route::post('/actividad/{id}/inscribir-becario-guardar', 'ActividadController@inscribirbecarioguardar')->name('actividad.inscribir.guardar');
 
@@ -670,13 +675,21 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>'entrevistador'],function ()
     {
         Route::get('/mis-entrevistados', 'EntrevistadorController@misentrevistados')->name('entrevistador.misentrevistados');
-
+        //documento individual
         Route::get('/postulante/{id}/cargar-documento/', 'EntrevistadorController@cargardocumento')->name('entrevistador.cargardocumento');
         Route::post('/postulante/{id}/guardar-documento/', 'EntrevistadorController@guardardocumento')->name('entrevistador.guardardocumento');
 
         Route::get('/postulante/{id}/editar-documento/', 'EntrevistadorController@editardocumento')->name('entrevistador.editardocumento');
         Route::post('/postulante/{id}/actualizar-documento/', 'EntrevistadorController@actualizardocumento')->name('entrevistador.actualizardocumento');
 
+        Route::get('/entrevistador/documento-individual/', 'EntrevistadorController@documentoindividual')->name('entrevistador.documentoindividual');
+        
+        //documento en conjunto
+        Route::get('/postulante/{id}/cargar-documento-conjunto/', 'EntrevistadorController@documentoconjunto')->name('entrevistador.documentoconjunto');
+        Route::post('/postulante/{id}/guardar-documento-conjunto/', 'EntrevistadorController@guardardocumentoconjunto')->name('entrevistador.guardardocumentoconjunto');
+
+        Route::get('/postulante/{id}/editar-documento-conjunto/', 'EntrevistadorController@editardocumentoconjunto')->name('entrevistador.editardocumentoconjunto');
+        Route::post('/postulante/{id}/actualizar-documento-conjunto/', 'EntrevistadorController@actualizardocumentoconjunto')->name('entrevistador.actualizardocumentoconjunto');
 
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
