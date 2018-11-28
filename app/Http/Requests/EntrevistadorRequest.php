@@ -14,14 +14,28 @@ class EntrevistadorRequest extends FormRequest
     public static function cargarDocumento()
     {
         return [
-            'documento'  => 'required|mimes:pdf,jpeg,jpg,png|max:10000',
+            'documento'  => 'required|mimes:pdf,jpeg,jpg,png,JPG,JPEG,PNG,PDF|max:10000',
         ];
     }
 
     public static function actualizarDocumento()
     {
         return [
-            'documento'  => 'mimes:pdf,jpeg,jpg,png|max:10000',
+            'documento'  => 'mimes:pdf,jpeg,jpg,png,JPG,JPEG,PNG,PDF|max:10000',
+        ];
+    }
+
+    public static function cargarDocumentoConjunto()
+    {
+        return [
+            'documento'  => 'required|mimes:pdf,jpeg,jpg,png,JPG,JPEG,PNG,PDF|max:10000',
+        ];
+    }
+
+    public static function actualizarDocumentoConjunto()
+    {
+        return [
+            'documento'  => 'mimes:pdf,jpeg,jpg,png,JPG,JPEG,PNG,PDF|max:10000',
         ];
     }
 }
