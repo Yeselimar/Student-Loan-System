@@ -1045,9 +1045,9 @@ h6.h1 {
   fill: #4680ff;
 }
 .bg-success {
-  background: #26dad2 !important;
+  background: #dc3545 !important;
   color: #ffffff;
-  fill: #26dad2;
+  fill: #dc3545;
 }
 .bg-info {
   background: #62d1f3 !important;
@@ -2067,6 +2067,10 @@ textarea {
   border-radius: 1.25em;
   font-size: 75%;
   font-weight: 700;
+}
+.label-sisbeca-azul {
+  background-color: #003865;
+  color:#fff;
 }
 .label-rounded {
   border-radius: 60px;

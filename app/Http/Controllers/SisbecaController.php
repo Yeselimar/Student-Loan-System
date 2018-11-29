@@ -82,13 +82,13 @@ class SisbecaController extends Controller
     {
         if((Auth::user()->rol!=='postulante_becario') && (Auth::user()->rol!=='becario') && (Auth::user()->rol!=='mentor') && (Auth::user()->rol!=='directivo') && (Auth::user()->rol!=='coordinador'))
         {
-            flash('Archivo solicitado no encontrado','danger')->important();
+            flash('Disculpe, el archivo solicitado no fue encontrado.','danger')->important();
             return back();
         }
         $user= User::find($id);
         if($user->rol!=='becario' && $user->rol!=='postulante_becario')
         {
-            flash('Archivo solicitado no encontrado','danger')->important();
+            flash('Disculpe, el archivo solicitado no fue encontrado.','danger')->important();
             return back();
         }
         $becario = Becario::find($id);

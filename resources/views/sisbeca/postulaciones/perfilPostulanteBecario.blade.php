@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Postulante Becario: '.$postulante->user->name.' '.$postulante->user->last_name)
+@section('title','Postulante Becario: '.$postulante->user->nombreyapellido())
 @section('content')
    
 <div class="text-right col-12" align="right" >
@@ -175,7 +175,7 @@
     </div>
     <!-- Modal para rechazar --> 
 
-   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="panel-group Material-default-accordion" id="datos-personales" role="tablist" aria-multiselectable="true">
 
         <div class="panel panel-default-accordion mb-3">

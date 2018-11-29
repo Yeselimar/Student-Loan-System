@@ -78,7 +78,7 @@
 
         </div>
         <!-- footer -->
-        <footer class="footer"> © 2018 Todos los derechos reservados. Diseñado por Developers UC-Facyt</footer>
+        <footer class="footer"> © {{ date('Y') }} Todos los derechos reservados. Diseñado por prgramadores UC-Facyt</footer>
         <!-- End footer -->
         <!-- End Page wrapper  -->
     </div>
