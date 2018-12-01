@@ -410,6 +410,15 @@
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Voluntariados</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
                         <span class="hide-menu">Taller/Chat</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">

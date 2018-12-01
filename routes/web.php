@@ -119,6 +119,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
 
+        //voluntariados
+        Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
+        Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
+
         //aval
         Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');

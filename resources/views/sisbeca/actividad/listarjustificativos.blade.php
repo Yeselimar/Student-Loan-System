@@ -15,7 +15,7 @@
 				<tr>
 					<th>Becario</th>
                     <th>Taller/ChatClub</th>
-					<th>Estatus</th>
+					<th>Estatus J.</th>
 					<th>Cargado el</th>
 					<th>Actualizado el</th>
 					<th>Acciones</th>
@@ -38,13 +38,13 @@
 					<td>@{{fechaformartear(justificativo.created_at)}}</td>
 					<td>@{{fechaformartear(justificativo.updated_at)}}</td>
 					<td>
-                        <template v-if="justificativo.aval.estatus=='negada'">
+                        <template v-if="justificativo.aval.estatus=='negada' || justificativo.aval.estatus=='pendiente'" >
                             <button type="button" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)">
                                 <i class="fa fa-check"></i>
                             </button>
                         </template>
-                        <template v-if="justificativo.aval.estatus=='aceptada'">
-                            <button type="button" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)">
+                        <template v-if="justificativo.aval.estatus=='aceptada' || justificativo.aval.estatus=='pendiente'">
+                            <button type="button" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)" >
                                 <i class="fa fa-remove"></i>
                             </button>
                         </template>
