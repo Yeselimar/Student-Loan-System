@@ -123,6 +123,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
 
+        Route::get('/aval/{id}/aceptar', 'AvalController@aceptar')->name('aval.aceptar');
+        Route::get('/aval/{id}/negar', 'AvalController@negar')->name('aval.negar');
+        Route::get('/aval/{id}/devolver', 'AvalController@devolver')->name('aval.devolver');
         //voluntariado
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
