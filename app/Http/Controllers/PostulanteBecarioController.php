@@ -17,8 +17,6 @@ use avaa\User;
 use avaa\Imagen;
 use avaa\Documento;
 
-
-
 class PostulanteBecarioController extends Controller
 {
     
@@ -31,14 +29,14 @@ class PostulanteBecarioController extends Controller
         {
             $becario->status='postulante';
             $becario->save();
-              return redirect()->route('sisbeca');
+            return redirect()->route('sisbeca');
 
         }
         else
         {
             flash('Debe llenar todos las secciones requeridas para la postulación','danger');
         }
-      return view('sisbeca.postulantebecario.enviarPostulacion')->with('becario',$becario)->with('usuario',$usuario)->with('progreso',$progreso);
+        return view('sisbeca.postulantebecario.enviarPostulacion')->with('becario',$becario)->with('usuario',$usuario)->with('progreso',$progreso);
     }
 
 
@@ -202,7 +200,7 @@ class PostulanteBecarioController extends Controller
         $becario->motivo_beca = $request->get('motivo_beca');
         $becario->informacion_adicional = true;
         $becario->save();
-        flash("La informacion adicional fue cargada exitosamente.",'success');
+        flash("La información adicional fue cargada exitosamente.",'success');
         return redirect()->route('postulantebecario.informacionadicional');
     }
 
