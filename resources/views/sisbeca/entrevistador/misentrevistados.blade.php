@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Mis Entrevistados')
+@section('title','Postulantes Asignados')
 @section('content')
 
 <div class="col-lg-12" id="app">
@@ -13,9 +13,9 @@
 		<table class="table table-bordered ">
 			<thead>
 				<tr>
-					<th class="text-left">Postulante Becario</th>
-					<th>Estatus</th>
-					<th class="text-center">Documento Cargado</th>
+					<th class="text-left">Postulante a Becario</th>
+					<th>Entrevista</th>
+					<!--<th class="text-center">Documento Cargado</th>-->
 					<th>Fecha Hora Lugar</th>
 					<th clas="text-right">Acciones</th>
 				</tr>
@@ -23,17 +23,20 @@
 			<tbody>
 				<tr v-for="postulante in postulantes">
 					<td>@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
-					<td>
-						@{{postulante.becario.status}}
+					<td v-if="postulante.becario.status = 'entrevista'">
+						<span class="label label-default">Pendiente</span>
 					</td>
-					<td class="text-center">
+					<td v-else="postulante.becario.status = 'entrevistado'">
+						<span class="label label-success">Entrevistado</span>
+					</td>
+					<!--<td class="text-center">
 						<span v-if="postulante.documento!=null" class="label label-success">
 							si
 						</span>
 						<span v-else class="label label-danger">
 							no
 						</span>
-					</td>
+					</td>-->
 					<td>
 						<div class="col-lg-12 row">
 							<div v-if="postulante.becario.fecha_entrevista!=null">
@@ -59,24 +62,33 @@
 						</div>
 					</td>
 					<td>
+						<button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
+                            <i class="fa fa-check" data-target="modal-asignar"></i>
+                         </button>
+                       
+						<template>
+							<a class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-eye"></i>
+							</a>
+						</template>
 						<template v-if="postulante.documento_final_entrevista==null">
 							<a :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Cargar Documento
+								<i class="fa fa-upload"></i> Cargar
 							</a>
 						</template>
 						<template  v-else>
 							<a :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-edit"></i> Editar Documento
+								<i class="fa fa-edit"></i> Editar
 							</a>
 						</template>
 						<template v-if="postulante.becario.documento_final_entrevista==null">
 							<a :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Cargar Documento Conjunto
+								<i class="fa fa-upload"></i> Cargar
 							</a>
 						</template>
 						<template v-else>
 							<a :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Editar Documento Conjunto
+								<i class="fa fa-upload"></i> Editar
 							</a>
 						</template>
 					</td>
