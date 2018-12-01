@@ -247,9 +247,12 @@ const app = new Vue({
 		asignarentrevistadores: function(id,seleccionados)
 		{
 			this.seleccionados = seleccionados;
-			console.log("value: "+$('#hora').val());
+			//console.log("value: "+$('#hora').val());
 			this.hora = $('#hora').val();
-			console.log("model: "+this.hora);
+			//console.log("model: "+this.hora);
+			this.fecha = $('#fecha').val();
+			//console.log($('#fecha').val());
+			//console.log(this.fecha);
 			var dataform = new FormData();
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
@@ -261,7 +264,6 @@ const app = new Vue({
 			{
 				$('#asignarmodal').modal('hide');
 				this.obtenerpostulantes();
-
 				toastr.success(response.data.success);
 			});
 		},

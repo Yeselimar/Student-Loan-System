@@ -76,7 +76,7 @@
                 </tr>
                
                 <tr v-if="postulantes.length==0">
-                    <td colspan="5" class="text-center">  
+                    <td colspan="6" class="text-center">  
                         No hay <strong>postulantes a entrevistados</strong>
                     </td>
                 </tr>
