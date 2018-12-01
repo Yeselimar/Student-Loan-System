@@ -22,16 +22,7 @@ class DirectivoController extends Controller
     {
         $this->middleware('directivo');
     }
-    //nuevo
-    public function agregarObservacion(Request $request, $id)
-    {
-      
-        $becario = Becario::find($id);
-        $becario->observacion = $request->get("observaciones");
-        $becario->save();
-        return redirect()->route('perfilPostulanteBecario',$id);
-       
-    }
+    
     //viejo
    
     //vieja no se usa

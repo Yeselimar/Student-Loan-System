@@ -25,6 +25,15 @@ class CompartidoDirecCoordController extends Controller
     {
         $this->middleware('compartido_direc_coord');
     }
+    public function agregarObservacion(Request $request, $id)
+    {
+      
+        $becario = Becario::find($id);
+        $becario->observacion = $request->get("observaciones");
+        $becario->save();
+        return redirect()->route('perfilPostulanteBecario',$id);
+       
+    }
     public function obtener_entrevistados()
     {
         $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->with("user")->with('entrevistadores')->with('imagenes')->get();
@@ -53,24 +62,25 @@ class CompartidoDirecCoordController extends Controller
         return  redirect()->route('listarPostulantesBecarios',"2");
 
     }
-    public function cambioStatusEntrevistado($id)
+    public function cambiostatusentrevistado(Request $request)
     {
-        $becario=Becario::query()->where('user_id','=',$id)->where('status','=','entrevista')
-            ->where('acepto_terminos','=',1)->where('fecha_entrevista','<>',null)
-            ->first();
+        $postulanteBecario = Becario::find($request->id);
+       /* $becario=Becario::query()->where('user_id','=',$request->id)->where('status','=','entrevista')
+            ->where('acepto_terminos','=',0)->where('fecha_entrevista','<>',null)
+            ->first();*/
 
-        if(!is_null($becario))
+        if(!is_null($postulanteBecario))
         {
-            $becario->status= 'entrevistado';
-            $becario->save();
-            flash($becario->user->name.' '.$becario->user->last_name.' ha sido marcado como entrevistado.','success')->important();
+            $postulanteBecario->status= 'entrevistado';
+            $postulanteBecario->save();
+            flash($postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido marcado como entrevistado.','success')->important();
+            
         }
         else
         {
             flash('Disculpe, ha forzado la información incorrecta','danger')->important();
         }
-
-        return  redirect()->route('listarPostulantesBecarios',"1");
+        return response()->json(['success'=>'El Estatus de la Entrevista ha sido Cambiado Exitosamente']);
 
     }
     public function veredictoPostulantesBecarios(Request $request)

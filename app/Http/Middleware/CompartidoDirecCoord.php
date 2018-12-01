@@ -24,7 +24,8 @@ class CompartidoDirecCoord
     public function handle($request, Closure $next)
     {
         //si es verdadero sigue con  la petición
-        if(($this->auth->user()->rol==='coordinador') || ($this->auth->user()->rol==='directivo'))
+        //revisar el entrevistador
+        if(($this->auth->user()->rol==='coordinador') || ($this->auth->user()->rol==='directivo') || ($this->auth->user()->rol==='entrevistador'))
             return $next($request);
         else
             return abort(404,'Acceso Denegado');

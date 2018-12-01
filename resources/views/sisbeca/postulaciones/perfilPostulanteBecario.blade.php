@@ -2,6 +2,7 @@
 @section('title','Postulante Becario: '.$postulante->user->nombreyapellido())
 @section('content')
    
+
 <div class="text-right col-12" align="right" >
   <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
@@ -49,8 +50,12 @@
                 @else
                     @if($postulante->status==='entrevista')
                         <span class="label label-warning">Aprobado para Entrevista</span>
+                    @elseif($postulante->status==='entrevistado')
+                        <span class="label label-danger">Entrevistado</span>
+                    @elseif($postulante->status==='rechazado')
+                    <span class="label label-danger">Rechazado</span>
                     @else
-                        <span class="label label-danger">Rechazado</span>
+                        <span class="label label-danger">Pendiente</span>
                     @endif
                 @endif
             </div>
@@ -176,457 +181,457 @@
     <!-- Modal para rechazar --> 
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <div class="panel-group Material-default-accordion" id="datos-personales" role="tablist" aria-multiselectable="true">
+        <div class="panel-group Material-default-accordion" id="datos-personales" role="tablist" aria-multiselectable="true">
 
-        <div class="panel panel-default-accordion mb-3">
-            <div class="panel-accordion" role="tab" id="heading">
-                <h5 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#datos-personales" href="#datospersonales" aria-expanded="false" aria-controls="datospersonales">
-              Datos Personales
-                    </a>
-                </h5>
-            </div>
-            <div id="datospersonales" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
-                <div align="justify" class="panel-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td class="text-left"><strong>Nombres</strong></td>
-                          <td class="text-left">{{ $usuario->name }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Apellidos</strong></td>
-                          <td class="text-left">{{ $usuario->last_name }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Fecha Nacimiento</strong></td>
-                          <td class="text-left">{{ $usuario->getFechaNacimiento() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Lugar de Nacimiento</strong></td>
-                          <td class="text-left">{{ $postulante->lugar_nacimiento }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Edad</strong></td>
-                          <td class="text-left">{{ $usuario->getEdad() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Sexo</strong></td>
-                          <td class="text-left">{{ $usuario->sexo }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Cédula</strong></td>
-                          <td class="text-left">{{ $usuario->cedula }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Correo Electrónico</strong></td>
-                          <td class="text-left">{{ $usuario->email }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Dirección Permanente</strong></td>
-                          <td class="text-left">{{ $postulante->direccion_permanente }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Dirección Temporal</strong></td>
-                          <td class="text-left">{{ $postulante->direccion_temporal }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Teléfono Celular</strong></td>
-                          <td class="text-left">{{ $postulante->celular }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Teléfono Habitación</strong></td>
-                          <td class="text-left">{{ $postulante->telefono_habitacion }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Teléfono Pariente</strong></td>
-                          <td class="text-left">{{ $postulante->telefono_pariente }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Promedio Ingreso Familiar</strong></td>
-                          <td class="text-left">{{ $postulante->ingreso_familiar }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Trabaja</strong></td>
-                          <td class="text-left">{{ $postulante->getTrabaja() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Lugar de Trabajo</strong></td>
-                          <td class="text-left">{{ $postulante->lugar_trabajo }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Cargo que desempeña en el trabajo</strong></td>
-                          <td class="text-left">{{ $postulante->cargo_trabajo }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Horas mensuales de trabajo</strong></td>
-                          <td class="text-left">{{ $postulante->horas_trabajo }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Contribuye con el ingreso familiar</strong></td>
-                          <td class="text-left">{{ $postulante->getContribuyeIngreso() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Contribuye con el ingreso familiar (en porcentaje) </strong></td>
-                          <td class="text-left">{{ $postulante->getContribuyePorcentaje() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Vive con </strong></td>
-                          <td class="text-left">{{ $postulante->vives_con }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Vive con otros (en específico) </strong></td>
-                          <td class="text-left">{{ $postulante->vives_otros }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Tipo Vivienda </strong></td>
-                          <td class="text-left">{{ $postulante->tipo_vivienda }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Composición Familiar</strong></td>
-                          <td class="text-left">{{ $postulante->composicion_familiar }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Ocupación del Padre</strong></td>
-                          <td class="text-left">{{ $postulante->ocupacion_padre }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Nombre de la empresa del Padre</strong></td>
-                          <td class="text-left">{{ $postulante->nombre_empresa_padre }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Experiencia Laboral del Padre</strong></td>
-                          <td class="text-left">{{ $postulante->getExperienciaPadre() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Ocupación del Madre</strong></td>
-                          <td class="text-left">{{ $postulante->ocupacion_madre }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Nombre de la empresa del Madre</strong></td>
-                          <td class="text-left">{{ $postulante->nombre_empresa_madre }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Experiencia Laboral del Madre</strong></td>
-                          <td class="text-left">{{ $postulante->getExperienciaMadre() }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="panel panel-default-accordion mb-3">
+                <div class="panel-accordion" role="tab" id="heading">
+                    <h5 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#datos-personales" href="#datospersonales" aria-expanded="false" aria-controls="datospersonales">
+                Datos Personales
+                        </a>
+                    </h5>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-group Material-default-accordion" id="estudios-secundarios" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-default-accordion mb-3">
-            <div class="panel-accordion" role="tab" id="heading">
-                <h5 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#estudios-secundarios" href="#estudiossecundarios" aria-expanded="false" aria-controls="estudiossecundarios">
-              Estudios Secundarios
-                    </a>
-                </h5>
-            </div>
-            <div id="estudiossecundarios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
-                <div align="justify" class="panel-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td class="text-left"><strong>Nombre de la Institución</strong></td>
-                          <td class="text-left">{{ $postulante->nombre_institucion }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Dirección de la institución</strong></td>
-                          <td class="text-left">{{ $postulante->direccion_institucion }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Director de la institución</strong></td>
-                          <td class="text-left">{{ $postulante->director_institucion }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Bachiller en</strong></td>
-                          <td class="text-left">{{ $postulante->bachiller_en }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Promedio en Bachillerato</strong></td>
-                          <td class="text-left">{{ $postulante->promedio_bachillerato }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Actividades Extracurriculares</strong></td>
-                          <td class="text-left">{{ $postulante->actividades_extracurriculares }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Lugar de la Labor Social</strong></td>
-                          <td class="text-left">{{ $postulante->lugar_labor_social }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Dirección de la Labor Social</strong></td>
-                          <td class="text-left">{{ $postulante->direccion_labor_social }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Supervisor de la Labor Social</strong></td>
-                          <td class="text-left">{{ $postulante->supervisor_labor_social }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Habla otro idioma</strong></td>
-                          <td class="text-left">{{ $postulante->habla_otro_idioma }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Idioma que habla</strong></td>
-                          <td class="text-left">{{ $postulante->habla_idioma }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Nivel de conocimiento del idioma</strong></td>
-                          <td class="text-left">{{ $postulante->nivel_idioma }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-group Material-default-accordion" id="estudios-universitarios" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-default-accordion mb-3">
-            <div class="panel-accordion" role="tab" id="heading">
-                <h5 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#estudios-universitarios" href="#estudiosuniversitarios" aria-expanded="false" aria-controls="estudiosuniversitarios">
-              Estudios Universitarios
-                    </a>
-                </h5>
-            </div>
-            <div id="estudiosuniversitarios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
-                <div align="justify" class="panel-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td class="text-left"><strong>Fecha Inicio de la Universidad</strong></td>
-                          <td class="text-left">{{ $postulante->getInicioUniversidad() }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Universidad</strong></td>
-                          <td class="text-left">{{ $postulante->nombre_universidad }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Carrera</strong></td>
-                          <td class="text-left">{{ $postulante->carrera_universidad }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Costo de la matrícula académica</strong></td>
-                          <td class="text-left">{{ $postulante->costo_matricula }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Promedio Universidad</strong></td>
-                          <td class="text-left">{{ $postulante->promedio_universidad }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Periódo Académico</strong></td>
-                          <td class="text-left">{{ $postulante->periodo_academico }}</td>
-                        </tr>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-group Material-default-accordion" id="informacion-adicional" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-default-accordion mb-3">
-            <div class="panel-accordion" role="tab" id="heading">
-                <h5 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#informacion-adicional" href="#informacionadicional" aria-expanded="false" aria-controls="informacionadicional">
-              Informacion Adicional
-                    </a>
-                </h5>
-            </div>
-            <div id="informacionadicional" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
-                <div align="justify" class="panel-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td class="text-left"><strong>Medio de que como enteró del Programa Proexcelencia</strong></td>
-                          <td class="text-left">{{ $postulante->medio_proexcelencia }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Otro medio de como se enteró del Programa Proexcelencia</strong></td>
-                          <td class="text-left">{{ $postulante->otro_medio_proexcelencia }}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-left"><strong>Motivo de la beca</strong></td>
-                          <td class="text-left">{{ $postulante->motivo_beca }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-group Material-default-accordion" id="todos-documentos" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-default-accordion mb-3">
-            <div class="panel-accordion" role="tab" id="heading">
-                <h5 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#todos-documentos" href="#todosdocumentos" aria-expanded="false" aria-controls="todosdocumentos">
-              Documentos
-                    </a>
-                </h5>
-            </div>
-            <div id="todosdocumentos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
-                <div align="justify" class="panel-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
+                <div id="datospersonales" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                    <div align="justify" class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
                         <tbody>
-                        <tr>
-                            <td class="text-left"><strong>Foto Tipo Carnet</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($fotografia))
-                                    <a target="_blank" href="{{ asset($fotografia->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Fotografia</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Copia Cédula</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($cedula))
-                                    <a target="_blank" href="{{ asset($cedula->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Cedula</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Constancia CNU</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($constancia_cnu))
-                                    <a target="_blank" href="{{ asset($constancia_cnu->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Constancia CNU</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Calificaciones de Bachillerato</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($calificaciones_bachillerato))
-                                    <a target="_blank" href="{{ asset($calificaciones_bachillerato->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Calificaciones de Bachillerato</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Constancia de Aceptación</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($constancia_aceptacion))
-                                    <a target="_blank" href="{{ asset($constancia_aceptacion->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Constancia de Aceptación</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Constancia de Estudio</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($constancia_estudios))
-                                    <a target="_blank" href="{{ asset($constancia_estudios->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Constancia de Estudio</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Calificaciones de la Universidad</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($calificaciones_universidad))
-                                    <a target="_blank" href="{{ asset($calificaciones_universidad->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Calificaciones de la Universidad</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Constanca de Trabajo</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($constancia_trabajo))
-                                    <a target="_blank" href="{{ asset($constancia_trabajo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Constanca de Trabajo</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Declaración de Impuestos</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($declaracion_impuestos))
-                                    <a target="_blank" href="{{ asset($declaracion_impuestos->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Declaración de Impuestos</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Recibo de pago</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($recibo_pago))
-                                    <a target="_blank" href="{{ asset($recibo_pago->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Recibo de pago</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Referencia del Profesor 1</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($referencia_profesor1))
-                                    <a target="_blank" href="{{ asset($referencia_profesor1->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Referencia del Profesor 1</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Referencia del Profesor 2</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($referencia_profesor2))
-                                    <a target="_blank" href="{{ asset($referencia_profesor2->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Referencia del Profesor 2</strong></span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><strong>Ensayo</strong></td>
-                            <td class="text-left">
-                                @if(!is_null($ensayo))
-                                    <a target="_blank" href="{{ asset($ensayo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
-                                @else
-                                    <span class="label label-light-danger"><strong>Sin Ensayo</strong></span>
-                                @endif
-                            </td>
-                        </tr>
+                            <tr>
+                            <td class="text-left"><strong>Nombres</strong></td>
+                            <td class="text-left">{{ $usuario->name }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Apellidos</strong></td>
+                            <td class="text-left">{{ $usuario->last_name }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Fecha Nacimiento</strong></td>
+                            <td class="text-left">{{ $usuario->getFechaNacimiento() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Lugar de Nacimiento</strong></td>
+                            <td class="text-left">{{ $postulante->lugar_nacimiento }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Edad</strong></td>
+                            <td class="text-left">{{ $usuario->getEdad() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Sexo</strong></td>
+                            <td class="text-left">{{ $usuario->sexo }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Cédula</strong></td>
+                            <td class="text-left">{{ $usuario->cedula }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Correo Electrónico</strong></td>
+                            <td class="text-left">{{ $usuario->email }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Dirección Permanente</strong></td>
+                            <td class="text-left">{{ $postulante->direccion_permanente }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Dirección Temporal</strong></td>
+                            <td class="text-left">{{ $postulante->direccion_temporal }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Teléfono Celular</strong></td>
+                            <td class="text-left">{{ $postulante->celular }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Teléfono Habitación</strong></td>
+                            <td class="text-left">{{ $postulante->telefono_habitacion }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Teléfono Pariente</strong></td>
+                            <td class="text-left">{{ $postulante->telefono_pariente }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Promedio Ingreso Familiar</strong></td>
+                            <td class="text-left">{{ $postulante->ingreso_familiar }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Trabaja</strong></td>
+                            <td class="text-left">{{ $postulante->getTrabaja() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Lugar de Trabajo</strong></td>
+                            <td class="text-left">{{ $postulante->lugar_trabajo }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Cargo que desempeña en el trabajo</strong></td>
+                            <td class="text-left">{{ $postulante->cargo_trabajo }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Horas mensuales de trabajo</strong></td>
+                            <td class="text-left">{{ $postulante->horas_trabajo }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Contribuye con el ingreso familiar</strong></td>
+                            <td class="text-left">{{ $postulante->getContribuyeIngreso() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Contribuye con el ingreso familiar (en porcentaje) </strong></td>
+                            <td class="text-left">{{ $postulante->getContribuyePorcentaje() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Vive con </strong></td>
+                            <td class="text-left">{{ $postulante->vives_con }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Vive con otros (en específico) </strong></td>
+                            <td class="text-left">{{ $postulante->vives_otros }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Tipo Vivienda </strong></td>
+                            <td class="text-left">{{ $postulante->tipo_vivienda }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Composición Familiar</strong></td>
+                            <td class="text-left">{{ $postulante->composicion_familiar }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Ocupación del Padre</strong></td>
+                            <td class="text-left">{{ $postulante->ocupacion_padre }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Nombre de la empresa del Padre</strong></td>
+                            <td class="text-left">{{ $postulante->nombre_empresa_padre }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Experiencia Laboral del Padre</strong></td>
+                            <td class="text-left">{{ $postulante->getExperienciaPadre() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Ocupación del Madre</strong></td>
+                            <td class="text-left">{{ $postulante->ocupacion_madre }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Nombre de la empresa del Madre</strong></td>
+                            <td class="text-left">{{ $postulante->nombre_empresa_madre }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Experiencia Laboral del Madre</strong></td>
+                            <td class="text-left">{{ $postulante->getExperienciaMadre() }}</td>
+                            </tr>
                         </tbody>
-                    </table>
-                  </div>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group Material-default-accordion" id="estudios-secundarios" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default-accordion mb-3">
+                <div class="panel-accordion" role="tab" id="heading">
+                    <h5 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#estudios-secundarios" href="#estudiossecundarios" aria-expanded="false" aria-controls="estudiossecundarios">
+                Estudios Secundarios
+                        </a>
+                    </h5>
+                </div>
+                <div id="estudiossecundarios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                    <div align="justify" class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                            <td class="text-left"><strong>Nombre de la Institución</strong></td>
+                            <td class="text-left">{{ $postulante->nombre_institucion }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Dirección de la institución</strong></td>
+                            <td class="text-left">{{ $postulante->direccion_institucion }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Director de la institución</strong></td>
+                            <td class="text-left">{{ $postulante->director_institucion }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Bachiller en</strong></td>
+                            <td class="text-left">{{ $postulante->bachiller_en }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Promedio en Bachillerato</strong></td>
+                            <td class="text-left">{{ $postulante->promedio_bachillerato }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Actividades Extracurriculares</strong></td>
+                            <td class="text-left">{{ $postulante->actividades_extracurriculares }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Lugar de la Labor Social</strong></td>
+                            <td class="text-left">{{ $postulante->lugar_labor_social }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Dirección de la Labor Social</strong></td>
+                            <td class="text-left">{{ $postulante->direccion_labor_social }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Supervisor de la Labor Social</strong></td>
+                            <td class="text-left">{{ $postulante->supervisor_labor_social }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Habla otro idioma</strong></td>
+                            <td class="text-left">{{ $postulante->habla_otro_idioma }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Idioma que habla</strong></td>
+                            <td class="text-left">{{ $postulante->habla_idioma }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Nivel de conocimiento del idioma</strong></td>
+                            <td class="text-left">{{ $postulante->nivel_idioma }}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group Material-default-accordion" id="estudios-universitarios" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default-accordion mb-3">
+                <div class="panel-accordion" role="tab" id="heading">
+                    <h5 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#estudios-universitarios" href="#estudiosuniversitarios" aria-expanded="false" aria-controls="estudiosuniversitarios">
+                Estudios Universitarios
+                        </a>
+                    </h5>
+                </div>
+                <div id="estudiosuniversitarios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                    <div align="justify" class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                            <td class="text-left"><strong>Fecha Inicio de la Universidad</strong></td>
+                            <td class="text-left">{{ $postulante->getInicioUniversidad() }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Universidad</strong></td>
+                            <td class="text-left">{{ $postulante->nombre_universidad }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Carrera</strong></td>
+                            <td class="text-left">{{ $postulante->carrera_universidad }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Costo de la matrícula académica</strong></td>
+                            <td class="text-left">{{ $postulante->costo_matricula }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Promedio Universidad</strong></td>
+                            <td class="text-left">{{ $postulante->promedio_universidad }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Periódo Académico</strong></td>
+                            <td class="text-left">{{ $postulante->periodo_academico }}</td>
+                            </tr>
+
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group Material-default-accordion" id="informacion-adicional" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default-accordion mb-3">
+                <div class="panel-accordion" role="tab" id="heading">
+                    <h5 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#informacion-adicional" href="#informacionadicional" aria-expanded="false" aria-controls="informacionadicional">
+                Informacion Adicional
+                        </a>
+                    </h5>
+                </div>
+                <div id="informacionadicional" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                    <div align="justify" class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                            <td class="text-left"><strong>Medio de que como enteró del Programa Proexcelencia</strong></td>
+                            <td class="text-left">{{ $postulante->medio_proexcelencia }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Otro medio de como se enteró del Programa Proexcelencia</strong></td>
+                            <td class="text-left">{{ $postulante->otro_medio_proexcelencia }}</td>
+                            </tr>
+                            <tr>
+                            <td class="text-left"><strong>Motivo de la beca</strong></td>
+                            <td class="text-left">{{ $postulante->motivo_beca }}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group Material-default-accordion" id="todos-documentos" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default-accordion mb-3">
+                <div class="panel-accordion" role="tab" id="heading">
+                    <h5 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#todos-documentos" href="#todosdocumentos" aria-expanded="false" aria-controls="todosdocumentos">
+                Documentos
+                        </a>
+                    </h5>
+                </div>
+                <div id="todosdocumentos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                    <div align="justify" class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td class="text-left"><strong>Foto Tipo Carnet</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($fotografia))
+                                        <a target="_blank" href="{{ asset($fotografia->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Fotografia</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Copia Cédula</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($cedula))
+                                        <a target="_blank" href="{{ asset($cedula->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Cedula</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Constancia CNU</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($constancia_cnu))
+                                        <a target="_blank" href="{{ asset($constancia_cnu->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Constancia CNU</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Calificaciones de Bachillerato</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($calificaciones_bachillerato))
+                                        <a target="_blank" href="{{ asset($calificaciones_bachillerato->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Calificaciones de Bachillerato</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Constancia de Aceptación</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($constancia_aceptacion))
+                                        <a target="_blank" href="{{ asset($constancia_aceptacion->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Constancia de Aceptación</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Constancia de Estudio</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($constancia_estudios))
+                                        <a target="_blank" href="{{ asset($constancia_estudios->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Constancia de Estudio</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Calificaciones de la Universidad</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($calificaciones_universidad))
+                                        <a target="_blank" href="{{ asset($calificaciones_universidad->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Calificaciones de la Universidad</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Constanca de Trabajo</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($constancia_trabajo))
+                                        <a target="_blank" href="{{ asset($constancia_trabajo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Constanca de Trabajo</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Declaración de Impuestos</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($declaracion_impuestos))
+                                        <a target="_blank" href="{{ asset($declaracion_impuestos->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Declaración de Impuestos</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Recibo de pago</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($recibo_pago))
+                                        <a target="_blank" href="{{ asset($recibo_pago->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Recibo de pago</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Referencia del Profesor 1</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($referencia_profesor1))
+                                        <a target="_blank" href="{{ asset($referencia_profesor1->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Referencia del Profesor 1</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Referencia del Profesor 2</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($referencia_profesor2))
+                                        <a target="_blank" href="{{ asset($referencia_profesor2->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Referencia del Profesor 2</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Ensayo</strong></td>
+                                <td class="text-left">
+                                    @if(!is_null($ensayo))
+                                        <a target="_blank" href="{{ asset($ensayo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                    @else
+                                        <span class="label label-light-danger"><strong>Sin Ensayo</strong></span>
+                                    @endif
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-   </div>
-  
+    
   
     <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">   
                     {{csrf_field()}}
@@ -640,37 +645,31 @@
                  
                 </div>
             </div>
-            </form>
-           
-     
+    </form>
+    @if(Auth::user()->rol==='entrevistador')       
     
-   
-
+     
+    @endif
 @endsection
 
 
 @section('personaljs')
     <script type="text/javascript">
-function aprobar(){
-    
-    var observaciones = $('#observaciones').val();
-    alert("Debe Aceptar los Terminos y Condiciones");
-    
-}
-    
+    function aprobar(){   
+        var observaciones = $('#observaciones').val();
+        alert("Debe Aceptar los Terminos y Condiciones");
+    }
     </script>
 
     <script>
         Vue.component('modal', {
             template: '#modal-template'
             })
-
-            // start app
             new Vue({
             el: '#app',
-            data: {
-            showModal: false
-            }
+           
         })
     </script>
+
+
 @endsection

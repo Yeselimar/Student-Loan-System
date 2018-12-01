@@ -370,12 +370,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>'directivo'],function ()
     {
-        Route::post('agregarObservacion/{id}', [
+        /*Route::post('agregarObservacion/{id}', [
             'uses' => 'DirectivoController@agregarObservacion',
             'as' => 'agregarObservacion'
         ]);
 
-        /*Route::any('entrevistado/{id}', [
+        Route::any('entrevistado/{id}', [
             'uses' => 'DirectivoController@cambioStatusEntrevistado',
             'as' => 'fueAentrevista'
         ]);*/ //movido a compartido
@@ -587,9 +587,16 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         ]);
 
     });
+    Route::group(['middleware'=>'compartido_entrevistador'],function ()
+    {
 
+    });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {
+        Route::post('agregarObservacion/{id}', [
+            'uses' => 'CompartidoDirecCoordController@agregarObservacion',
+            'as' => 'agregarObservacion'
+        ]);
         Route::get('listarPostulantesBecarios/{data}', [
             'uses' => 'CompartidoDirecCoordController@listarPostulantesBecarios',
             'as' => 'listarPostulantesBecarios'
@@ -602,9 +609,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CompartidoDirecCoordController@aprobarParaEntrevista',
             'as' => 'aprobarParaEntrevista'
         ]);
-        Route::any('entrevistado/{id}', [
-            'uses' => 'CompartidoDirecCoordController@cambioStatusEntrevistado',
-            'as' => 'fueAentrevista'
+        Route::any('entrevistado', [
+            'uses' => 'CompartidoDirecCoordController@cambiostatusentrevistado',
+            'as' => 'fue.A.Entrevista'
         ]);
         Route::get('gestionSolicitud/listar', [
             'uses' => 'CompartidoDirecCoordController@listarSolicitudes',

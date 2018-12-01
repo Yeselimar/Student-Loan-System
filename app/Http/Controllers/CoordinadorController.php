@@ -20,6 +20,7 @@ class CoordinadorController extends Controller
     }
 
     //Api
+    
      public function getRelacionBecarioMentor()
     {        
           $collection = collect();

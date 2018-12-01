@@ -23,10 +23,10 @@
 			<tbody>
 				<tr v-for="postulante in postulantes">
 					<td>@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
-					<td v-if="postulante.becario.status = 'entrevista'">
+					<td v-if="postulante.becario.status == 'entrevista'">
 						<span class="label label-default">Pendiente</span>
 					</td>
-					<td v-else="postulante.becario.status = 'entrevistado'">
+					<td v-else="postulante.becario.status == 'entrevistado'">
 						<span class="label label-success">Entrevistado</span>
 					</td>
 					<!--<td class="text-center">
@@ -62,33 +62,33 @@
 						</div>
 					</td>
 					<td>
-						<button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
+						<button title="Marcar como Entrevistado" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
                             <i class="fa fa-check" data-target="modal-asignar"></i>
                          </button>
                        
 						<template>
-							<a class="btn btn-xs sisbeca-btn-primary">
+							<a :href="getRutaVerPerfil(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-eye"></i>
 							</a>
 						</template>
 						<template v-if="postulante.documento_final_entrevista==null">
-							<a :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Cargar
+							<a title="Cargar Resumen Entrevista Individual" :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-upload"></i> 
 							</a>
 						</template>
 						<template  v-else>
-							<a :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-edit"></i> Editar
+							<a title="Editar Resumen Entrevista Individual" :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-pencil"></i> 
 							</a>
 						</template>
 						<template v-if="postulante.becario.documento_final_entrevista==null">
-							<a :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Cargar
+							<a title="Cargar Resumen Entrevista Grupal" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-upload"></i>
 							</a>
 						</template>
 						<template v-else>
-							<a :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> Editar
+							<a title="Editar Resumen Entrevista Grupal" :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-pencil"></i>
 							</a>
 						</template>
 					</td>
@@ -101,7 +101,32 @@
 		<hr>
 		<p class="text-right">@{{postulantes.length}} entrevistado(s)</p>
 	</div>
+	<!-- Modal para Marcar como entrevistado -->
+	<form method="POST" @submit.prevent="marcarentrevistado(id)">
+			{{ csrf_field() }}
+				<div class="modal fade" id="modal-asignar">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title pull-left"><strong>Cambiar Estatus de la Entrevista</strong></h5>
+								<button class="close" data-dimiss="modal" type="button" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+							<h5><strong>¿Esta Seguro que desea marcar como Entrevistado a @{{nombreyapellido}}</strong></h5>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
+								<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Aceptar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+	</form>
 </div>
+
+
 
 @endsection
 
@@ -117,9 +142,20 @@ const app = new Vue({
 	data:
 	{
 		postulantes:[],
+		imagenes:[],
+        imagen_postulante:'',
+		id:'0',
+        nombreyapellido:'',
 	},
 	methods:
 	{
+		getRutaVerPerfil: function(id)
+		{
+			//var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
+			var url ="{{route('perfilPostulanteBecario', array('id'=>':id'))}}"
+			url = url.replace(':id', id);
+            return url;
+		},
 		getRutaCargarDocumentoConjunto: function(id)
 		{
 			var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
@@ -151,6 +187,25 @@ const app = new Vue({
 			{
 				this.postulantes = response.data.becarios;
 			});
+		},
+		marcarentrevistado:function(id)
+		{
+			var url = '{{route('fue.A.Entrevista')}}';
+			axios.post(url,{
+				id:this.id,
+				}).then(response=>{
+				$('#modal-asignar').modal('hide');
+				this.obtenerentrevistados();
+				toastr.success(response.data.success);
+			});
+		},
+		mostrarModal:function(postulante)
+		{
+			this.id = postulante.user.id;
+			console.log('ID2:');
+			console.log(this.id);
+			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
+			$('#modal-asignar').modal('show');
 		},
 		zfill: function(number, width)
 		{
