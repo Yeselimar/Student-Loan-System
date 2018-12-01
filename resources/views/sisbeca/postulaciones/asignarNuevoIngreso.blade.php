@@ -52,7 +52,7 @@
                     </td>
                     <td class="text-center">
                         <template v-if="postulante.fecha_entrevista">
-                           @{{postulante.fecha_entrevista}}
+                           @{{ fechaformatear(postulante.fecha_entrevista) }}
                         </template>
                         <template v-else>
                             <span class="label label-inverse">
@@ -130,7 +130,8 @@
             nombreyapellido:'',
            
         },
-        methods:{
+        methods:
+        {
             obtenerpostulantes:function()
             {
                 var url = '{{route('postulantes.entrevistados')}}';
@@ -173,8 +174,12 @@
                         console.log(this.imagen_postulante);
                     }
                 }
-                    $('#modal-asignar').modal('show');
-		    }
+                $('#modal-asignar').modal('show');
+		    },
+            fechaformatear: function (fecha)
+            {
+                return moment(new Date (fecha)).format('DD/MM/YYYY');
+            },
         }
     });
 </script>
