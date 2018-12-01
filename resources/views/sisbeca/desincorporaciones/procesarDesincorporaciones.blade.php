@@ -2,7 +2,7 @@
 @section('title','Gestiones')
 @section('subtitle','Listar Desincorporaciones')
 @section('content')
-
+<div class="col">
     <div class="panel-group Material-default-accordion" id="Material-accordion" role="tablist" aria-multiselectable="true">
 
         <div class="panel panel-default-accordion mb-3">
@@ -144,8 +144,8 @@
             </div>
         </div>
 
-
     </div>
+</div>
 @endsection
 
 

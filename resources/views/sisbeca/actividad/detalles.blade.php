@@ -1,16 +1,5 @@
 @extends('sisbeca.layouts.main')
 @section('title',ucwords($actividad->tipo).': '.$actividad->nombre)
-@section('personalcss')
-<style>
-	#informacion td, #informacion th,
-	#facilitador td, #facilitador th,
-	#becarios th
-	{
-		line-height: 10px !important;
-		color: #424242;
-	}
-</style>
-@endsection
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">

@@ -6,7 +6,7 @@
 			<a href="{{route('cursos.crear',Auth::user()->id)}}" class="btn btn-sm sisbeca-btn-primary">Añadir Curso</a>
 		</div>
 		<br>
-		<div class="table-responsive">
+		<div class="table-responsive" >
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>

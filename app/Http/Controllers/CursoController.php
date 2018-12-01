@@ -27,7 +27,9 @@ class CursoController extends Controller
 
     public function index()
     {
+        //return Auth::user()->id;
     	$cursos = Curso::where('becario_id','=',Auth::user()->id)->get();
+        //return $cursos;
     	return view('sisbeca.cursos.index')->with(compact('cursos'));
     }
 
@@ -62,7 +64,7 @@ class CursoController extends Controller
 		$aval->estatus = "pendiente";
 		$aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg" or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
 		$aval->tipo = "nota";
-		$aval->becario_id = $id;
+		$aval->becario_id = Auth::user()->id;
 		$aval->save();
 
 		$curso = new Curso;

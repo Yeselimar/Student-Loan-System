@@ -32,7 +32,8 @@ class ActividadController extends Controller
     //todos los justificativos
     public function obtenerjustificativos()
     {
-        $justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
+        //$justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
+        $justificativos = ActividadBecario::where('aval_id','!=','null')->orderby('updated_at','desc')->with("user")->with("actividad")->with("aval")->get();
         return response()->json(['justificativos'=>$justificativos]);
     }
 
