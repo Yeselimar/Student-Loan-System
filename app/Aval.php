@@ -68,6 +68,6 @@ class Aval extends Model
 
     public function scopeJustificativos($query)
     {
-        return $query->where('tipo','=','justificacion');
+        return $query->where('tipo','=','justificacion cargada');
     }
 }

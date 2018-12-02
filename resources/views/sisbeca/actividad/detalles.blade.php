@@ -1,16 +1,5 @@
 @extends('sisbeca.layouts.main')
 @section('title',ucwords($actividad->tipo).': '.$actividad->nombre)
-@section('personalcss')
-<style>
-	#informacion td, #informacion th,
-	#facilitador td, #facilitador th,
-	#becarios th
-	{
-		line-height: 10px !important;
-		color: #424242;
-	}
-</style>
-@endsection
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
@@ -30,14 +19,14 @@
 				@endif
 			</template>
 			<template v-if="lapso_justificar==true">
-				<template v-if="estatus_becario==='por justificar'">
+				<template v-if="estatus_becario==='justificacion cargada'">
 					<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
 						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificativo</a>
 					</span>
 				</template>
 				<template v-else>
 					<span data-toggle="tooltip"  title="Subir Justificativo" data-placement="bottom">
-						<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificativo</a>
+						<a href="{{ route('actividad.subirjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Subir Justificativo @{{ estatus_becario}}</a>
 					</span>
 				</template>
 				
@@ -127,9 +116,9 @@
 					</td>
 				</tr>
 				<tr>
-					<th class="text-left">
+					<td class="text-left">
 						<strong>Año Académico</strong>
-					</th>
+					</td>
 					<td class="text-left">
 						@{{ actividad.anho_academico }}
 					</td>
@@ -205,7 +194,7 @@
 						Estatus
 					</th>
 					@if(Auth::user()->admin() )
-					<th class="text-center">Cambiar Estatus</th>
+					<!--<th class="text-center">Cambiar Estatus</th>-->
 					<th class="text-center">
 						Acciones
 					</th>
@@ -221,12 +210,21 @@
 						<span v-if="becario.estatus=='asistira'" class="label label-success">
 							@{{ becario.estatus }}
 						</span>
-						<span v-if="becario.estatus=='en espera'" class="label label-warning">
+						<span v-if="becario.estatus=='lista de espera'" class="label label-warning">
 							@{{ becario.estatus }}
 						</span>
-						<span v-if="becario.estatus=='por justificar'" class="label label-custom">
-							@{{ becario.estatus }}
-						</span>
+						<template v-if="becario.estatus=='justificacion cargada'">
+							<span  class="label label-custom">@{{ becario.estatus }}</span>
+							
+							está 
+
+							<span v-if="becario.aval.estatus=='pendiente'" class="label label-warning">
+							@{{ becario.aval.estatus }}</span>
+							<span v-if="becario.aval.estatus=='aceptada'" class="label label-success">
+								@{{ becario.aval.estatus }}</span>
+							<span v-if="becario.aval.estatus=='negada'" class="label label-danger">
+								@{{ becario.aval.estatus }}</span>
+						</template>
 						<span v-if="becario.estatus=='asistio'" class="label label-success">
 							@{{ becario.estatus }}
 						</span>
@@ -235,12 +233,13 @@
 						</span>
 					</td>
 					@if(Auth::user()->admin() )
-					
+					<!--
 					<td>
 						<select v-model="becario.estatus" @change="actualizarestatusbecario(becario.estatus,becario.user.id)" class="sisbeca-input input-sm sisbeca-select" style="margin-bottom: 0px !important">
 							<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
 						</select>
 					</td>
+					-->
 					<td>
 						<template v-if="becario.aval_id==null">
 							<span data-toggle="tooltip"  title="Subir Justificativo" >

@@ -83,20 +83,20 @@ class NominaController extends Controller
     public function procesar()
     {
         //$ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
-        $ultimodia= '2018-04-30';//prueba
+        $ultimodia= '2018-05-30';//prueba
         $fechagenerar = strtotime ( '-5 day' , strtotime ( $ultimodia ) ) ;//--poner-5
         $fechagenerar = date ( 'Y-m-d' , $fechagenerar );
         //$hoy = date('Y-m-d');
-        $hoy='2018-04-25';//prueba
+        $hoy='2018-05-25';//prueba
         $generar = false;
-        $nominasaux = Nomina::where('mes','04')->where('year','2018')->get();
+        $nominasaux = Nomina::where('mes','05')->where('year','2018')->get();
 
         if($hoy == $fechagenerar and count($nominasaux)==0)
         {
             $generar = true;
         }
         $anho = '2018';
-        $mes = '04';
+        $mes = '05';
         $generar = true;//quitar esto, Eso lo agrego Rafael
         $nominas = DB::table('nominas')
             ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,created_at,fecha_generada, fecha_pago,sueldo_base, status, id'))

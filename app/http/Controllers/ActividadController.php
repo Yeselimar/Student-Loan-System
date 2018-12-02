@@ -32,7 +32,8 @@ class ActividadController extends Controller
     //todos los justificativos
     public function obtenerjustificativos()
     {
-        $justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
+        //$justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
+        $justificativos = ActividadBecario::where('aval_id','!=','null')->orderby('updated_at','desc')->with("user")->with("actividad")->with("aval")->get();
         return response()->json(['justificativos'=>$justificativos]);
     }
 
@@ -93,7 +94,7 @@ class ActividadController extends Controller
         $aval->save();
 
         $ab = ActividadBecario::where('actividad_id','=',$actividad_id)->where('becario_id','=',$becario_id)->first();
-        $ab->estatus = "por justificar";//chequear que sea asi
+        $ab->estatus = "justificacion cargada";//chequear que sea asi
         $ab->aval_id = $aval->id;
         $ab->save();
 
@@ -151,12 +152,12 @@ class ActividadController extends Controller
         $becarios = ActividadBecario::where('actividad_id','=',$id)->with("user")->with("aval")->get();
         $inscrito = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->count();
         $inscrito = ($inscrito==0) ? false : true;
-        $estatus = (object)["0"=>"asistira", "1"=>"en espera", "2"=>"por justificar", "3"=>"asistio","4"=>"no asistio"];
+        $estatus = (object)["0"=>"asistira", "1"=>"lista de espera", "2"=>"justificacion cargada", "3"=>"asistio","4"=>"no asistio"];
         $id_autenticado = Auth::user()->id;
         $lapso_justificar = $actividad->lapsoparajustificar();
         if(Auth::user()->esBecario())
         {
-            $estatus_becario = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first();
+            $estatus_becario = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first()->estatus;
         }
         else
         {
@@ -181,7 +182,7 @@ class ActividadController extends Controller
                 //verificar la cantidad con estatus asistira
                 if($actividad->totalbecariosasistira()>=$actividad->limite_participantes)
                 {
-                    $ab->estatus = "en espera";
+                    $ab->estatus = "lista de espera";
                 }
                 $ab->save();
                 return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la lista de espera del '.$actividad->tipo.' '.$actividad->nombre.'.']);
@@ -199,6 +200,7 @@ class ActividadController extends Controller
 
     public function inscribirbecario($id)
     {
+        //colorcarlo en lista de espera en caso de que este llena la actividad.
         $actividad = Actividad::find($id);
         $becarios = Becario::activos()->get();
         $model = "crear";
@@ -227,7 +229,7 @@ class ActividadController extends Controller
                 $ab->becario_id = $request->becario_id;
                 if($actividad->totalbecariosasistira()>=$actividad->limite_participantes)
                 {
-                    $ab->estatus = "en espera";
+                    $ab->estatus = "lista de espera";
                 }
                 $ab->save();
                 flash('El becario '.$becario->user->nombreyapellido().' fue inscrito la lista de espera del '.$actividad->tipo.' '.$actividad->nombre.'.', 'success')->important();
