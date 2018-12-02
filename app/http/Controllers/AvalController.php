@@ -10,7 +10,7 @@ class AvalController extends Controller
 	//este método es usado por varias vistas
    	public function getEstatus()
 	{
-		$estatus = (object)["0"=>"pendiente", "1"=>"aceptada", "2"=>"negada"];
+		$estatus = (object)["0"=>"pendiente", "1"=>"aceptada", "2"=>"negada","3"=>"devuelto"];
 		return response()->json(['estatus'=>$estatus]);
 	}
 
@@ -23,4 +23,43 @@ class AvalController extends Controller
 		return response()->json(['success'=>'El estatus fue actualizado exitosamente.']);
 	}
 
+	public function aceptar($id)
+	{
+		$aval = Aval::find($id);
+		$aval->estatus = "aceptada";
+		$aval->save();
+
+		$ab = ActividadBecario::paraAval($id)->first();
+		$ab->estatus = "asistio";
+		$ab->save();
+		
+		return response()->json(['success'=>'La justificación fue aceptada exitosamente.']);
+	}
+
+	public function devolver($id)
+	{
+		//generar un alerta para que el becario de se entere de que su justificativo fue devuelto
+		$aval = Aval::find($id);
+		$aval->estatus = "devuelto";
+		$aval->save();
+
+		$ab = ActividadBecario::paraAval($id)->first();
+		$ab->estatus = "justificacion cargada";
+		$ab->save();
+		
+		return response()->json(['success'=>'La justificación fue devuelta exitosamente.']);
+	}
+
+	public function negar($id)
+	{
+		$aval = Aval::find($id);
+		$aval->estatus = "negada";
+		$aval->save();
+
+		$ab = ActividadBecario::paraAval($id)->first();
+		$ab->estatus = "no asistio";
+		$ab->save();
+		
+		return response()->json(['success'=>'La justificación fue negada exitosamente.']);
+	}
 }

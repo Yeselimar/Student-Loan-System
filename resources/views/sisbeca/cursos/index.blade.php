@@ -6,11 +6,8 @@
 			<a href="{{route('cursos.crear',Auth::user()->id)}}" class="btn btn-sm sisbeca-btn-primary">Añadir Curso</a>
 		</div>
 		<br>
-<<<<<<< Updated upstream
 		<!-- Clonando nuevamente el proyecto porque se genero un error -->
-=======
 		<!-- Clonando nuevamente el proyecto porque se genero un error. :D -->
->>>>>>> Stashed changes
 		<div class="table-responsive">
 			<table class="table table-hover table-bordered">
 				<thead>

@@ -24,7 +24,6 @@ class CursoController extends Controller
         return view('sisbeca.cursos.todos');
     }
 
-
     public function index()
     {
     	$cursos = Curso::where('becario_id','=',Auth::user()->id)->get();
