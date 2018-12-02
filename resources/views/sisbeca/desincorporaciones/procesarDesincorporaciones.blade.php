@@ -1,7 +1,8 @@
 @extends('sisbeca.layouts.main')
 @section('title','Gestiones')
+@section('subtitle','Listar Desincorporaciones')
 @section('content')
-<div class="col">
+
     <div class="panel-group Material-default-accordion" id="Material-accordion" role="tablist" aria-multiselectable="true">
 
         <div class="panel panel-default-accordion mb-3">
@@ -66,7 +67,7 @@
                         </table>
                     @else
                         <div class="alert  alert-warning alert-important" role="alert">
-                            Disculpe, actualmente no tiene desincorporaciones recomendadas por solicitudes por procesar.
+                            Actualmente no tiene Desincorporaciones recomendadas por Solicitudes por procesar!
                         </div>
                     @endif
 
@@ -135,7 +136,7 @@
                         </table>
                     @else
                         <div class="alert  alert-warning alert-important" role="alert">
-                            Disculpe, actualmente no tiene desincorporaciones recomendadas por sistema por procesar.
+                            Actualmente no tiene Desincorporaciones recomendadas por Sitema por procesar!
                         </div>
                     @endif
 
@@ -143,8 +144,8 @@
             </div>
         </div>
 
+
     </div>
-</div>
 @endsection
 
 

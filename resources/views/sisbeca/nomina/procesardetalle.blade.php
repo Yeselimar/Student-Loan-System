@@ -26,20 +26,20 @@
                 <tr v-for="nomina in nominas">
                     <td> @{{nomina.user.name }} @{{nomina.user.last_name }} </td>
                     <td>
-                        <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalCVA(nomina)"> @{{ formatomoneda(nomina.cva) }}
+                        <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalCVA(nomina)"> @{{nomina.cva }}
                         </button>
                     </td>
                     <td>
-                        <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalRetroactivo(nomina)"> @{{ formatomoneda(nomina.retroactivo) }}
+                        <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalRetroactivo(nomina)"> @{{nomina.retroactivo }}
                         </button>
                     </td>
-                    <td class="text-right"> 
-                        @{{ formatomoneda(nomina.monto_libros) }} 
+                    <td> 
+                        @{{nomina.monto_libros }} 
                         <!--<span class="label label-default">@{{nomina.numero_facturas }} facturas</span>-->
                     </td>
-                    <td class="text-right"> @{{ formatomoneda(nomina.sueldo_base) }} </td>
-                    <td class="text-right"> 
-                        @{{ formatomoneda(nomina.cva + nomina.retroactivo + nomina.monto_libros + nomina.sueldo_base) }}
+                    <td> @{{nomina.sueldo_base }} </td>
+                    <td> 
+                        @{{nomina.cva + nomina.retroactivo + nomina.monto_libros + nomina.sueldo_base }}
                      </td>
                     <td> 
                         <a :href="getRuta(nomina.user.id)" class="btn btn-xs sisbeca-btn-primary">Aprobar Facturas</a>
@@ -135,10 +135,6 @@
     },
     methods:
     {
-        formatomoneda(monto)
-        {
-            return Number(monto).toLocaleString("es-ES", {minimumFractionDigits: 2});
-        },
         getRuta: function(id)
         {
             var url = "{{ route('factlibros.verfacturas',array('id'=>':id', 'mes'=>$mes, 'anho'=>$anho) ) }}";

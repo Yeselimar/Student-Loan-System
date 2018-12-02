@@ -1,30 +1,34 @@
 @extends('sisbeca.layouts.main')
 @section('title','Nómina > Consultar Nómina')
+@section('subtitle','Ver Facturas')
 @section('content')
-<div class="col-lg-12">
+    <div class="row">
 
-    <div class="col-lg-12" style="padding-right: 0px; padding-left: 0px;">
-        Facturas del Becario: <strong>{{  $factlibros[0]->becario->user->name }} {{  $factlibros[0]->becario->user->last_name }}</strong>
-        <a href="{{ route('nomina.procesar.detalle',array('$mes'=>$mes, 'anho'=>$anho)) }}" class="btn btn-sm sisbeca-btn-primary pull-right ">Atrás</a>
-    </div>
+        <div class="col-lg-12" style="padding-top: 15px; padding-bottom: 15px;">
+            Facturas del Becario: <strong>{{  $factlibros[0]->becario->user->name }}</strong>
+            <a href="{{ route('nomina.procesar.detalle',array('$mes'=>$mes, 'anho'=>$anho)) }}" class="btn btn-sm btn-danger pull-right ">Atrás</a>
+            <hr/>
 
-    <div class="table-responsive" id="factura">
 
-        <form class="form-horizontal" method="post" action ="{{ route('facturas.validar', array('mes'=>$mes, 'anho'=>$anho,'id'=> $factlibros[0]->becario->user->id) ) }}">
-            {{csrf_field()}}
+        </div>
+
+        <div class="col-lg-12 table-responsive" id="factura">
+
+            <form class="form-horizontal" method="post" action ="{{ route('facturas.validar', array('mes'=>$mes, 'anho'=>$anho,'id'=> $factlibros[0]->becario->user->id) ) }}">
+                {{csrf_field()}}
             <table class="table table-bordered table-hover">
                 <thead>
-                    <tr>
-                        <th class="text-center">Seleccione</th>
-                        <th class="text-left">Nombre</th>
-                        <th class="text-left">Curso</th>
-                        <th class="text-center">Estatus</th>
+                <tr>
+                    <th class="text-center">Seleccione</th>
+                    <th class="text-left">Nombre</th>
+                    <th class="text-left">Curso</th>
+                    <th class="text-center">Estatus</th>
 
-                        <th class="text-center">Fecha Registro</th>
-                        <th class="text-center">Revisar</th>
-                        <th class="text-right">Costo</th>
-                        
-                    </tr>
+                    <th class="text-center">Fecha Registro</th>
+                    <th class="text-center">Revisar</th>
+                    <th class="text-right">Costo</th>
+                    
+                </tr>
                 </thead>
                 @if($factlibros->count() > 0)
 
@@ -40,13 +44,11 @@
                             <td class="text-center"> {{ ucwords($facturas->status) }} </td>
 
                             <td class="text-center">{{ date("d/m/Y h:i:s A", strtotime($facturas->created_at)) }}</td>
-                           <td class="text-center">
-                                <a target="_blank" href="{{asset($facturas->url)}}" title="Ver Factura" class='btn btn-xs sisbeca-btn-primary pull-right '>Factura</a>
-                            </td>
+                           <td class="text-center"><a target="_blank" href="{{asset($facturas->url)}}" type='button' title="Ver Factura" class='btn btn-xs btn-danger pull-center '>Factura</a></td>
                             <td class="text-right"> {{number_format($facturas->costo, 2, ',', '.')}} </td>
                         </tr>
                     @endforeach
-                    <tr>
+                    <tr class="x">
                         <td class="text-right" colspan="6"><strong>Total Libros</strong></td>
                         <td class="text-right"><strong>{{number_format($total, 2, ',', '.')}}</strong></td>
                     </tr>
@@ -58,13 +60,13 @@
                 @endif
             </table>
 
-            <div style="padding-top:20px">
-                <input class="btn btn-md sisbeca-btn-primary pull-right"  style="margin-left: 5px;" type="submit" value="Procesar Factura(s)">
-            </div>
-        </form>
-       
-   </div>
-</div>
+                <div style="padding-top:20px">
+                <input class="btn btn-md btn-primary pull-right"  style="margin-left: 5px;" type="submit" value="Procesar Factura(s)">
+                </div>
+            </form>
+           
+	   </div>
+    </div>
 @endsection
 
 @section('personaljs')

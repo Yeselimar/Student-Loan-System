@@ -58,7 +58,8 @@
                     </td>
                     <td class="text-center">
                         <template v-if="postulante.fecha_entrevista">
-                           @{{ fechaformatear(postulante.fecha_entrevista) }}
+                    
+                           @{{fechaformartear(postulante.fecha_entrevista)}}
                         </template>
                         <template v-else>
                             <span class="label label-inverse">
@@ -173,8 +174,7 @@
             nombreyapellido:'',
            
         },
-        methods:
-        {
+        methods:{
             obtenerpostulantes:function()
             {
                 var url = '{{route('postulantes.entrevistados')}}';
@@ -212,7 +212,51 @@
                     }
                 }
                     $('#modal-asignar').modal('show');
-		    }
+		    },
+            mostrarModalBienvenida:function(postulantes){
+                this.postulantes=postulantes;
+                $('#modal-fecha-bienvenida').modal('show');
+            },
+            fechadebienvenida: function(){
+                var url = '{{route('veredicto.postulantes.becarios')}}';
+                axios.post(url,{
+                   id:this.id,
+                    funcion:this.funcion
+                    }).then(response=>{
+                    $('#modal-fecha-bienvenida').modal('hide');
+                    this.obtenerpostulantes();
+                    toastr.success(response.data.success);
+                });
+            },
+            zfill: function(number, width)
+            {
+                var numberOutput = Math.abs(number); /* Valor absoluto del número */
+                var length = number.toString().length; /* Largo del número */ 
+                var zero = "0"; /* String de cero */  
+                
+                if (width <= length) {
+                    if (number < 0) {
+                        return ("-" + numberOutput.toString()); 
+                    } else {
+                        return numberOutput.toString(); 
+                    }
+                } else {
+                    if (number < 0) {
+                        return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); 
+                    } else {
+                        return ((zero.repeat(width - length)) + numberOutput.toString()); 
+                    }
+                }
+            },
+            fechaformartear: function (fecha)
+            {
+                var d = new Date(fecha);
+                var dia = d.getDate();
+                var mes = d.getMonth() + 1;
+                var anho = d.getFullYear();
+                var fecha = this.zfill(dia,2) + "/" + this.zfill(mes,2) + "/" + anho;
+                return fecha;
+            },
         }
     });
 </script>

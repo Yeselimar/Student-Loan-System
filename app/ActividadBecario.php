@@ -32,9 +32,4 @@ class ActividadBecario extends Model
     {
         return $query->where('estatus','=',$estatus);
     }
-
-    public function scopeParaAval($query,$aval_id)
-    {
-        return $query->where('aval_id','=',$aval_id);
-    }
 }

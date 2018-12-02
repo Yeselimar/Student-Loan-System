@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Nivel</label>
-                    {{ Form::select('nivel', array('inicio'=>'Inicio','intermedio'=>'Intermedio','avanzado'=>'Avanzado','cualquier nivel'=>'Cualquier nivel'),null,['class' =>'sisbeca-input','v-model'=>'nivel']) }}
+                    {{ Form::select('nivel', array('inicio'=>'Inicio','intermedio'=>'Intermedio','avanzado'=>'Avanzado'),null,['class' =>'sisbeca-input','v-model'=>'nivel']) }}
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">Año académico</label>
