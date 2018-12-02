@@ -111,10 +111,7 @@ class CompartidoDirecCoordController extends Controller
         }
         if($data==2)
         { 
-            //Lista a todos los postulantes
-            //$becarios = Becario::query()->where('status','=','postulante')->orwhere('status','=','entrevista')->orwhere('status','=','rechazado')->get(); //Falta cuando en user esta rechazado
-            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-            //dd($becarios);
+            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
         }
         else if(($data==1))
         { 

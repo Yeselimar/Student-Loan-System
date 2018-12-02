@@ -51,11 +51,11 @@
                     @if($postulante->status==='entrevista')
                         <span class="label label-warning">Aprobado para Entrevista</span>
                     @elseif($postulante->status==='entrevistado')
-                        <span class="label label-danger">Entrevistado</span>
+                        <span class="label label-success">Entrevistado</span>
                     @elseif($postulante->status==='rechazado')
                     <span class="label label-danger">Rechazado</span>
                     @else
-                        <span class="label label-danger">Pendiente</span>
+                        <span class="label label-default">Pendiente</span>
                     @endif
                 @endif
             </div>

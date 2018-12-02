@@ -41,7 +41,7 @@ class SisbecaController extends Controller
 
         if(Auth::user()->rol==='coordinador' or Auth::user()->rol==='directivo')
         {
-            $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();;
+            $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
             $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
 
             $collection = collect();
@@ -76,7 +76,9 @@ class SisbecaController extends Controller
 
     public function statusPostulanteBecario()
     {
-        return view('sisbeca.becarios.statusBecario');
+        $postulante = Becario::find(Auth::User()->id);
+        $entrevistadores = User::entrevistadores()->get();
+        return view('sisbeca.postulaciones.statusPostulanteBecario')->with('postulante',$postulante)->with('entrevistadores',$entrevistadores);
     }
     public function perfil($id)
     {

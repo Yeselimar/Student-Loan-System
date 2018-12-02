@@ -84,7 +84,7 @@ class BecarioController extends Controller
         }
 
         $becario = User::find(Auth::user()->id)->becario;
-
+       // Auth::user()->rol='becario';
         $becario->acepto_terminos = 1;
 
 
