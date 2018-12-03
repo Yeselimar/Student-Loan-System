@@ -11,14 +11,17 @@ class Becario extends Model
     public $primaryKey = 'user_id'; //primary key que utiliza la tabla
 
     public $guarded = ['created_at', 'updated_at'];
+
     public function fechaEntrevista()
-   {
+    {
        return date("d/m/Y", strtotime($this->fecha_entrevista));
-   }
-   public function horaEntrevista()
-   {
+    }
+
+    public function horaEntrevista()
+    {
        return date("h:i:s a", strtotime($this->hora_entrevista));
-   }
+    }
+    
     public function user() //Relación uno a uno con USER
     {
         return $this->belongsTo('avaa\User','user_id');

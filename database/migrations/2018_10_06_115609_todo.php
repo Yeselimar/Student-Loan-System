@@ -143,6 +143,11 @@ class Todo extends Migration
             $table->datetime('fecha_aprobado')->nullable();//modificar cuando pasa de postulante becario a becario
             $table->datetime('fecha_egreso')->nullable();
 
+            //campos para la bienvenida como becario
+            $table->datetime('fecha_bienvenida')->nullable();
+            $table->text('lugar_bienvenida')->nullable();
+            $table->text('observacion_privada')->nullable();
+            
             $table->timestamps();
         });
         
@@ -304,7 +309,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->string('url');
-            $table->enum('estatus',['pendiente','aceptada','negada'])->default('pendiente');
+            $table->enum('estatus',['pendiente','aceptada','negada','devuelto'])->default('pendiente');
             $table->enum('tipo',['constancia','nota','justificacion','comprobante'])->default('constancia');
             //constancia para periodos, justificacion para actividades, comprobante para voluntariados, nota para cursos.
             $table->enum('extension',['pdf','imagen'])->default('imagen');
@@ -355,7 +360,7 @@ class Todo extends Migration
            	$table->unsignedInteger('aval_id')->nullable();
             $table->foreign('aval_id')->references('id')->on('aval');
 
-            $table->enum('estatus',['asistira','en espera','por justificar','asistio','no asistio'])->default('asistira');
+            $table->enum('estatus',['asistira','lista espera','justificacion cargada','asistio','no asistio'])->default('asistira');
 
             $table->timestamps();//fechainscripcion
         });
