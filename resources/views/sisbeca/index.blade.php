@@ -17,13 +17,13 @@
 
 @section('content')
 	
-	<div class="container" style="border:2px solid #dedede;padding: 10px;border-radius: 10px;">
+	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
 		<h3 class="text-center" >
 			<strong>!Hola, {{ Auth::user()->nombreyapellido()}}!</strong>
 		</h3>
 	</div>
 	<br>
-	<div class="container" style="border:2px solid #dedede;padding: 10px;border-radius: 10px;">
+	<div class="container">
 		<div class="row">
 			<div class='col-sm-12' align="center" >
 				@if((Auth::user()->rol==='postulante_becario')||(Auth::user()->rol==='postulante_mentor'))
