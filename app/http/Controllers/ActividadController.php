@@ -356,7 +356,7 @@ class ActividadController extends Controller
     	}
     	//crear actividad_facilitador
     	//$count = count($request->facilitadores);
-    	return response()->json(['success'=>'La actividad fue creada exitosamente.']);
+    	return response()->json(['success'=>'El '.$actividad->tipo.' fue creado exitosamente.']);
     }
 
     public function editar($id)

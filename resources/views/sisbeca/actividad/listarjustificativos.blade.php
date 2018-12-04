@@ -2,7 +2,14 @@
 @section('title',"Listar justificativos")
 @section('personalcss')
 <style>
-
+    .link-actividades
+    {
+        color: #003865;
+    }
+    .link-actividades:hover
+    {
+        color:#dc3545;
+    }
 </style>
 @endsection
 @section('content')
@@ -24,9 +31,13 @@
 			<tbody>
 				<tr v-for="justificativo in justificativos">
 					
-					<td>@{{ justificativo.user.name}} @{{ justificativo.user.last_name}}</td>
 					<td>
-                        @{{ justificativo.actividad.tipo.toUpperCase() }}: @{{ justificativo.actividad.nombre }}
+                        @{{ justificativo.user.name}} @{{ justificativo.user.last_name}}
+                    </td>
+					<td>
+                        <a :href="getUrlDetalles(justificativo.actividad.id)" class="link-actividades">
+                            @{{ justificativo.actividad.tipo.toUpperCase() }}: @{{ justificativo.actividad.nombre }}
+                        </a>
                     </td>
                     <td class="text-center">
                         <span v-if="justificativo.estatus=='asistira'" class="label label-success">
@@ -104,16 +115,15 @@
                         <a :href="getJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver justificativo" target="_blank">
                             <i class="fa fa-eye"></i>
                         </a>
-                        <template v-if="justificativo.aval.estatus=='negada' || justificativo.aval.estatus=='pendiente'" >
-                            <button type="button" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)" title="Aprobar justificativo">
-                                <i class="fa fa-check"></i>
-                            </button>
-                        </template>
-                        <template v-if="justificativo.aval.estatus=='aceptada' || justificativo.aval.estatus=='pendiente'">
-                            <button type="button" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)" title="Rechazar justificativo">
-                                <i class="fa fa-remove"></i>
-                            </button>
-                        </template>
+                        
+                        <button type="button" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)" title="Aprobar justificativo">
+                            <i class="fa fa-check"></i>
+                        </button>
+                    
+                        <button type="button" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)" title="Rechazar justificativo">
+                            <i class="fa fa-remove"></i>
+                        </button>
+                        
                         <button type="button" class="btn btn-xs sisbeca-btn-default" @click="devolverJustificativo(justificativo.aval.id)" title="Devolver justificativo">
                             <i class="fa fa-reply"></i>
                         </button>
@@ -147,6 +157,12 @@ const app = new Vue({
     },
     methods: 
     {
+        getUrlDetalles(id)
+        {
+            var url = '{{route('actividad.detalles',':id')}}';
+            url = url.replace(':id', id);
+            return url;
+        },
         getJustificativo(link)
         {
             var url = '{{url(':link')}}';

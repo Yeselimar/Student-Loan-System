@@ -23,13 +23,25 @@
 		<div class="form-group">
 			<div class="row">
                 
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <label class="control-label">*Tipo</label>
+                    {{ Form::select('tipo', array('taller'=>'Taller','chat club'=>'Chat Club'),null,['class' =>'sisbeca-input','v-model'=>'tipo','@change'=>'actualizarfacilitadores(tipo)']) }}
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <label class="control-label">*Nombre</label>
+                    {{ Form::text('nombre', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: The Last Game','v-model'=>'nombre'])}}
+                    <span v-if="errores.nombre" :class="['label label-danger']">@{{ errores.nombre[0] }}</span>
+                </div>
+
                 <template v-for="(input, index) in inputs">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Tipo Facilitador @{{index+1}}</label>
                         <select v-model="input.becario" class="sisbeca-input" name="">
-                            <option value="no">No es Becario</option>
-                            <option value="si">Si es Becario</option>
-                        </select>   
+                            <option v-for="opcion in tipofacilitadores" v-bind:value="opcion.value">
+                                @{{ opcion.text }}
+                            </option>
+                        </select>
                         <!-- @{{ input.becario }} -->
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-6">
@@ -68,22 +80,17 @@
                         <div class="alert alert-danger">El @{{actividad.tipo}} no tiene facilitador(es).</div>
                     </div><br>
                 </template>
-                <div class="col-lg-12">
-                    <div class="text-right">
-                        <button @click="anadir" type="button" class="btn sisbeca-btn-primary-especial">
-                            <i class="fa fa-plus"></i>
-                        </button>
+
+                <template v-if="inputs.length<3">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="text-right">
+                            <button @click="anadir" type="button" class="btn sisbeca-btn-primary-especial">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <label class="control-label">*Nombre</label>
-                    {{ Form::text('nombre', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: The Last Game','v-model'=>'nombre'])}}
-                    <span v-if="errores.nombre" :class="['label label-danger']">@{{ errores.nombre[0] }}</span>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <label class="control-label">*Tipo</label>
-                    {{ Form::select('tipo', array('taller'=>'Taller','chat club'=>'Chat Club'),null,['class' =>'sisbeca-input','v-model'=>'tipo']) }}
-                </div>
+                </template>
+                
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Modalidad</label>
                     {{ Form::select('modalidad', array('presencial'=>'Presencial','virtual'=>'Virtual'),null,['class' =>'sisbeca-input','v-model'=>'modalidad']) }}
@@ -96,16 +103,6 @@
                     <label class="control-label">Año académico</label>
                     {{ Form::text('anho_academico', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 3er Año','v-model'=>'anho_academico'])}}
                     <span v-if="errores.anho_academico" :class="['label label-danger']">@{{ errores.anho_academico[0] }}</span>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <label class="control-label">*Límite participantes</label>
-                    {{ Form::text('limite_participantes', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'limite_participantes'])}}
-                    <span v-if="errores.limite" :class="['label label-danger']">@{{ errores.limite[0] }}</span>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <label class="control-label">*Horas voluntariados</label>
-                    {{ Form::text('horas_voluntariados', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'horas_voluntariados'])}}
-                    <span v-if="errores.horas" :class="['label label-danger']">@{{ errores.horas[0] }}</span>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Fecha</label>
@@ -122,6 +119,17 @@
                     {{ Form::text('hora_fin', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_fin",'v-model'=>'hora_fin'])}}
                     <span v-if="errores.hora_fin" :class="['label label-danger']">@{{ errores.hora_fin[0] }}</span>
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label class="control-label">*Límite participantes</label>
+                    {{ Form::text('limite_participantes', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'limite_participantes'])}}
+                    <span v-if="errores.limite" :class="['label label-danger']">@{{ errores.limite[0] }}</span>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label class="control-label">*Horas voluntariados</label>
+                    {{ Form::text('horas_voluntariados', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'horas_voluntariados'])}}
+                    <span v-if="errores.horas" :class="['label label-danger']">@{{ errores.horas[0] }}</span>
+                </div>
+                
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <label class="control-label">Descripción</label>
                     {{ Form::text('descripcion', ($model=='crear') ? null : $actividad->descripcion , ['class' => 'sisbeca-input', 'placeholder'=>'Ingrese descripción','v-model'=>'descripcion'])}}
@@ -183,6 +191,11 @@ const app = new Vue({
             "id": ''}
         ],
         errores:[],
+        tipofacilitadores: 
+        [
+            { text: 'Si es Becario', value: 'si' },
+            { text: 'No es Becario', value: 'no' }
+        ]
     },
     created: function()
     {
@@ -213,6 +226,25 @@ const app = new Vue({
     },
     methods: 
     {
+
+        actualizarfacilitadores(tipo)
+        {
+            if(tipo=='taller')
+            {
+                this.tipofacilitadores = 
+                    [{ text: 'No es Becario', value: 'no' }];
+            }
+            else
+            {
+                this.tipofacilitadores =
+                    [{ text: 'Si es Becario', value: 'si' },
+                    { text: 'No es Becario', value: 'no' }];
+            }
+            this.inputs = 
+                [{ "becario": 'no',
+                "nombre": '',
+                "id": ''}];
+        },
         obtenerbecarios: function()
         {
             this.model = '{{$model}}';
