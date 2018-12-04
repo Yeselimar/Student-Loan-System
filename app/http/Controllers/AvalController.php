@@ -4,7 +4,7 @@ namespace avaa\Http\Controllers;
 
 use Illuminate\Http\Request;
 use avaa\Aval;
-
+use avaa\ActividadBecario;
 class AvalController extends Controller
 {
 	//este método es usado por varias vistas

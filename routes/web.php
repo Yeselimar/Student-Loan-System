@@ -81,7 +81,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::post('/actividad/{actividad_id}/becario/{becario_id}/guardar-justificacion', 'ActividadController@guardarjustificacion')->name('actividad.guardarjustificacion');
 
-         Route::get('/actividad/{actividad_id}/becario/{becario_id}/editar-justificacion', 'ActividadController@editarjustificacion')->name('actividad.editarjustificacion');
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/editar-justificacion', 'ActividadController@editarjustificacion')->name('actividad.editarjustificacion');
 
         Route::post('/actividad/{actividad_id}/becario/{becario_id}/actualizar-justificacion', 'ActividadController@actualizarjustificacion')->name('actividad.actualizarjustificacion');
 
@@ -110,6 +110,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/actividad/{id}/justificativos/todos', 'ActividadController@listarjustificativosactividad')->name('actividad.justificativos.todos');
         Route::get('/actividad/{id}/justificativos/servicio', 'ActividadController@justificativosactividad')->name('actividad.justificativos.servicio');
+
+        //coloar becario como asistió a actividad
+        Route::get('/actividad/{a_id}/becario/{b_id}/asistio', 'ActividadController@colocarasistio')->name('actividad.colocar.asistio');
+
+        //coloar becario como asistió a actividad
+        Route::get('/actividad/{a_id}/becario/{b_id}/no-asistio', 'ActividadController@colocarnoasistio')->name('actividad.colocar.noasistio');
 
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
