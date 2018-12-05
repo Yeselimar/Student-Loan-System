@@ -15,6 +15,17 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class VoluntariadoController extends Controller
 {
+    public function obtenertodos()
+    {
+        $voluntariados = Voluntariado::with("becario")->with("usuario")->with("aval")->orderby('created_at','desc')->get();
+        return response()->json(['voluntariados'=>$voluntariados]);
+    }
+
+    public function todosvoluntariados()
+    {
+        return view('sisbeca.voluntariados.todos');
+    }
+
     public function index()
     {
     	$voluntariados = Voluntariado::where('becario_id','=',Auth::user()->id)->get();

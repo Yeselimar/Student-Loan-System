@@ -388,7 +388,8 @@
                     </ul>
                 </li> 
                 @endif
-                @if(Auth::user()->admin())
+                @if((Auth::user()->esCoordinador()) || (Auth::user()->esDirectivo()))
+                <li class="nav-label">Actividades Becarias</li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>

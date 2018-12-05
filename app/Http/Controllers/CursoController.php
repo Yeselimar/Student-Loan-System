@@ -26,15 +26,23 @@ class CursoController extends Controller
 
     public function index()
     {
+        $becario = Becario::find(Auth::user()->id);
     	$cursos = Curso::where('becario_id','=',Auth::user()->id)->get();
-    	return view('sisbeca.cursos.index')->with(compact('cursos'));
+    	return view('sisbeca.cursos.index')->with(compact('cursos','becario'));
     }
 
     public function crear($id)
     {
     	$model = 'crear';
         $becario = Becario::find($id);
-    	return view('sisbeca.cursos.model')->with(compact('model','becario'));
+        if( (Auth::user()->esBecario() and $id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        {
+            return view('sisbeca.cursos.model')->with(compact('model','becario'));
+        }
+        else
+        {
+            return view('sisbeca.error.404');
+        }
     }
 
     public function guardar(Request $request,$id)
@@ -42,7 +50,6 @@ class CursoController extends Controller
     	$validation = Validator::make($request->all(), CursoRequest::rulesCreate());
 		if ( $validation->fails() )
 		{
-			//dd($validation);
 			flash("Por favor, verifique el formulario.",'danger');
 
 			return back()->withErrors($validation)->withInput();
@@ -78,7 +85,14 @@ class CursoController extends Controller
 		$curso->save();
 		
 		flash("El curso fue creado exitosamente.",'success');
-    	return redirect()->route('cursos.index');
+        if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
+        {
+            return redirect()->route('cursos.todos');
+        }
+        else
+        {
+            return redirect()->route('cursos.index');
+        }
     }
 
     public function editar($id)
@@ -86,7 +100,14 @@ class CursoController extends Controller
     	$curso = Curso::find($id);
     	$model = "editar";
         $becario = $curso->becario;
-    	return view('sisbeca.cursos.model')->with(compact('curso','model','becario'));
+        if( (Auth::user()->esBecario() and $curso->becario_id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        {
+            return view('sisbeca.cursos.model')->with(compact('curso','model','becario'));
+        }
+        else
+        {
+            return view('sisbeca.error.404');
+        }
     }
 
     public function actualizar(Request $request,$id)
@@ -123,6 +144,49 @@ class CursoController extends Controller
 		$curso->save();
 		
 		flash("El curso fue actualizado exitosamente.",'success');
-    	return redirect()->route('cursos.index');
+    	if(Auth::user()->esBecario())
+        {
+            return redirect()->route('cursos.index');
+        }
+        else
+        {
+            return redirect()->route('cursos.todos');
+        }
+    }
+
+    public function eliminar($id)
+    {
+        $curso = Curso::find($id);
+        if( (Auth::user()->esBecario() and $curso->becario_id==Auth::user()->id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        {
+            $aval = $curso->aval;
+            $curso->delete();
+            File::delete($aval->url);
+            $aval->delete();
+            
+            flash("El CVA fue eliminado exitosamente.",'success');
+            if(Auth::user()->esBecario())
+            {
+                return redirect()->route('cursos.index');
+            }
+            else
+            {
+                return redirect()->route('cursos.todos');
+            }
+        }
+        else
+        {
+            return view('sisbeca.error.404');
+        }
+    }
+
+    public function eliminarservicio($id)
+    {
+        $curso = Curso::find($id);
+        $aval = $curso->aval;
+        $curso->delete();
+        File::delete($aval->url);
+        $aval->delete();
+        return response()->json(['success'=>'El CVA fue eliminado exitosamente.']);
     }
 }

@@ -270,6 +270,16 @@ class GetPublicController extends Controller
         $editor->rol = 'editor';
         $editor->email='editor@avaa.com';
         $editor->save();
+
+        $editor = User::find(4);
+        $editor->rol = 'coordinador';
+        $editor->email='coordinador@avaa.com';
+        $editor->save();
+
+        $editor = User::find(5);
+        $editor->rol = 'entrevistador';
+        $editor->email='entrevistador@avaa.com';
+        $editor->save();
         //$editor->editor()->save(new Editor());
 
 

@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="#" class="btn btn-sm sisbeca-btn-primary">Cargar Voluntariado</a>
+		<a href="{{route('becarios.todos')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
 	</div>
 	<br>
 	<div class="table-responsive">
@@ -54,7 +54,7 @@
 		</table>
 	</div>
 	<hr>
-	<p class="h6 text-right"> @{{voluntariados.lenght}}voluntariado(s) </p>
+	<p class="h6 text-right">@{{voluntariados.length}} voluntariado(s) </p>
 </div>
 @endsection
 

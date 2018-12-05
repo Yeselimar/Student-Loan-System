@@ -142,6 +142,6 @@ class BecarioController extends Controller
         return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
     }
 
-   
+    
 
 }

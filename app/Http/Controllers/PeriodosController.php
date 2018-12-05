@@ -42,15 +42,23 @@ class PeriodosController extends Controller
 
     public function index()
     {
+    	$becario = Becario::find(Auth::user()->id);
     	$periodos = Periodo::where('becario_id','=',Auth::user()->id)->get();
-    	return view('sisbeca.periodos.index')->with(compact('periodos'));
+    	return view('sisbeca.periodos.index')->with(compact('periodos','becario'));
     }
 
     public function crear($id)
     {
     	$model = 'crear';
-	    $becario = Becario::find($id);
-	    return view('sisbeca.periodos.model')->with(compact('model','becario'));
+    	$becario = Becario::find($id);
+    	if( (Auth::user()->esBecario() and $id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+    	{
+	    	return view('sisbeca.periodos.model')->with(compact('model','becario'));
+    	}
+    	else
+    	{
+    		return view('sisbeca.error.404');
+    	}
     }
 
     public function guardar(Request $request,$id)
@@ -88,83 +96,131 @@ class PeriodosController extends Controller
 		$periodo->save();
 		
 		flash("El periodo fue creado exitosamente.",'success');
-    	return redirect()->route('periodos.index');
+		if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
+    	{
+    		return redirect()->route('periodos.todos');
+    	}
+    	else
+    	{
+    		return redirect()->route('periodos.index');
+    	}
 	    	
 	}
 
 	public function editar($id)
 	{
-		//if( (Auth::user()->esBecario() and Auth::user()->id==$id) or Auth::user()->admin() )
-    	//{
-			$periodo = Periodo::find($id);
-			$model = 'editar';
-			$becario = $periodo->becario;
-			return view("sisbeca.periodos.model")->with(compact('model','periodo','becario'));
-		//}
-		//else
-		//{
-			return "error 404";
-		//}
+		$model = 'editar';
+		$periodo = Periodo::find($id);
+		$becario = $periodo->becario;
+		if( (Auth::user()->esBecario() and $periodo->becario_id==Auth::user()->id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+    	{
+				return view("sisbeca.periodos.model")->with(compact('model','periodo','becario'));
+		}
+		else
+		{
+			return view('sisbeca.error.404');
+		}
 	}
 
 	public function actualizar(Request $request,$id)
 	{
-		//if( (Auth::user()->esBecario() and Auth::user()->id==$id) or Auth::user()->admin() )
-    	//{
-			$validation = Validator::make($request->all(), PeriodosRequest::rulesUpdate());
-			if ( $validation->fails() )
-			{
-				flash("Por favor, verifique el formulario.",'danger');
-				return back()->withErrors($validation)->withInput();
-			}
-	                
-	        $periodo = Periodo::find($id);
+		$validation = Validator::make($request->all(), PeriodosRequest::rulesUpdate());
+		if ( $validation->fails() )
+		{
+			flash("Por favor, verifique el formulario.",'danger');
+			return back()->withErrors($validation)->withInput();
+		}
+                
+        $periodo = Periodo::find($id);
 
-	        if($request->file('constancia'))
-	        {	
-	        	File::delete($periodo->aval->url);
-	        	
-	     		$archivo= $request->file('constancia');
-	            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
-	            $ruta = public_path().'/'.Aval::carpetaConstancia();
-	            $archivo->move($ruta, $nombre);
-	            
-	        	$aval = $periodo->aval;
-	            $aval->url = Aval::carpetaConstancia().$nombre;
-				$aval->estatus = "pendiente";
-				$aval->tipo = "constancia";
-				$aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
-				$aval->save();
-	        }
-			
-			$periodo->numero_periodo = $request->get('numero_periodo');
-			$periodo->anho_lectivo = $request->get('anho_lectivo');
-			$periodo->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
-			$periodo->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
-			$periodo->save();
-			
-			flash("El periodo fue actualizado exitosamente.",'success');
-	    	return redirect()->route('periodos.index');
-	    //}
-		//else
-		//{
-			return "error 404";
-		//}
+        if($request->file('constancia'))
+        {	
+        	File::delete($periodo->aval->url);
+        	
+     		$archivo= $request->file('constancia');
+            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+            $ruta = public_path().'/'.Aval::carpetaConstancia();
+            $archivo->move($ruta, $nombre);
+            
+        	$aval = $periodo->aval;
+            $aval->url = Aval::carpetaConstancia().$nombre;
+			$aval->estatus = "pendiente";
+			$aval->tipo = "constancia";
+			$aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
+			$aval->save();
+        }
+		
+		$periodo->numero_periodo = $request->get('numero_periodo');
+		$periodo->anho_lectivo = $request->get('anho_lectivo');
+		$periodo->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
+		$periodo->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
+		$periodo->save();
+		
+		flash("El periodo fue actualizado exitosamente.",'success');
+	    if(Auth::user()->esBecario())
+    	{
+    		return redirect()->route('periodos.index');
+    	}
+    	else
+    	{
+    		return redirect()->route('periodos.todos');
+    	}
 	}
 
 	public function mostrarmaterias($id)
 	{
-		//misma validacion periodo controller para seguridad
 		$periodo = Periodo::find($id);
-		return view('sisbeca.materias.mostrar')->with(compact('periodo')); 
+		$becario = $periodo->becario;
+		if((Auth::user()->esBecario() and $periodo->becario_id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+		{
+			return view('sisbeca.materias.mostrar')->with(compact('periodo','becario'));
+		}
+		else
+		{
+			return view('sisbeca.error.404');
+		}
 	}
 	
 	public function obtenermaterias($id)
 	{
+		//Incorporar seguridad aunque no prioritario
 		$materias = Periodo::find($id)->materias;
 		return response()->json(['materias'=>$materias]);
 	}
 	
+	public function eliminar($id)
+	{
+		$periodo = Periodo::find($id);
+		if( (Auth::user()->esBecario() and $periodo->becario_id==Auth::user()->id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+		{
+			$aval = $periodo->aval;
+			$periodo->delete();
+			File::delete($aval->url);
+			$aval->delete();
+			
+			flash("El periodo fue eliminado exitosamente.",'success');
+			if(Auth::user()->esBecario())
+	        {
+	            return redirect()->route('periodos.index');
+	        }
+	        else
+	        {
+	            return redirect()->route('periodos.todos');
+	        }
+		}
+		else
+		{
+			return view('sisbeca.error.404');
+		}
+	}
 
-		
+	public function eliminarservicio($id)
+	{
+		$periodo = Periodo::find($id);
+		$aval = $periodo->aval;
+		$periodo->delete();
+		File::delete($aval->url);
+		$aval->delete();
+		return response()->json(['success'=>'El periodo fue eliminado exitosamente.']);
+	}
 }
