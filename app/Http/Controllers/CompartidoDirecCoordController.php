@@ -384,6 +384,7 @@ class CompartidoDirecCoordController extends Controller
         $solicitud->usuario_respuesta= Auth::user()->id;
         $solicitud->save();
         event(new SolicitudesAlerts($solicitud));
+        Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
 
         return  redirect()->route('gestionSolicitudes.listar');
 

@@ -31,42 +31,45 @@ class NotificacionComposer{
         $numNominas=0;
         $user_id = Auth::user()->id;
         $alertas= null;
-        if(Auth::user()->rol==='directivo')
+        if(Auth::user()->rol==='directivo' || Auth::user()->rol==='coordinador')
         {
-            //preguntar si querer mostrarle el numero de postulantes  entrevistas
-            $prepostulante= Becario::query()->where('status','=','postulante')->orWhere('status','=','entrevista')->orWhere('status','=','entrevistado')->get();
-
-            $numPostulantesB= $prepostulante->count();
-
-            $prepostulanteM= User::query()->where('rol','=','postulante_mentor')->get();
-
-            $numPostulantesM= $prepostulanteM->count();
-
-
-            //Si hay nominas pendientes
-            $nominas = DB::table('nominas')
-                ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,created_at,fecha_generada, fecha_pago,sueldo_base, status, id'))
-                ->where('status','=','pendiente')
-                ->groupBy('mes','year')
-                ->orderby('mes','desc')->orderby('year','desc')->get();
-            $numNominas= $nominas->count();
- 
-            $numdesincorporaciones= Desincorporacion::query()->where('status','=','sin ejecutar')->get()->count();
-            $alertas= Alerta::query()->where('user_id','=', Auth::user()->id)->orWhere('tipo','=','nomina')->where('status','=','enviada')->get();
-
-            if($numNominas==0)
+            if(Auth::user()->rol==='directivo' )
             {
-                if($alertas->count()>0)
-                {
-                    $alerta= Alerta::query()->where('user_id','=', Auth::user()->id)->orWhere('tipo','=','nomina')->where('status','=','enviada')->where('titulo','=','Nomina(s) pendiente(s) por procesar')->first();
-                    if(!is_null($alerta))
-                        $alerta->delete();
-                    $alertas= Alerta::query()->where('user_id','=', Auth::user()->id)->where('leido','=',false)->get();
+            //preguntar si querer mostrarle el numero de postulantes  entrevistas
+                $prepostulante= Becario::query()->where('status','=','postulante')->orWhere('status','=','entrevista')->orWhere('status','=','entrevistado')->get();
 
+                $numPostulantesB= $prepostulante->count();
+
+                $prepostulanteM= User::query()->where('rol','=','postulante_mentor')->get();
+
+                $numPostulantesM= $prepostulanteM->count();
+
+
+                //Si hay nominas pendientes
+                $nominas = DB::table('nominas')
+                    ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,created_at,fecha_generada, fecha_pago,sueldo_base, status, id'))
+                    ->where('status','=','pendiente')
+                    ->groupBy('mes','year')
+                    ->orderby('mes','desc')->orderby('year','desc')->get();
+                $numNominas= $nominas->count();
+    
+                //$numdesincorporaciones= Desincorporacion::query()->where('status','=','sin ejecutar')->get()->count();
+                $alertas= Alerta::query()->where('user_id','=', Auth::user()->id)->orWhere('tipo','=','nomina')->where('status','=','enviada')->get();
+
+                if($numNominas==0)
+                {
+                    if($alertas->count()>0)
+                    {
+                        $alerta= Alerta::query()->where('user_id','=', Auth::user()->id)->orWhere('tipo','=','nomina')->where('status','=','enviada')->where('titulo','=','Nomina(s) pendiente(s) por procesar')->first();
+                        if(!is_null($alerta))
+                            $alerta->delete();
+                        $alertas= Alerta::query()->where('user_id','=', Auth::user()->id)->where('leido','=',false)->get();
+
+                    }
                 }
             }
 
-            if($numdesincorporaciones==0)
+            /*if($numdesincorporaciones==0)
             {
                 if($alertas->count()>0)
                 {
@@ -78,6 +81,7 @@ class NotificacionComposer{
 
                 }
             }
+            */
 
 
             $becariosAsignados=  Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
@@ -110,9 +114,17 @@ class NotificacionComposer{
             $numSolicitudesDeBecarios= $solicitudesDeBecarios->count();
             //Ademas Las Notificaciones que se le mostraran a los coordinadores tendran status enviada ya que esta es enviada por uno de sus becarios que tiene
             //a su disposicion
-            $alertas = Alerta::query()->where('leido', '=', false)
-                ->where('status','=','enviada')->whereIn('user_id',$principal)->orWhere('user_id','=',Auth::user()->id)->orWhere('tipo','=','nomina')->get();
 
+            if(Auth::user()->rol==='directivo')
+            {
+                $alertas = Alerta::query()->where('leido', '=', false)
+                ->where('status','=','enviada')->whereIn('user_id',$principal)->orWhere('user_id','=',Auth::user()->id)->orWhere('tipo','=','nomina')->get();
+            }
+            else{
+                
+                $alertas = Alerta::query()->where('leido', '=', false)->where('tipo','<>','nomina')
+                ->where('status','=','enviada')->whereIn('user_id',$principal)->orWhere('user_id','=',Auth::user()->id);
+            }
 
         }
         else

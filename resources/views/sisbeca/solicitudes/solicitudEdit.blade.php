@@ -47,7 +47,6 @@
                                 @if($solicitud->titulo==='desincorporacion temporal')
                                     @if(Auth::user()->rol==='becario')
                                         @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
-                                            <option value='retroactivo'>Retroactivo</option>
                                             <option value='desincorporacion temporal' selected>Desincorporacion Temporal</option>
 
                                         @endif
@@ -63,7 +62,7 @@
                                     @if($solicitud->titulo==='desincorporacion definitiva')
                                         @if(Auth::user()->rol==='becario')
                                             @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
-                                                <option value='retroactivo'>Retroactivo</option>
+                                            
                                                 <option value='desincorporacion temporal'>Desincorporacion Temporal</option>
 
                                             @endif
@@ -79,7 +78,7 @@
                                         @if($solicitud->titulo==='reincorporacion')
                                             @if(Auth::user()->rol==='becario')
                                                 @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
-                                                    <option value='retroactivo'>Retroactivo</option>
+                                                
                                                     <option value='desincorporacion temporal'>Desincorporacion Temporal</option>
 
                                                 @endif
@@ -92,25 +91,9 @@
                                             <option value='reincorporacion' selected>Reincorporacion</option>
                                             <option value="otros">Otros</option>
                                         @else
-                                            @if(($solicitud->titulo==='retroactivo'))
                                                 @if(Auth::user()->rol==='becario')
                                                     @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
-                                                        <option value='retroactivo' selected>Retroactivo</option>
-                                                        <option value='desincorporacion temporal'>Desincorporacion Temporal</option>
-
-                                                    @endif
-                                                @else
-                                                    @if(Auth::user()->mentor->status==='activo')
-                                                        <option value='desincorporacion temporal'>Desincorporacion Temporal</option>
-                                                    @endif
-                                                @endif
-                                                <option value='desincorporacion definitiva'>Desincorporacion Definitiva</option>
-                                                <option value='reincorporacion'>Reincorporacion</option>
-                                                <option value="otros">Otros</option>
-                                                @else
-                                                @if(Auth::user()->rol==='becario')
-                                                    @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
-                                                        <option value='retroactivo'>Retroactivo</option>
+                                                
                                                         <option value='desincorporacion temporal'>Desincorporacion Temporal</option>
 
                                                     @endif
@@ -122,8 +105,6 @@
                                                 <option value='desincorporacion definitiva'>Desincorporacion Definitiva</option>
                                                 <option value='reincorporacion'>Reincorporacion</option>
                                                 <option value="otros" selected>Otros</option>
-
-                                            @endif
                                         @endif
                                     @endif
 

@@ -193,7 +193,7 @@
                            </p>
 
                            <p><strong>*Todos los montos incluyen IVA y deben ser cancelados a través de transferencia o depósito bancario 48 horas hábiles antes de concertar la cita. Una vez efectuado por favor notificar.</strong></p>
-                           <p>Los <strong>montos* de inversión por asesoría, válidos a partir del {{ date("d/m/Y", strtotime($costos->getFechaValido()))}},</strong> son los siguientes:</p>
+                           <p>Los <strong>montos* de inversión por asesoría, válidos a partir del {{$costos->getFechaValido()}},</strong> son los siguientes:</p>
                         </li>
                      </ul>
                      <div class="panel-group Material-default-accordion" id="Material-accordion" role="tablist" aria-multiselectable="true">
@@ -201,13 +201,13 @@
                            <div class="panel-heading" role="tab" id="headingOne">
                               <h4 class="panel-title">
                                  <a role="button" data-toggle="collapse" data-parent="#Material-accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                 1. Informativa o Básica: Bs. {{number_format($costos->costo_ases_basica, 2, ',', '.')}}
+                                 1. Asesoría Inicial: Bs. {{number_format($costos->costo_ases_basica, 2, ',', '.')}}
                                  </a>
                               </h4>
                            </div>
                            <div id="collapseOne" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="headingOne" style="">
                               <div class="panel-body">
-                                 <p>Esta asesoría ofrece información completa para la aplicación de estudiantes en el extranjero: información general del país, instituciones que ofrecen el programa solicitado, duración aproximada del proceso, requisitos para obtener visa estudiantil y otros documentos necesarios.</p>
+                                 <p>Reunión presencial u online en la que se explica el proceso detallado para lograr estudiar en Estados Unidos. En esta sesión se determinará el proceso de búsqueda y selección de instituciones, costos, ayudas financieras y se explicará el proceso de visa de estudiante. </p>
                               </div>
                            </div>
                         </div>
@@ -215,25 +215,13 @@
                            <div class="panel-heading" role="tab" id="headingTwo">
                               <h4 class="panel-title">
                                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#Material-accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                 2. Curso de Idioma o Intermedia: Bs. {{number_format($costos->costo_ases_intermedia, 2, ',', '.')}}
+                                 2.  Asesoría Inicial Grupal: Bs. {{number_format($costos->costo_ases_intermedia, 2, ',', '.')}}  por estudiante.
                                  </a>
                               </h4>
                            </div>
                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" style="">
                               <div class="contenidoDeList panel-body" align="justify">
-                                 <ul>
-                                    <p><strong>Consiste en:</strong></p>
-                                    <li >
-                                       <p >Selección de institución y aplicación al curso.</p>
-                                    </li>
-                                    <li  >
-                                       <p>Guía al postulante en la solicitud de visado estudiantil. </p>
-                                    </li>
-                                    <li >
-                                       <p>Orientación para seleccionar el sistema de residencia y requisitos para trámites de Seguro Estudiantil.</p>
-                                    </li>
-                                 </ul>
-                                 <p>La <strong>asesoría para cursos de idiomas</strong> requiere mayor seguimiento y contacto con el estudiante y la institución.</p>
+                                 <p>Dirigida a grupos de dos a cinco estudiantes.</p>
                               </div>
                            </div>
                         </div>
@@ -241,57 +229,53 @@
                            <div class="panel-heading" role="tab" id="headingThree">
                               <h4 class="panel-title">
                                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#Material-accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                 3. Estudios Universitarios o Completa: Bs. {{number_format($costos->costo_ases_completa, 2, ',', '.')}}
+                                 3. Acompañamiento posterior: Bs. {{number_format($costos->costo_ases_completa, 2, ',', '.')}}  (seguimiento durante 1 año).
                                  </a>
                               </h4>
                            </div>
                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" style="">
                               <div class="contenidoDeList panel-body" align="justify">
-                                 <p>Ofrece al estudiante orientación e información necesaria para aplicar a instituciones de educación superior: pregrados, postgrados, diplomados, maestrías, y doctorados.</p>
                                  <ul>
                                     <p >
-                                       <strong>   La asesoría para estudios universitarios incluye:</strong>
+                                       <strong>Luego de la Asesoría Inicial, se puede optar por un acompañamiento posterior que incluye:</strong>
                                     </p>
                                     <li >
-                                       <p > Sesión de Coaching con el estudiante para determinar área de interés.</p>
+                                       <p > Llamadas y correos para aclarar dudas durante el proceso</p>
                                     </li>
                                     <li >
-                                       <p > Orientación en la preselección y selección del programa e institución (acreditadas en Estados Unidos y Canadá)</p>
+                                       <p > Revisión de los ensayos de admisión.</p>
                                     </li>
                                     <li >
-                                       <p > Información sobre posibilidades de ayuda financiera y recursos online para consultas e investigación. </p>
+                                       <p > Certificación y sellado de un (1) juego de copias de los documentos académicos. </p>
                                     </li>
                                     <li >
-                                       <p > Guía en procesos de legalización, apostillamiento, traducción de notas, títulos académicos y en la elaboración de cartas de recomendación para la institución seleccionada. </p>
+                                       <p > Revisión de las cartas de recomendación. </p>
                                     </li>
                                     <li >
-                                       <p >  Revisión de ensayo.</p>
+                                       <p > Acompañamiento durante el proceso de visa.</p>
                                     </li>
                                     <li >
-                                       <p >   Orientación de los exámenes de suficiencia requeridos (TOEFL, IELTS, SAT, GRE, GMAT).</p>
-                                    </li>
-                                    <li >
-                                       <p >Firma y sello de documentos académicos (envío de un juego sellado incluido).</p>
-                                    </li>
-                                    <li >
-                                       <p > <strong> Procesos de aplicación para visa de estudiante:</strong></p>
-                                       <ul>
-                                          <li>
-                                             <p >  Revisión de documentos.</p>
-                                          </li>
-                                          <li>
-                                             <p >  Preparación para la entrevista.</p>
-                                          </li>
-                                       </ul>
-                                    </li>
-
-                                    <li >
-                                       <p>  Acompañamiento pre-partida.</p>
+                                       <p >  Acompañamiento pre partida.</p>
                                     </li>
                                  </ul>
                               </div>
                            </div>
                         </div>
+                        <div class="panel panel-default mb-3">
+                                <div class="panel-heading" role="tab" id="headingFour">
+                                   <h4 class="panel-title">
+                                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#Material-accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        4. Certificación de documentos educativos: Bs. {{number_format($costos->costo_adicional1, 2, ',', '.')}} por pàgina
+                                      </a>
+                                   </h4>
+                                </div>
+                                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" style="">
+                                   <div class="contenidoDeList panel-body" align="justify">
+                                      <p>Incluye la certificaciòn de documentos educativos por pàgina.</p>
+                                   </div>
+                                </div>
+                             </div>
+
                      </div>
                   </div>
                </div>

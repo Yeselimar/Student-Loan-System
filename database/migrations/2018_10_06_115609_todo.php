@@ -260,6 +260,7 @@ class Todo extends Migration
             $table->double('costo_ases_intermedia',20,2)->default(0);
             $table->double('costo_ases_completa',20,2)->default(0);
             $table->double('costo_membresia',20,2)->default(0);
+            $table->double('costo_adicional1',20,2)->default(0);
             $table->datetime('fecha_valido')->nullable();
 
             $table->timestamps();

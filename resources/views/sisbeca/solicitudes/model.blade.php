@@ -19,7 +19,6 @@
                             <option value="">Seleccione</option>
                             @if(Auth::user()->rol==='becario')
                                @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
-                                    <option value='retroactivo'>Retroactivo</option>
                                     <option value='desincorporacion temporal'>Desincorporación Temporal</option>
 
                                 @endif
