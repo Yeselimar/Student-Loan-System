@@ -1,5 +1,6 @@
 @extends('sisbeca.layouts.main')
 @section('title','Nómina > Consultar Nómina')
+@section('subtitle','Ver Facturas')
 @section('content')
 <div class="col-lg-12">
 
@@ -40,8 +41,8 @@
                             <td class="text-center"> {{ ucwords($facturas->status) }} </td>
 
                             <td class="text-center">{{ date("d/m/Y h:i:s A", strtotime($facturas->created_at)) }}</td>
-                           <td class="text-center">
-                                <a target="_blank" href="{{asset($facturas->url)}}" title="Ver Factura" class='btn btn-xs sisbeca-btn-primary pull-right '>Factura</a>
+                            <td class="text-center">
+                                <a  href="{{asset($facturas->url)}}" target="_blank" title="Ver Factura" class='btn btn-xs sisbeca-btn-primary pull-center '>Factura</a>
                             </td>
                             <td class="text-right"> {{number_format($facturas->costo, 2, ',', '.')}} </td>
                         </tr>

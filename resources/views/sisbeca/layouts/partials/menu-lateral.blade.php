@@ -385,7 +385,8 @@
                     </ul>
                 </li> 
                 @endif
-                @if(Auth::user()->admin())
+                @if((Auth::user()->esCoordinador()) || (Auth::user()->esDirectivo()))
+                <li class="nav-label">Actividades Becarias</li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
@@ -402,6 +403,15 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('cursos.todos')}}">Listar CVA</a></li>
+                    </ul>
+                </li>
+                <li>
+                     <a class="has-arrow  " href="#" aria-expanded="false">
+                         <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Voluntariados</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
                     </ul>
                 </li>
                 <li>

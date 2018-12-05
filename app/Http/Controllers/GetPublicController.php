@@ -31,7 +31,12 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        return ActividadBecario::paraActividad(1)->conEstatus('asistira')->count();
+        //return date('Y-m-d H:i:s');
+        /*$ab = ActividadBecario::find(8);
+        $ab->updated_at = date("Y-m-d H:i:s");
+        $ab->save();
+        return "exito";
+        */
         /*$becario = Becario::find(34);
         $becario->hora_entrevista = "3:23 PM";
         $becario->lugar_entrevista = "miami";
@@ -264,6 +269,16 @@ class GetPublicController extends Controller
         $editor = User::find(3);
         $editor->rol = 'editor';
         $editor->email='editor@avaa.com';
+        $editor->save();
+
+        $editor = User::find(4);
+        $editor->rol = 'coordinador';
+        $editor->email='coordinador@avaa.com';
+        $editor->save();
+
+        $editor = User::find(5);
+        $editor->rol = 'entrevistador';
+        $editor->email='entrevistador@avaa.com';
         $editor->save();
         //$editor->editor()->save(new Editor());
 

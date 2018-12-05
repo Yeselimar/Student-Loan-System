@@ -11,6 +11,16 @@ class Becario extends Model
     public $primaryKey = 'user_id'; //primary key que utiliza la tabla
 
     public $guarded = ['created_at', 'updated_at'];
+
+    public function fechaEntrevista()
+    {
+       return date("d/m/Y", strtotime($this->fecha_entrevista));
+    }
+
+    public function horaEntrevista()
+    {
+       return date("h:i:s a", strtotime($this->hora_entrevista));
+    }
     
     public function user() //Relación uno a uno con USER
     {
@@ -70,7 +80,47 @@ class Becario extends Model
 
     public function scopeActivos($query)
     {
-        return $query->where('status','=','activo');
+        return $query->orwhere('status','=','activo');
+    }
+
+    public function scopeProbatorio1($query)
+    {
+        return $query->orwhere('status','=','probatorio1');
+    }
+
+    public function scopeTerminosAceptados($query)
+    {
+        return $query->where('acepto_terminos','=','1');
+    }
+
+    public function getTotalPeriodos()
+    {
+        return $this->periodos->count();
+    }
+
+    public function getTotalCVA()
+    {
+        return $this->cursos->count();
+    }
+
+    public function promediotodosperiodos()
+    {
+        $suma = 0;
+        foreach($this->periodos as $periodo)
+        {
+            $suma = $suma + $periodo->getPromedio();
+        }
+        return number_format($suma/$this->getTotalPeriodos(), 2, '.', ',');
+    }
+
+    public function promediotodoscva()
+    {
+        $suma = 0;
+        foreach($this->cursos as $curso)
+        {
+            $suma = $suma + $curso->nota;
+        }
+        return number_format($suma/$this->getTotalCVA(), 2, '.', ',');
     }
 
     public function nomBorradores() // ?
@@ -146,5 +196,15 @@ class Becario extends Model
         return $this->regimen=="semestral";
     }
 
-    
+    public function getAceptoTerminos()
+    {
+        if($this->acepto_terminos=="1")
+        {
+            return "si";
+        }
+        else
+        {
+            return "no";
+        }
+    }
 }

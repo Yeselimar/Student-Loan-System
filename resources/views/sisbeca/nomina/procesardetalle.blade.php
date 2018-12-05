@@ -28,6 +28,7 @@
                     <td>
                         <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalCVA(nomina)"> @{{ formatomoneda(nomina.cva) }}
                         </button>
+
                     </td>
                     <td>
                         <button type="button" class=" btn btn-xs btn-default btn-block" @click.prevent="modalRetroactivo(nomina)"> @{{ formatomoneda(nomina.retroactivo) }}
@@ -37,8 +38,10 @@
                         @{{ formatomoneda(nomina.monto_libros) }} 
                         <!--<span class="label label-default">@{{nomina.numero_facturas }} facturas</span>-->
                     </td>
-                    <td class="text-right"> @{{ formatomoneda(nomina.sueldo_base) }} </td>
                     <td class="text-right"> 
+                        @{{ formatomoneda(nomina.sueldo_base) }}
+                    </td>
+                    <td  class="text-right"> 
                         @{{ formatomoneda(nomina.cva + nomina.retroactivo + nomina.monto_libros + nomina.sueldo_base) }}
                      </td>
                     <td> 

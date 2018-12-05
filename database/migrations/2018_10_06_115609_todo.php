@@ -35,7 +35,10 @@ class Todo extends Migration
 
         Schema::create('becarios', function (Blueprint $table)
         {
-            $table->primary('user_id'); 
+            $table->primary('user_id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             //se coloca el mismo id porque la relacion uno a uno no pueden existir dos perfiles con el mismo user
             $table->boolean('acepto_terminos')->default(false);
             $table->enum('status',['prepostulante','postulante','entrevista','entrevistado','rechazado','activo','probatorio1','probatorio2','egresado','inactivo','desincorporado'])->default('prepostulante');
@@ -114,11 +117,7 @@ class Todo extends Migration
             $table->boolean('estatus_curso');
             $table->boolean('estatus_voluntariado');
 
-            //relaciones         
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->onDelete('cascade');
+            
 
             /*$table->unsignedInteger('coordinador_id');
             $table->foreign('coordinador_id')
@@ -143,6 +142,11 @@ class Todo extends Migration
             $table->datetime('fecha_aprobado')->nullable();//modificar cuando pasa de postulante becario a becario
             $table->datetime('fecha_egreso')->nullable();
 
+            //campos para la bienvenida como becario
+            $table->datetime('fecha_bienvenida')->nullable();
+            $table->text('lugar_bienvenida')->nullable();
+            $table->text('observacion_privada')->nullable();
+            
             $table->timestamps();
         });
         
@@ -356,7 +360,7 @@ class Todo extends Migration
            	$table->unsignedInteger('aval_id')->nullable();
             $table->foreign('aval_id')->references('id')->on('aval');
 
-            $table->enum('estatus',['asistira','lista de espera','justificacion cargada','asistio','no asistio'])->default('asistira');
+            $table->enum('estatus',['asistira','lista espera','justificacion cargada','asistio','no asistio'])->default('asistira');
 
             $table->timestamps();//fechainscripcion
         });

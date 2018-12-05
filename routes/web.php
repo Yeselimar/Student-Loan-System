@@ -62,9 +62,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 {
     Route::get('/',['uses'=> 'SisbecaController@index','as' =>'sisbeca']);
      
-    //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware
-    // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
-
+    
+    //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
         //talleres y chat clubs
@@ -75,22 +74,54 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
         Route::get('/actividades/{id}/detalles/servicio', 'ActividadController@detallesservicio')->name('actividad.detalles.servicio');
 
-        Route::get('/actividad/{actividad_id}/becario/{becario_id}/describir', 'ActividadController@desinscribir')->name('actividad.desinscribir');
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/describir', 'ActividadController@desinscribir')->name('actividad.desinscribir');//añadir seguridad
 
-        Route::get('/actividad/{actividad_id}/becario/{becario_id}/subir-justificacion', 'ActividadController@subirjustificacion')->name('actividad.subirjustificacion');
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/subir-justificacion', 'ActividadController@subirjustificacion')->name('actividad.subirjustificacion');//añadir seguridad
 
-        Route::post('/actividad/{actividad_id}/becario/{becario_id}/guardar-justificacion', 'ActividadController@guardarjustificacion')->name('actividad.guardarjustificacion');
+        Route::post('/actividad/{actividad_id}/becario/{becario_id}/guardar-justificacion', 'ActividadController@guardarjustificacion')->name('actividad.guardarjustificacion');//añadir seguridad
 
-         Route::get('/actividad/{actividad_id}/becario/{becario_id}/editar-justificacion', 'ActividadController@editarjustificacion')->name('actividad.editarjustificacion');
+        Route::get('/actividad/{actividad_id}/becario/{becario_id}/editar-justificacion', 'ActividadController@editarjustificacion')->name('actividad.editarjustificacion');//añadir seguridads
 
-        Route::post('/actividad/{actividad_id}/becario/{becario_id}/actualizar-justificacion', 'ActividadController@actualizarjustificacion')->name('actividad.actualizarjustificacion');
+        Route::post('/actividad/{actividad_id}/becario/{becario_id}/actualizar-justificacion', 'ActividadController@actualizarjustificacion')->name('actividad.actualizarjustificacion');//añadir seguridad
 
         Route::post('/actividad/{actividad_id}/becario/{becario_id}/actualizar-estatus', 'ActividadController@actulizarestatus')->name('actividad.actulizarestatus');
+
+        //periodos
+        Route::get('/periodos', 'PeriodosController@index')->name('periodos.index');
+      
+        Route::get('/becario/{id}/crear-periodo/', 'PeriodosController@crear')->name('periodos.crear');
+        Route::post('/becario/{id}/guardar-periodo/', 'PeriodosController@guardar')->name('periodos.guardar');
+        Route::get('/periodo/{id}/editar-periodo/', 'PeriodosController@editar')->name('periodos.editar');
+        Route::post('/periodo/{id}/actualizar-periodo/', 'PeriodosController@actualizar')->name('periodos.actualizar');
+        Route::get('/periodo/{id}/mostrar-materias/', 'PeriodosController@mostrarmaterias')->name('materias.mostrar');
+        Route::get('/periodo/{id}/obtener-materias', 'PeriodosController@obtenermaterias')->name('materias.obtener');
+        Route::post('/periodo/{id}/anadir-materia', 'MateriasController@anadirmateria')->name('materias.anadir');
+        Route::get('/periodo/{id}/eliminar-periodo/', 'PeriodosController@eliminar')->name('periodos.eliminar');
+        Route::get('/periodo/{id}/eliminar-servicio/', 'PeriodosController@eliminarservicio')->name('periodos.eliminarservicio');
+
+        Route::get('/materia/{id}/eliminar', 'MateriasController@eliminarmateria')->name('materias.eliminar');
+        Route::post('/materia/{id}/editar', 'MateriasController@editarmateria')->name('materias.editar');
+
+        //cursos
+        Route::get('/cursos', 'CursoController@index')->name('cursos.index');
+        Route::get('/becario/{id}/crear-curso', 'CursoController@crear')->name('cursos.crear');
+        Route::post('/becario/{id}/guardar-curso', 'CursoController@guardar')->name('cursos.guardar');
+        Route::get('/curso/{id}/editar-curso', 'CursoController@editar')->name('cursos.editar');
+        Route::post('/curso/{id}/actualizar-curso', 'CursoController@actualizar')->name('cursos.actualizar');
+        Route::get('/curso/{id}/eliminar-curso/', 'CursoController@eliminar')->name('cursos.eliminar');
+        Route::get('/curso/{id}/eliminar-servicio/', 'CursoController@eliminarservicio')->name('cursos.eliminarservicio');
+        //voluntariado
+        Route::get('/voluntariados', 'VoluntariadoController@index')->name('voluntariados.index');
+        Route::get('/becario/{id}/crear-voluntariado', 'VoluntariadoController@crear')->name('voluntariados.crear');
+        Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
+        Route::get('/becario/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
+        Route::post('/becario/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
         
     });
 
-    Route::group(['middleware'=>['admin']],function ()
+    Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
+        Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
         //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
@@ -111,6 +142,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/actividad/{id}/justificativos/todos', 'ActividadController@listarjustificativosactividad')->name('actividad.justificativos.todos');
         Route::get('/actividad/{id}/justificativos/servicio', 'ActividadController@justificativosactividad')->name('actividad.justificativos.servicio');
 
+        
+        Route::get('/actividad/{a_id}/becario/{b_id}/asistio', 'ActividadController@colocarasistio')->name('actividad.colocar.asistio');//colocar becario como asistió a actividad
+
+       
+        Route::get('/actividad/{a_id}/becario/{b_id}/no-asistio', 'ActividadController@colocarnoasistio')->name('actividad.colocar.noasistio');//colocar becario como no asistió a actividad
+
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
@@ -119,6 +156,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
 
+         //voluntariados
+        Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
+        Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
+
+
         //aval
         Route::get('/aval/estatus/todos', 'AvalController@getEstatus')->name('aval.getEstatus');
         Route::post('/aval/{id}/actualizar-estatus', 'AvalController@actualizarestatus')->name('aval.actualizarestatus');
@@ -126,18 +168,25 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/aval/{id}/aceptar', 'AvalController@aceptar')->name('aval.aceptar');
         Route::get('/aval/{id}/negar', 'AvalController@negar')->name('aval.negar');
         Route::get('/aval/{id}/devolver', 'AvalController@devolver')->name('aval.devolver');
-        //voluntariado
+        
+    });
+
+    //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware
+    // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
+    Route::group(['middleware'=>['admin']],function ()
+    {
+        //usuarios
         Route::Resource('mantenimientoUser', 'MantenimientoUserController');
         Route::get('mantenimientoUser/{id}/destroy', [
             'uses' => 'MantenimientoUserController@destroy',
             'as' => 'mantenimientoUser.destroy'
         ]);
 
-
         // Get Data
         Route::get('datatable/getdata', 'MantenimientoUserController@getUsers')->name('datatable/getdata');
 
     });
+
 
     //Estas Rutas solo seran accedidas por el Editor (editor es un middleware
     // creado recordar registrar el middleware creado por el programador en la carpeta Kernel
@@ -244,32 +293,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         //link para inscribirme y salirme.  justificar
 
 
-        //periodos
-        Route::get('/periodos', 'PeriodosController@index')->name('periodos.index');
-        Route::get('/periodo/{id}/ver-constancia', 'PeriodosController@verconstancia')->name('periodos.constancia');
-        Route::get('/becario/{id}/crear-periodo/', 'PeriodosController@crear')->name('periodos.crear');
-        Route::post('/becario/{id}/;-periodo/', 'PeriodosController@guardar')->name('periodos.guardar');
-        Route::get('/becario/{id}/editar-periodo/', 'PeriodosController@editar')->name('periodos.editar');
-        Route::post('/becario/{id}/actualizar-periodo/', 'PeriodosController@actualizar')->name('periodos.actualizar');
-        Route::get('/periodo/{id}/mostrar-materias/', 'PeriodosController@mostrarmaterias')->name('materias.mostrar');
-        Route::get('/periodo/{id}/obtener-materias', 'PeriodosController@obtenermaterias')->name('materias.obtener');
-        Route::post('/periodo/{id}/anadir-materia', 'MateriasController@anadirmateria')->name('materias.anadir');
-        Route::get('/materia/{id}/eliminar', 'MateriasController@eliminarmateria')->name('materias.eliminar');
-        Route::post('/materia/{id}/editar', 'MateriasController@editarmateria')->name('materias.editar');
-
-        //cursos
-        Route::get('/cursos', 'CursoController@index')->name('cursos.index');
-        Route::get('/becario/{id}/crear-curso', 'CursoController@crear')->name('cursos.crear');
-        Route::post('/becario/{id}/guardar-curso', 'CursoController@guardar')->name('cursos.guardar');
-        Route::get('/becario/{id}/editar-curso', 'CursoController@editar')->name('cursos.editar');
-        Route::post('/becario/{id}/actualizar-curso', 'CursoController@actualizar')->name('cursos.actualizar');
-
-        //voluntariado
-        Route::get('/voluntariados', 'VoluntariadoController@index')->name('voluntariados.index');
-        Route::get('/becario/{id}/crear-voluntariado', 'VoluntariadoController@crear')->name('voluntariados.crear');
-        Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
-        Route::get('/becario/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
-        Route::post('/becario/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
+        
     });
 
     Route::group(['middleware'=>['mentor']],function ()

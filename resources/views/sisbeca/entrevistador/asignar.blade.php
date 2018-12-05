@@ -89,7 +89,7 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
-						  		<input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha">
+						  		<input type="text" autocomplete="off" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha" @change="cambiofecha($event)">
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
@@ -97,7 +97,7 @@
 						  	</div>
 						  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
-								<input type="text" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
+								<input type="text"autocomplete="off" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
 							
 							</div>
 						</div>
@@ -182,6 +182,9 @@ const app = new Vue({
   	},
 	methods:
 	{
+		cambiofecha(e){
+			console.log(e);
+		},
 		fechaformartear: function (fecha)
 		{
 			var d = new Date(fecha);

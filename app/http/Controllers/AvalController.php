@@ -5,13 +5,12 @@ namespace avaa\Http\Controllers;
 use Illuminate\Http\Request;
 use avaa\Aval;
 use avaa\ActividadBecario;
-
 class AvalController extends Controller
 {
 	//este método es usado por varias vistas
    	public function getEstatus()
 	{
-		$estatus = (object)["0"=>"pendiente", "1"=>"aceptada", "2"=>"negada","devuelto"];
+		$estatus = (object)["0"=>"pendiente", "1"=>"aceptada", "2"=>"negada","3"=>"devuelto"];
 		return response()->json(['estatus'=>$estatus]);
 	}
 

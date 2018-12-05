@@ -34,6 +34,7 @@ class ActividadController extends Controller
     {
         //$justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
         $justificativos = ActividadBecario::where('aval_id','!=','null')->orderby('updated_at','desc')->with("user")->with("actividad")->with("aval")->get();
+
         return response()->json(['justificativos'=>$justificativos]);
     }
 
@@ -116,7 +117,10 @@ class ActividadController extends Controller
         $actividad = Actividad::find($actividad_id);
         $becario = Becario::find($becario_id);
         $ab = ActividadBecario::where('becario_id','=',$becario->user_id)->where('actividad_id','=',$actividad->id)->first();
-        
+        $ab->estatus = "justificacion cargada";
+        $ab->updated_at = date("Y-m-d H:i:s");
+        $ab->save();
+
         $model = "crear";
         $validation = Validator::make($request->all(), ActividadRequest::actualizarJustificativo());
         
@@ -130,6 +134,7 @@ class ActividadController extends Controller
             $archivo->move($ruta, $nombre);
             
             $aval = $ab->aval;
+            $aval->estatus = "pendiente";
             $aval->url = Aval::carpetaJustificacion().$nombre;
             $aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
             $aval->save();
@@ -155,15 +160,31 @@ class ActividadController extends Controller
         $estatus = (object)["0"=>"asistira", "1"=>"lista de espera", "2"=>"justificacion cargada", "3"=>"asistio","4"=>"no asistio"];
         $id_autenticado = Auth::user()->id;
         $lapso_justificar = $actividad->lapsoparajustificar();
+        $estatus_aval = null;
         if(Auth::user()->esBecario())
         {
-            $estatus_becario = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first()->estatus;
+            if(!empty(ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first()))
+            {
+                $ab = ActividadBecario::where('actividad_id','=',$id)->where('becario_id','=',Auth::user()->id)->first();
+                $estatus_becario = $ab->estatus;
+                if($ab->aval_id!=null)
+                {
+                    $estatus_aval = $ab->aval->estatus;
+                }
+
+            }
+            else
+            {
+                $estatus_becario = null;
+            }
+           
+
         }
         else
         {
             $estatus_becario = null;
         }
-        return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito,'estatus'=>$estatus,'id_autenticado'=>$id_autenticado,'lapso_justificar'=>$lapso_justificar,'estatus_becario'=>$estatus_becario]);
+        return response()->json(['actividad'=>$actividad,'facilitadores'=>$facilitadores,'becarios'=>$becarios,'inscrito'=>$inscrito,'estatus'=>$estatus,'id_autenticado'=>$id_autenticado,'lapso_justificar'=>$lapso_justificar,'estatus_becario'=>$estatus_becario,'estatus_aval'=>$estatus_aval]);
     }
 
     public function actividadinscribirme($actividad_id,$becario_id)
@@ -179,13 +200,20 @@ class ActividadController extends Controller
                 $ab = new ActividadBecario;
                 $ab->actividad_id = $actividad_id;
                 $ab->becario_id = $becario->user_id;
-                //verificar la cantidad con estatus asistira
+                //verificamos si no va a la lista de espera 
                 if($actividad->totalbecariosasistira()>=$actividad->limite_participantes)
                 {
                     $ab->estatus = "lista de espera";
+                    $ab->save();
+                    return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA del '.$actividad->tipo.' '.$actividad->nombre.'.']);
                 }
-                $ab->save();
-                return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la lista de espera del '.$actividad->tipo.' '.$actividad->nombre.'.']);
+                else
+                {
+                    $ab->estatus = "asistira";
+                    $ab->save();
+                    return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito al '.$actividad->tipo.' '.$actividad->nombre.'.']);
+                }
+                
             }
             else
             {
@@ -328,7 +356,7 @@ class ActividadController extends Controller
     	}
     	//crear actividad_facilitador
     	//$count = count($request->facilitadores);
-    	return response()->json(['success'=>'La actividad fue creada exitosamente.']);
+    	return response()->json(['success'=>'El '.$actividad->tipo.' fue creado exitosamente.']);
     }
 
     public function editar($id)
@@ -444,4 +472,24 @@ class ActividadController extends Controller
         $pdf = PDF::loadView('pdf.actividad.listaasistentes', compact('actividad','facilitadores','becarios'));
         return $pdf->stream('listado.pdf');
     }
-}
+
+    public function colocarasistio($a_id,$b_id)
+    {
+        $actividad = Actividad::find($a_id);
+        $becario = Becario::find($b_id);
+        $ab = ActividadBecario::paraActividad($actividad->id)->paraBecario($becario->user_id)->first();
+        $ab->estatus = "asistio";
+        $ab->save();
+        return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como ASISTIÓ.']);
+    }
+
+    public function colocarnoasistio($a_id,$b_id)
+    {
+        $actividad = Actividad::find($a_id);
+        $becario = Becario::find($b_id);
+        $ab = ActividadBecario::paraActividad($actividad->id)->paraBecario($becario->user_id)->first();
+        $ab->estatus = "no asistio";
+        $ab->save();
+        return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como NO ASISTIÓ.']);
+    }
+}   

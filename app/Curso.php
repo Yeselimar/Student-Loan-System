@@ -40,6 +40,11 @@ class Curso extends Model
 
     public function getIdCurso()
     {
-        return $this->modo." - ".$this->nivel." - ".$this->modulo;
+        return $this->nivel." - ".$this->modo." - ".$this->modulo;
+    }
+
+    public function getNota()
+    {
+        return number_format($this->nota, 2, '.', ',');
     }
 }

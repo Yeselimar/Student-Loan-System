@@ -16,8 +16,6 @@ use avaa\Becario;
 use avaa\Imagen;
 use avaa\Documento;
 
-
-
 class SisbecaController extends Controller
 {
     public function __construct()
@@ -41,7 +39,7 @@ class SisbecaController extends Controller
 
         if(Auth::user()->rol==='coordinador' or Auth::user()->rol==='directivo')
         {
-            $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();;
+            $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
             $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
 
             $collection = collect();
@@ -76,8 +74,11 @@ class SisbecaController extends Controller
 
     public function statusPostulanteBecario()
     {
-        return view('sisbeca.becarios.statusBecario');
+        $postulante = Becario::find(Auth::User()->id);
+        $entrevistadores = User::entrevistadores()->get();
+        return view('sisbeca.postulaciones.statusPostulanteBecario')->with('postulante',$postulante)->with('entrevistadores',$entrevistadores);
     }
+
     public function perfil($id)
     {
         if((Auth::user()->rol!=='postulante_becario') && (Auth::user()->rol!=='becario') && (Auth::user()->rol!=='mentor') && (Auth::user()->rol!=='directivo') && (Auth::user()->rol!=='coordinador'))
@@ -110,7 +111,6 @@ class SisbecaController extends Controller
         return view('sisbeca.becarios.perfil')->with('becario',$becario)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil);
     }
 
-
     public function verMiPerfilMentor()
     {
         $postulante= User::find(Auth::user()->id);
@@ -119,6 +119,5 @@ class SisbecaController extends Controller
         return view('sisbeca.postulaciones.perfilPostulanteMentor')->with('postulanteMentor',$postulante)->with('documento', $documento)
             ->with('img_perfil_postulante',$img_perfil_postulante);
     }
-
 
 }

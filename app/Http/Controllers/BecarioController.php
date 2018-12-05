@@ -84,7 +84,7 @@ class BecarioController extends Controller
         }
 
         $becario = User::find(Auth::user()->id)->becario;
-
+        // Auth::user()->rol='becario';
         $becario->acepto_terminos = 1;
 
 
@@ -142,6 +142,6 @@ class BecarioController extends Controller
         return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
     }
 
-   
+    
 
 }

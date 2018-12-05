@@ -86,21 +86,25 @@ class CompartidoDirecCoordController extends Controller
     public function veredictoPostulantesBecarios(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
-        if($request->funcion=='Aprobar'){
+        if($request->funcion=='Aprobar')
+        {
             $postulanteBecario->status='activo';
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->save();
             /* $usuario=User::find($id);
             $usuario->rol = 'becario';
             $usuario->save();*/
-        return response()->json(['success'=>'El Postulante ha sido Aceptado Exitosamente']);
-       }else{
+            return response()->json(['success'=>'El Postulante ha sido Aceptado Exitosamente']);
+        }
+        else
+        {
             $postulanteBecario->status='rechazado';
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->save();
-        return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
+            return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
        }
     }
+
     public function listarPostulantesBecarios($data)
     {
         $concursos = Concurso::query()->get();
@@ -111,21 +115,18 @@ class CompartidoDirecCoordController extends Controller
         }
         if($data==2)
         { 
-            //Lista a todos los postulantes
-            //$becarios = Becario::query()->where('status','=','postulante')->orwhere('status','=','entrevista')->orwhere('status','=','rechazado')->get(); //Falta cuando en user esta rechazado
-            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-            //dd($becarios);
+            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
         }
         else if(($data==1))
         { 
-        //lista los que ya tienen entrevista
+            //lista los que ya tienen entrevista
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();	    
 
         }
         else if($data==3)
         {
             $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-           // $becarios = Becario::query()->where('status','=','entrevistado')->where('acepto_terminos','=',false)->get();
+            // $becarios = Becario::query()->where('status','=','entrevistado')->where('acepto_terminos','=',false)->get();
         }
 
         if($data==0)
