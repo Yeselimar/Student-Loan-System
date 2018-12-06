@@ -17,6 +17,31 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class ActividadController extends Controller
 {
+
+    public function actualizardisponible($id)
+    {
+        $actividad = Actividad::find($id);
+        $actividad->status = "disponible";
+        $actividad->save();
+        return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como DISPONIBLE.']);
+    }
+
+    public function actualizarsuspendido($id)
+    {
+        $actividad = Actividad::find($id);
+        $actividad->status = "suspendido";
+        $actividad->save();
+        return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como SUSPENDIDO.']);
+    }
+
+    public function actualizarbloqueado($id)
+    {
+        $actividad = Actividad::find($id);
+        $actividad->status = "bloqueado";
+        $actividad->save();
+        return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como BLOQUEADO.']);
+    }
+
 	public function listar()
 	{
         $actividades = Actividad::orderby('fecha','asc')->get();
@@ -63,10 +88,21 @@ class ActividadController extends Controller
 
     public function subirjustificacion($actividad_id,$becario_id)
     {
-        $actividad = Actividad::find($actividad_id);
-        $becario = Becario::find($becario_id);
-        $model = "crear";
-        return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model'));
+        $ab = ActividadBecario::paraActividad($actividad_id)->paraBecario($becario_id)->get();
+        if($ab->count()==1)
+        {
+            if((Auth::user()->esBecario() and $becario_id==Auth::user()->id) or Auth::user()->esDirectivo()  or Auth::user()->esCoordinador())
+            {
+                $actividad = Actividad::find($actividad_id);
+                $becario = Becario::find($becario_id);
+                if($actividad->lapsoparajustificar() or Auth::user()->esDirectivo()  or Auth::user()->esCoordinador())
+                {
+                    $model = "crear";
+                    return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model'));
+                }
+            }
+        }
+        return view('sisbeca.error.404');
     }
 
     public function guardarjustificacion(Request $request,$actividad_id,$becario_id)
@@ -105,11 +141,19 @@ class ActividadController extends Controller
 
     public function editarjustificacion($actividad_id,$becario_id)
     {
-        $actividad = Actividad::find($actividad_id);
-        $becario = Becario::find($becario_id);
-        $justificativo = ActividadBecario::where('becario_id','=',$becario->user_id)->where('actividad_id','=',$actividad->id)->first();
-        $model = "editar";
-        return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model','justificativo'));
+        $ab = ActividadBecario::paraActividad($actividad_id)->paraBecario($becario_id)->get();
+        if($ab->count()==1)
+        {
+            if((Auth::user()->esBecario() and $becario_id==Auth::user()->id) or Auth::user()->esDirectivo()  or Auth::user()->esCoordinador())
+            {
+                $actividad = Actividad::find($actividad_id);
+                $becario = Becario::find($becario_id);
+                $justificativo = ActividadBecario::where('becario_id','=',$becario->user_id)->where('actividad_id','=',$actividad->id)->first();
+                $model = "editar";
+                return view('sisbeca.actividad.subirjustificacion')->with(compact('actividad','becario','model','justificativo'));
+            }
+        }
+        return view('sisbeca.error.404');
     }
 
     public function actualizarjustificacion(Request $request,$actividad_id,$becario_id)
@@ -147,7 +191,11 @@ class ActividadController extends Controller
     public function detalles($id)
     {
         $actividad = Actividad::find($id);
-        return view('sisbeca.actividad.detalles')->with(compact('actividad'));
+        if(!$actividad->estaBloqueado())
+        {
+            return view('sisbeca.actividad.detalles')->with(compact('actividad'));
+        }
+        return view('sisbeca.error.404');
     }
 
     public function detallesservicio($id)

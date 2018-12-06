@@ -21,7 +21,7 @@
 			<template v-if="lapso_justificar==true">
 				<template v-if="estatus_becario==='justificacion cargada'">
 					<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
-						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificativo :D</a>
+						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificativo</a>
 					</span>
 				</template>
 				<template v-else>
@@ -143,10 +143,22 @@
 					<td class="text-left">
 						<span v-if="actividad.status=='disponible'" class="label label-success">
 							@{{ actividad.status }}</span>
-						<span v-if="actividad.status=='suspedido'" class="label label-danger">
+						<span v-if="actividad.status=='suspendido'" class="label label-danger">
 							@{{ actividad.status }}</span>
 						<span v-if="actividad.status=='bloqueado'" class="label label-warning">
 							@{{ actividad.status }}</span>
+
+						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarDisponible()">
+							<i class="fa fa-check"></i>
+						</button>
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarSuspendido()">
+							<i class="fa fa-remove"></i>
+						</button>
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarBloqueado()">
+							<i class="fa fa-lock"></i>
+						</button>
+						@endif
 					</td>
 				</tr>
 				<tr>
@@ -225,12 +237,15 @@
 				</tr>
 			</tbody>
 		</table>
+		<hr>
+		<p class="h6 text-right">@{{ facilitadores.length }} facilitador(es)</p>
 	</div>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered table-striped" id="becarios">
 			<thead>
 				<tr>
+					<th class="text-center">#</th>
 					<th>
 						Becarios Inscritos
 					</th>
@@ -246,7 +261,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="becario in becarios">
+				<tr v-for="(becario,index) in becarios">
+					<td class="text-center" style="width: 25px;">
+	                    @{{index+1}}
+	                </td>
 					<td class="text-left" colspan="1">
 						@{{ becario.user.name}} @{{ becario.user.last_name}} 
 					</td>
@@ -332,7 +350,7 @@
 							</template>
 								
 							<template v-if="becario.estatus=='asistio' || becario.estatus=='asistira' ||  becario.estatus=='lista de espera'">
-								<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)" title="Colocar como Asistio">
+								<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)" title="Colocar como No Asistio">
 									<i class="fa fa-remove"></i>
 								</button>
 							</template>
@@ -440,11 +458,11 @@ const app = new Vue({
         becarios:'',
         inscrito:true,
         estatus:'',
+        estatus_actividad:'',
     },
     created: function()
     {
         this.obtenerdetallesactividad();
-
     },
     mounted: function()
     {
@@ -452,6 +470,39 @@ const app = new Vue({
     },
     methods: 
     {	
+    	colocarDisponible()
+    	{
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.disponible',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+            });
+    	},
+    	colocarBloqueado()
+    	{
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.bloqueado',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+            });
+    	},
+    	colocarSuspendido()
+    	{
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.suspendido',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+            });
+    	},
     	colocarAsistio(b_id)
     	{
     		var a_id = {{$actividad->id}};
@@ -463,7 +514,7 @@ const app = new Vue({
             	this.obtenerdetallesactividad();
 				toastr.success(response.data.success);
             });
-    		console.log("Asitio "+b_id);
+    		//console.log("Asitio "+b_id);
     	},
     	colocarNoAsistio(b_id)
     	{
@@ -476,7 +527,7 @@ const app = new Vue({
             	this.obtenerdetallesactividad();
 				toastr.success(response.data.success);
             });
-    		console.log("No Asitio "+b_id);
+    		//console.log("No Asitio "+b_id);
     	},
     	getRutaEditarJustificativos: function(b_id)
     	{

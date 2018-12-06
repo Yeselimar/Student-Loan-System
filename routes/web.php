@@ -151,6 +151,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
        
         Route::get('/actividad/{a_id}/becario/{b_id}/no-asistio', 'ActividadController@colocarnoasistio')->name('actividad.colocar.noasistio');//colocar becario como no asistió a actividad
 
+        Route::get('/actividad/{id}/actualizar-disponible/', 'ActividadController@actualizardisponible')->name('actividad.disponible');
+        Route::get('/actividad/{id}/actualizar-suspendido', 'ActividadController@actualizarsuspendido')->name('actividad.suspendido');
+        Route::get('/actividad/{id}/actualizar-bloqueado', 'ActividadController@actualizarbloqueado')->name('actividad.bloqueado');
+
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');

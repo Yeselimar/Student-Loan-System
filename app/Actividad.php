@@ -77,7 +77,7 @@ class Actividad extends Model
         $a2 = DateTime::createFromFormat('Y-m-d H:i:s', $f2);
         $com1 = $fechahoy >= $a1;
         $com2 = $fechahoy <= $a2;
-        if( $com1 and  $com2)
+        if( $com1 and $com2 and $actividad->estaDisponible())
         {
             return true;
         }
