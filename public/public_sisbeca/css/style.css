@@ -1830,12 +1830,9 @@ textarea {
   color: white;
 }
 .sidebar-nav > ul > li > a .label {
-  position: absolute;
-  right: 15px;
-  bottom: 10px;
-  /* position: absolute;
+  /*position: absolute;*/
   right: 35px;
-  top: 0px;*/
+  /*top: 0px;*/
 }
 .sidebar-nav > ul > li > a.active {
   font-weight: 400;
