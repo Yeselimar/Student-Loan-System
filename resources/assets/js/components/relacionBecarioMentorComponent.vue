@@ -8,34 +8,63 @@
   z-index: 1050;
   background-color: rgba(0, 0, 0, 0.2);
 }
-
 </style>
 <template>
-    <div class="col-12">
-      <br/><br/>
+    <div>
+     <!-- <DatePicker language="es" id="expirationPassport" name="expirationPassport" ref="expirationPassport"
+                                        v-model="datedarwin"
+                                         format="dd-MM-yyyy"
+                                        :full-month-name="true">
+      </DatePicker> -->
+      <div  class="col-lg-12">
+      <div class="table-responsive">
+				<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+      <div class="row"><div class="col-sm-12 col-md-6">
+        <div class="dataTables_length">
+          <label>Mostrar 
+            <select aria-controls="becarios" v-model="perPage" class="custom-select custom-select-sm form-control form-control-sm">
+              <option v-for="(value, key) in pageOptions" :key="key">
+                {{value}}
+              </option>
+            </select> Entradas</label>
+            </div></div>
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_filter pull-right">
+                 <b-input-group-append>
+                <label>Buscar:<input type="search" v-model="filter" class="form-control form-control-sm" placeholder="" ><b-btn :disabled="!filter" @click="filter = ''">Limpiar</b-btn>
+                    
+                </label>
+                </b-input-group-append>
+                </div>
+              </div>
+            </div>
+           <!--
             <b-row>
-              <b-col md="6" class="my-1">
+               <b-col md="3" class="my-1 text-right">
+                <b-form-group horizontal label="Mostrar" class="mb-0 text-right">
+                  <b-form-select :options="pageOptions" v-model="perPage" /> Entradas
+                </b-form-group>
+              </b-col>
+               <b-col md="6" class="my-1"> </b-col>
+              <b-col md="3" class="my-1">
                   <b-input-group>
-                    <b-form-input v-model="filter" placeholder="Buscar..." />
+                    Buscar
+                    <b-form-input v-model="filter" />
                     <b-input-group-append>
                       <b-btn :disabled="!filter" @click="filter = ''">Limpiar</b-btn>
                     </b-input-group-append>
                   </b-input-group>
               </b-col>
-              <b-col md="2" class="my-1"> </b-col>
-              <b-col md="4" class="my-1 text-right">
-                <b-form-group horizontal label="Paginación" class="mb-0 text-right">
-                  <b-form-select :options="pageOptions" v-model="perPage" />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <br/><br/>
+
+
+            </b-row> -->
+
          <b-table
                     show-empty
                     empty-text ="No hay registros para mostrar"
                     empty-filtered-text="
                     No hay registros que coincidan con su busqueda"
-                    class="table table-hover datatable"
+                    class="table table-bordered table-hover dataTable no-footer"
                     stacked="md"
                     :becarios="becarios"
                     :items="items"
@@ -110,6 +139,9 @@
                 <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0  text-right pull-right" />
               </b-col>
             </b-row>
+				</div>
+       </div>
+      </div>
     <section class="loading" id="preloader">
       <div>
           <svg class="circular" viewBox="25 25 50 50">
@@ -139,8 +171,31 @@
 
 <script>
 export default {
+  props: {
+    relacionbm: {
+      type: String,
+      required: false
+    },
+    asignarrbm: {
+      type: String,
+      required: false
+    },
+    getm: {
+      type: String,
+      required: false
+    },
+    getb: {
+      type: String,
+      required: false
+    }
+  },
   data() {
     return {
+      relacionBecarioMentor: this.$props.relacionbm,
+      asignarRelacionBM : this.$props.asignarrbm,
+      getMentores: this.$props.getm,
+      getBecarios: this.$props.getb,
+      datedarwin: null,
       msgBody: "",
       msgTitle: "",
       idShow: 0,
@@ -220,7 +275,7 @@ export default {
         },
     getDataTable() {
       axios
-        .get(`http://localhost:8000/sisbeca/getRelacionBecarioMentorApi`)
+        .get(this.relacionBecarioMentor)
         .then(response => {
           this.llenarSelects();
           console.log("response: ", response.data)
@@ -258,6 +313,12 @@ export default {
       }
 },
     cancel(index, row) {
+      if (this.selected.id== null){
+        row.item._rowVariant = 'warning';
+      }
+      else{
+         row.item._rowVariant = 'success';
+      }
       this.selected= {};
       //this.editItems.splice(index, 1, !this.editItems[index]);
       this.idShow= 0;
@@ -270,13 +331,14 @@ export default {
           id: null,
           name: 'Sin Mentor'
         };
+        row.item._rowVariant = 'warning';
       }
       if (this.selected.id !== row.item.mentor.id) {
         $("#preloader").show();
         var dataform = new FormData();
         dataform.append("becarioId", row.item.becario.id);
         dataform.append("mentorId", this.selected.id);
-        var url = "http://localhost:8000/sisbeca/asignarRelacionBecarioMentor";
+        var url = this.asignarRelacionBM;
         axios
           .post(url, dataform)
           .then(response => {
@@ -343,10 +405,11 @@ export default {
     },
     llenarSelects() {
       axios
-        .get(`http://localhost:8000/sisbeca/getMentoresApi`)
+        .get(this.getMentores)
         .then(response => {
           let auxMentores = [];
           auxMentores = response.data;
+          this.mentores = [];
           auxMentores.forEach(function(mentor, i) {
             this.mentores.push({
               id: mentor.user_id,
@@ -360,7 +423,7 @@ export default {
           return err;
         });
       axios
-        .get(`http://localhost:8000/sisbeca/getBecariosApi`)
+        .get(this.getBecarios)
         .then(response => {
           let auxBecarios = [];
           auxBecarios = response.data;

@@ -13,6 +13,11 @@ class Voluntariado extends Model
         return $this->belongsTo('avaa\Becario','becario_id');
     }
 
+    public function usuario()//relacion buena
+    {
+        return $this->belongsTo('avaa\User','becario_id');
+    }
+
     public function aval()//relación buena
     {
         return $this->hasOne('avaa\Aval', 'id','aval_id');

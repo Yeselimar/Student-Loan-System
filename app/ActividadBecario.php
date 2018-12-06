@@ -28,6 +28,11 @@ class ActividadBecario extends Model
         return $query->where('actividad_id','=',$id);
     }
 
+    public function scopeParaBecario($query,$id)
+    {
+        return $query->where('becario_id','=',$id);
+    }
+
     public function scopeConEstatus($query,$estatus)
     {
         return $query->where('estatus','=',$estatus);

@@ -31,7 +31,22 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        return ActividadBecario::paraActividad(1)->conEstatus('asistira')->count();
+        /*$actividad = Actividad::find(1);
+        $listadeespera  = $actividad->listadeespera();
+        if($listadeespera->count()>=1)
+        {
+            $beneficiado = $listadeespera[0];
+            $beneficiado->estatus = "asistira";
+            $beneficiado->save();
+        }
+        return "listo";*/
+
+        //return date('Y-m-d H:i:s');
+        /*$ab = ActividadBecario::find(8);
+        $ab->updated_at = date("Y-m-d H:i:s");
+        $ab->save();
+        return "exito";
+        */
         /*$becario = Becario::find(34);
         $becario->hora_entrevista = "3:23 PM";
         $becario->lugar_entrevista = "miami";
@@ -265,8 +280,23 @@ class GetPublicController extends Controller
         $editor->rol = 'editor';
         $editor->email='editor@avaa.com';
         $editor->save();
-        //$editor->editor()->save(new Editor());
 
+        $editor = User::find(4);
+        $editor->rol = 'coordinador';
+        $editor->email='coordinador@avaa.com';
+        $editor->save();
+
+        $editor = User::find(5);
+        $editor->rol = 'entrevistador';
+        $editor->email='entrevistador@avaa.com';
+        $editor->save();
+        
+
+        $usuario = User::find(6);
+        $usuario->email='rafael1delgado@hotmail.com';
+        $usuario->save();
+
+        //$editor->editor()->save(new Editor());
 
         /*
 
@@ -348,7 +378,8 @@ class GetPublicController extends Controller
 
     }
 
-    public function getRandomCode(){
+    public function getRandomCode()
+    {
         $an = "0123456789";
         $su = strlen($an) - 1;
         return substr($an, rand(0, $su), 1) .

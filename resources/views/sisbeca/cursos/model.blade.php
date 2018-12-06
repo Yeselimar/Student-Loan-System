@@ -1,10 +1,13 @@
 @extends('sisbeca.layouts.main')
-@section('title',$model=='crear' ? 'Crear Cursos' : 'Editar Curso: '.$curso->getIdCurso())
+@section('title',$model=='crear' ? $becario->user->nombreyapellido().' - Cargar CVA' : $becario->user->nombreyapellido().' - Editar CVA: '.$curso->getIdCurso())
 @section('content')
 	<div class="col-lg-12">
         <div class="text-right">
-            
-            <a href="{{route('cursos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            @if(Auth::user()->esBecario())
+                <a href="{{route('cursos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            @else
+                <a href="{{route('cursos.todos')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            @endif
         </div>
 		<br>
 		<div class="col sisbeca-container-formulario">
@@ -93,10 +96,20 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-lg-12 text-right" >
-						<a href="{{route('cursos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
-						&nbsp;&nbsp;
-
-                        <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
+                        @if(Auth::user()->esBecario())
+						    <a href="{{route('cursos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
+                        @else
+                            <a href="{{route('cursos.todos')}}" class="btn sisbeca-btn-default">Cancelar</a>
+                        @endif
+                        @if($model=='editar')
+                            @if($curso->aval->estatus!='aceptada')
+                                <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                            @else
+                                <button class="btn sisbeca-btn-primary" type="submit" disabled="disabled">Guardar</button>
+                            @endif
+                        @else
+                            <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                        @endif
 					</div>
 				</div>
 			</div>		

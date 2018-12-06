@@ -67,8 +67,9 @@ class Kernel extends HttpKernel
         'postulante_mentor' => \avaa\Http\Middleware\PostulanteMentor::class,
         'compartido_direc_coord' => \avaa\Http\Middleware\CompartidoDirecCoord::class,
         'compartido_mentor_becario' => \avaa\Http\Middleware\CompartidoMentorBecario::class,
-        'admin_becario' => \avaa\Http\Middleware\BecarioAdmin::class,
+        'admin_becario' => \avaa\Http\Middleware\BecarioAdmin::class,//Middleware para Becario, Coordinador, Directivo. 
         'entrevistador' => \avaa\Http\Middleware\Entrevistador::class,
+        'coordinador_directivo' => \avaa\Http\Middleware\CoordinadorDirectivo::class,
 
     ];
 }

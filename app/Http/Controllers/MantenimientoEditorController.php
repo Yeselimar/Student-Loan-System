@@ -75,6 +75,9 @@ class MantenimientoEditorController extends Controller
                 $costoAux = str_replace(".","",$request->get('costo_membresia'));
                 $costoAux= str_replace(",",".",$costoAux);
                 $costo->costo_membresia=$costoAux;
+                $costoAux = str_replace(".","",$request->get('costo_adicional1'));
+                $costoAux= str_replace(",",".",$costoAux);
+                $costo->costo_adicional1=$costoAux;
                 $costo->save();
                 flash('Los costos fueron actualizados exitosamente','success')->important();
             }

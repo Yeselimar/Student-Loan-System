@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title',($model=="editar") ? ucwords($actividad->tipo).': '.$actividad->nombre.', Justificativo '.$becario->user->nombreyapellido() : 'Editar')
+@section('title',($model=="crear") ? ucwords($actividad->tipo).': '.$actividad->nombre.', Cargar Justificativo a '.$becario->user->nombreyapellido() :  ucwords($actividad->tipo).': '.$actividad->nombre.', Editar Justificativo a '.$becario->user->nombreyapellido())
 @section('content').
 	<div class="col-lg-12">
         <div class="text-right">

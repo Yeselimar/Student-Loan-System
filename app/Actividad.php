@@ -36,10 +36,14 @@ class Actividad extends Model
         return $this->becarios->count();
     }
 
-
     public function totalbecariosasistira()
     {
         return ActividadBecario::paraActividad($this->id)->conEstatus('asistira')->count();
+    }
+
+    public function listadeespera()
+    {
+        return ActividadBecario::paraActividad($this->id)->conEstatus('lista de espera')->orderby('created_at','asc')->get();
     }
 
     //verifica que la inscripción se antes de las 24 horas y que esté disponible el curso.

@@ -7,10 +7,11 @@ use avaa\Materia;
 
 class MateriasController extends Controller
 {
-    public function __construct()
+	//no descomentar esto generar error cuaando el admin quiere editar y añadir materias a un determinado becario
+    /*public function __construct()
     {
         $this->middleware('becario');
-    }
+    }*/
 
 
 	public function index($id)
@@ -18,7 +19,8 @@ class MateriasController extends Controller
 		
 	}
 
-	public function pruebaapi (Request $request) {
+	public function pruebaapi (Request $request)
+	{
 		$dat= 'hola';
 		return $dat;
 	}

@@ -182,7 +182,7 @@
                             <li><a href="{{ route('nomina.pagadas') }}">Nóminas Pagadas</a></li>
                         </ul>
                     </li>
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user-times"></i><span class="hide-menu">Desincorporaciones
+                   <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user-times"></i><span class="hide-menu">Desincorporaciones
                                 @if($numdesincorporaciones>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numdesincorporaciones}}</span>
                                 @endif
@@ -193,7 +193,7 @@
                             </li>
 
                         </ul>
-                    </li>
+                    </li> -->
                 @endif
                 {{--Fin de Vistas del Directivo unicamente--}}
 
@@ -223,7 +223,7 @@
                 
                 {{--Inicio de Vista Compartida Coordinador/Directivo --}}
                 @if((Auth::user()->rol==='coordinador') || (Auth::user()->rol==='directivo'))
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-question-circle"></i><span class="hide-menu">Solicitudes/Reclamos
+                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-question-circle"></i><span class="hide-menu">Solic./Reclamos
                                 @if($numSoliBecarios>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numSoliBecarios}}</span>
                                 @endif
@@ -245,10 +245,8 @@
                             <li><a href="{{ route('mentores.listar') }}">Listar Mentores</a></li>
                         </ul>
                     </li>
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-clone"></i><span class="hide-menu">Reportes de Solicitudes</span></a>
-                        <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{route('formularioReporte.solicitudes')}}">Reporte Solicitud</a></li>
-                        </ul>
+                    <li> <a class="has-arrow none-list" href="{{route('formularioReporte.solicitudes')}}" aria-expanded="false"><i class="fa fa-clone"></i><span class="hide-menu">Solicitudes</span></a>
+                        
                     </li>
                     @if((Auth::user()->rol==='directivo'))
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-eject"></i><span class="hide-menu">Egresados</span></a>
@@ -337,7 +335,6 @@
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('solicitud.listar')}}">Listar Solicitudes</a></li>
                             <li><a href="{{route('solicitud.crear')}}">Registrar Solicitud</a></li>
-                            <li><a href="{{route('solicitud.showlist')}}">Ver/Guardar Solicitud</a></li>
                         </ul>
                     </li>
                 @endif
@@ -388,7 +385,20 @@
                     </ul>
                 </li> 
                 @endif
-                @if(Auth::user()->admin())
+                @if((Auth::user()->esCoordinador()) || (Auth::user()->esDirectivo()))
+                <li class="nav-label">Actividades Becarias</li>
+                <li>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Taller/Chat</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
+                    </ul>
+
+                </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
@@ -416,18 +426,7 @@
                         <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="has-arrow  " href="#" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
-                        <span class="hide-menu">Taller/Chat</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
-                        <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
-                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
-                    </ul>
-
-                </li>
+               
                 @endif
 
                 <!-- Rutas para entrevistadores -->

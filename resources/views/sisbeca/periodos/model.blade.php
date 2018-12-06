@@ -1,13 +1,17 @@
 @extends('sisbeca.layouts.main')
-@section('title',$model=='crear' ? 'Crear Periodo' : 'Editar Periodo: '.$periodo->anho_lectivo)
-@section('subtitle','Crear Periodo')
+@section('title',$model=='crear' ? $becario->user->nombreyapellido().': Cargar Periodo' : $becario->user->nombreyapellido().' - Editar Periodo: '.$periodo->anho_lectivo)
+@section('subtitle','Cargar Periodo')
 @section('content')
 <div class="col-lg-12">
     <div class="text-right">
         @if($model=="editar")
         <a href="{{ route('materias.mostrar',$periodo->id)}}" class="btn btn-sm sisbeca-btn-primary">Ver Materias</a>
         @endif
-        <a href="{{route('periodos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+        @if(Auth::user()->esBecario())
+            <a href="{{route('periodos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+        @else
+            <a href="{{route('periodos.todos')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+        @endif
     </div>
 	<br>
 	<div class="col sisbeca-container-formulario">
@@ -26,7 +30,7 @@
 			<div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">Becario</label>
-                    {{ Form::text('becario', Auth::user()->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
+                    {{ Form::text('becario', $becario->user->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Año Lectivo</label>
@@ -90,10 +94,20 @@
 		<div class="form-group">
 			<div class="row">
 				<div class="col-lg-12 text-right" >
-					<a href="{{route('periodos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
-					&nbsp;&nbsp;
-
-                    <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
+                    @if(Auth::user()->esBecario())
+					   <a href="{{route('periodos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
+					@else
+                        <a href="{{route('periodos.todos')}}" class="btn sisbeca-btn-default">Cancelar</a>
+                    @endif
+                    @if($model=='editar')
+                        @if($periodo->aval->estatus!='aceptada')
+                            <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                        @else
+                            <button class="btn sisbeca-btn-primary" type="submit" disabled="disabled">Guardar</button>
+                        @endif
+                    @else
+                        <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                    @endif
 				</div>
 			</div>
 		</div>		
