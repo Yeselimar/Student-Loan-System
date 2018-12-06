@@ -247,7 +247,7 @@
     <table class="table-sisbeca">
         <thead class="cabecera-sisbeca">
             <tr>
-                <th class="text-left" colspan="2">
+                <th class="text-left" colspan="3">
                     Facilitador(es)
                 </th>
             </tr>                  
@@ -255,6 +255,7 @@
         <tbody>
             <tr>
                 <th class="text-center">#</th>
+                <th class="text-left">Tipo Facilitador</th>
                 <th class="text-left">Nombre y Apellido</th>
             </tr>
             @foreach($facilitadores as $index => $facilitador)
@@ -262,6 +263,12 @@
                 <td class="text-center" style="width: 25px;">
                     {{$index+1}}
                 </td>
+                <td class="text-left">
+                    @if($facilitador->becario_id==null)
+                        Es Becario
+                    @else
+                        No es Becario
+                    @endif
                 </td>
                 <td class="text-left">
                     @if($facilitador->becario_id==null)

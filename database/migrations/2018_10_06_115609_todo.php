@@ -301,6 +301,8 @@ class Todo extends Migration
 
             $table->string('nombreyapellido')->nullable();
 
+            $table->integer('horas')->nullable();
+            
             $table->timestamps();
         });
 
@@ -359,7 +361,7 @@ class Todo extends Migration
            	$table->unsignedInteger('aval_id')->nullable();
             $table->foreign('aval_id')->references('id')->on('aval');
 
-            $table->enum('estatus',['asistira','lista espera','justificacion cargada','asistio','no asistio'])->default('asistira');
+            $table->enum('estatus',['asistira','lista de espera','justificacion cargada','asistio','no asistio'])->default('asistira');
 
             $table->timestamps();//fechainscripcion
         });

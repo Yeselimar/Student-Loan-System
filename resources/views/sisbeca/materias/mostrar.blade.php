@@ -6,7 +6,7 @@
 		<template v-if="estatus_periodo!='aceptada'">
 			<a href="#" class="btn btn-sm sisbeca-btn-primary" @click.prevent="mostrarAnadir">Añadir Materia</a>
 		</template>
-		<template>
+		<template v-else>
 			<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Añadir Materia</a>
 		</template>
 		@if(Auth::user()->esBecario())

@@ -84,7 +84,7 @@ class CursoController extends Controller
 		$curso->aval_id = $aval->id;
 		$curso->save();
 		
-		flash("El curso fue creado exitosamente.",'success');
+		flash("El CVA fue creado exitosamente.",'success');
         if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
         {
             return redirect()->route('cursos.todos');
@@ -143,7 +143,7 @@ class CursoController extends Controller
 		$curso->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
 		$curso->save();
 		
-		flash("El curso fue actualizado exitosamente.",'success');
+		flash("El CVA fue actualizado exitosamente.",'success');
     	if(Auth::user()->esBecario())
         {
             return redirect()->route('cursos.index');

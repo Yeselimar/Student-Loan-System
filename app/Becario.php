@@ -88,6 +88,11 @@ class Becario extends Model
         return $query->orwhere('status','=','probatorio1');
     }
 
+    public function scopeProbatorio2($query)
+    {
+        return $query->orwhere('status','=','probatorio2');
+    }
+
     public function scopeTerminosAceptados($query)
     {
         return $query->where('acepto_terminos','=','1');

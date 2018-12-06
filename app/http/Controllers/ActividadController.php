@@ -33,7 +33,7 @@ class ActividadController extends Controller
     public function obtenerjustificativos()
     {
         //$justificativos = Aval::justificativos()->orderby('updated_at','desc')->with("user")->with("becario")->get();
-        $justificativos = ActividadBecario::where('aval_id','!=','null')->orderby('updated_at','desc')->with("user")->with("actividad")->with("aval")->get();
+        $justificativos = ActividadBecario::where('aval_id','!=','null')->orderby('created_at','desc')->with("user")->with("actividad")->with("aval")->get();
 
         return response()->json(['justificativos'=>$justificativos]);
     }
@@ -48,7 +48,7 @@ class ActividadController extends Controller
     //justificativos por actividad
     public function justificativosactividad($id)
     {
-        $justificativos = ActividadBecario::where('actividad_id','=',$id)->where('aval_id','!=','null')->orderby('updated_at','desc')->with("user")->with("actividad")->with("aval")->get();
+        $justificativos = ActividadBecario::where('actividad_id','=',$id)->where('aval_id','!=','null')->orderby('created_at','desc')->with("user")->with("actividad")->with("aval")->get();
         return response()->json(['justificativos'=>$justificativos]);
     }
 
@@ -278,13 +278,32 @@ class ActividadController extends Controller
 
     public function desinscribir($actividad_id,$becario_id)
     {
-        //cada vez que se desinscriba alguien, actualizo mi lista de espera
         $becario = Becario::find($becario_id);
         $actividad = Actividad::find($actividad_id);
+
+        //cada vez que se desinscriba alguien, actualizo mi lista de espera si hay
+        $listadeespera  = $actividad->listadeespera();
+        if($listadeespera->count()>=1)
+        {
+            $beneficiado = $listadeespera[0];
+            $beneficiado->estatus = "asistira";
+            $beneficiado->save();
+            //notificar al becario que fue pasado de "lista de espera" a "asistira"
+        }
         //if( $actividad->inscribionabierta() )
         //{
-            $ab = ActividadBecario::where('actividad_id','=',$actividad->id)->where('becario_id',$becario->user->id)->first();
-            $ab->delete();
+            $ab = ActividadBecario::paraActividad($actividad->id)->paraBecario($becario->user->id)->first();
+            if($ab->aval_id!=null)
+            {
+                $aval = $ab->aval;
+                $ab->delete();
+                File::delete($ab->aval->url);
+                $aval->delete();
+            }
+            else
+            {
+                $ab->delete();
+            }
             return response()->json(['tipo'=>'success','mensaje'=>'El becario '.$becario->user->nombreyapellido().' fue eliminado del '.$actividad->tipo.'.']);
         //}
         //else
@@ -308,7 +327,7 @@ class ActividadController extends Controller
             'nivel' 			 	=> 'required',
             'anho_academico' 	 	=> 'min:0,max:255',
             'limite'  				=> 'required|integer|between:0,100',
-            'horas'					=> 'required|integer|between:0,100',
+            //'horas'					=> 'required|integer|between:0,100',
             'fecha'					=> 'required|date_format:d/m/Y',
             'hora_inicio'			=> 'required|date_format:h:i A',
             'hora_fin'				=> 'required|date_format:h:i A',
@@ -322,7 +341,7 @@ class ActividadController extends Controller
     	$actividad->nivel = $request->nivel;
     	$actividad->anho_academico = $request->anho_academico;
     	$actividad->limite_participantes = $request->limite;
-    	$actividad->horas_voluntariado = $request->horas;
+    	//$actividad->horas_voluntariado = $request->horas;
     	$actividad->fecha = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
     	$actividad->hora_inicio = DateTime::createFromFormat('H:i a', $request->hora_inicio )->format('H:i:s');
     	$actividad->hora_fin = DateTime::createFromFormat('H:i a', $request->hora_fin )->format('H:i:s');
@@ -351,6 +370,7 @@ class ActividadController extends Controller
     			$af = new ActividadFacilitador;
     			$af->actividad_id = $actividad->id;
     			$af->becario_id = $facilitador["id"];
+                $af->horas = $facilitador["horas"];
     			$af->save();
     		}
     	}
@@ -376,7 +396,7 @@ class ActividadController extends Controller
             'nivel'                 => 'required',
             'anho_academico'        => 'min:0,max:255',
             'limite'                => 'required|integer|between:0,100',
-            'horas'                 => 'required|integer|between:0,100',
+            //'horas'                 => 'required|integer|between:0,100',
             'fecha'                 => 'required|date_format:d/m/Y',
             'hora_inicio'           => 'required|date_format:h:i A',
             'hora_fin'              => 'required|date_format:h:i A',
@@ -388,7 +408,7 @@ class ActividadController extends Controller
         $actividad->nivel = $request->nivel;
         $actividad->anho_academico = $request->anho_academico;
         $actividad->limite_participantes = $request->limite;
-        $actividad->horas_voluntariado = $request->horas;
+        //$actividad->horas_voluntariado = $request->horas;
         $actividad->fecha = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
         $actividad->hora_inicio = DateTime::createFromFormat('H:i a', $request->hora_inicio )->format('H:i:s');
         $actividad->hora_fin = DateTime::createFromFormat('H:i a', $request->hora_fin )->format('H:i:s');
@@ -414,6 +434,7 @@ class ActividadController extends Controller
                 $af = new ActividadFacilitador;
                 $af->actividad_id = $actividad->id;
                 $af->becario_id = $facilitador["id"];
+                $af->horas = $facilitador["horas"];
                 $af->save();
             }
         }
@@ -428,10 +449,11 @@ class ActividadController extends Controller
         $actividad = Actividad::where("id","=",$id)->with("facilitadores")->first();
         return response()->json(['actividad'=>$actividad]);
     }
+
     //becarios activos son los que pueden ser facilitador
     public function obtenerbecarios()
     {
-    	$becarios = Becario::activos()->with("user")->get();
+    	$becarios = Becario::activos()->probatorio1()->TerminosAceptados()->with("user")->get();
     	return response()->json(['becarios'=>$becarios]);
     }
 
@@ -455,7 +477,7 @@ class ActividadController extends Controller
         else
         {
             flash("El ".$tipo." no puede ser eliminado. Existen información relacionado al mismo.",'danger');
-            return redirect()->route('actividad.listar');
+            return redirect()->route('actividad.detalles',$actividad->id);
         }
     }
 

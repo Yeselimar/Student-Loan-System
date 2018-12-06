@@ -393,6 +393,18 @@
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Taller/Chat</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
                         <span class="hide-menu">Notas Académicas</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
@@ -417,18 +429,7 @@
                         <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="has-arrow  " href="#" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
-                        <span class="hide-menu">Taller/Chat</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
-                        <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
-                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
-                    </ul>
-
-                </li>
+               
                 @endif
 
                 <!-- Rutas para entrevistadores -->

@@ -16,8 +16,8 @@
 				<tr>
 					<th>Becario</th>
 					<th>Estatus</th>
-					<th>Cargado el</th>
-					<th>Actualizado el</th>
+					<th>Inscrito el</th>
+					<th>Justificativo Actualizado el</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
@@ -82,7 +82,7 @@
 						-->
 
 					</td>
-					<td>@{{fechaformartear(justificativo.aval.created_at)}}</td>
+					<td>@{{fechaformartear(justificativo.created_at)}}</td>
 					<td>@{{fechaformartear(justificativo.aval.updated_at)}}</td>
 					<td>
 						<a :href="getJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver justificativo" target="_blank">
