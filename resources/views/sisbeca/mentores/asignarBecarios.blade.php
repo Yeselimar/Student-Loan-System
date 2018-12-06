@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-12">
             <div id="relacionBecarioMentorID">
-                <relacion-becario-mentor></relacion-becario-mentor>
+                <relacion-becario-mentor relacionbm="{{route('getRelacionBecarioMentor')}}" asignarrbm="{{route('asignarMentorBecario')}}" getb="{{route('getBecarios')}}" getm="{{route('getMentores')}}" ></relacion-becario-mentor>
             </div>
         </div>
     </div>

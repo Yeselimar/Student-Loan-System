@@ -36,8 +36,8 @@
 
     <!--<link href="{{asset('css/jquery-ui.css')}}" rel="stylesheet"/>Borrar-->
 
-    <!--<link rel="stylesheet" href="{{asset('plugins/chosen/chosen.css')}}">-->
-    <!--<link rel="stylesheet" href="{{asset('plugins/trumbowyg/ui/trumbowyg.css')}}">-->
+   <link rel="stylesheet" href="{{asset('plugins/chosen/chosen.css')}}">
+   <link rel="stylesheet" href="{{asset('plugins/trumbowyg/ui/trumbowyg.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/datatable-bootstrap/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/sweetalert/sweetalert2.min.css')}}"/> 
