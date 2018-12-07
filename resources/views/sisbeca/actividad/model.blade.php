@@ -136,13 +136,13 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Hora inicio</label>
-                    {{ Form::text('hora_inicio', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_inicio",'v-model'=>'hora_inicio'])}}
+                    {{ Form::text('hora_inicio', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_inicio",':value'=>'hora_inicio'])}}
                     <span v-if="errores.hora_inicio" :class="['label label-danger']">@{{ errores.hora_inicio[0] }}</span>
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Hora fin</label>
-                    {{ Form::text('hora_fin', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_fin",'v-model'=>'hora_fin'])}}
+                    {{ Form::text('hora_fin', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_fin",':value'=>'hora_fin'])}}
                     <span v-if="errores.hora_fin" :class="['label label-danger']">@{{ errores.hora_fin[0] }}</span>
                 </div>
 
@@ -242,17 +242,30 @@ const app = new Vue({
         $('#hora_inicio').datetimepicker({
             format: 'hh:mm A',
         }).on('dp.change', function(e) {
+            /*console.log("holaaa");
+            console.log($('#hora_inicio').val());
             this.hora_inicio = $('#hora_inicio').val();
+            console.log(this.hora_inicio);
+            console.log(e.date);
+            var d = new Date(e.date);
+            console.log(moment(d).format('hh:mm A'));
+            this.hora_inicio = moment(d).format('hh:mm A');
+            console.log(this.hora_inicio);*/
         });
 
         $('#hora_fin').datetimepicker({
             format: 'hh:mm A',
         }).on('dp.change', function(e) {
-            this.hora_fin = $('#hora_fin').val();
+            /*this.hora_fin = $('#hora_fin').val();*/
         });
     },
     methods: 
     {
+        cambiarfecha(hora)
+        {
+            this.hora_inicio = hora;
+            console.log("ajaja");
+        },
         actualizarfacilitadores(tipo)
         {
             if(tipo=='taller')

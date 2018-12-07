@@ -15,7 +15,9 @@ class VoluntariadoRequest extends FormRequest
     {
         return [
             'nombre'       => 'required',
-            'descripcion'  => 'required',
+            'instituto'    => 'required',
+            'responsable'  => 'required',
+            'observacion'  => 'required',
             'fecha'        => 'required',
             'lugar'        => 'required',
             'horas'        => 'required',
@@ -27,8 +29,9 @@ class VoluntariadoRequest extends FormRequest
     {
         return [
             'nombre'       => 'required',
-            'descripcion'  => 'required',
-            'fecha'        => 'required',
+            'instituto'    => 'required',
+            'responsable'  => 'required',
+            'observacion'  => 'required',
             'lugar'        => 'required',
             'horas'        => 'required',
             'comprobante'  => 'mimes:pdf,jpeg,jpg,png|max:10000',

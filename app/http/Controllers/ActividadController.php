@@ -191,7 +191,7 @@ class ActividadController extends Controller
     public function detalles($id)
     {
         $actividad = Actividad::find($id);
-        if(!$actividad->estaBloqueado())
+        if((Auth::user()->esBecario() and !$actividad->estaBloqueado()) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
             return view('sisbeca.actividad.detalles')->with(compact('actividad'));
         }

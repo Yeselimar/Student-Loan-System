@@ -57,6 +57,10 @@
 						</div>
 						<div class="col-lg-4"></div>
 					@endif
+
+					@if(Auth::user()->esBecario())
+						
+					@endif
 				@endif
 			</div>
 		</div>

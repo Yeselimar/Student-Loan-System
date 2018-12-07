@@ -29,6 +29,16 @@ class Periodo extends Model
         return $this->hasOne('avaa\Aval', 'id','aval_id');
     }
 
+    public function scopeParaBecario($query,$id)
+    {
+        return $query->where('becario_id', '=', $id);
+    }
+
+    public function scopePorAnho($query,$anho)
+    {
+        return $query->whereYear('created_at', '=', $anho);
+    }
+
     public function getTotalMaterias()
     {
         return $this->materias->count();
@@ -53,7 +63,6 @@ class Periodo extends Model
             {
                 $suma = $suma + $materia->nota;
             }
-            //return $this->materias;
             return number_format($suma/$this->getTotalMaterias(), 2, '.', ',');
         }
         else

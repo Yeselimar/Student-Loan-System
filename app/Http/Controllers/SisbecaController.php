@@ -15,6 +15,7 @@ use avaa\Mentor;
 use avaa\Becario;
 use avaa\Imagen;
 use avaa\Documento;
+use avaa\Actividad;
 
 class SisbecaController extends Controller
 {
@@ -26,14 +27,13 @@ class SisbecaController extends Controller
 
     public function index()
     {
+        $mes = date('m');
         $usuario =  Auth::user();
         $becario = Becario::where('user_id','=',$usuario->id)->first();
-        //return $usuario;
-        return view('sisbeca.index')->with('usuario',$usuario)->with('becario',$becario);
+        $actividades = Actividad::delMes($mes)->conEstatus('disponible')->ordenadaPorFecha('asc')->get();
+        return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
     }
-
-
-
+    
     public function allNotificaciones()
     {
 

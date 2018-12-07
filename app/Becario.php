@@ -115,7 +115,11 @@ class Becario extends Model
         {
             $suma = $suma + $periodo->getPromedio();
         }
-        return number_format($suma/$this->getTotalPeriodos(), 2, '.', ',');
+        if($this->getTotalPeriodos()!=0)
+        {
+            return number_format($suma/$this->getTotalPeriodos(), 2, '.', ',');
+        }
+        return number_format(0, 2, '.', ',');
     }
 
     public function promediotodoscva()

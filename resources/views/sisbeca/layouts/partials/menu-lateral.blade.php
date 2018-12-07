@@ -343,6 +343,12 @@
                 @if(Auth::user()->rol==='becario')
                 <li class="nav-label">Actividades Becarias</li>
                 <li>
+                    <a class="has-arrow  " href="{{route('seguimiento.resumen',Auth::user()->id)}}" aria-expanded="false">
+                        <i class="fa  fa-graduation-cap"></i>
+                        <span class="hide-menu">Resumen Becario</span>
+                    </a>
+                </li>
+                <li>
                     <a class="has-arrow  " href="{{route('actividad.listar')}}" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
                         <span class="hide-menu">Taller/Chat Club</span>

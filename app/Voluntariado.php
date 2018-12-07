@@ -27,4 +27,29 @@ class Voluntariado extends Model
     {
         return date("d/m/Y", strtotime($this->fecha));
     }
+
+    public function scopeParaBecario($query,$id)
+    {
+        return $query->where('becario_id', '=', $id);
+    }
+
+    public function scopePorAnho($query,$anho)
+    {
+        return $query->whereYear('fecha', '=', $anho);
+    }
+
+    public function scopeAgrupadoPorTipo($query)
+    {
+        return $query->groupby('tipo');
+    }
+
+    public function scopeSumaHoras($query,$nombre_as)
+    {
+        return $query->selectRaw('*, sum(horas) as '.$nombre_as);
+    }
+
+    public function scopeContarVoluntariado($query,$nombre_as)
+    {
+        return $query->selectRaw('Count(*) as '.$nombre_as);
+    }
 }

@@ -6,6 +6,7 @@
 		<a href="{{route('becarios.todos')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
 	</div>
 	<br>
+	<!-- Esto esta en PHP puede funcionar tambien en vuejs -->
 	<div class="table-responsive">
 		<table class="table table-hover table-bordered">
 			<thead>
@@ -25,6 +26,9 @@
 						<td>{{$becario->user->rol}}</td>
 						<td>{{$becario->status}}</td>
 						<td>
+							<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-user"></i>
+							</a>
 							<a href="{{route('periodos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">Cargar Periodo</a>
 							<a href="{{route('cursos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">Cargar CVA</a>
 							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">Cargar Voluntariado</a>

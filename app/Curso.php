@@ -38,6 +38,31 @@ class Curso extends Model
         return $this->hasMany('avaa\Nota','curso_id');
     }
 
+    public function scopeParaBecario($query,$id)
+    {
+        return $query->where('becario_id', '=', $id);
+    }
+
+    public function scopePorAnho($query,$anho)
+    {
+        return $query->whereYear('created_at', '=', $anho);
+    }
+    
+    public function scopeAgrupadoPorNivel($query)
+    {
+        return $query->groupby('nivel');
+    }
+
+    public function scopePromedioPorNivel($query,$nombre_as)
+    {
+        return $query->selectRaw('*,avg(nota) as '.$nombre_as);
+    }
+
+    public function scopeContarNivel($query,$nombre_as)
+    {
+        return $query->selectRaw('Count(*) as '.$nombre_as);
+    }
+
     public function getIdCurso()
     {
         return $this->nivel." - ".$this->modo." - ".$this->modulo;

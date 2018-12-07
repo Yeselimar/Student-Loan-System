@@ -410,8 +410,10 @@ class Todo extends Migration
         Schema::create('voluntariados',function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('nombre');
-            $table->text('descripcion');
+            $table->string('nombre');//se puede obviar y dejar solo instituto
+            $table->string('instituto');
+            $table->string('responsable'); // tambien llamado persona de contacto
+            $table->text('observacion')->nullable();
             $table->datetime('fecha');
             $table->enum('tipo',['interno','externo'])->default('interno');
             $table->string('lugar')->nullable();//en caso de que el voluntariado externo

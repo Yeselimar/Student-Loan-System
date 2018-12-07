@@ -31,6 +31,21 @@ class Actividad extends Model
         return $query->where('actividad_id','=',$id);
     }
 
+    public function scopeDelMes($query,$mes)
+    {
+        return $query->whereMonth('fecha','=',$mes);
+    }
+
+    public function scopeConEstatus($query,$estatus)
+    {
+        return $query->where('status','=',$estatus);
+    }
+
+    public function scopeOrdenadaPorFecha($query,$orden)
+    {
+        return $query->orderby('fecha','=',$orden);
+    }
+
     public function totalbecarios()
     {
         return $this->becarios->count();

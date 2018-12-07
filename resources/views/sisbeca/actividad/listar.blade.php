@@ -68,7 +68,7 @@
     var eventos = [];
     
     @foreach($actividades as $actividad)
-      @if($actividad->estaDisponible() or $actividad->estaSuspendido())
+      @if((Auth::user()->esBecario() and ($actividad->estaDisponible() or $actividad->estaSuspendido())) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
       var dia = new Date("{{$actividad->fecha}}");
       var cadena1 = "2050-01-01 "+"{{$actividad->hora_inicio}}";
       var cadena2 = "2050-01-01 "+"{{$actividad->hora_fin}}";
