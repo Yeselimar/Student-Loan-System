@@ -41,7 +41,7 @@
 						</div>
 						<div class="col-lg-4"></div>
 					@endif
-					@else
+				@else
 					@if(Auth::user()->esEditor())
 						<p class="text-center" style="color:#1b1b1b"> Bienvenido al Panel de Administración Web </p>
 						<div class="col-lg-4"></div>

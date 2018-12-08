@@ -3,10 +3,11 @@
 @section('content')
 
 <div class="col-12" id="app">
-    <button class="btn btn-sm sisbeca-btn-primary pull-right" @click.prevent="mostrarModalBienvenida(postulantes)" data-target="modal-fecha-bienvenida" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Asignar Fecha de Bienvenida"> 
-            
-            <i class="fa fa-calendar"></i> Asignar Fecha de Bienvenida
-    </button>
+    <div>
+        <button class="btn btn-sm sisbeca-btn-primary pull-right" @click.prevent="mostrarModalBienvenida(postulantes)" data-target="modal-fecha-bienvenida" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Asignar Fecha de Bienvenida">          
+                <i class="fa fa-calendar"></i> Asignar Fecha de Bienvenida
+        </button>
+    </div>
     <br>
     <div clas="table-responsive">
         <table class="table table-bordered table-hover">
@@ -17,7 +18,9 @@
                     <th class="text-center">Cédula</th>
                     <th class="text-center">Entrevistadores</th>
                     <th class="text-center">Fecha de Entrevista</th>
+                    <th class="text-center">Reunión de Bienvenida</th>
                     <th class="text-center">Acciones</th>
+                    
                     
                 </tr>
             </thead>
@@ -66,6 +69,17 @@
                             </span>
                         </template>
                     </td>
+                    <td class="text-center">
+                        <template v-if="postulante.fecha_entrevista">
+                    
+                           @{{fechaformatear(postulante.fecha_bienvenida)}}
+                        </template>
+                        <template v-else>
+                            <span class="label label-inverse">
+                                Sin fecha
+                            </span>
+                        </template>
+                    </td>
                     <td>                       
                         <button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
                             <i class="fa fa-check" data-target="modal-asignar"></i>
@@ -73,10 +87,10 @@
                          <button class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarModal(postulante,postulante.imagenes,0)">
                             <i class="fa fa-times" data-target="modal-asignar"></i>
                          </button>
-                         <button class="btn btn-xs sisbeca-btn-primary">
-                          
-                           <i class="fa fa-eye"></i>
-                        </button>
+                         <template>
+                          <a :href="getRutaVerPerfil(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary"> <i class="fa fa-eye"></i>
+                          </a>
+                        </template>
                     </td>
                 </tr>
                
@@ -120,16 +134,19 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title pull-left"><strong>Fecha de Reunión de Bienvenida</strong></h5>
+                        <h5 class="modal-title pull-left"><strong>Datos de la Reunión de Bienvenida</strong></h5>
                         <button class="close" data-dimiss="modal" type="button" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                     <div class="row">
+                    <div class="alert  alert-warning alert-important" role="alert">
+                            Actualmente no hay Postulantes aprobados para entrevistas...
+                    </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
                                 <label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
-                                    <input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha" @change="cambiofecha($event)">
+                                    <input type="text" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha">
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
                                 <label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
@@ -174,9 +191,19 @@
             id:'0',
             funcion:'',
             nombreyapellido:'',
+            fecha:'',
+            hora:'',
+            lugar:'',
            
         },
         methods:{
+            getRutaVerPerfil: function(id)
+            {
+                //var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
+                var url ="{{route('perfilPostulanteBecario', array('id'=>':id'))}}"
+                url = url.replace(':id', id);
+                return url;
+            },
             obtenerpostulantes:function()
             {
                 var url = '{{route('postulantes.entrevistados')}}';
@@ -219,16 +246,25 @@
             mostrarModalBienvenida:function(postulantes)
             {
                 this.postulantes=postulantes;
+              
                 $('#modal-fecha-bienvenida').modal('show');
             },
             fechadebienvenida: function()
             {
-                var url = '{{route('veredicto.postulantes.becarios')}}';
-                axios.post(url,
-                {
-                    id:this.id,
-                    funcion:this.funcion
-                }).then(response=>
+                this.hora = $('#hora').val();
+    			this.fecha = $('#fecha').val();
+                var url = '{{route('asignar.fecha.bienvenida')}}';
+                let data = JSON.stringify({
+                    postulantes: this.postulantes,
+                    lugar: this.lugar,
+                    fecha: this.fecha,
+                });
+                axios.post(url,data,{
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                    }
+                }).then(response =>
                 {
                     $('#modal-fecha-bienvenida').modal('hide');
                     this.obtenerpostulantes();

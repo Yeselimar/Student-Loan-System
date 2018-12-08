@@ -46,16 +46,26 @@
             <div class="desc">
           
                 @if($postulante->status==='postulante')
-                    <span class="label label-info">Postulante</span>
+                    <span class="label label-default">Postulante</span>
                 @else
                     @if($postulante->status==='entrevista')
-                        <span class="label label-warning">Aprobado para Entrevista</span>
+                        <span class="label label-inverse">Aprobado para Entrevista</span>
                     @elseif($postulante->status==='entrevistado')
-                        <span class="label label-success">Entrevistado</span>
+                        <span class="label label-warning">Entrevistado</span>
                     @elseif($postulante->status==='rechazado')
                     <span class="label label-danger">Rechazado</span>
+                    @elseif($postulante->status=='activo')
+                        @if($postulante->acepto_terminos=='false')
+                        <span class="label label-success">Aprobado</span>
+                        @else
+                        <span class="label label-success">Becario</span>
+                        @endif
+                    @elseif($postulante->status==='probatorio1')
+                    <span class="label label-warning">Probatorio1</span>
+                    @elseif($postulante->status==='probatorio2')
+                    <span class="label label-danger">Probatorio2</span>
                     @else
-                        <span class="label label-default">Pendiente</span>
+                        <span class="label label-default">Egresado</span>
                     @endif
                 @endif
             </div>
@@ -105,8 +115,8 @@
       <div align="center">
       <h3>¿Que Acción Tomar para la Entrevista de {{$postulante->user->name.' '.$postulante->user->last_name}} ?</h3>
       <br>
-          <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
           <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
+          <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
       </div>
     @endif
      
