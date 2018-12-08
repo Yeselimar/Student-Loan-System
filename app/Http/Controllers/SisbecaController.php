@@ -31,12 +31,12 @@ class SisbecaController extends Controller
         $usuario =  Auth::user();
         $becario = Becario::where('user_id','=',$usuario->id)->first();
         $actividades = Actividad::delMes($mes)->conEstatus('disponible')->ordenadaPorFecha('asc')->get();
+        //si son  los ultimos 5 días del mes, traer actividades del més próximo.
         return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
     }
     
     public function allNotificaciones()
     {
-
         if(Auth::user()->rol==='coordinador' or Auth::user()->rol==='directivo')
         {
             $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();

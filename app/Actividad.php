@@ -43,7 +43,7 @@ class Actividad extends Model
 
     public function scopeOrdenadaPorFecha($query,$orden)
     {
-        return $query->orderby('fecha','=',$orden);
+        return $query->orderby('fecha',$orden);
     }
 
     public function totalbecarios()
@@ -110,6 +110,56 @@ class Actividad extends Model
     public function getFecha()
     {
         return date("d/m/Y", strtotime($this->fecha));
+    }
+
+    public function getDia()
+    {
+        return date("d", strtotime($this->fecha));
+    }
+
+    public function getMes()
+    {
+        $mes = date("m", strtotime($this->fecha));
+        switch ($mes)
+        {
+            case 1:
+                $resultado = 'Ene';
+                break;
+            case 2:
+                $resultado = 'Feb';
+                break;
+            case 3:
+                $resultado = 'Mar';
+                break;
+            case 4:
+                $resultado = 'Abr';
+                break;
+            case 5:
+                $resultado = 'May';
+                break;
+            case 6:
+                $resultado = 'Jun';
+                break;
+            case 7:
+                $resultado = 'Jul';
+                break;
+            case 8:
+                $resultado = 'Ago';
+            break;
+            case 9:
+                $resultado = 'Sep';
+            break;
+            case 10:
+                $resultado = 'Oct';
+            break;
+            case 11:
+                $resultado = 'Nov';
+            break;
+            case 12:
+                $resultado = 'Dic';
+            break;
+        }
+        return $resultado;
     }
 
     public function getHoraInicio()
@@ -181,4 +231,5 @@ class Actividad extends Model
     {
         return $this->status=='bloqueado';
     }
+
 }
