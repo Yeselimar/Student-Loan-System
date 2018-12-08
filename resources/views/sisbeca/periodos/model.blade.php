@@ -1,6 +1,6 @@
 @extends('sisbeca.layouts.main')
-@section('title',$model=='crear' ? $becario->user->nombreyapellido().': Crear Periodo' : $becario->user->nombreyapellido().' - Editar Periodo: '.$periodo->anho_lectivo)
-@section('subtitle','Crear Periodo')
+@section('title',$model=='crear' ? $becario->user->nombreyapellido().': Cargar Periodo' : $becario->user->nombreyapellido().' - Editar Periodo: '.$periodo->anho_lectivo)
+@section('subtitle','Cargar Periodo')
 @section('content')
 <div class="col-lg-12">
     <div class="text-right">

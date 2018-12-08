@@ -89,7 +89,8 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
-						  		<input type="text" autocomplete="off" name="fecha" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" v-model="fecha" @change="cambiofecha($event)">
+						  		<input type="text" autocomplete="off" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" name="fecha" v-model="fecha" @change="cambiofecha($event)"> 
+								<!--  <date-picker date-format="DD/MM/AAAA" type="text" autocomplete="off" class="sisbeca-input input-sm" placeholder="DD/MM/AAAA" id="fecha" name="fecha" v-model="fecha" @update-date="updateDate"  v-once></date-picker>-->
 						  	</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
@@ -97,8 +98,7 @@
 						  	</div>
 						  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
-								<input type="text"autocomplete="off" name="hora" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
-							
+								<input type="text" autocomplete="off" class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" id="hora">
 							</div>
 						</div>
 						
@@ -151,6 +151,24 @@
 </script>
 
 <script>
+Vue.component('date-picker', {
+  template: '<input/>',
+  format: 'dd/mm/yyyy',
+  props: [ 'dateFormat' ],
+  mounted: function() {
+  var self = this;
+  $(this.$el).datepicker({
+    dateFormat: this.dateFormat,
+    onSelect: function(fecha) {
+      self.$emit('update-date', fecha);
+    }
+  });
+  },
+  beforeDestroy: function() {
+    $(this.$el).datepicker('hide').datepicker('destroy');
+  }
+});
+
 const app = new Vue({
 
 	el: '#app',
@@ -182,8 +200,8 @@ const app = new Vue({
   	},
 	methods:
 	{
-		cambiofecha(e){
-			console.log(e);
+		updateDate: function(fecha) {
+		this.fecha = fecha;
 		},
 		fechaformartear: function (fecha)
 		{

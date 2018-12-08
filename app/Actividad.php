@@ -31,15 +31,34 @@ class Actividad extends Model
         return $query->where('actividad_id','=',$id);
     }
 
+    public function scopeDelMes($query,$mes)
+    {
+        return $query->whereMonth('fecha','=',$mes);
+    }
+
+    public function scopeConEstatus($query,$estatus)
+    {
+        return $query->where('status','=',$estatus);
+    }
+
+    public function scopeOrdenadaPorFecha($query,$orden)
+    {
+        return $query->orderby('fecha',$orden);
+    }
+
     public function totalbecarios()
     {
         return $this->becarios->count();
     }
 
-
     public function totalbecariosasistira()
     {
         return ActividadBecario::paraActividad($this->id)->conEstatus('asistira')->count();
+    }
+
+    public function listadeespera()
+    {
+        return ActividadBecario::paraActividad($this->id)->conEstatus('lista de espera')->orderby('created_at','asc')->get();
     }
 
     //verifica que la inscripción se antes de las 24 horas y que esté disponible el curso.
@@ -73,7 +92,7 @@ class Actividad extends Model
         $a2 = DateTime::createFromFormat('Y-m-d H:i:s', $f2);
         $com1 = $fechahoy >= $a1;
         $com2 = $fechahoy <= $a2;
-        if( $com1 and  $com2)
+        if( $com1 and $com2 and $actividad->estaDisponible())
         {
             return true;
         }
@@ -91,6 +110,56 @@ class Actividad extends Model
     public function getFecha()
     {
         return date("d/m/Y", strtotime($this->fecha));
+    }
+
+    public function getDia()
+    {
+        return date("d", strtotime($this->fecha));
+    }
+
+    public function getMes()
+    {
+        $mes = date("m", strtotime($this->fecha));
+        switch ($mes)
+        {
+            case 1:
+                $resultado = 'Ene';
+                break;
+            case 2:
+                $resultado = 'Feb';
+                break;
+            case 3:
+                $resultado = 'Mar';
+                break;
+            case 4:
+                $resultado = 'Abr';
+                break;
+            case 5:
+                $resultado = 'May';
+                break;
+            case 6:
+                $resultado = 'Jun';
+                break;
+            case 7:
+                $resultado = 'Jul';
+                break;
+            case 8:
+                $resultado = 'Ago';
+            break;
+            case 9:
+                $resultado = 'Sep';
+            break;
+            case 10:
+                $resultado = 'Oct';
+            break;
+            case 11:
+                $resultado = 'Nov';
+            break;
+            case 12:
+                $resultado = 'Dic';
+            break;
+        }
+        return $resultado;
     }
 
     public function getHoraInicio()
@@ -162,4 +231,5 @@ class Actividad extends Model
     {
         return $this->status=='bloqueado';
     }
+
 }

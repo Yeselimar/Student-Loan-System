@@ -21,7 +21,7 @@
 			<template v-if="lapso_justificar==true">
 				<template v-if="estatus_becario==='justificacion cargada'">
 					<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
-						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificativo :D</a>
+						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar Justificativo</a>
 					</span>
 				</template>
 				<template v-else>
@@ -46,15 +46,16 @@
 				</template>
 			</template>
 			
-		@else <!-- Para el Administrador -->
-			<a href="{{route('actividad.listaasistente',$actividad->id)}}" target="_blank" data-toggle="tooltip"  title="PDF Lista de Asistentes" data-placement="bottom" class="btn btn-sm sisbeca-btn-primary">
-				<i class="fa fa-file-pdf-o"></i>
-			</a>
+		@else <!-- Para el Coordinador o Directivo -->
 			<span data-toggle="tooltip"  title="Eliminar Taller/Chat Club" data-placement="bottom">
-				<button type="button" class="btn btn-sm sisbeca-btn-primary" @click="eliminarActividad()" >
+				<button type="button" class="btn btn-sm sisbeca-btn-default" @click="eliminarActividad()" >
 					<i class="fa fa-trash"></i>
 				</button>	
 			</span>
+			<a href="{{route('actividad.listaasistente',$actividad->id)}}" target="_blank" data-toggle="tooltip"  title="PDF Lista de Asistentes" data-placement="bottom" class="btn btn-sm sisbeca-btn-primary">
+				<i class="fa fa-file-pdf-o"></i>
+			</a>
+			
 			<a href="{{route('actividad.editar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
 				<i class="fa fa-pencil"></i>
 			</a>
@@ -142,10 +143,22 @@
 					<td class="text-left">
 						<span v-if="actividad.status=='disponible'" class="label label-success">
 							@{{ actividad.status }}</span>
-						<span v-if="actividad.status=='suspedido'" class="label label-danger">
+						<span v-if="actividad.status=='suspendido'" class="label label-danger">
 							@{{ actividad.status }}</span>
 						<span v-if="actividad.status=='bloqueado'" class="label label-warning">
 							@{{ actividad.status }}</span>
+
+						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarDisponible()">
+							<i class="fa fa-check"></i>
+						</button>
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarSuspendido()">
+							<i class="fa fa-remove"></i>
+						</button>
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarBloqueado()">
+							<i class="fa fa-lock"></i>
+						</button>
+						@endif
 					</td>
 				</tr>
 				<tr>
@@ -172,51 +185,88 @@
 		<table class="table table-bordered" id="facilitador">
 			<thead>
 				<tr>
+					<th class="text-center">#</th>
+					<th>Tipo Facilitador</th>
 					<th>
-						Facilitador(es)
+						Nombre y apellido
 					</th>
+					@if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() )
+						<th>Horas Voluntariado</th>
+					@endif
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="facilitador in facilitadores">
+				<tr v-for="(facilitador, index) in facilitadores">
+					<td class="text-center" style="width: 25px;">
+	                    @{{index+1}}
+	                </td>
+					
+					<template v-if="facilitador.becario_id!=null">
+						<td>
+							Es Becario
+						</td>
+					</template>
+					<template v-else>
+						<td class="text-left">
+							No es becario
+						</td>
+					</template>
+
 					<td class="text-left">
 						<template v-if="facilitador.becario_id!=null">
-							@{{ facilitador.user.name}} @{{ facilitador.user.last_name}}
+							@{{facilitador.user.name}} @{{facilitador.user.last_name}}
 						</template>
-						<template>
-							@{{ facilitador.nombreyapellido}}
+						<template v-else>
+							@{{facilitador.nombreyapellido}}
 						</template>
 					</td>
+
+					@if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() )
+						<template v-if="facilitador.becario_id!=null">
+							<td class="text-left">
+								@{{facilitador.horas}} hora(s)
+							</td>
+						</template>
+						<template v-else>
+							<td></td>
+						</template>
+					@endif
 				</tr>
 				<tr v-if="facilitadores.length==0">
 					<td class="text-left">No hay <strong>facilitador(es)</strong> para este <strong>@{{ actividad.tipo}}</strong>.</td>
 				</tr>
 			</tbody>
 		</table>
+		<hr>
+		<p class="h6 text-right">@{{ facilitadores.length }} facilitador(es)</p>
 	</div>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered table-striped" id="becarios">
 			<thead>
 				<tr>
+					<th class="text-center">#</th>
 					<th>
 						Becarios Inscritos
 					</th>
 					<th class="text-center">
 						Estatus
 					</th>
-					@if(Auth::user()->admin() )
+					@if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
 					<!--<th class="text-center">Cambiar Estatus</th>-->
-					<th class="text-center">
+					<th class="text-right">
 						Acciones
 					</th>
 					@endif
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="becario in becarios">
+				<tr v-for="(becario,index) in becarios">
+					<td class="text-center" style="width: 25px;">
+	                    @{{index+1}}
+	                </td>
 					<td class="text-left" colspan="1">
-						@{{ becario.user.name}} @{{ becario.user.last_name}}
+						@{{ becario.user.name}} @{{ becario.user.last_name}} 
 					</td>
 					<td class="text-center">
 						<span v-if="becario.estatus=='asistira'" class="label label-success">
@@ -283,7 +333,7 @@
                             </span> 
 						</template>
 					</td>
-					@if(Auth::user()->admin() )
+					@if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() )
 					<!--
 					<td>
 						<select v-model="becario.estatus" @change="actualizarestatusbecario(becario.estatus,becario.user.id)" class="sisbeca-input input-sm sisbeca-select" style="margin-bottom: 0px !important">
@@ -293,14 +343,14 @@
 					-->
 					<td>
 						<template v-if="becario.aval_id==null">
-							<template v-if="becario.estatus=='no asistio' || becario.estatus=='asistira'">
-									<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)">
+							<template v-if="becario.estatus=='no asistio' || becario.estatus=='asistira' || becario.estatus=='lista de espera'">
+									<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" title="Colocar como Asistio">
 									<i class="fa fa-check"></i>
 								</button>
 							</template>
 								
-							<template v-if="becario.estatus=='asistio' || becario.estatus=='asistira'">
-								<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)">
+							<template v-if="becario.estatus=='asistio' || becario.estatus=='asistira' ||  becario.estatus=='lista de espera'">
+								<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)" title="Colocar como No Asistio">
 									<i class="fa fa-remove"></i>
 								</button>
 							</template>
@@ -319,14 +369,14 @@
 								</a>
 							</span>
 						</template>
-						<button data-toggle="tooltip"  title="Eliminar Inscripción" type="button" class="btn btn-xs sisbeca-btn-primary" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
+						<button data-toggle="tooltip"  title="Eliminar Inscripción" type="button" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
 							<i class="fa fa-trash" ></i>
 						</button>
 					</td>
 					@endif
 				</tr>
 				<tr v-if="becarios && becarios.length==0">
-					<td class="text-center" @if(Auth::user()->admin() ) colspan="4" @else colspan="2" @endif>
+					<td class="text-center" @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() ) colspan="4" @else colspan="2" @endif>
 						No hay <strong>becarios</strong> para este <strong>@{{ actividad.tipo }}</strong>
 					</td>
 				</tr>
@@ -408,11 +458,11 @@ const app = new Vue({
         becarios:'',
         inscrito:true,
         estatus:'',
+        estatus_actividad:'',
     },
     created: function()
     {
         this.obtenerdetallesactividad();
-
     },
     mounted: function()
     {
@@ -420,6 +470,39 @@ const app = new Vue({
     },
     methods: 
     {	
+    	colocarDisponible()
+    	{
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.disponible',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+            });
+    	},
+    	colocarBloqueado()
+    	{
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.bloqueado',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+            });
+    	},
+    	colocarSuspendido()
+    	{
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.suspendido',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+				toastr.success(response.data.success);
+            });
+    	},
     	colocarAsistio(b_id)
     	{
     		var a_id = {{$actividad->id}};
@@ -431,7 +514,7 @@ const app = new Vue({
             	this.obtenerdetallesactividad();
 				toastr.success(response.data.success);
             });
-    		console.log("Asitio "+b_id);
+    		//console.log("Asitio "+b_id);
     	},
     	colocarNoAsistio(b_id)
     	{
@@ -444,7 +527,7 @@ const app = new Vue({
             	this.obtenerdetallesactividad();
 				toastr.success(response.data.success);
             });
-    		console.log("No Asitio "+b_id);
+    		//console.log("No Asitio "+b_id);
     	},
     	getRutaEditarJustificativos: function(b_id)
     	{

@@ -88,6 +88,11 @@ class Becario extends Model
         return $query->orwhere('status','=','probatorio1');
     }
 
+    public function scopeProbatorio2($query)
+    {
+        return $query->orwhere('status','=','probatorio2');
+    }
+
     public function scopeTerminosAceptados($query)
     {
         return $query->where('acepto_terminos','=','1');
@@ -110,7 +115,11 @@ class Becario extends Model
         {
             $suma = $suma + $periodo->getPromedio();
         }
-        return number_format($suma/$this->getTotalPeriodos(), 2, '.', ',');
+        if($this->getTotalPeriodos()!=0)
+        {
+            return number_format($suma/$this->getTotalPeriodos(), 2, '.', ',');
+        }
+        return number_format(0, 2, '.', ',');
     }
 
     public function promediotodoscva()

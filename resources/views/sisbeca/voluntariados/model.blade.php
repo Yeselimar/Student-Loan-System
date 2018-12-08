@@ -1,10 +1,13 @@
 @extends('sisbeca.layouts.main')
-@section('title',$model=='crear' ? 'Crear Voluntariado' : 'Editar Voluntariado: '.$voluntariado->nombre)
+@section('title',$model=='crear' ? $becario->user->nombreyapellido().' - Cargar Voluntariado' : $becario->user->nombreyapellido().' - Editar Voluntariado: '.$voluntariado->nombre)
 @section('content')
 	<div class="col-lg-12">
         <div class="text-right">
-            
-            <a href="{{route('voluntariados.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            @if(Auth::user()->esBecario())
+                <a href="{{route('voluntariados.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            @else
+                <a href="{{route('voluntariados.todos')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            @endif
         </div>
 		<br>
 		<div class="col sisbeca-container-formulario">
@@ -23,7 +26,7 @@
 				<div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Becario</label>
-                        {{ Form::text('becario', Auth::user()->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
+                        {{ Form::text('becario', $becario->user->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Fecha</label>
@@ -31,20 +34,29 @@
                         <span class="errors" >{{ $errors->first('fecha') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Nombre</label>
+                        <label class="control-label">*Nombre(se puede quitar)</label>
                         {{ Form::text('nombre', ($model=='crear') ? null : $voluntariado->nombre , ['class' => 'sisbeca-input', 'placeholder'=>'Voluntariado en Caracas', 'id'=>"fechafin"])}}
                         <span class="errors">{{ $errors->first('nombre') }}</span>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label class="control-label">*Descripción</label>
-                        {{ Form::textarea('descripcion', ($model=='crear') ? null : $voluntariado->descripcion , ['class' => 'sisbeca-input sisbeca-textarea', 'placeholder'=>'Ingrese descripción'])}}
-                        <span class="errors">{{ $errors->first('descripcion') }}</span>
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <label class="control-label">*Instituto</label>
+                        {{ Form::text('instituto', ($model=='crear') ? null : $voluntariado->instituto , ['class' => 'sisbeca-input', 'placeholder'=>'Venacham'])}}
+                        <span class="errors">{{ $errors->first('instituto') }}</span>
                     </div>
-                    
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <label class="control-label">*Responsable</label>
+                        {{ Form::text('responsable', ($model=='crear') ? null : $voluntariado->responsable , ['class' => 'sisbeca-input', 'placeholder'=>'John Doe'])}}
+                        <span class="errors">{{ $errors->first('responsable') }}</span>
+                    </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Tipo</label>
                         {{ Form::select('tipo', array('interno'=>'interno','externo'=>'externo'),($model=='crear') ? 'interno' : $voluntariado->tipo,['class' =>'sisbeca-input']) }}
                         <span class="errors">{{ $errors->first('tipo') }}</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label class="control-label">*Observacíon</label>
+                        {{ Form::textarea('observacion', ($model=='crear') ? null : $voluntariado->observacion , ['class' => 'sisbeca-input sisbeca-textarea', 'placeholder'=>'Ingrese observacíon'])}}
+                        <span class="errors">{{ $errors->first('observacion') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Lugar</label>
@@ -91,10 +103,21 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-lg-12 text-right" >
-						<a href="{{route('voluntariados.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
-						&nbsp;&nbsp;
+                        @if(Auth::user()->esBecario())
+                            <a href="{{route('voluntariados.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
+                        @else
+                            <a href="{{route('voluntariados.todos')}}" class="btn sisbeca-btn-default">Cancelar</a>
+                        @endif
 
-                        <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
+                        @if($model=='editar')
+                            @if($voluntariado->aval->estatus!='aceptada')
+                                <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                            @else
+                                <button class="btn sisbeca-btn-primary" type="submit" disabled="disabled">Guardar</button>
+                            @endif
+                        @else
+                            <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                        @endif
 					</div>
 				</div>
 			</div>		

@@ -302,6 +302,8 @@ class Todo extends Migration
 
             $table->string('nombreyapellido')->nullable();
 
+            $table->integer('horas')->nullable();
+            
             $table->timestamps();
         });
 
@@ -360,7 +362,7 @@ class Todo extends Migration
            	$table->unsignedInteger('aval_id')->nullable();
             $table->foreign('aval_id')->references('id')->on('aval');
 
-            $table->enum('estatus',['asistira','lista espera','justificacion cargada','asistio','no asistio'])->default('asistira');
+            $table->enum('estatus',['asistira','lista de espera','justificacion cargada','asistio','no asistio'])->default('asistira');
 
             $table->timestamps();//fechainscripcion
         });
@@ -408,8 +410,10 @@ class Todo extends Migration
         Schema::create('voluntariados',function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('nombre');
-            $table->text('descripcion');
+            $table->string('nombre');//se puede obviar y dejar solo instituto
+            $table->string('instituto');
+            $table->string('responsable'); // tambien llamado persona de contacto
+            $table->text('observacion')->nullable();
             $table->datetime('fecha');
             $table->enum('tipo',['interno','externo'])->default('interno');
             $table->string('lugar')->nullable();//en caso de que el voluntariado externo

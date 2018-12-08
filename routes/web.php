@@ -65,7 +65,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
-    {
+    {   
+        //resumen becario
+        Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
@@ -114,8 +116,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/voluntariados', 'VoluntariadoController@index')->name('voluntariados.index');
         Route::get('/becario/{id}/crear-voluntariado', 'VoluntariadoController@crear')->name('voluntariados.crear');
         Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
-        Route::get('/becario/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
-        Route::post('/becario/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
+        Route::get('/voluntariado/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
+        Route::post('/voluntariado/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
+         Route::get('/voluntariado/{id}/eliminar-curso/', 'VoluntariadoController@eliminar')->name('voluntariados.eliminar');
+        Route::get('/voluntariado/{id}/eliminar-servicio/', 'VoluntariadoController@eliminarservicio')->name('voluntariados.eliminarservicio');
+
         
     });
 
@@ -147,6 +152,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
        
         Route::get('/actividad/{a_id}/becario/{b_id}/no-asistio', 'ActividadController@colocarnoasistio')->name('actividad.colocar.noasistio');//colocar becario como no asistió a actividad
+
+        Route::get('/actividad/{id}/actualizar-disponible/', 'ActividadController@actualizardisponible')->name('actividad.disponible');
+        Route::get('/actividad/{id}/actualizar-suspendido', 'ActividadController@actualizarsuspendido')->name('actividad.suspendido');
+        Route::get('/actividad/{id}/actualizar-bloqueado', 'ActividadController@actualizarbloqueado')->name('actividad.bloqueado');
 
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');

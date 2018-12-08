@@ -1,10 +1,9 @@
 @extends('sisbeca.layouts.main')
 @section('title','Periodos')
-@section('subtitle','Periodos')
 @section('content')
 	<div class="col-lg-12">
 		<div class="text-right">
-			<a href="{{route('periodos.crear',Auth::user()->id)}}" class="btn btn-sm sisbeca-btn-primary">Crear Periodo</a>
+			<a href="{{route('periodos.crear',Auth::user()->id)}}" class="btn btn-sm sisbeca-btn-primary">Cargar Periodo</a>
 		</div>
 		<br>
 		<div class="table-responsive">

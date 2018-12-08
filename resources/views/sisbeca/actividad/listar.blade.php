@@ -68,27 +68,35 @@
     var eventos = [];
     
     @foreach($actividades as $actividad)
-    var dia = new Date("{{$actividad->fecha}}");
-    var cadena1 = "2050-01-01 "+"{{$actividad->hora_inicio}}";
-    var cadena2 = "2050-01-01 "+"{{$actividad->hora_fin}}";
-    var horainicio = new Date (cadena1);
-    var horafin = new Date (cadena2);
-    var modalidad = '{{$actividad->modalidad}}';
-    if(modalidad=='virtual')
-    {
-      icono =  "<i class='fa fa-laptop'></i>";
-    }
-    else
-    {
-      icono =  "<i class='fa fa-male'></i>"
-    }
-    eventos.push({
-      title: '{{$actividad->tipo}}'.toUpperCase()+': '+'{{$actividad->nombre}}'+' '+icono,
-      start: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horainicio.getHours(),horainicio.getMinutes()),
-      end: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horafin.getHours(),horafin.getMinutes()),
-      allDay: false,
-      url: '{{route('actividad.detalles',$actividad->id)}}',
-    });
+      @if((Auth::user()->esBecario() and ($actividad->estaDisponible() or $actividad->estaSuspendido())) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+      var dia = new Date("{{$actividad->fecha}}");
+      var cadena1 = "2050-01-01 "+"{{$actividad->hora_inicio}}";
+      var cadena2 = "2050-01-01 "+"{{$actividad->hora_fin}}";
+      var horainicio = new Date (cadena1);
+      var horafin = new Date (cadena2);
+      var modalidad = '{{$actividad->modalidad}}';
+      var estatus = '{{$actividad->status}}';
+      var info="";
+      if(modalidad=='virtual')
+      {
+        icono =  "<i class='fa fa-laptop'></i>";
+      }
+      else
+      {
+        icono =  "<i class='fa fa-male'></i>"
+      }
+      if(estatus=='suspendido')
+      {
+        info = "(SUSPENDIDO)";
+      }
+      eventos.push({
+        title: '{{$actividad->tipo}}'.toUpperCase()+': '+'{{$actividad->nombre}}'+' '+icono+' '+info,
+        start: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horainicio.getHours(),horainicio.getMinutes()),
+        end: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horafin.getHours(),horafin.getMinutes()),
+        allDay: false,
+        url: '{{route('actividad.detalles',$actividad->id)}}',
+      });
+      @endif
     @endforeach
       
     /* initialize the calendar

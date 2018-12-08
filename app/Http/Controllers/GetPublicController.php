@@ -31,6 +31,16 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        /*$actividad = Actividad::find(1);
+        $listadeespera  = $actividad->listadeespera();
+        if($listadeespera->count()>=1)
+        {
+            $beneficiado = $listadeespera[0];
+            $beneficiado->estatus = "asistira";
+            $beneficiado->save();
+        }
+        return "listo";*/
+
         //return date('Y-m-d H:i:s');
         /*$ab = ActividadBecario::find(8);
         $ab->updated_at = date("Y-m-d H:i:s");
@@ -280,8 +290,13 @@ class GetPublicController extends Controller
         $editor->rol = 'entrevistador';
         $editor->email='entrevistador@avaa.com';
         $editor->save();
-        //$editor->editor()->save(new Editor());
+        
 
+        $usuario = User::find(6);
+        $usuario->email='rafael1delgado@hotmail.com';
+        $usuario->save();
+
+        //$editor->editor()->save(new Editor());
 
         /*
 
@@ -363,7 +378,8 @@ class GetPublicController extends Controller
 
     }
 
-    public function getRandomCode(){
+    public function getRandomCode()
+    {
         $an = "0123456789";
         $su = strlen($an) - 1;
         return substr($an, rand(0, $su), 1) .

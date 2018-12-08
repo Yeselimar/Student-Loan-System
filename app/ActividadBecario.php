@@ -42,4 +42,9 @@ class ActividadBecario extends Model
     {
         return $query->where('aval_id','=',$aval_id);
     }
+
+    public function scopePorAnho($query,$anho)
+    {
+        return $query->whereYear('created_at', '=', $anho);
+    }
 }

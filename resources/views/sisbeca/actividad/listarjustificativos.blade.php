@@ -23,8 +23,8 @@
 					<th>Becario</th>
 					<th>Taller/ChatClub</th>
                     <th class="text-center">Estatus</th>
-					<th>Cargado el</th>
-					<th>Actualizado el</th>
+					<th>Inscrito el</th>
+					<th>Justificativo Actualizado el</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
@@ -110,7 +110,7 @@
                         </template>
                     </td>
 					<td>@{{fechaformartear(justificativo.created_at)}}</td>
-					<td>@{{fechaformartear(justificativo.updated_at)}}</td>
+					<td>@{{fechaformartear(justificativo.aval.updated_at)}}</td>
 					<td>
                         <a :href="getJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver justificativo" target="_blank">
                             <i class="fa fa-eye"></i>
@@ -130,6 +130,9 @@
                         
                     </td>
 				</tr>
+                <tr v-if="justificativos.length==0">
+                   <td colspan="6" class="text-center">No hay <strong>justificativos</strong></td> 
+                </tr>
 			</tbody>
 		</table>
 	</div>

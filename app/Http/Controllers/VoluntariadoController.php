@@ -36,7 +36,14 @@ class VoluntariadoController extends Controller
     {
     	$model =  'crear';
         $becario = Becario::find($id);
-    	return view('sisbeca.voluntariados.model')->with(compact('model','becario'));
+        if( (Auth::user()->esBecario() and $id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        {
+    	   return view('sisbeca.voluntariados.model')->with(compact('model','becario'));
+        }
+        else
+        {
+            return view('sisbeca.error.404');
+        }
     }
 
     public function guardar(Request $request,$id)
@@ -64,7 +71,9 @@ class VoluntariadoController extends Controller
 
 		$voluntariado = new Voluntariado;
 		$voluntariado->nombre = $request->get('nombre');
-		$voluntariado->descripcion = $request->get('descripcion');
+		$voluntariado->instituto = $request->get('instituto');
+        $voluntariado->responsable = $request->get('responsable');
+        $voluntariado->observacion = $request->get('observacion');
 		$voluntariado->fecha = DateTime::createFromFormat('d/m/Y', $request->get('fecha'))->format('Y-m-d');
 		$voluntariado->tipo = $request->get('tipo');
 		$voluntariado->lugar = $request->get('lugar');
@@ -73,14 +82,29 @@ class VoluntariadoController extends Controller
 		$voluntariado->aval_id = $aval->id;
 		$voluntariado->save();
 		flash("El voluntariado fue creado exitosamente.",'success');
-    	return redirect()->route('voluntariados.index');
+        if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
+        {
+            return redirect()->route('voluntariados.todos');
+        }
+        else
+        {
+            return redirect()->route('voluntariados.index');
+        }
     }
 
     public function editar($id)
     {
+        $model = 'editar';
     	$voluntariado = Voluntariado::find($id);
-    	$model = 'editar';
-    	return view('sisbeca.voluntariados.model')->with(compact('voluntariado','model'));
+        $becario = $voluntariado->becario;
+        if( (Auth::user()->esBecario() and $voluntariado->becario_id==Auth::user()->id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        {
+            return view('sisbeca.voluntariados.model')->with(compact('voluntariado','model','becario'));
+        }
+        else
+        {
+            return view('sisbeca.error.404');
+        }
     }
 
     public function actualizar(Request $request,$id)
@@ -107,13 +131,58 @@ class VoluntariadoController extends Controller
             $aval->save();
         }
         $voluntariado->nombre = $request->get('nombre');
-        $voluntariado->descripcion = $request->get('descripcion');
+        $voluntariado->instituto = $request->get('instituto');
+        $voluntariado->responsable = $request->get('responsable');
+        $voluntariado->observacion = $request->get('observacion');
         $voluntariado->fecha = DateTime::createFromFormat('d/m/Y', $request->get('fecha'))->format('Y-m-d');
         $voluntariado->tipo = $request->get('tipo');
         $voluntariado->lugar = $request->get('lugar');
         $voluntariado->horas = $request->get('horas');
         $voluntariado->save();
         flash("El voluntariado fue actualizado exitosamente.",'success');
-        return redirect()->route('voluntariados.index');
+        if(Auth::user()->esBecario())
+        {
+            return redirect()->route('voluntariados.index');
+        }
+        else
+        {
+            return redirect()->route('voluntariados.todos');
+        }
+    }
+
+    public function eliminar($id)
+    {
+        $voluntariado = Voluntariado::find($id);
+        if( (Auth::user()->esBecario() and $voluntariado->becario_id==Auth::user()->id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        {
+            $aval = $voluntariado->aval;
+            $voluntariado->delete();
+            File::delete($aval->url);
+            $aval->delete();
+            
+            flash("El voluntariado fue eliminado exitosamente.",'success');
+            if(Auth::user()->esBecario())
+            {
+                return redirect()->route('voluntariados.index');
+            }
+            else
+            {
+                return redirect()->route('voluntariados.todos');
+            }
+        }
+        else
+        {
+            return view('sisbeca.error.404');
+        }
+    }
+
+    public function eliminarservicio($id)
+    {
+        $voluntariado = Voluntariado::find($id);
+        $aval = $voluntariado->aval;
+        $voluntariado->delete();
+        File::delete($aval->url);
+        $aval->delete();
+        return response()->json(['success'=>'El voluntariado fue eliminado exitosamente.']);
     }
 }

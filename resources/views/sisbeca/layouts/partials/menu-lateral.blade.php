@@ -343,14 +343,20 @@
                 @if(Auth::user()->rol==='becario')
                 <li class="nav-label">Actividades Becarias</li>
                 <li>
+                    <a class="has-arrow  " href="{{route('seguimiento.resumen',Auth::user()->id)}}" aria-expanded="false">
+                        <i class="fa fa-line-chart"></i>
+                        <span class="hide-menu">Resumen Becario</span>
+                    </a>
+                </li>
+                <li>
                     <a class="has-arrow  " href="{{route('actividad.listar')}}" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
+                        <i class="fa fa-commenting-o"></i>
                         <span class="hide-menu">Taller/Chat Club</span>
                     </a>
                 </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
+                        <i class="fa fa-graduation-cap"></i>
                         <span class="hide-menu">Notas Académicas</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
@@ -362,7 +368,7 @@
                 </li>
                 <li>
                     <a class="has-arrow  " href="{{route('cursos.index')}}" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
+                        <i class="fa fa-book"></i>
                         <span class="hide-menu">CVA</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
@@ -374,7 +380,7 @@
                 </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
+                        <i class="fa fa-star-o"></i>
                         <span class="hide-menu">Voluntariado</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
@@ -388,6 +394,24 @@
                 @if((Auth::user()->esCoordinador()) || (Auth::user()->esDirectivo()))
                 <li class="nav-label">Actividades Becarias</li>
                 <li>
+                    <a class="has-arrow  " href="{{route('becarios.todos')}}" aria-expanded="false">
+                        <i class="fa  fa-list"></i>
+                        <span class="hide-menu">Listar Becarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa fa-commenting-o"></i>
+                        <span class="hide-menu">Taller/ChatClub</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
+                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
+                    </ul>
+
+                </li>
+                <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
                         <i class="fa  fa-graduation-cap"></i>
                         <span class="hide-menu">Notas Académicas</span>
@@ -398,7 +422,7 @@
                 </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
+                        <i class="fa  fa-book"></i>
                         <span class="hide-menu">CVA</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
@@ -407,25 +431,14 @@
                 </li>
                 <li>
                      <a class="has-arrow  " href="#" aria-expanded="false">
-                         <i class="fa  fa-graduation-cap"></i>
+                         <i class="fa  fa-star-o"></i>
                         <span class="hide-menu">Voluntariados</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="has-arrow  " href="#" aria-expanded="false">
-                        <i class="fa  fa-graduation-cap"></i>
-                        <span class="hide-menu">Taller/Chat</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{route('actividad.listar')}}">Listar Taller/Chat</a></li>
-                        <li><a href="{{route('actividad.crear')}}">Crear Taller/Chat</a></li>
-                        <li><a href="{{route('actividad.listarjustificativos')}}">Listar Justificativos</a></li>
-                    </ul>
-
-                </li>
+               
                 @endif
 
                 <!-- Rutas para entrevistadores -->
