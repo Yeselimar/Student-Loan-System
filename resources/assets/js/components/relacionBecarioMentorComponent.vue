@@ -11,11 +11,11 @@
 </style>
 <template>
     <div>
-     <!-- <DatePicker language="es" id="expirationPassport" name="expirationPassport" ref="expirationPassport"
+    <DatePicker language="es" id="expirationPassport" name="expirationPassport" ref="expirationPassport"
                                         v-model="datedarwin"
                                          format="dd-MM-yyyy"
                                         :full-month-name="true">
-      </DatePicker> -->
+      </DatePicker>
       <div  class="col-lg-12">
       <div class="table-responsive">
 				<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">

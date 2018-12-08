@@ -4,6 +4,8 @@ namespace avaa\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use DB;
+
 class CronJob extends Command
 {
     /**
