@@ -254,7 +254,7 @@
 					</th>
 					@if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
 					<!--<th class="text-center">Cambiar Estatus</th>-->
-					<th class="text-center">
+					<th class="text-right">
 						Acciones
 					</th>
 					@endif

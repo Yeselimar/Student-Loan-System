@@ -278,7 +278,7 @@ class ActividadController extends Controller
     {
         //colorcarlo en lista de espera en caso de que este llena la actividad.
         $actividad = Actividad::find($id);
-        $becarios = Becario::activos()->get();
+        $becarios = Becario::activos()->terminosAceptados()->probatorio1()->get();
         $model = "crear";
         //if( $actividad->inscribionabierta() )
         //{
@@ -306,9 +306,13 @@ class ActividadController extends Controller
                 if($actividad->totalbecariosasistira()>=$actividad->limite_participantes)
                 {
                     $ab->estatus = "lista de espera";
+                    flash('El becario '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA al '.$actividad->tipo.' '.$actividad->nombre.'.', 'success')->important();
+                }
+                else
+                {
+                    flash('El becario '.$becario->user->nombreyapellido().' fue inscrito como ASISTIRÁ al '.$actividad->tipo.' '.$actividad->nombre.'.', 'success')->important();
                 }
                 $ab->save();
-                flash('El becario '.$becario->user->nombreyapellido().' fue inscrito la lista de espera del '.$actividad->tipo.' '.$actividad->nombre.'.', 'success')->important();
                 return redirect()->route('actividad.detalles',$id);
             }
             else
