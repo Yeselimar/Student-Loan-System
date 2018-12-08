@@ -36,7 +36,7 @@
 
                                 @if($becario->status=='entrevista')                                        
                                     <td class="text-center">
-                                        <span class="label label-success">A Entrevista</span>
+                                        <span class="label label-inverse">A Entrevista</span>
                                     </td>
                                 @elseif($becario->status=='rechazado')
                                 <td class="text-center">
@@ -46,9 +46,13 @@
                                 <td class="text-center">
                                     <span class="label label-success">Aprobado</span>
                                 </td>
+                                @elseif($becario->status=='entrevistado')
+                                <td class="text-center">
+                                    <span class="label label-warning">Entrevistado</span>
+                                </td>
                                 @else
                                 <td class="text-center">
-                                    <span class="label label-inverse">Sin Revisar</span>
+                                    <span class="label label-default">Sin Revisar</span>
                                 </td>
                                 @endif
 

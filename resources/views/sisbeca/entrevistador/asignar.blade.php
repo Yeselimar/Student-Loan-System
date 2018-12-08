@@ -3,9 +3,6 @@
 @section('content')
 
 <div class="col-lg-12" id="app">
-	<div class="text-right">
-		<a href="#" class="btn btn-sm sisbeca-btn-primary">Asignar Entrevistador</a>
-	</div>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered ">
@@ -27,27 +24,27 @@
 							</template>
 						</template>
 						<template v-if="postulante.entrevistadores.length==0">
-							<span class="label label-inverse">sin entrevistadores</span>
+							<span class="label label-default">sin entrevistadores</span>
 						</template>
 					</td>
 					<td>
 						<div class="col-lg-12 row">
 							<div v-if="postulante.fecha_entrevista!=null">
-								<span class="label label-warning">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
+								<span class="label label-inverse">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
 							</div>
 							<div v-else>
 								<span class="label label-default">Sin Fecha</span>
 							</div>
 							&nbsp;
 							<div v-if="postulante.hora_entrevista!=null">
-								<span class="label label-info">@{{ horaformatear(postulante.hora_entrevista) }}</span>
+								<span class="label label-inverse">@{{ horaformatear(postulante.hora_entrevista) }}</span>
 							</div>
 							<div v-else>
 								<span class="label label-default">Sin Hora</span>
 							</div>
 							&nbsp;
 							<div v-if="postulante.lugar_entrevista!=null">
-								<span class="label label-danger">@{{ postulante.lugar_entrevista }}</span>
+								<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
 							</div>
 							<div v-else>
 								<span class="label label-default">Sin Lugar</span>

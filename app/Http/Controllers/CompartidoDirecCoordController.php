@@ -16,6 +16,7 @@ use avaa\Documento;
 use avaa\Imagen;
 use avaa\Events\SolicitudesAlerts;
 use Illuminate\Support\Facades\Auth;
+use DateTime;
 
 use avaa\Concurso;
 
@@ -24,6 +25,21 @@ class CompartidoDirecCoordController extends Controller
     public function __construct()
     {
         $this->middleware('compartido_direc_coord');
+    }
+    public function asignarfechabienvenida(Request $request){
+       $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+     
+        foreach ($postulantes as $postulante)
+        {
+        
+          $postulante->lugar_bienvenida = $request->lugar;
+         // $postulante->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
+          $postulante->fecha_bienvenida = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
+          $postulante->save();
+        }
+       // $becario = Becario::find($resquest->id);
+		
+        return response()->json(['success'=>'Entré Exitosamente']);
     }
     public function agregarObservacion(Request $request, $id)
     {
@@ -56,7 +72,7 @@ class CompartidoDirecCoordController extends Controller
             {
                 $postulante->status='rechazado';
                 $postulante->save();
-                flash( $postulante->user->name . ' ha sido rechazado como para ir a entrevista. ', 'danger')->important();
+                flash( $postulante->user->name . ' ha sido rechazado para ir a entrevista. ', 'danger')->important();
             }
         }
         return  redirect()->route('listarPostulantesBecarios',"2");
@@ -65,10 +81,7 @@ class CompartidoDirecCoordController extends Controller
     public function cambiostatusentrevistado(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
-       /* $becario=Becario::query()->where('user_id','=',$request->id)->where('status','=','entrevista')
-            ->where('acepto_terminos','=',0)->where('fecha_entrevista','<>',null)
-            ->first();*/
-
+      
         if(!is_null($postulanteBecario))
         {
             $postulanteBecario->status= 'entrevistado';
@@ -113,17 +126,19 @@ class CompartidoDirecCoordController extends Controller
             //Lista los q no tienen entrevista
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',$data)->get();
         }
-        if($data==2)
-        { 
+        if($data==2) //todos los postulantes
+        {
+            $usuario=User::where('rol','=','postulante_becario');
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            //$becarios= Becario::where('user_id','=','$usuario->id')->where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            //dd($becarios);
         }
-        else if(($data==1))
+        else if(($data==1)) //lista los que ya tienen entrevista
         { 
-            //lista los que ya tienen entrevista
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();	    
 
         }
-        else if($data==3)
+        else if($data==3) //entrevistados, rechazados y aprobados
         {
             $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             // $becarios = Becario::query()->where('status','=','entrevistado')->where('acepto_terminos','=',false)->get();
