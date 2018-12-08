@@ -114,7 +114,7 @@
 								</button>
 							</div>
 							<div class="modal-body">
-							<h5><strong>¿Esta Seguro que desea marcar como Entrevistado a @{{nombreyapellido}}</strong></h5>
+							<h5>¿Esta Seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong></h5>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>

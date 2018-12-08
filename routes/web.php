@@ -629,6 +629,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {
+        Route::any('asignarFechaBienvenida', [
+            'uses' => 'CompartidoDirecCoordController@asignarfechabienvenida',
+            'as' => 'asignar.fecha.bienvenida'
+        ]);
         Route::post('agregarObservacion/{id}', [
             'uses' => 'CompartidoDirecCoordController@agregarObservacion',
             'as' => 'agregarObservacion'
