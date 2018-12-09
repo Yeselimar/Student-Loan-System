@@ -61,11 +61,11 @@ Route::get('datatable/getNoticia/{tip?}', 'GetPublicController@getNoticias')->na
 Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 {
     Route::get('/',['uses'=> 'SisbecaController@index','as' =>'sisbeca']);
-     
-    
+
+
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
-    {   
+    {
         //resumen becario
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
         //talleres y chat clubs
@@ -90,7 +90,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         //periodos
         Route::get('/periodos', 'PeriodosController@index')->name('periodos.index');
-      
+
         Route::get('/becario/{id}/crear-periodo/', 'PeriodosController@crear')->name('periodos.crear');
         Route::post('/becario/{id}/guardar-periodo/', 'PeriodosController@guardar')->name('periodos.guardar');
         Route::get('/periodo/{id}/editar-periodo/', 'PeriodosController@editar')->name('periodos.editar');
@@ -121,7 +121,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
          Route::get('/voluntariado/{id}/eliminar-curso/', 'VoluntariadoController@eliminar')->name('voluntariados.eliminar');
         Route::get('/voluntariado/{id}/eliminar-servicio/', 'VoluntariadoController@eliminarservicio')->name('voluntariados.eliminarservicio');
 
-        
+
     });
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
@@ -147,10 +147,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/actividad/{id}/justificativos/todos', 'ActividadController@listarjustificativosactividad')->name('actividad.justificativos.todos');
         Route::get('/actividad/{id}/justificativos/servicio', 'ActividadController@justificativosactividad')->name('actividad.justificativos.servicio');
 
-        
+
         Route::get('/actividad/{a_id}/becario/{b_id}/asistio', 'ActividadController@colocarasistio')->name('actividad.colocar.asistio');//colocar becario como asistió a actividad
 
-       
+
         Route::get('/actividad/{a_id}/becario/{b_id}/no-asistio', 'ActividadController@colocarnoasistio')->name('actividad.colocar.noasistio');//colocar becario como no asistió a actividad
 
         Route::get('/actividad/{id}/actualizar-disponible/', 'ActividadController@actualizardisponible')->name('actividad.disponible');
@@ -177,7 +177,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/aval/{id}/aceptar', 'AvalController@aceptar')->name('aval.aceptar');
         Route::get('/aval/{id}/negar', 'AvalController@negar')->name('aval.negar');
         Route::get('/aval/{id}/devolver', 'AvalController@devolver')->name('aval.devolver');
-        
+
     });
 
     //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware
@@ -298,11 +298,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         //talleres y chat club
         Route::get('/actividades/{actividad_id}/becario/{becario_id}/inscribirme', 'ActividadController@actividadinscribirme')->name('actividad.inscribirme');
-       
+
         //link para inscribirme y salirme.  justificar
 
 
-        
+
     });
 
     Route::group(['middleware'=>['mentor']],function ()
@@ -336,7 +336,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'SisbecaController@statusPostulanteBecario',
             'as' => 'status.postulanteBecario'
         ]);
-        
+
         Route::any('proexcelencia/enviarPostulacionGuardar/{progreso}', [
             'uses' => 'PostulanteBecarioController@enviarPostulacionGuardar',
             'as' => 'postulantebecario.enviarPostulacionGuardar'
@@ -366,7 +366,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'PostulanteBecarioController@estudiossecundariosguardar',
             'as' => 'postulantebecario.estudiossecundariosguardar'
         ]);
-        
+
         Route::get('proexcelencia/estudios-universitarios', [
             'uses' => 'PostulanteBecarioController@estudiosuniversitarios',
             'as' => 'postulantebecario.estudiosuniversitarios'
@@ -478,7 +478,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'DirectivoController@perfilPostulantesMentores',
             'as' => 'perfilPostulantesMentores'
         ]);
-        
+
         Route::get('nomina/generar/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@generartodo',
             'as' => 'nomina.generar.todo'
@@ -506,7 +506,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'factlibros.contar'
         ]);
 
-        //guardar CVA 
+        //guardar CVA
         Route::post('nomina/{id}/guardar-cva', [
             'uses' => 'NominaController@guardarcva',
             'as' => 'nomina.guardarcva'
@@ -532,7 +532,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'NominaController@listar',
             'as' => 'nomina.listar'
         ]);
-        
+
         Route::get('nomina/generadas/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@listarver',
             'as' => 'nomina.listar.ver'
@@ -611,7 +611,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CoordinadorController@getMentores',
             'as' => 'getMentores'
         ]);
-        
+
          Route::get('getRelacionBecarioMentorApi', [
             'uses' => 'CoordinadorController@getRelacionBecarioMentor',
             'as' => 'getRelacionBecarioMentor'
@@ -629,7 +629,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {
-        Route::any('asignarFechaBienvenida', [
+        Route::post('asignarFechaBienvenidaTodos', [
+            'uses' => 'CompartidoDirecCoordController@asignarfechabienvenidaparatodos',
+            'as' => 'asignar.fecha.bienvenida.todos'
+        ]);
+        Route::post('asignarFechaBienvenida', [
             'uses' => 'CompartidoDirecCoordController@asignarfechabienvenida',
             'as' => 'asignar.fecha.bienvenida'
         ]);
@@ -713,7 +717,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::post('/becario/{id}/guardar-entrevistador-asignado', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
 
-        // postulantes 
+        // postulantes
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
 
         //obtener becario para entrevista
@@ -730,7 +734,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::post('/postulante/{id}/actualizar-documento/', 'EntrevistadorController@actualizardocumento')->name('entrevistador.actualizardocumento');
 
         Route::get('/entrevistador/documento-individual/', 'EntrevistadorController@documentoindividual')->name('entrevistador.documentoindividual');
-        
+
         //documento en conjunto
         Route::get('/postulante/{id}/cargar-documento-conjunto/', 'EntrevistadorController@documentoconjunto')->name('entrevistador.documentoconjunto');
         Route::post('/postulante/{id}/guardar-documento-conjunto/', 'EntrevistadorController@guardardocumentoconjunto')->name('entrevistador.guardardocumentoconjunto');
@@ -741,7 +745,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
             'as' => 'lista.Entrevistas.Postulantes'
-        ]);  
+        ]);
     });
 
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()

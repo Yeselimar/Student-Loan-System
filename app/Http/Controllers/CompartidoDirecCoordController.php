@@ -26,29 +26,50 @@ class CompartidoDirecCoordController extends Controller
     {
         $this->middleware('compartido_direc_coord');
     }
+    public function asignarfechabienvenidaparatodos(Request $request){
+        $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+
+            foreach ($postulantes as $postulante)
+            {
+
+            $postulante->lugar_bienvenida = $request->lugar;
+            // $postulante->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
+            $postulante->fecha_bienvenida = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
+            $postulante->save();
+            }
+        // $becario = Becario::find($resquest->id);
+
+            return response()->json(['success'=>'Entré Exitosamente']);
+        }
     public function asignarfechabienvenida(Request $request){
-       $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-     
+        $postulante = Becario::find($request->id);
+        $postulante->lugar_bienvenida = $request->lugar;
+      //  $postulante->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
+
+        $postulante->fecha_bienvenida = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
+        $postulante->save();
+      /* $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+
         foreach ($postulantes as $postulante)
         {
-        
+
           $postulante->lugar_bienvenida = $request->lugar;
-         // $postulante->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
+          $postulante->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
           $postulante->fecha_bienvenida = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
           $postulante->save();
         }
-       // $becario = Becario::find($resquest->id);
-		
+        $becario = Becario::find($resquest->id);*/
+
         return response()->json(['success'=>'Entré Exitosamente']);
     }
     public function agregarObservacion(Request $request, $id)
     {
-      
+
         $becario = Becario::find($id);
         $becario->observacion = $request->get("observaciones");
         $becario->save();
         return redirect()->route('perfilPostulanteBecario',$id);
-       
+
     }
     public function obtener_entrevistados()
     {
@@ -58,7 +79,7 @@ class CompartidoDirecCoordController extends Controller
     //viejo-aun en uso
     public function aprobarParaEntrevista(Request $request, $id)
     {
-       
+
         $postulante = Becario::find($id);
         if($postulante->status==='postulante')
         {
@@ -81,13 +102,13 @@ class CompartidoDirecCoordController extends Controller
     public function cambiostatusentrevistado(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
-      
+
         if(!is_null($postulanteBecario))
         {
             $postulanteBecario->status= 'entrevistado';
             $postulanteBecario->save();
             flash($postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido marcado como entrevistado.','success')->important();
-            
+
         }
         else
         {
@@ -122,7 +143,7 @@ class CompartidoDirecCoordController extends Controller
     {
         $concursos = Concurso::query()->get();
         if($data==0)
-        { 
+        {
             //Lista los q no tienen entrevista
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',$data)->get();
         }
@@ -134,8 +155,8 @@ class CompartidoDirecCoordController extends Controller
             //dd($becarios);
         }
         else if(($data==1)) //lista los que ya tienen entrevista
-        { 
-            $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();	    
+        {
+            $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();
 
         }
         else if($data==3) //entrevistados, rechazados y aprobados
@@ -145,22 +166,22 @@ class CompartidoDirecCoordController extends Controller
         }
 
         if($data==0)
-        { 
+        {
             return view('sisbeca.postulaciones.entrevistas')->with('becarios',$becarios)->with('becarios',$becarios)->with('concursos',$concursos);
         }
         else if($data==1)
-        { 
+        {
             //Ver y Editar Entrevistas
             return view('sisbeca.postulaciones.verModificarEntrevistas')->with('becarios',$becarios)->with('becarios',$becarios)->with('concursos',$concursos);
         }
         else if($data==2)
-        { 
+        {
             //ver todos los postulantes
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios)->with('becarios',$becarios)->with('concursos',$concursos);
         }
 
         else if($data==3)
-        { 
+        {
             //Asignar a los nuevos becarios
             return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('concursos',$concursos);
         }
@@ -170,7 +191,7 @@ class CompartidoDirecCoordController extends Controller
     {
         if( Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
-            $becarios = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();        
+            $becarios = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
         }
         if($becarios->count()>0)
         {
@@ -216,7 +237,7 @@ class CompartidoDirecCoordController extends Controller
 
     public function listarSolicitudes()
     {
-        $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();   
+        $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
         $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
         if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
@@ -276,7 +297,7 @@ class CompartidoDirecCoordController extends Controller
                 }
             }
         }
-        
+
         $listMentoresA = $collection->pluck('user_id')->toArray();
         $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
         $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray();
@@ -412,7 +433,7 @@ class CompartidoDirecCoordController extends Controller
         $usuario = User::find($postulante->user_id);
         $documentos = Documento::query()->where('user_id','=',$id)->get();
         $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
-       
+
         if(is_null($documentos))
         {
            flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
