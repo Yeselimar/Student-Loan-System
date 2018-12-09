@@ -59,6 +59,7 @@
     <script src="{{asset('plugins/datetimepicker-bootstrap/js/bootstrap-datetimepicker.min.js')}}"></script>
 
     <script src="{{asset('plugins/textboxio/textboxio.js')}}"></script> <!-- Textboxio -->
+    <script src="{{asset('/plugins/matchheight/jquery.matchHeight.js')}}"></script> <!-- Matcheight -->
 
     <!--<script type="text/javascript" src="{{asset('plugins/datetimepicker-bootstrap/mdtimepicker.js')}}"></script>-->
 

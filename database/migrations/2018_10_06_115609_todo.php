@@ -41,7 +41,7 @@ class Todo extends Migration
 
             //se coloca el mismo id porque la relacion uno a uno no pueden existir dos perfiles con el mismo user
             $table->boolean('acepto_terminos')->default(false);
-            $table->enum('status',['prepostulante','postulante','entrevista','entrevistado','rechazado','activo','probatorio1','probatorio2','egresado','inactivo','desincorporado'])->default('prepostulante');
+            $table->enum('status',['prepostulante','postulante','no_entrevista','entrevista','entrevistado','rechazado','activo','probatorio1','probatorio2','egresado','inactivo','desincorporado'])->default('prepostulante');
             $table->double('retroactivo',20,2)->default(0);
             //Datos Personales
             $table->text('direccion_permanente')->nullable();

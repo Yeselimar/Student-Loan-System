@@ -162,6 +162,11 @@ class Actividad extends Model
         return $resultado;
     }
 
+    public function getAnho()
+    {
+        return date("Y", strtotime($this->fecha));
+    }
+
     public function getHoraInicio()
     {
         return date("h:i A", strtotime($this->hora_inicio));
