@@ -18,13 +18,10 @@
 		<table id="becarios" class="table table-bordered table-hover">
 			<thead>
 				<tr>
-					<th class="text-center">Nombre y Apellido</th>
-					<th class="text-center">Cédula</th>
-					<th class="text-center">Correo electrónico</th>
-					<th class="text-center">Condición Actual</th>
+					<th class="text-center">Becario</th>
+					<th class="text-center">Estatus</th>
 					@if(!(Auth::user()->rol==='mentor'))
 						<th class="text-center">Mentor Asignado</th>
-						<th class="text-center">Correo del Mentor</th>
 					@endif
 					<th class="text-center">Perfil</th>
 				</tr>
@@ -32,9 +29,12 @@
 			<tbody>
 				@foreach($becarios as $becario)
 				<tr>
-					<td class="text-center">{{ $becario->user->name.' '.$becario->user->last_name }}</td>
-					<td class="text-center">{{ $becario->user->cedula }}</td>
-					<td class="text-center">{{ $becario->user->email }}</td>
+					<td class="text-center">
+						{{ $becario->user->name.' '.$becario->user->last_name }}
+						| {{ $becario->user->cedula }}
+						<br>
+						 {{ $becario->user->email }}
+					</td>
 					@if($becario->status==='activo')
 						<td class="text-center">
 							<span class="label label-success">{{strtoupper( $becario->status )}}</span>
@@ -54,20 +54,34 @@
 						@if($becario->mentor_id===null)
 							<td class="text-center">
 								<span class="label label-danger">sin asignar</span>
+								<br>
+								<span class="label label-danger">sin correo</span>
 							</td>
-							<td class="text-center"></td>
 						@else
 							<td class="text-center">
 								{{ $becario->mentor->user->name.' '.$becario->mentor->user->last_name }}
+								<br>
+								{{ $becario->mentor->user->email }}
 							</td>
-							<td class="text-center">{{ $becario->mentor->user->email }}</td>
 						@endif
 					@endif
 
 					<td class="text-center">
 						<span data-toggle="modal" data-placement="bottom" title="Ver Expediente">
-							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary'>
+							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver PErfil">
 								<i class='fa fa-eye'></i>
+							</a>
+							<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Resumen Becario">
+								<i class="fa fa-user"></i>
+							</a>
+							<a href="{{route('periodos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Nota">
+								<i class="fa fa-sticky-note-o"></i>
+							</a>
+							<a href="{{route('cursos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar CVA">
+								<i class="fa fa-book"></i>
+							</a>
+							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-placement="top" title="Cargar Voluntariado">
+								<i class="fa fa-star"></i>
 							</a>
 						</span>
 					</td>

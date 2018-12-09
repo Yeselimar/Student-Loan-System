@@ -17,7 +17,7 @@ class SeguimientoController extends Controller
 {
    	public function todosbecarios()
    	{
-        $becarios = Becario::activos()->terminosaceptados()->probatorio1()->get();
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
         return view('sisbeca.becarios.todos')->with(compact('becarios'));
    	}
 
@@ -38,9 +38,44 @@ class SeguimientoController extends Controller
 
             //Estas consultas join no se como introducir scope
 
-	   		$actividades_asistio = DB::table('actividades')
+	   		$a_t_p = DB::table('actividades')
             ->selectRaw('*,Count(*) as total_actividades')
-                    ->groupby('tipo','modalidad')->join('actividades_becarios', function ($join) use($id,$anho)
+                    ->where('tipo','taller')->where('tipo','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+            {
+               $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+
+            })
+            ->get();
+            $a_t_v = DB::table('actividades')
+            ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('tipo','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+            {
+               $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+
+            })
+            ->get();
+
+            $a_c_p = DB::table('actividades')
+            ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('tipo','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+            {
+               $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+
+            })
+            ->get();
+
+            $a_c_v = DB::table('actividades')
+            ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('tipo','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -62,7 +97,7 @@ class SeguimientoController extends Controller
             })
             ->get();
 
-	   		return view('sisbeca.becarios.resumen')->with(compact('becario','anho','periodos','voluntariados','cursos','actividades_asistio','actividades_noasistio'));
+	   		return view('sisbeca.becarios.resumen')->with(compact('becario','anho','periodos','voluntariados','cursos','actividades_noasistio'));
    		}
    		else
    		{
