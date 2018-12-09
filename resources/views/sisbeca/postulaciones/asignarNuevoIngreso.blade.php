@@ -3,11 +3,6 @@
 @section('content')
 
 <div class="col-12" id="app">
-    <div>
-        <button class="btn btn-sm sisbeca-btn-primary pull-right" @click.prevent="mostrarModalBienvenida(postulantes)" data-target="modal-fecha-bienvenida" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Asignar Fecha de Bienvenida">          
-                <i class="fa fa-calendar"></i> Asignar Fecha de Bienvenida
-        </button>
-    </div>
     <br>
     <div clas="table-responsive">
         <table class="table table-bordered table-hover">
@@ -17,8 +12,8 @@
                     <th class="text-center">Nombre y Apellido</th>
                     <th class="text-center">Cédula</th>
                     <th class="text-center">Entrevistadores</th>
-                    <th class="text-center">Fecha de Entrevista</th>
-                    <th class="text-center">Reunión de Bienvenida</th>
+                    <th class="text-center">Fecha Entrevista</th>
+                    <th class="text-center">Reunión Bienvenida</th>
                     <th class="text-center">Acciones</th>
                     
                     
@@ -49,13 +44,13 @@
                     <td class="text-center">
                         <template v-if="postulante.entrevistadores.length!=0">
                             <template v-for="entrevistador in postulante.entrevistadores">
-                                    <span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>
+                                   @{{ entrevistador.name}} @{{ entrevistador.last_name}}
                                     <br>
                             </template>
                              
                         </template>
                         <template v-else>
-                                    <span class="label label-inverse">Sin Entrevistadores</span>&nbsp;
+                                    <span class="label label-default">Sin Entrevistadores</span>&nbsp;
                         </template>
                     </td>
                     <td class="text-center">
@@ -64,7 +59,7 @@
                            @{{fechaformatear(postulante.fecha_entrevista)}}
                         </template>
                         <template v-else>
-                            <span class="label label-inverse">
+                            <span class="label label-default">
                                 Sin fecha
                             </span>
                         </template>
@@ -75,9 +70,9 @@
                            @{{fechaformatear(postulante.fecha_bienvenida)}}
                         </template>
                         <template v-else>
-                            <span class="label label-inverse">
-                                Sin fecha
-                            </span>
+                            <button class="btn btn-xs sisbeca-btn-primary" @click.prevent="mostrarModalBienvenida(postulante)" data-target="modal-fecha-bienvenida" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Asignar Fecha de Bienvenida">
+                            <i class="fa fa-calendar"></i> Asignar fecha
+                            </button>
                         </template>
                     </td>
                     <td>                       
@@ -185,7 +180,7 @@
         },
         data:
         {
-            postulantes:[],
+            postulante:'',
             imagenes:[],
             imagen_postulante:'',
             id:'0',
@@ -243,9 +238,9 @@
                 }
                 $('#modal-asignar').modal('show');
 		    },
-            mostrarModalBienvenida:function(postulantes)
+            mostrarModalBienvenida:function(postulante)
             {
-                this.postulantes=postulantes;
+                this.postulante=postulante;
               
                 $('#modal-fecha-bienvenida').modal('show');
             },
