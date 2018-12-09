@@ -33,7 +33,8 @@ class VoluntariadoController extends Controller
                 'instituto' => $v->instituto,
                 'responsable' => $v->responsable,
                 "aval" => array('id' => $v->aval->id,
-                   'url' => $v->aval->url),
+                   'url' => $v->aval->url,
+                   'estatus' => $v->aval->estatus),
                 "becario" => $v->usuario->name.' '.$v->usuario->last_name
             ));
         }

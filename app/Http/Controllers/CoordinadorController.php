@@ -27,7 +27,7 @@ class CoordinadorController extends Controller
         $becarios= Becario::query()->where('acepto_terminos','=',1)
             ->whereIn('status',['activo','probatorio1','probatorio2'])->get();
 
-             $becarios->each(function ($becarios)
+            $becarios->each(function ($becarios)
             {
                 $becarios->user;
             });

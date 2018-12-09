@@ -4,107 +4,91 @@
 <div class="col-lg-12" id="app">
 
 <!--  Table-->
-<b-container fluid>
+
     <!-- User Interface controls -->
-    <b-row>
-      <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Filter" class="mb-0">
-          <b-input-group>
-            <b-form-input v-model="filter" placeholder="Type to Search" />
-            <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Sort" class="mb-0">
-          <b-input-group>
-            <b-form-select v-model="sortBy" :options="sortOptions">
-              <option slot="first" :value="null">-- none --</option>
-            </b-form-select>
-            <b-form-select :disabled="!sortBy" v-model="sortDesc" slot="append">
-              <option :value="false">Asc</option>
-              <option :value="true">Desc</option>
-            </b-form-select>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Sort direction" class="mb-0">
-          <b-input-group>
-            <b-form-select v-model="sortDirection" slot="append">
-              <option value="asc">Asc</option>
-              <option value="desc">Desc</option>
-              <option value="last">Last</option>
-            </b-form-select>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Per page" class="mb-0">
-          <b-form-select :options="pageOptions" v-model="perPage" />
-        </b-form-group>
-      </b-col>
-    </b-row>
+
+		<div class="table-responsive">
+        <div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+			<div class="row"><div class="col-sm-12 col-md-6">
+			<div class="dataTables_length" style="">
+			<label>Mostrar 
+				<select aria-controls="dd" v-model="perPage" class="custom-select custom-select-sm form-control form-control-sm">
+				<option v-for="(value, key) in pageOptions" :key="key">
+				@{{value}}
+				</option>
+				</select> Entradas</label>
+			</div>
+			</div>
+			<div class="col-sm-12 col-md-6">
+			<div class="dataTables_filter pull-right">
+			<b-input-group-append>
+			<label>Buscar<input type="search" v-model="filter" class="form-control form-control-sm" placeholder="" >
+			</label>
+			</b-input-group-append>
+			</div>
+			</div>
+		</div>
 
     <!-- Main table element -->
-    <b-table show-empty
-             stacked="md"
-             :items="items"
-             :fields="fields"
-             :current-page="currentPage"
-             :per-page="perPage"
-             :filter="filter"
-             :sort-by.sync="sortBy"
-             :sort-desc.sync="sortDesc"
-             :sort-direction="sortDirection"
-             @filtered="onFiltered"
+    <b-table 
+        show-empty
+		empty-text ="No hay voluntariados"
+		empty-filtered-text="
+		No hay registros que coincidan con su búsqueda"
+		class="table table-bordered table-hover dataTable no-footer"
+		stacked="md"
+		:items="items"
+		:fields="fields"
+		:current-page="currentPage"
+		:per-page="perPage"
+		:filter="filter"
+		:sort-by.sync="sortBy"
+		:sort-desc.sync="sortDesc"
+		:sort-direction="sortDirection"
+		@filtered="onFiltered"
     >
-      <template slot="name" slot-scope="row">@{{row.value.first}} @{{row.value.last}}</template>
-      <template slot="isActive" slot-scope="row">@{{row.value?'Yes :)':'No :('}}</template>
-      <template slot="actions" slot-scope="row">
-        <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">
-          Info modal
-        </b-button>
-        <b-button size="sm" @click.stop="row.toggleDetails">
-          @{{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-        </b-button>
-      </template>
-      <template slot="row-details" slot-scope="row">
-        <b-card>
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">@{{ key }}: @{{ value}}</li>
-          </ul>
-        </b-card>
-      </template>
+      <template slot="aval" slot-scope="row">
+
+      	<span v-if="row.value.estatus=='pendiente'" class="label label-warning">pendiente</span>
+		<span v-else-if="row.value.estatus=='aceptada'" class="label label-success">aceptada</span>
+		<span v-else-if="row.value.estatus=='negada'" class="label label-danger">negada</span>
+		<span v-else-if="row.value.estatus=='devuelto'" class="label label-danger">devuelto</span>
+
+  		</template>
+      	<template slot="actions" slot-scope="row">
+       		
+      	</template>
+      	<template slot="row-details" slot-scope="row">
+	        <b-card>
+	          <ul>
+	            <li v-for="(value, key) in row.item" :key="key">@{{ key }}: @{{ value}}</li>
+	          </ul>
+	        </b-card>
+      	</template>
     </b-table>
 
     <b-row>
-      <b-col md="6" class="my-1">
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-      </b-col>
+      	<b-col md="12" class="my-0 text-right pull-right" >
+        	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+      	</b-col>
     </b-row>
 
     <!-- Info modal -->
     <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
-      <pre>@{{ modalInfo.content }}</pre>
+      	<pre>@{{ modalInfo.content }}</pre>
     </b-modal>
 
-  </b-container>
+	</div>
+	</div>
 
 
-
-
-<!-- end Table-->
-
-
+	<!-- end Table-->
 
 
 	<div class="text-right">
 		<a href="{{route('becarios.todos')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
 	</div>
+
 	<br>
 	<div class="table-responsive">
 		<table class="table table-hover table-bordered" >
@@ -212,6 +196,15 @@
 		</div>
 	</div>
 	<!-- Modal para eliminar voluntariado -->
+
+	<!-- Cargando.. -->
+	<section class="loading" id="preloader">
+		<div>
+		<svg class="circular" viewBox="25 25 50 50">
+		<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>
+	<!-- Cargando.. -->
 </div>
 @endsection
 
@@ -219,6 +212,8 @@
 
 
 <script>
+
+
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
 });
@@ -226,38 +221,10 @@ $(document).ready(function(){
 
 <script>
 	Vue.use(BootstrapVue);
-	const items = [
-	{ isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' } },
-	{ isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' } },
-	{
-		isActive: false,
-		age: 9,
-		name: { first: 'Mini', last: 'Navarro' },
-		_rowVariant: 'success'
-	},
-	{ isActive: false, age: 89, name: { first: 'Geneva', last: 'Wilson' } },
-	{ isActive: true, age: 38, name: { first: 'Jami', last: 'Carney' } },
-	{ isActive: false, age: 27, name: { first: 'Essie', last: 'Dunlap' } },
-	{ isActive: true, age: 40, name: { first: 'Thor', last: 'Macdonald' } },
-	{
-		isActive: true,
-		age: 87,
-		name: { first: 'Larsen', last: 'Shaw' },
-		_cellVariants: { age: 'danger', isActive: 'warning' }
-	},
-	{ isActive: false, age: 26, name: { first: 'Mitzi', last: 'Navarro' } },
-	{ isActive: false, age: 22, name: { first: 'Genevieve', last: 'Wilson' } },
-	{ isActive: true, age: 38, name: { first: 'John', last: 'Carney' } },
-	{ isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' } }
-	];
+	
 	const app = new Vue({
 
 	el: '#app',
-	created: function()
-	{
-		this.obtenervoluntariados();
-		this.obtenerestatusaval();
-	},
 	data:
 	{
 		id: 0,
@@ -267,22 +234,47 @@ $(document).ready(function(){
 		estatus:[],
 		seleccionado:'',
 		tmp:'',
-		items: items,
+		items:
+		[{
+			"id": 5,
+			"nombre": "",
+			"instituto": "",
+			"responsable": "",
+			"aval": {
+			"id": null,
+			"url": "",
+			"estatus":''
+			},
+			"becario": ""
+		}],
 		fields: [
-			{ key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-			{ key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
-			{ key: 'isActive', label: 'is Active' },
+			{ key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
+			{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
+			{ key: 'nombre', label: 'Nombre voluntariado', sortable: true, 'class': 'text-center' },
+			{ key: 'instituto', label: 'Instituto', sortable: true, 'class': 'text-center' },
+			{ key: 'aval', label: 'Estatus', sortable: true, 'class': 'text-center' },
+			{ key: 'responsable', label: 'Responsable', sortable: true, 'class': 'text-center' },
 			{ key: 'actions', label: 'Actions' }
 		],
 		currentPage: 1,
 		perPage: 5,
-		totalRows: items.length,
+		totalRows: 0,
 		pageOptions: [ 5, 10, 15 ],
 		sortBy: null,
 		sortDesc: false,
 		sortDirection: 'asc',
 		filter: null,
 		modalInfo: { title: '', content: '' }
+	},
+	beforeCreate:function()
+	{
+		$("#preloader").show();
+	},
+	created: function()
+	{
+		this.obtenervoluntariados();
+		this.obtenerestatusaval();
+		this.obtenervoluntariadosapi();
 	},
 	computed: {
 		sortOptions () {
@@ -344,6 +336,19 @@ $(document).ready(function(){
 			axios.get(url).then(response => 
 			{
 				this.voluntariados = response.data.voluntariados;
+			});
+		},
+		obtenervoluntariadosapi: function()
+		{
+			var url = '{{route('voluntariados.obtenertodos.api')}}';
+			axios.get(url).then(response => 
+			{
+				this.items = response.data.voluntariados;
+				this.totalRows = this.items.length;
+				$("#preloader").hide();
+			}).catch( error => {
+				console.log(error);
+				$("#preloader").hide();
 			});
 		},
 		obtenerestatusaval: function()

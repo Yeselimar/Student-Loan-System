@@ -144,7 +144,7 @@ class Todo extends Migration
 
             //campos para la bienvenida como becario
             $table->datetime('fecha_bienvenida')->nullable();
-            $table->datetime('hora_bienvenida')->nullable();
+            $table->time('hora_bienvenida')->nullable();
             $table->text('lugar_bienvenida')->nullable();
             $table->text('observacion_privada')->nullable();
             
