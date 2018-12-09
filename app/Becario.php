@@ -83,6 +83,11 @@ class Becario extends Model
         return $query->orwhere('status','=','activo');
     }
 
+    public function scopeInactivos($query)
+    {
+        return $query->orwhere('status','=','inactivo');
+    }
+
     public function scopeProbatorio1($query)
     {
         return $query->orwhere('status','=','probatorio1');

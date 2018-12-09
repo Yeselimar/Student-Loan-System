@@ -21,6 +21,27 @@ class VoluntariadoController extends Controller
         return response()->json(['voluntariados'=>$voluntariados]);
     }
 
+    public function obtenertodosapi()
+    {
+        $todos = collect();
+        $voluntariados = Voluntariado::with("becario")->with("usuario")->with("aval")->orderby('created_at','desc')->get();
+        foreach ($voluntariados as $v)
+        {
+            $todos->push(array(
+                'id' => $v->id,
+                'nombre' => $v->nombre,
+                'instituto' => $v->instituto,
+                'responsable' => $v->responsable,
+                "aval" => array('id' => $v->aval->id,
+                   'url' => $v->aval->url,
+                   'estatus' => $v->aval->estatus,
+                    'extension' => $v->aval->extension),
+                "becario" => $v->usuario->name.' '.$v->usuario->last_name
+            ));
+        }
+        return response()->json(['voluntariados'=>$todos]);
+    }
+
     public function todosvoluntariados()
     {
         return view('sisbeca.voluntariados.todos');

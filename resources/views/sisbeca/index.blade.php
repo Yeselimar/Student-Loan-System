@@ -62,6 +62,7 @@
 		</div>
 	</div>
 	<br>
+	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() or Auth::user()->esEntrevistador())
 	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
 		<h3 class="text-center">
 			Próximas Actividades
@@ -70,29 +71,27 @@
 	<br>
 	<div class="container">
 		<div class="row">
-			
-			@if(Auth::user()->esBecario())
-				@foreach($actividades as $actividad)
-
-				
-				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border: 1px solid #eee" >
-					<h4>{{$actividad->getDia()}} {{$actividad->getMes()}} </h4> 
+			@foreach($actividades as $actividad)
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border: 1px solid #eee;padding-top: 10px;padding-bottom: 5px" >
+				<div data-mh="actividad">
+					<h4>{{$actividad->getDia()}} {{$actividad->getMes()}} {{$actividad->getAnho()}}</h4> 
 					<h5 style="color:#424242">{{$actividad->getHoraInicio()}} a {{$actividad->getHoraFin()}}</h5>
+					<div>
+						@if($actividad->modalidad=='virtual')
+				            <i class="fa fa-laptop"></i>
+				        @else
+				            <i class='fa fa-male'></i>
+				        @endif
+				        {{$actividad->getModalidad()}}
+					</div>
 					{{ucwords($actividad->tipo)}}: {{$actividad->nombre}}
-					<br>
-					@if($actividad->modalidad=='virtual')
-			            <i class="fa fa-laptop"></i>
-			        @else
-			            <i class='fa fa-male'></i>
-			        @endif
-			        {{$actividad->getModalidad()}}
-			        <br>
-			        <a href="{{route('actividad.detalles',$actividad->id)}}" class="btn btn-xs btn-block sisbeca-btn-primary">Detalles</a>
 				</div>
-				@endforeach
-			@endif
+		        <a href="{{route('actividad.detalles',$actividad->id)}}" class="btn btn-xs btn-block sisbeca-btn-primary">Detalles</a>
+			</div>
+			@endforeach
 		</div>
 	</div>
+	@endif
 @endsection
 @endif
 

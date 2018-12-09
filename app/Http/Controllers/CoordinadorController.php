@@ -21,18 +21,19 @@ class CoordinadorController extends Controller
 
     //Api
     
-     public function getRelacionBecarioMentor()
+    public function getRelacionBecarioMentor()
     {        
-          $collection = collect();
+        $collection = collect();
         $becarios= Becario::query()->where('acepto_terminos','=',1)
             ->whereIn('status',['activo','probatorio1','probatorio2'])->get();
 
-             $becarios->each(function ($becarios)
+            $becarios->each(function ($becarios)
             {
                 $becarios->user;
             });
             
-            foreach ($becarios as $becario){
+            foreach ($becarios as $becario)
+            {
                 $becarioId = $becario->user_id;
                 $becarioName = $becario->user->name ;
                 $becarioLastName= $becario->user->last_name ." | ".$becario->user->cedula." | ".$becario->user->email;
@@ -56,7 +57,6 @@ class CoordinadorController extends Controller
                    '_rowVariant' => $rowVariant
 
                ));
-
             }
         
         return $collection;

@@ -27,11 +27,9 @@ class SisbecaController extends Controller
 
     public function index()
     {
-        $mes = date('m');
         $usuario =  Auth::user();
         $becario = Becario::where('user_id','=',$usuario->id)->first();
-        $actividades = Actividad::delMes($mes)->conEstatus('disponible')->ordenadaPorFecha('asc')->get();
-        //si son  los ultimos 5 días del mes, traer actividades del més próximo.
+        $actividades = Actividad::conEstatus('disponible')->ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
         return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
     }
     
@@ -81,34 +79,32 @@ class SisbecaController extends Controller
 
     public function perfil($id)
     {
-        if((Auth::user()->rol!=='postulante_becario') && (Auth::user()->rol!=='becario') && (Auth::user()->rol!=='mentor') && (Auth::user()->rol!=='directivo') && (Auth::user()->rol!=='coordinador'))
+        if((Auth::user()->rol=='postulante_becario' and Auth::user()->id==$id) && (Auth::user()->esBecario() and Auth::user()->id==$id) or Auth::user()->esMentor() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
-            flash('Disculpe, el archivo solicitado no fue encontrado.','danger')->important();
-            return back();
+            $user= User::find($id);
+            $becario = Becario::find($id);
+            $usuario = Auth::user();
+            $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
+            $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
+            $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
+            $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
+            $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
+            $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
+            $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
+            $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
+            $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
+            $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
+            $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
+            $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
+            $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
+            $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
+
+            return view('sisbeca.becarios.perfil')->with('becario',$becario)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil);
         }
-        $user= User::find($id);
-        if($user->rol!=='becario' && $user->rol!=='postulante_becario')
+        else
         {
-            flash('Disculpe, el archivo solicitado no fue encontrado.','danger')->important();
-            return back();
+            return view('sisbeca.error.404');
         }
-        $becario = Becario::find($id);
-        $usuario = Auth::user();
-        $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
-        $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
-        $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
-        $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
-        $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
-        $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
-        $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
-        $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
-        $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
-        $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
-        $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
-        $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
-        $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
-        $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-        return view('sisbeca.becarios.perfil')->with('becario',$becario)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil);
     }
 
     public function verMiPerfilMentor()

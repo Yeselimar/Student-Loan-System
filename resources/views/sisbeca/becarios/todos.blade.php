@@ -29,7 +29,9 @@
 							<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-user"></i>
 							</a>
-							<a href="{{route('periodos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">Cargar Periodo</a>
+							<a href="{{route('periodos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" >
+								<i class="fa fa-sticky-note-o"></i>
+							</a>
 							<a href="{{route('cursos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">Cargar CVA</a>
 							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary">Cargar Voluntariado</a>
 						</td>

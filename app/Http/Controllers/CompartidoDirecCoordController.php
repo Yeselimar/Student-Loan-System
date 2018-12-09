@@ -191,24 +191,13 @@ class CompartidoDirecCoordController extends Controller
     {
         if( Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
-            $becarios = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
-        }
-        if($becarios->count()>0)
-        {
-            $becarios->each(function ($becarios)
-            {
-                if($becarios->mentor_id!=null)
-                {
-                    $becarios->mentor->user;
-                }
-
-            });
+            $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+            return view('sisbeca.becarios.listar')->with('becarios',$becarios);
         }
         else
         {
-            flash('Disculpe, no existen becarios registrados.','danger');
+            return view('sisbeca.error.404');
         }
-        return view('sisbeca.becarios.listar')->with('becarios',$becarios);
     }
 
     public function listarMentores()
