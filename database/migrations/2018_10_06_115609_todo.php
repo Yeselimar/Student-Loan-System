@@ -441,14 +441,13 @@ class Todo extends Migration
         Schema::create('cursos',function(Blueprint $table)
         {
             $table->increments('id');
-            $table->enum('modo',['sabatino','interdiario','diario','intensivo'])->default('sabatino');//modo cva 
-            $table->enum('nivel',['basico','intermedio','avanzado'])->default('basico');//nivel cva 
             $table->unsignedInteger('modulo');//modulo de cva (1...15)
-            $table->float('nota');//nota en ese nivel
+            $table->enum('modo',['sabatino','interdiario','diario','intensivo'])->default('sabatino');//modo cva 
             $table->datetime('fecha_inicio');//fecha inicio del cva
             $table->datetime('fecha_fin');//fecha fin del cva
+            $table->float('nota');//nota en ese modulo
             $table->enum('status',['aprobado','reprobado'])->default('reprobado');//verificar si este campo se mantiene
-
+            
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
             
