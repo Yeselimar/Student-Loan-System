@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{route('becarios.todos')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
+		<a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
 	</div>
 	<br>
 	<div class="table-responsive">

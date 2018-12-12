@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{route('becarios.todos')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
+		<a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
 	</div>
 
 	<div class="table-responsive">
@@ -123,9 +123,9 @@
 
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
-	<div>
-		<svg class="circular" viewBox="25 25 50 50">
-			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
 		</div>
 	</section>
 	<!-- Cargando.. -->
@@ -171,7 +171,6 @@
 				"becario": ""
 			}],
 			fields: [
-			{ key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
 			{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 			{ key: 'nombre', label: 'Nombre voluntariado', sortable: true, 'class': 'text-center' },
 			{ key: 'instituto', label: 'Instituto', sortable: true, 'class': 'text-center' },

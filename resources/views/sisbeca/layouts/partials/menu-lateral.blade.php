@@ -396,7 +396,7 @@
                 <li>
                     <a class="has-arrow  " href="{{route('becarios.todos')}}" aria-expanded="false">
                         <i class="fa  fa-list"></i>
-                        <span class="hide-menu">Listar Becarios</span>
+                        <span class="hide-menu">Listar Becarios actualizar</span>
                     </a>
                 </li>
                 <li>

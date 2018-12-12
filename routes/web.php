@@ -160,6 +160,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
+         Route::get('/periodos/obtener-todos/api', 'PeriodosController@obtenertodosapi')->name('periodos.obtenertodos.api');
 
         //cursos ó cva
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');

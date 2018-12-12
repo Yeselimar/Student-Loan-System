@@ -31,7 +31,7 @@
 <script>
 
   $(document).ready(function() {
-      var date = new Date("2018-12-31");
+    var date = new Date("2018-12-31");
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
