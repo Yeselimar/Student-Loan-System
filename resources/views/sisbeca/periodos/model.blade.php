@@ -10,7 +10,7 @@
         @if(Auth::user()->esBecario())
             <a href="{{route('periodos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         @else
-            <a href="{{route('periodos.todos')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            <a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         @endif
     </div>
 	<br>

@@ -196,7 +196,7 @@ const app = new Vue({
         actividad:[],
         id_actividad:'',
         nombre:'',
-        tipo:'taller',
+        tipo:'chat club',
         modalidad:'presencial',
         nivel:'inicio',
         anho_academico:'',
@@ -330,6 +330,10 @@ const app = new Vue({
         {
             //console.log(this.inputs);
             //------------------Guardar actividad
+            var dia = new Date ("2030-11-11 "+this.hora_inicio);
+            this.hora_inicio = moment(dia).format('hh:mm A');
+            var dia = new Date ("2030-11-11 "+this.hora_fin);
+            this.hora_fin = moment(dia).format('hh:mm A');
             var url = '{{route('actividad.guardar')}}';
             let data = JSON.stringify({
                 facilitadores: this.inputs,

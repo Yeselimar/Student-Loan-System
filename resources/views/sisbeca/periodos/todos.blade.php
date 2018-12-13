@@ -50,7 +50,7 @@
 					@{{row.item.anho_lectivo }} (@{{row.item.numero_periodo}})
 				</template>
 				<template slot="numero_materias" slot-scope="row">
-					@{{row.item.numero_materias}} materias
+					@{{row.item.numero_materias}} materias 
 				</template>
 				<template slot="promedio_periodo" slot-scope="row">
 					@{{formatearpromedio(row.item.promedio_periodo)}}
@@ -63,10 +63,10 @@
 				</template>
 
 				<template slot="actions" slot-scope="row">
-					<a :href="urlEditarPeriodo(row.item.id)" class="btn btn-xs sisbeca-btn-primary" title="Editar Periodo">
+					<a v-b-popover.hover.bottom="'Editar Periodo'" :href="urlEditarPeriodo(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
 						<i class="fa fa-pencil"></i>
 					</a>
-					<a :href="urlVerConstancia(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver Constancia" target="_blank">
+					<a v-b-popover.hover.bottom="'Ver Constancia'" :href="urlVerConstancia(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
 						<template v-if="row.item.aval.extension=='imagen'">
 							<i class="fa fa-photo"></i>
 						</template>
@@ -77,12 +77,12 @@
 					</a>
 					
 					<template v-if="row.item.aval.estatus!='aceptada'">
-						<button type="button" class="btn btn-xs sisbeca-btn-default" title="Eliminar CVA" @click="modalEliminar(row.item.id,row.item.becario)">
+						<button v-b-popover.hover.bottom="'Eliminar Periodo'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminar(row.item,row.item.becario)">
 							<i class="fa fa-trash"></i>
 						</button>
 					</template>
 					<template v-else>
-						<button type="button" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
+						<button v-b-popover.hover.bottom="'Eliminar Periodo'" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
 							<i class="fa fa-trash"></i>
 						</button>
 					</template>
@@ -109,13 +109,14 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-			    	<h5 class="modal-title"><strong>Eliminar Periodo</strong></h5>
+			    	<h5 class="modal-title pull-left"><strong>Eliminar Periodo</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 			    </div>
 				<div class="modal-body">
 					<div class="col-lg-12">
 						<br>
 						<p class="h6 text-center">
-							¿Está seguro que desea eliminar permanentemente el periodo del año lectivo <strong>@{{anho_lectivo}}</strong> del becario <strong>@{{becario_periodo}}</strong>?
+							¿Está seguro que desea eliminar permanentemente el periodo el becario <strong>@{{becario_periodo}}</strong> del año lectivo <strong>@{{anho_lectivo}}</strong>?
 						</p>
 					</div>
 					
@@ -179,7 +180,7 @@ $(document).ready(function(){
 		{ key: 'numero_materias', label: 'Materias', sortable: true, 'class': 'text-center' },
 		{ key: 'promedio_periodo', label: 'Promedio', sortable: true, 'class': 'text-center' },
 		{ key: 'aval', label: 'Estatus', sortable: true, 'class': 'text-center' },
-		{ key: 'actions', label: 'Actions' }
+		{ key: 'actions', label: 'Acciones' }
 		],
 		currentPage: 1,
 		perPage: 5,
@@ -223,7 +224,7 @@ $(document).ready(function(){
 		{
 			this.id=periodo.id;
 			this.anho_lectivo=periodo.anho_lectivo;
-			this.becario_periodo=becario.name+' '+becario.last_name;
+			this.becario_periodo=periodo.becario;
 			$('#eliminarperiodo').modal('show');
 		},
 		eliminarPeriodo(id)
@@ -234,7 +235,7 @@ $(document).ready(function(){
 			{
 				$('#eliminarperiodo').modal('hide');
 				toastr.success(response.data.success);
-				this.obtenerperiodos();			
+				this.obtenerperiodosapi();			
 			});
 		},
 		formatearpromedio(promedio)
@@ -310,7 +311,7 @@ $(document).ready(function(){
             url = url.replace(':id', id);
 			axios.post(url,dataform).then(response => 
 			{
-				this.obtenerperiodos();
+				this.obtenerperiodosapi();
 				toastr.success(response.data.success);
 			});
 		},

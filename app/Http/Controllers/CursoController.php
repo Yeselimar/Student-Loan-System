@@ -8,6 +8,7 @@ use Validator;
 use avaa\Http\Requests\CursoRequest;
 use avaa\Aval;
 use avaa\Becario;
+use avaa\TipoCurso;
 use DateTime;
 use File;
 
@@ -17,6 +18,28 @@ class CursoController extends Controller
     {
         $cursos = Curso::with("becario")->with("usuario")->with("aval")->orderby('created_at','desc')->get();
         return response()->json(['cursos'=>$cursos]);
+    }
+
+    public function obtenertodosapi()
+    {
+        $todos = collect();
+        $cursos = Curso::with("becario")->with("usuario")->with("aval")->orderby('created_at','desc')->get();
+        foreach ($cursos as $c)
+        {
+            $todos->push(array(
+                'id' => $c->id,
+                'modulo' => $c->modulo,
+                'modo' => $c->modo,
+                'fecha_inicio' => $c->fecha_inicio,
+                'nota' => $c->nota,
+                "aval" => array('id' => $c->aval->id,
+                   'url' => $c->aval->url,
+                   'estatus' => $c->aval->estatus,
+                   'extension' => $c->aval->extension),
+                "becario" => $c->usuario->name.' '.$c->usuario->last_name
+            ));
+        }
+        return response()->json(['cursos'=>$todos]);
     }
 
     public function todoscursos()
@@ -34,10 +57,11 @@ class CursoController extends Controller
     public function crear($id)
     {
     	$model = 'crear';
+        $tipocurso = TipoCurso::pluck('descripcion', 'id');
         $becario = Becario::find($id);
         if( (Auth::user()->esBecario() and $id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
-            return view('sisbeca.cursos.model')->with(compact('model','becario'));
+            return view('sisbeca.cursos.model')->with(compact('model','becario','tipocurso'));
         }
         else
         {
@@ -73,7 +97,6 @@ class CursoController extends Controller
 
 		$curso = new Curso;
 		$curso->modo = $request->get('modo');
-		$curso->nivel = $request->get('nivel');
 		$curso->modulo = $request->get('modulo');
 		$curso->nota = $request->get('nota');
 		$curso->status = 'reprobado';
@@ -135,7 +158,6 @@ class CursoController extends Controller
 			$aval->save();
         }
         $curso->modo = $request->get('modo');
-		$curso->nivel = $request->get('nivel');
 		$curso->modulo = $request->get('modulo');
 		$curso->nota = $request->get('nota');
 		$curso->tipocurso_id = $request->get('tipocurso_id');

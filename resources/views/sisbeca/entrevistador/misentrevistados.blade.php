@@ -109,9 +109,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title pull-left"><strong>Cambiar Estatus de la Entrevista</strong></h5>
-							<button class="close" data-dimiss="modal" type="button" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
+							<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 						</div>
 						<div class="modal-body">
 						<h5>¿Esta Seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong></h5>

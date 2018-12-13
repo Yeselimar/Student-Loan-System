@@ -19,7 +19,7 @@
 				<tr>
 					<td class="text-left"><strong>Año</strong></td>
 					<td class="text-left"><strong>Tipo Voluntariado</strong></td>
-					<td class="text-left"><strong>Total Voluntariado</strong></td>
+					<td class="text-left"><strong>Total</strong></td>
 					<td class="text-right"><strong>Horas Voluntariado</strong></td>
 				</tr>
 				@php ($horas = 0)
@@ -28,7 +28,7 @@
 					@php ($horas = $horas + $voluntariado->horas_voluntariado)
 					<tr>
 						<td class="text-left">{{$anho}}</td>
-						<td class="text-left">{{$voluntariado->tipo}}</td>
+						<td class="text-left">{{ucwords($voluntariado->tipo_voluntariado)}}</td>
 						<td class="text-left">{{$voluntariado->total_voluntariado}}</td>
 						<td class="text-right">{{$voluntariado->horas_voluntariado}}</td>
 					</tr>
@@ -36,6 +36,22 @@
 				@else
 				<tr>
 					<td colspan="4" class="text-center">No hay <strong>voluntariado</strong></td>
+				</tr>
+				@endif
+
+				@if($actividades_facilitadas[0]->total_actividades!=0)
+				<tr>
+					@foreach($actividades_facilitadas as $af)
+					@php ($horas = $horas + $af->horas_voluntariado)
+						<td class="text-left">{{$anho}}</td>
+						<td class="text-left">{{ucwords($af->tipo)}}</td>
+						<td class="text-left">{{$af->total_actividades }}</td>
+						<td class="text-right">{{$af->horas_voluntariado}}</td>
+					@endforeach
+				</tr>
+				@else
+				<tr>
+					<td colspan="4" class="text-center">No ha sido facilitador de <strong>ningún chat club</strong></td>
 				</tr>
 				@endif
 				<tr>
@@ -57,7 +73,7 @@
 			<tbody>
 				<tr>
 					<td class="text-left"><strong>Año</strong></td>
-					<td class="text-left"><strong>Nivel</strong></td>
+					<td class="text-left"><strong>Módulo</strong></td>
 					<td class="text-left"><strong>Total por Nivel</strong></td>
 					<td class="text-right"><strong>Promedio</strong></td>
 				</tr>
@@ -65,13 +81,13 @@
 					@php ($promedio = 0)
 					@php ($total_curso = 0)
 					@foreach($cursos as $index=>$curso)
-					@php ($promedio = $promedio + $curso->promedio_nivel)
-					@php ($total_curso = $total_curso + $curso->total_nivel)
+					@php ($promedio = $promedio + $curso->promedio_modulo)
+					@php ($total_curso = $total_curso + $curso->total_modulo)
 					<tr>
 						<td class="text-left">{{$anho}}</td>
-						<td class="text-left">{{$curso->nivel}}</td>
-						<td class="text-left">{{$curso->total_nivel}}</td>
-						<td class="text-right">{{number_format($curso->promedio_nivel, 2, '.', ',')}}</td>
+						<td class="text-left">{{$curso->modulo}} nivel</td>
+						<td class="text-left">{{$curso->total_modulo}}</td>
+						<td class="text-right">{{number_format($curso->promedio_modulo, 2, '.', ',')}}</td>
 					</tr>
 					@endforeach
 				@else
@@ -135,48 +151,6 @@
 		</table>
 	</div>
 	<br>
-	<div class="table-responsive">
-		<table class="table table-bordered table-hover">
-			<thead>
-				<tr>
-					<th colspan="3" style="background-color: #eee">Talleres y Chat Club</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="3" class="text-left">Asistio</td>
-				</tr>
-				@php ($ta = 0)
-				@foreach($actividades_asistio as $actividad)
-				@php ($ta = $ta + $actividad->total_actividades)
-				<tr>
-					<td>{{$actividad->tipo}}</td>
-					<td>{{$actividad->modalidad}}</td>
-					<td>{{$actividad->total_actividades}}</td>
-				</tr>
-				@endforeach
-				<tr>
-					<td colspan="2"></td>
-					<td>{{$ta}}</td>
-				</tr>
-				<tr>
-					<td colspan="3" class="text-left">No Asistio</td>
-				</tr>
-				@php ($tna = 0)
-				@foreach($actividades_noasistio as $actividad)
-				@php ($tna = $tna + $actividad->total_actividades)
-				<tr>
-					<td>{{$actividad->tipo}}</td>
-					<td>{{$actividad->modalidad}}</td>
-					<td>{{$actividad->total_actividades}}</td>
-				</tr>
-				@endforeach
-				<tr>
-					<td colspan="2"></td>
-					<td>{{$tna}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+
 </div>
 @endsection

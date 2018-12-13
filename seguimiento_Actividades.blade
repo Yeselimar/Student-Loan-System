@@ -1,0 +1,45 @@
+<!--
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="3" style="background-color: #eee">Talleres y Chat Club</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="3" class="text-left">Asistio</td>
+				</tr>
+				@php ($ta = 0)
+				@foreach($actividades_asistio as $actividad)
+				@php ($ta = $ta + $actividad->total_actividades)
+				<tr>
+					<td>{{$actividad->tipo}}</td>
+					<td>{{$actividad->modalidad}}</td>
+					<td>{{$actividad->total_actividades}}</td>
+				</tr>
+				@endforeach
+				<tr>
+					<td colspan="2"></td>
+					<td>{{$ta}}</td>
+				</tr>
+				<tr>
+					<td colspan="3" class="text-left">No Asistio</td>
+				</tr>
+				@php ($tna = 0)
+				@foreach($actividades_noasistio as $actividad)
+				@php ($tna = $tna + $actividad->total_actividades)
+				<tr>
+					<td>{{$actividad->tipo}}</td>
+					<td>{{$actividad->modalidad}}</td>
+					<td>{{$actividad->total_actividades}}</td>
+				</tr>
+				@endforeach
+				<tr>
+					<td colspan="2"></td>
+					<td>{{$tna}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+		-->

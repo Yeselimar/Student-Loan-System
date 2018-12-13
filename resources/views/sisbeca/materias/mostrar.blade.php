@@ -73,9 +73,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title pull-left"><strong>Añadir Materia</strong></h5>
-						<button class="close" data-dimiss="modal" type="button" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 				    </div>
 					<div class="modal-body">
 						<div class="col" style="padding-left: 0px;padding-right: 0px;">
@@ -107,7 +105,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-				    	<h5 class="modal-title"><strong>Editar Materia</strong></h5>
+				    	<h5 class="modal-title pull-left"><strong>Editar Materia</strong></h5>
+				    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 				    </div>
 					<div class="modal-body" style="padding-top: 0px;">
 						<div class="col" style="padding-left: 0px;padding-right: 0px;">
@@ -137,7 +136,8 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-			    	<h5 class="modal-title"><strong>Eliminar Materia</strong></h5>
+			    	<h5 class="modal-title pull-left"><strong>Eliminar Materia</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 			    </div>
 				<div class="modal-body">
 					<div class="col-lg-12">

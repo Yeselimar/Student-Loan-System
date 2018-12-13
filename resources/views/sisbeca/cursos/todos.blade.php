@@ -7,100 +7,117 @@
 	</div>
 	<br>
 	<div class="table-responsive">
-		<table class="table table-hover table-bordered">
-			<thead>
-				<tr>
-					<th>Becario</th>
-					<th>Nivel-Modalidad-Módulo</th>
-					<th class="text-center">Nota</th>
-					<th class="text-center">Estatus</th>
-					<th>Actualizado el</th>
-					<th class="text-right">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				
-				<tr v-for="curso in cursos">
-					<td>
-						<small>@{{ curso.usuario.name }} @{{ curso.usuario.last_name }}</small>
-					</td>
-					<td>
-						<small>@{{ curso.nivel}}-@{{ curso.modo}}-@{{ curso.modulo}}</small>
-					</td>
-					<td class="text-center">
-						<small>@{{ curso.nota.toFixed(2) }}</small>
-					</td>
-					<td class="text-center">
-						<small>
-						<span v-if="curso.aval.estatus=='pendiente'" class="label label-warning">pendiente</span>
-						<span v-if="curso.aval.estatus=='aceptada'" class="label label-success">aceptada</span>
-						<span v-if="curso.aval.estatus=='negada'" class="label label-danger">negada</span>
-						</small>
-						<span v-if="curso.aval.estatus=='devuelto'" class="label label-danger">devuelto</span>
-						</small>
-					</td>
-					<td>
-						<small>@{{ fechaformatear(curso.aval.updated_at) }}</small>
-					</td>
-					<td>
-						<a :href="urlEditarCurso(curso.id)" class="btn btn-xs sisbeca-btn-primary" title="Editar Periodo">
-							<i class="fa fa-pencil"></i>
-						</a>
-						<a :href="urlVerNota(curso.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver Constancia" target="_blank">
-							<template v-if="curso.aval.extension=='imagen'">
-								<i class="fa fa-photo"></i>
-							</template>
-							<template v-else>
-								<i class="fa fa-file-pdf-o"></i>
-							</template>
-							
-						</a>
-						<template v-if="curso.aval.estatus!='aceptada'">
-							<button type="button" class="btn btn-xs sisbeca-btn-default" title="Eliminar CVA" @click="modalEliminar(curso,curso.usuario)">
-								<i class="fa fa-trash"></i>
-							</button>
+		<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+			<div class="row">
+				<div class="col-sm-12 col-md-6">
+					<div class="dataTables_length" style="">
+						<label>Mostrar 
+							<select aria-controls="dd" v-model="perPage" class="custom-select custom-select-sm form-control form-control-sm">
+								<option v-for="(value, key) in pageOptions" :key="key">
+									@{{value}}
+								</option>
+							</select> Entradas</label>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-6">
+						<div class="dataTables_filter pull-right">
+							<b-input-group-append>
+								<label>Buscar<input type="search" v-model="filter" class="form-control form-control-sm" placeholder="" >
+								</label>
+							</b-input-group-append>
+						</div>
+					</div>
+				</div>
+
+				<b-table 
+				show-empty
+				empty-text ="No hay CVA"
+				empty-filtered-text="
+				No hay registros que coincidan con su búsqueda"
+				class="table table-bordered table-hover dataTable no-footer"
+				stacked="md"
+				:items="items"
+				:fields="fields"
+				:current-page="currentPage"
+				:per-page="perPage"
+				:filter="filter"
+				:sort-by.sync="sortBy"
+				:sort-desc.sync="sortDesc"
+				:sort-direction="sortDirection"
+				@filtered="onFiltered"
+				>
+				<template slot="fecha_inicio" slot-scope="row">
+					@{{ mesanho(row.item.fecha_inicio)}}
+				</template>
+				<template slot="modulo" slot-scope="row">
+					@{{ row.item.modulo}} nivel - @{{ row.item.modo}}
+				</template>
+				<template slot="nota" slot-scope="row">
+					@{{ formatearnota(row.item.nota)}}
+				</template>
+				<template slot="aval" slot-scope="row">
+					<span v-if="row.value.estatus=='pendiente'" class="label label-warning">pendiente</span>
+					<span v-else-if="row.value.estatus=='aceptada'" class="label label-success">aceptada</span>
+					<span v-else-if="row.value.estatus=='negada'" class="label label-danger">negada</span>
+					<span v-else-if="row.value.estatus=='devuelto'" class="label label-danger">devuelto</span>
+				</template>
+
+				<template slot="actions" slot-scope="row">
+					<a v-b-popover.hover.bottom="'Editar CVA'" :href="urlEditarCurso(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
+						<i class="fa fa-pencil"></i>
+					</a>
+
+					<a v-b-popover.hover.bottom="'Ver Nota'" :href="urlVerNota(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
+						<template v-if="row.item.aval.extension=='imagen'">
+							<i class="fa fa-photo"></i>
 						</template>
 						<template v-else>
-							<button type="button" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
-								<i class="fa fa-trash"></i>
-							</button>
+							<i class="fa fa-file-pdf-o"></i>
 						</template>
-						<!-- v-model en el select para que enlace lo que tiene  actualmente el estatus-->
-						<!-- el v-model selecciona el estatus actual-->
-						<!-- Este v-bind me rellena el atributo de value del option-->
-						<!-- Si le quito v-bind no rellena el atributo value del option y cuando actualizo, actualizo a vació "" porque no hay nada en el value-->
-						<!-- Cuando cambia lo seleccionado llamo al método con curso.aval.estatus porque tiene lo seleccionado y id para el identificar a cual aval voy actualizar-->
-						<!-- v-bind:value="estatu"> o :bind 
-							v-on:change o @change v-on escucha un evento-->
-						<select v-model="curso.aval.estatus" @change="actualizarestatus(curso.aval.estatus,curso.aval.id)" class="sisbeca-input input-sm sisbeca-select">
-							<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
-						</select>
+						
+					</a>
+					
+					<template v-if="row.item.aval.estatus!='aceptada'">
+						<button v-b-popover.hover.bottom="'Eliminar CVA'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminar(row.item,row.item.becario)">
+							<i class="fa fa-trash"></i>
+						</button>
+					</template>
+					<template v-else>
+						<button v-b-popover.hover.bottom="'Eliminar CVA'" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
+							<i class="fa fa-trash"></i>
+						</button>
+					</template>
+					
+					<select v-model="row.item.aval.estatus" @change="actualizarestatus(row.item.aval.estatus,row.item.aval.id)" class="sisbeca-input input-sm sisbeca-select">
+						<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
+					</select>
+				</template>
 
-					</td>
-				</tr>
-				<tr v-if="cursos.length==0">
-					<td colspan="8" class="text-center">
-						No hay <strong>CVA</strong> cargados.
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			</b-table>
+
+			<b-row class="my-0 pull-right" >
+				<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+			</b-row>
+
+
+		</div>
 	</div>
 	<hr>
 	<p class="h6 text-right">@{{cursos.length}} CVA cargados </p>
 
-	<!-- Modal para eliminar periodo -->
+	<!-- Modal para eliminar curso -->
 	<div class="modal fade" id="eliminarcurso">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-			    	<h5 class="modal-title"><strong>Eliminar CVA</strong></h5>
+			    	<h5 class="modal-title pull-left"><strong>Eliminar CVA</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 			    </div>
 				<div class="modal-body">
 					<div class="col-lg-12">
 						<br>
 						<p class="h6 text-center">
-							¿Está seguro que desea eliminar permanentemente el CVA <strong>@{{id_curso}}</strong> del becario <strong>@{{becario_curso}}</strong>?
+							¿Está seguro que desea eliminar permanentemente el CVA del becario <strong>@{{becario_curso}}</strong> módulo <strong>@{{id_curso}}</strong> ?
 						</p>
 					</div>
 					
@@ -112,7 +129,16 @@
 			</div>
 		</div>
 	</div>
-	<!-- Modal para eliminar periodo -->
+	<!-- Modal para eliminar curso -->
+
+	<!-- Cargando.. -->
+	<section class="loading" id="preloader">
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>
+	<!-- Cargando.. -->
 </div>
 @endsection
 
@@ -124,14 +150,10 @@ $(document).ready(function(){
 </script>
 
 <script>
-	const app = new Vue({
+	Vue.use(BootstrapVue);
 
+	const app = new Vue({
 	el: '#app',
-	created: function()
-	{
-		this.obtenercursos();
-		this.obtenerestatusaval();
-	},
 	data:
 	{
 		id:0,
@@ -141,14 +163,72 @@ $(document).ready(function(){
 		estatus:[],
 		seleccionado:'',
 		tmp:'',
+		items:
+		[{
+			"id": null,
+			"modulo": "",
+			"modo": "",
+			"fecha_inicio": "",
+			"nota": "",
+			"aval": {
+				"id": null,
+				"url": "",
+				"estatus":'',
+				"extension":''
+			},
+			"becario": ""
+		}],
+		fields: [
+		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
+		{ key: 'fecha_inicio', label: 'Mes-Año', sortable: true, 'class': 'text-center' },
+		{ key: 'modulo', label: 'Modulo-Modo', sortable: true, 'class': 'text-center' },
+		{ key: 'nota', label: 'Nota', sortable: true, 'class': 'text-center' },
+		{ key: 'aval', label: 'Estatus', sortable: true, 'class': 'text-center' },
+		{ key: 'actions', label: 'Acciones' }
+		],
+		currentPage: 1,
+		perPage: 5,
+		totalRows: 0,
+		pageOptions: [ 5, 10, 15 ],
+		sortBy: null,
+		sortDesc: false,
+		sortDirection: 'asc',
+		filter: null,
+		modalInfo: { title: '', content: '' }
+	},
+	beforeCreate:function()
+	{
+		$("#preloader").show();
+	},
+	created: function()
+	{
+		this.obtenercursos();
+		this.obtenercursosapi();
+		this.obtenerestatusaval();
+	},
+	computed:
+	{
+		sortOptions ()
+		{
+			// Create an options list from our fields
+			return this.fields
+			.filter(f => f.sortable)
+			.map(f => { return { text: f.label, value: f.key } })
+		}
 	},
 	methods:
 	{
+		onFiltered (filteredItems)
+		{
+			// Trigger pagination to update the number of buttons/pages due to filtering
+			this.totalRows = filteredItems.length
+			this.currentPage = 1
+		},
 		modalEliminar(curso,becario)
 		{
 			this.id=curso.id;
-			this.id_curso=curso.nivel+'-'+curso.modo+'-'+curso.modulo;
-			this.becario_curso=becario.name+' '+becario.last_name;
+			this.id_curso=curso.modulo+' nivel'+' - '+curso.modo;
+			this.becario_curso=curso.becario;
 			$('#eliminarcurso').modal('show');
 		},
 		eliminarCurso(id)
@@ -159,7 +239,7 @@ $(document).ready(function(){
 			{
 				$('#eliminarcurso').modal('hide');
 				toastr.success(response.data.success);
-				this.obtenercursos();			
+				this.obtenercursosapi();			
 			});
 		},
 		urlVerNota(slug)
@@ -182,6 +262,19 @@ $(document).ready(function(){
 				this.cursos = response.data.cursos;
 			});
 		},
+		obtenercursosapi: function()
+		{
+			var url = '{{route('cursos.obtenertodos.api')}}';
+			axios.get(url).then(response => 
+			{
+				this.items = response.data.cursos;
+				this.totalRows = this.items.length;
+				$("#preloader").hide();
+			}).catch( error => {
+				console.log(error);
+				$("#preloader").hide();
+			});
+		},
 		obtenerestatusaval: function()
 		{
 			var url = '{{route('aval.getEstatus')}}';
@@ -198,13 +291,22 @@ $(document).ready(function(){
             url = url.replace(':id', id);
 			axios.post(url,dataform).then(response => 
 			{
-				this.obtenercursos();
+				this.obtenercursosapi();
 				toastr.success(response.data.success);
 			});
 		},
 		fechaformatear(fecha)
 		{
 			return moment(new Date (fecha)).format('DD/MM/YYYY hh:mm A');
+		},
+		formatearnota(nota)
+		{
+			var Low = parseFloat(nota).toFixed(2);
+			return Low;
+		},
+		mesanho(fecha)
+		{
+			return moment(new Date (fecha)).format('MM-YYYY');
 		}
 	}
 });

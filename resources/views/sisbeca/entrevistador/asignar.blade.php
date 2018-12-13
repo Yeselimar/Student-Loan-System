@@ -74,7 +74,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title pull-left"><strong>Asignar Entrevistadores @{{id}}</strong></h5>
-						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 				    </div>
 					<div class="modal-body">
 						<div class="row">

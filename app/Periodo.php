@@ -39,6 +39,11 @@ class Periodo extends Model
         return $query->whereYear('created_at', '=', $anho);
     }
 
+    public function scopeOrdenadoPorPeriodo($query,$tipo)
+    {
+         return $query->orderby('numero_periodo', $tipo);
+    }
+
     public function getTotalMaterias()
     {
         return $this->materias->count();
@@ -67,7 +72,7 @@ class Periodo extends Model
         }
         else
         {
-            return 0.00;
+            return number_format(0, 2, '.', ',');
         }
     }
 

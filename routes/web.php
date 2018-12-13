@@ -165,8 +165,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         //cursos ó cva
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
-
-         //voluntariados
+        Route::get('/cursos/obtener-todos/api', 'CursoController@obtenertodosapi')->name('cursos.obtenertodos.api');
+        
+        //voluntariados
         Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
         Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
         Route::get('/voluntariados/obtener-todos/api', 'VoluntariadoController@obtenertodosapi')->name('voluntariados.obtenertodos.api');
