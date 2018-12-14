@@ -148,6 +148,9 @@ class Todo extends Migration
             $table->text('lugar_bienvenida')->nullable();
             $table->text('observacion_privada')->nullable();
             
+            //campo para control de nómina
+            $table->datetime('fecha_carga_academica')->nullable();
+
             $table->timestamps();
         });
         

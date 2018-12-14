@@ -44,6 +44,13 @@ class Periodo extends Model
          return $query->orderby('numero_periodo', $tipo);
     }
 
+    public function scopeAceptadas($query)
+    {
+        $query->join('aval', 'aval.id', '=', 'periodo.aval_id')
+            ->where('aval.estatus','=','aceptada')
+            ;
+    }
+
     public function getTotalMaterias()
     {
         return $this->materias->count();

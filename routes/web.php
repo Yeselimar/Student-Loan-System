@@ -68,6 +68,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     {
         //resumen becario
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+        Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
@@ -127,6 +128,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
+         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
         //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
