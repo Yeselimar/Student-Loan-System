@@ -13,9 +13,16 @@ use avaa\ActividadBecario;
 use avaa\Curso;
 use avaa\Voluntariado;
 use avaa\Periodo;
+use DateTime;
 
 class SeguimientoController extends Controller
 {
+    public function becariosreportegeneral()
+    {
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+        return view('sisbeca.becarios.reportegeneral')->with(compact('becarios'));
+    }
+
    	public function todosbecarios()
    	{
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
@@ -29,14 +36,45 @@ class SeguimientoController extends Controller
         foreach ($becarios as $becario)
         {
             $todos->push(array(
-                'id' => $becario->id,
+                'id' => $becario->user->id,
                 'estatus' => $becario->status,
                 'rol' => $becario->user->rol,
                 'cedula' => $becario->user->cedula,
-                "becario" => $becario->user->name.' '.$becario->user->last_name
+                "becario" => $becario->user->name.' '.$becario->user->last_name,
+                'final_carga_academica' => $becario->final_carga_academica
             ));
         }
         return response()->json(['becarios'=>$todos]);
+    }
+
+    public function obtenerestatusbecarios()
+    {
+        $estatus = (object)["0"=>"egresado", "1"=>"activo", "2"=>"inactivo","3"=>"probatorio1","4"=>"probatorio2"];
+        return response()->json(['estatus'=>$estatus]);
+    }
+
+    public function actualizarestatusbecario(Request $request,$id)
+    {
+        $becario = Becario::find($id);
+        $becario->status = $request->estatus;
+        $becario->save();
+        return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue actualizado exitosamente.']);
+    }
+
+    public function guardarfechaacademica(Request $request,$id)
+    {
+        $becario = Becario::find($id);
+        if($request->fecha_nula==0)
+        {
+            $becario->final_carga_academica = DateTime::createFromFormat('d/m/Y', $request->fecha)->format('Y-m-d');
+        }
+        else
+        {
+            $becario->final_carga_academica = null;
+        }
+       
+        $becario->save();
+        return response()->json(['success'=>'Al becario '.$becario->user->nombreyapellido().' se le actualizó la fecha final de carga académica.']);
     }
 
    	public function todosbecariosservicio()

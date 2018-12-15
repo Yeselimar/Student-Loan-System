@@ -128,7 +128,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
-         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
+        Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
+        Route::get('/becarios/obtener-estatus/api', 'SeguimientoController@obtenerestatusbecarios')->name('obtener.estatus.becarios');
+        Route::post('/becario/{id}/actualizar-estatus', 'SeguimientoController@actualizarestatusbecario')->name('actualizar.estatus.becario');
+        Route::post('/becario/{id}/guardar-fecha-carga-academica', 'SeguimientoController@guardarfechaacademica')->name('guardar.fecha.academica');
+        Route::get('/becarios/reporte-general', 'SeguimientoController@becariosreportegeneral')->name('becarios.reporte.general');
         //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');

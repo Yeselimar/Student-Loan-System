@@ -33,11 +33,11 @@
 					<td>
 						<template v-if="estatus_periodo!='aceptada'">
 							<span @click.prevent="mostrarEditar(materia)" >
-								<a href="#" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar" > 
+								<a href="#" v-b-popover.hover.bottom="'Editar Materia'" class="btn btn-xs sisbeca-btn-primary"> 
 									<i class="fa fa-pencil"></i>
 								</a>
 							</span>
-							<a href="#" class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarEliminar(materia)" >
+							<a href="#" v-b-popover.hover.bottom="'Eliminar Materia'" class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarEliminar(materia)" >
 								<i class="fa fa-trash"></i>
 							</a>
 						</template>

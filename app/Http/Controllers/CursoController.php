@@ -19,7 +19,7 @@ class CursoController extends Controller
         $cursos = Curso::with("becario")->with("usuario")->with("aval")->orderby('created_at','desc')->get();
         return response()->json(['cursos'=>$cursos]);
     }
-
+    
     public function obtenertodosapi()
     {
         $todos = collect();
