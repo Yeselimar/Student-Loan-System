@@ -170,10 +170,7 @@ class DirectivoController extends Controller
                 }
             });
         }
-        else
-        {
-            flash('Disculpe, no existen mentores registrados','danger');
-        }
+
         return view('sisbeca.mentores.listar')->with('mentores',$mentores);
     }
 
