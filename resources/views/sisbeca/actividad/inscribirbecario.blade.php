@@ -66,8 +66,6 @@
 				<div class="row">
 					<div class="col-lg-12 text-right" >
 						<a href="#" class="btn sisbeca-btn-default">Cancelar</a>
-						&nbsp;&nbsp;
-
                         <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
 					</div>
 				</div>

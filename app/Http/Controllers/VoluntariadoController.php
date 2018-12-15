@@ -30,7 +30,7 @@ class VoluntariadoController extends Controller
             $todos->push(array(
                 'id' => $v->id,
                 'nombre' => $v->nombre,
-                'instituto' => $v->instituto,
+                'horas' => $v->horas,
                 'responsable' => $v->responsable,
                 "aval" => array('id' => $v->aval->id,
                    'url' => $v->aval->url,

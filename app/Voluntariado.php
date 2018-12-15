@@ -52,4 +52,9 @@ class Voluntariado extends Model
     {
         return $query->selectRaw('Count(*) as '.$nombre_as);
     }
+
+    public function scopeVoluntariadoAceptados($query)
+    {
+        return $query->aval->estatus=='estatus';
+    }
 }

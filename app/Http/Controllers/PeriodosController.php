@@ -29,6 +29,29 @@ class PeriodosController extends Controller
 		return response()->json(['periodos'=>$periodos]);
 	}
 
+	public function obtenertodosapi()
+	{
+		$todos = collect();
+        $periodos = Periodo::with("becario")->with("usuario")->with("aval")->with("materias")->orderby('created_at','desc')->get();
+       	foreach ($periodos as $p)
+        {
+        	$todos->push(array(
+        		'id' => $p->id,
+                'numero_periodo' => $p->getNumeroPeriodo(),
+                'anho_lectivo' => $p->anho_lectivo,
+                'numero_materias' => $p->getTotalMaterias(),
+                'promedio_periodo' => $p->getPromedio(),
+                'promedio_periodo' => $p->getPromedio(),
+                "aval" => array('id' => $p->aval->id,
+                   'url' => $p->aval->url,
+                   'estatus' => $p->aval->estatus,
+                   'extension' => $p->aval->extension),
+                "becario" => $p->usuario->name.' '.$p->usuario->last_name
+            ));
+        }
+        return response()->json(['periodos'=>$todos]);
+	}
+
 	public function todosperiodos()
 	{
 		return view('sisbeca.periodos.todos');

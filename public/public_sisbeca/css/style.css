@@ -8,6 +8,10 @@
 @import url(spinners.css);
 @import url(animate.css);
 /*Estilos personalizados sisbeca */
+
+td{
+  vertical-align: middle !important;
+}
 .loading
 {
   position: fixed;
@@ -120,6 +124,9 @@
 }
 .letras-rojas{
 color: #dc3545;
+}
+.letras-verdes{
+  color:#00a65a;
 }
 
 .sisbeca-container-formulario

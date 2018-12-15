@@ -59,7 +59,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Usuarios</h4>
+                <h4 class="modal-title pull-left">Usuarios</h4>
+                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
             </div>
             <br>
             <div class="modal-body">
@@ -110,8 +111,8 @@ $(document).ready(function(){
             {
                 "first": "Primero",
                 "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
+                "next": '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
             }
         }
     });

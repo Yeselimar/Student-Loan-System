@@ -6,7 +6,7 @@
             @if(Auth::user()->esBecario())
                 <a href="{{route('voluntariados.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
             @else
-                <a href="{{route('voluntariados.todos')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+                <a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
             @endif
         </div>
 		<br>

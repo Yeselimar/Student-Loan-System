@@ -48,17 +48,17 @@ class Curso extends Model
         return $query->whereYear('created_at', '=', $anho);
     }
     
-    public function scopeAgrupadoPorNivel($query)
+    public function scopeAgrupadoPorModulo($query)
     {
-        return $query->groupby('nivel');
+        return $query->groupby('modulo');
     }
 
-    public function scopePromedioPorNivel($query,$nombre_as)
+    public function scopePromedioPorModulo($query,$nombre_as)
     {
         return $query->selectRaw('*,avg(nota) as '.$nombre_as);
     }
 
-    public function scopeContarNivel($query,$nombre_as)
+    public function scopeContarModulo($query,$nombre_as)
     {
         return $query->selectRaw('Count(*) as '.$nombre_as);
     }

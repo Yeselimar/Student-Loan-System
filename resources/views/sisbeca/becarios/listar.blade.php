@@ -68,7 +68,7 @@
 
 					<td class="text-center">
 						<span data-toggle="modal" data-placement="bottom" title="Ver Expediente">
-							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver PErfil">
+							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver Perfil">
 								<i class='fa fa-eye'></i>
 							</a>
 							<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Resumen Becario">
@@ -80,7 +80,7 @@
 							<a href="{{route('cursos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar CVA">
 								<i class="fa fa-book"></i>
 							</a>
-							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-placement="top" title="Cargar Voluntariado">
+							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Voluntariado">
 								<i class="fa fa-star"></i>
 							</a>
 						</span>
@@ -119,8 +119,8 @@ $(document).ready(function(){
             {
                 "first": "Primero",
                 "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
+                "next": '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
             }
         }
     });

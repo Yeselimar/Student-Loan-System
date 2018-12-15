@@ -17,4 +17,14 @@ class ActividadFacilitador extends Model
     {
         return $this->belongsTo('avaa\User','becario_id');
     }
+    
+    public function scopeParaActividad($query,$id)
+    {
+        return $query->where('actividad_id','=',$id);
+    }
+
+    public function scopeParaBecario($query,$id)
+    {
+        return $query->where('becario_id','=',$id);
+    }
 }
