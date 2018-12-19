@@ -120,7 +120,7 @@
       </div>
     @endif
      
-     <br>
+    <br>
 </div>
 
     <!-- Modal para aprobar --> 

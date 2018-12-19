@@ -79,7 +79,7 @@ class SisbecaController extends Controller
 
     public function perfil($id)
     {
-        if((Auth::user()->rol=='postulante_becario' and Auth::user()->id==$id) && (Auth::user()->esBecario() and Auth::user()->id==$id) or Auth::user()->esMentor() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or (Auth::user()->esBecario() and Auth::user()->id==$id) or (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or (Auth::user()->esMentor() and Auth::user()->id==$id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
             $user= User::find($id);
             $becario = Becario::find($id);

@@ -5,6 +5,19 @@
 | 2018
 */
 
+Auth::routes();
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
+
+Route::get('/registrar/postulante-mentor', 'RegistroSisbecaController@registropostulantementor')->name('registro.postulante.mentor' );
+Route::post('/guardar-postulante-mentor', 'RegistroSisbecaController@guardarpostulantementor')->name('guardar.postulante.mentor' );
+
+Route::get('/registrar/postulante-becario', 'RegistroSisbecaController@registropostulantebecario')->name('registro.postulante.becario' );
+Route::post('/guardar-postulante-becario', 'RegistroSisbecaController@guardarpostulantebecario')->name('guardar.postulante.becario' );
+//esta ruta sirve para desloguear al usuario
+
+//Route::get('/home', 'HomeController@index')->name('home');
+
 //Web Site
 Route::get('cache', function(){
     Artisan::call('cache:clear');
@@ -803,10 +816,4 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
 });
 
-Auth::routes();
 
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
-
-//esta ruta sirve para desloguear al usuario
-
-//Route::get('/home', 'HomeController@index')->name('home');
