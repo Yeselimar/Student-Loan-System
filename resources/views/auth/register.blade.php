@@ -49,7 +49,8 @@
                         </h6>
                         
                         <!-- form tenia una clase f1-->
-                        <form role="form" class="f1 formMultiple" method="post" action="{{ route('register') }}" enctype="multipart/form-data" style="padding: 0px!important">
+                        <!--<form role="form" class="f1 formMultiple" method="post" action="{{ route('register') }}" enctype="multipart/form-data" style="padding: 0px!important">-->
+                        <form role="form" class="f1 formMultiple" method="post" action="{{ route('guardar.postulante.becario') }}" enctype="multipart/form-data" style="padding: 0px!important">
                             {{ csrf_field() }}
 
 
@@ -204,7 +205,7 @@
        <div class="modal-dialog">
            <div class="modal-content-ment">
                 <div class="text-center"> 
-                    <img src="images/postulacion-becario.png">
+                    <img src="{{asset('images/postulacion-becario.png')}}">
                 </div>
            </div>
        </div>

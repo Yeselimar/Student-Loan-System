@@ -177,6 +177,8 @@
             </div>
         </div>
     </form>
+    <!-- Modal para fecha de Bienvenida -->
+
     <!-- Modal para fecha de Bienvenida Todos -->
     <form method="POST" @submit.prevent="fechadebienvenidaparatodos()">
         {{ csrf_field() }}
@@ -216,6 +218,7 @@
             </div>
         </div>
     </form>
+    <!-- Modal para fecha de Bienvenida Todos -->
 </div>
 
 @endsection

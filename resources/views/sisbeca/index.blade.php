@@ -64,31 +64,48 @@
 	<br>
 	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() or Auth::user()->esEntrevistador())
 	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
-		<h3 class="text-center">
-			Próximas Actividades
-		</h3>
+		<div class="row">
+			<div class='col-sm-12'>
+				<h3 class="text-center">
+					Próximas Actividades
+				</h3>
+			</div>
+		</div>
 	</div>
 	<br>
 	<div class="container">
 		<div class="row">
-			@foreach($actividades as $actividad)
-			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border: 1px solid #eee;padding-top: 10px;padding-bottom: 5px" >
-				<div data-mh="actividad">
-					<h4>{{$actividad->getDia()}} {{$actividad->getMes()}} {{$actividad->getAnho()}}</h4> 
-					<h5 style="color:#424242">{{$actividad->getHoraInicio()}} a {{$actividad->getHoraFin()}}</h5>
-					<div>
-						@if($actividad->modalidad=='virtual')
-				            <i class="fa fa-laptop"></i>
-				        @else
-				            <i class='fa fa-male'></i>
-				        @endif
-				        {{$actividad->getModalidad()}}
+			@if($actividades->count()!=0)
+				@foreach($actividades as $actividad)
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border: 1px solid #eee;padding-top: 10px;padding-bottom: 5px" >
+					<div data-mh="actividad">
+						<h4>{{$actividad->getDia()}} {{$actividad->getMes()}} {{$actividad->getAnho()}}</h4> 
+						<h5 style="color:#424242">{{$actividad->getHoraInicio()}} a {{$actividad->getHoraFin()}}</h5>
+						<div>
+							@if($actividad->modalidad=='virtual')
+					            <i class="fa fa-laptop"></i>
+					        @else
+					            <i class='fa fa-male'></i>
+					        @endif
+					        {{$actividad->getModalidad()}}
+						</div>
+						{{ucwords($actividad->tipo)}}: {{$actividad->nombre}}
 					</div>
-					{{ucwords($actividad->tipo)}}: {{$actividad->nombre}}
+			        <a href="{{route('actividad.detalles',$actividad->id)}}" class="btn btn-xs btn-block sisbeca-btn-primary">
+			        	<i class="fa fa-info"> </i> Detalles
+			    	</a>
+			        @if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador() or Auth::user()->esEntrevistador())
+			         <a href="{{route('actividad.editar',$actividad->id)}}" class="btn btn-xs btn-block sisbeca-btn-primary">
+			         	<i class="fa fa-pencil"> </i> Editar
+			         </a>
+			        @endif
 				</div>
-		        <a href="{{route('actividad.detalles',$actividad->id)}}" class="btn btn-xs btn-block sisbeca-btn-primary">Detalles</a>
-			</div>
-			@endforeach
+				@endforeach
+			@else
+				<div class="col" style="border: 1px solid #dedede;border-radius: 10px;padding-top: 10px;">
+					<p class="h6 text-center"><strong>No hay actividades próximas</strong></p>
+				</div>
+			@endif
 		</div>
 	</div>
 	@endif

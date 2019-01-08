@@ -67,11 +67,12 @@
 
 @if(isset($charla))
 <!-- Modal para ver imagen -->
-<div class="modal fade" id="ver">|
+<div class="modal fade" id="ver">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong>Calendario Charlas</strong></h5>
+                <h5 class="modal-title pull-left"><strong>Calendario Charlas</strong></h5>
+                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
             </div>
             <div class="modal-body">
                 <br>

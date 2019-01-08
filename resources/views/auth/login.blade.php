@@ -41,6 +41,7 @@
                       <h2 style="color:white"> Iniciar Sesión</h2>
                     </div>
                     <div class="login-form panel-body" style="padding-top: 0px!important">
+                      @include('flash::message')
                       <form class="" method="POST" action="{{ route('login') }}" >
                         {{ csrf_field() }}
                           <!--<div class=" {{ $errors->has('email') ? ' has-error' : '' }}">-->
@@ -78,10 +79,12 @@
                           <hr>
                           <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                              <a href="{{ route('register') }}" class="btn sisbeca-btn-primary btn-block">Postularse a ProExcelencia</a>
+                              <!--<a href="{{ route('register') }}" class="btn sisbeca-btn-primary btn-block">Postularse a ProExcelencia</a>-->
+                              <a href="{{ route('registro.postulante.becario') }}" class="btn sisbeca-btn-primary btn-block">Postularse a ProExcelencia</a>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                              <a href="{{route('registerMentor')}}" class="btn sisbeca-btn-primary btn-block">Postularse como Mentor</a>
+                              <!--<a href="{{route('registerMentor')}}" class="btn sisbeca-btn-primary btn-block">Postularse como Mentor</a>-->
+                              <a href="{{route('registro.postulante.mentor')}}" class="btn sisbeca-btn-primary btn-block">Postularse como Mentor</a>
                             </div>
                           </div>
                           

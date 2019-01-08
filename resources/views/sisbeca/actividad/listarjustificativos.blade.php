@@ -112,19 +112,19 @@
 					<td>@{{fechaformartear(justificativo.created_at)}}</td>
 					<td>@{{fechaformartear(justificativo.aval.updated_at)}}</td>
 					<td>
-                        <a :href="getJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver justificativo" target="_blank">
+                        <a v-b-popover.hover.bottom="'Ver justificativo'" :href="getJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
                             <i class="fa fa-eye"></i>
                         </a>
                         
-                        <button type="button" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)" title="Aprobar justificativo">
+                        <button v-b-popover.hover.bottom="'Aprobar justificativo'" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)" >
                             <i class="fa fa-check"></i>
                         </button>
                     
-                        <button type="button" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)" title="Rechazar justificativo">
+                        <button v-b-popover.hover.bottom="'Rechazar justificativo'" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)" >
                             <i class="fa fa-remove"></i>
                         </button>
                         
-                        <button type="button" class="btn btn-xs sisbeca-btn-default" @click="devolverJustificativo(justificativo.aval.id)" title="Devolver justificativo">
+                        <button v-b-popover.hover.bottom="'Devolver justificativo'" class="btn btn-xs sisbeca-btn-default" @click="devolverJustificativo(justificativo.aval.id)">
                             <i class="fa fa-reply"></i>
                         </button>
                         

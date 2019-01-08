@@ -59,11 +59,16 @@
 			<a href="{{route('actividad.editar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
 				<i class="fa fa-pencil"></i>
 			</a>
-			<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
+
+			<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
+				<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
+			</span>
+			
 			<a href="{{route('actividad.inscribir.becario',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip"  title="Inscribir Becario" data-placement="bottom">Inscribir Becario</a>
 
 		@endif
 	</div>
+	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered" id="informacion">
 			<thead>
@@ -149,13 +154,16 @@
 							@{{ actividad.status }}</span>
 
 						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
-						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarDisponible()">
+
+						<button v-b-popover.hover.bottom="'Colocar en Disponible'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarDisponible()">
 							<i class="fa fa-check"></i>
 						</button>
-						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarSuspendido()">
+
+						<button v-b-popover.hover.bottom="'Colocar en Suspendido'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarSuspendido()">
 							<i class="fa fa-remove"></i>
 						</button>
-						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarBloqueado()">
+
+						<button v-b-popover.hover.bottom="'Colocar en Bloqueado'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarBloqueado()">
 							<i class="fa fa-lock"></i>
 						</button>
 						@endif
@@ -344,32 +352,28 @@
 					<td>
 						<template v-if="becario.aval_id==null">
 							<template v-if="becario.estatus=='no asistio' || becario.estatus=='asistira' || becario.estatus=='lista de espera'">
-									<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" title="Colocar como Asistio">
+								<button v-b-popover.hover.bottom="'Colocar como Asistio'" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" >
 									<i class="fa fa-check"></i>
 								</button>
 							</template>
 								
 							<template v-if="becario.estatus=='asistio' || becario.estatus=='asistira' ||  becario.estatus=='lista de espera'">
-								<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)" title="Colocar como No Asistio">
+								<button v-b-popover.hover.bottom="'Colocar como No Asistio'" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)">
 									<i class="fa fa-remove"></i>
 								</button>
 							</template>
 						</template>
 						<template v-if="becario.aval_id==null">
-							<span data-toggle="tooltip"  title="Subir Justificativo" >
-								<a :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
-									<i class="fa fa-upload" aria-hidden="true"></i>
-								</a>
-							</span>
+							<a v-b-popover.hover.bottom="'Subir Justificativo'" :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-upload" aria-hidden="true"></i>
+							</a>
 						</template>
 						<template v-else>
-							<span data-toggle="tooltip"  title="Editar Justificativo">
-								<a :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
-									<i class="fa fa-edit"></i>
-								</a>
-							</span>
+							<a v-b-popover.hover.bottom="'Editar Justificativo'" :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-edit"></i>
+							</a>
 						</template>
-						<button data-toggle="tooltip"  title="Eliminar Inscripción" type="button" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
+						<button v-b-popover.hover.bottom="'Eliminar Inscripción'" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
 							<i class="fa fa-trash" ></i>
 						</button>
 					</td>
@@ -385,7 +389,7 @@
 		<hr>
 		<p class="h6 text-right">@{{ becarios.length }} becario(s)</p>
 	</div>
-
+	
 
 	<!-- Modal para eliminar inscripición -->
 	<form method="POST" @submit.prevent="desinscribir(id)" class="form-horizontal"  >
@@ -393,8 +397,9 @@
 		<div class="modal fade" id="desinscribirModal">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">
+					<div class="modal-header pull-left">
 				    	<h5 class="modal-title"><strong>Eliminar Inscripción</strong></h5>
+				    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 				    </div>
 					<div class="modal-body">
 						<br>
@@ -413,27 +418,28 @@
 	<!-- Modal para eliminar inscripición -->
 
 	<!-- Modal para eliminar actividad -->
-		<div class="modal fade" id="mostrareliminar">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-				    	<h5 class="modal-title"><strong>Eliminar @{{actividad.tipo}}</strong></h5>
-				    </div>
-					<div class="modal-body">
-						<div class="col-lg-12">
-							<br>
-							<p class="h6 text-center">¿Está seguro que desea eliminar el <strong>@{{actividad.tipo}}</strong> <strong>@{{actividad.nombre}}</strong>?</p>
-						</div>
-						
+	<div class="modal fade" id="mostrareliminar">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<h5 class="modal-title pull-left"><strong>Eliminar @{{actividad.tipo}}</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+			    </div>
+				<div class="modal-body">
+					<div class="col-lg-12">
+						<br>
+						<p class="h6 text-center">¿Está seguro que desea eliminar el <strong>@{{actividad.tipo}}</strong> <strong>@{{actividad.nombre}}</strong>?</p>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-						<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Si</a>
-					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+					<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Si</a>
 				</div>
 			</div>
 		</div>
-		<!-- Modal para eliminar actividad -->
+	</div>
+	<!-- Modal para eliminar actividad -->
 </div>
 @endsection
 
@@ -442,7 +448,6 @@
 
 <script>
 const app = new Vue({
-
     el: '#app',
     data:
     {

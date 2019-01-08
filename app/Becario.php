@@ -3,6 +3,9 @@
 namespace avaa;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
+use avaa\ActividadFacilitador;
+use avaa\ActividadBecario;
 
 class Becario extends Model
 {
@@ -116,13 +119,18 @@ class Becario extends Model
     public function promediotodosperiodos()
     {
         $suma = 0;
+        $contador=0;
         foreach($this->periodos as $periodo)
         {
-            $suma = $suma + $periodo->getPromedio();
+            if($periodo->aval->estatus=="aceptada")
+            {
+                $contador++;
+                $suma = $suma + $periodo->getPromedio();
+            }
         }
-        if($this->getTotalPeriodos()!=0)
+        if($contador!=0)
         {
-            return number_format($suma/$this->getTotalPeriodos(), 2, '.', ',');
+            return number_format($suma/$contador, 2, '.', ',');
         }
         return number_format(0, 2, '.', ',');
     }
@@ -130,11 +138,20 @@ class Becario extends Model
     public function promediotodoscva()
     {
         $suma = 0;
+        $contador=0;
         foreach($this->cursos as $curso)
         {
-            $suma = $suma + $curso->nota;
+            if($curso->aval->estatus=="aceptada")
+            {
+                $contador++;
+                $suma = $suma + $curso->nota;
+            }
         }
-        return number_format($suma/$this->getTotalCVA(), 2, '.', ',');
+        if($contador!=0)
+        {
+            return number_format($suma/$contador, 2, '.', ',');
+        }
+        return number_format(0, 2, '.', ',');
     }
 
     public function nomBorradores() // ?
@@ -219,6 +236,110 @@ class Becario extends Model
         else
         {
             return "no";
+        }
+    }
+
+    public function getHorasVoluntariados()
+    {
+        $voluntariados = $this->voluntariados;
+        $total = 0;
+        foreach($voluntariados as $voluntariado)
+        {
+            if($voluntariado->aval->estatus=="aceptada")
+            {
+                $total = $total + $voluntariado->horas;
+            }
+        }
+        $total_a = 0;
+        $actividades = $this->actividadesfacilitadas;
+        foreach ($actividades as $item)
+        {
+            $ab = ActividadFacilitador::paraBecario($this->user->id)->paraActividad($item->id)->first();
+            $total_a = $total_a + $ab->horas;
+        }
+        return ($total+$total_a);
+    }
+
+    public function getTotalTalleres()
+    {
+        $actividades = $this->actividades;
+        $contador = 0;
+        foreach($actividades as $item)
+        {
+            if($item->tipo=="taller")
+            {
+                $ab = ActividadBecario::paraBecario($this->user->id)->paraActividad($item->id)->first();
+                if($ab->estatus=='asistio')
+                {
+                    $contador++;
+                }
+            }
+        }
+        return $contador;
+    }
+
+    public function getTotalChatClubs()
+    {
+        $actividades = $this->actividades;
+        $contador = 0;
+        foreach($actividades as $item)
+        {
+            if($item->tipo=="chat club")
+            {
+                $ab = ActividadBecario::paraBecario($this->user->id)->paraActividad($item->id)->first();
+                if($ab->estatus=='asistio')
+                {
+                    $contador++;
+                }
+            }
+        }
+        return $contador;
+    }
+
+    public function getNivelCVA()
+    {
+        $id=$this->user->id;
+        $curso = DB::table('cursos')
+            ->where('aval.tipo','=','nota')
+            ->where('aval.estatus','=','aceptada')
+            ->orderby('cursos.modulo','desc')
+            ->join('aval', function ($join) use($id)
+        {
+          $join->on('cursos.aval_id','=','aval.id')
+            ->where('cursos.becario_id','=',$id);
+        })->first();
+        if(!empty($curso))
+        {
+            return $curso->modulo.' - '.$curso->modo;
+        }
+        else
+        {
+            return "N/A";
+        }
+    }
+
+    public function getAnhoSemestreCarrera()
+    {
+        $id=$this->user->id;
+        $periodo = DB::table('periodos')
+            ->where('aval.tipo','=','constancia')
+            ->where('aval.estatus','=','aceptada')
+            ->orderby('periodos.numero_periodo','desc')
+            ->join('aval', function ($join) use($id)
+        {
+          $join->on('periodos.aval_id','=','aval.id')
+            ->where('periodos.becario_id','=',$id);
+        })->first();
+        if(!empty($periodo))
+        {
+            if($this->esSemestral())
+                return $periodo->numero_periodo." semestre";
+            else
+                return $periodo->numero_periodo." año";
+        }
+        else
+        {
+            return "N/A";
         }
     }
 }

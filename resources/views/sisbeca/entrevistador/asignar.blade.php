@@ -74,7 +74,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title pull-left"><strong>Asignar Entrevistadores @{{id}}</strong></h5>
-						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 				    </div>
 					<div class="modal-body">
 						<div class="row">
@@ -84,7 +84,7 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
-									<date-picker class="sisbeca-input input-sm" name="fecha" v-model="fecha" placeholder="Pick date and time" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
+									<date-picker class="sisbeca-input input-sm" name="fecha" v-model="fecha" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
@@ -93,7 +93,7 @@
 						  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 							<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
 								<!--	<input type="text" autocomplete="off" class="sisbeca-input input-sm" > -->
-								<date-picker class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" placeholder="Pick time" :config="{ enableTime: true, enableSeconds: false, noCalendar: true,  dateFormat: 'h:i K'}"></date-picker>
+								<date-picker class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" placeholder="HH:MM AA" :config="{ enableTime: true, enableSeconds: false, noCalendar: true,  dateFormat: 'h:i K'}"></date-picker>
 							</div>
 						</div>
 
@@ -229,10 +229,7 @@ const app = new Vue({
 		},
 		asignarentrevistadores: function(id,seleccionados)
 		{
-			let dateAux;
 			this.seleccionados = seleccionados;
-
-			//console.log(this.fecha);
 			var dataform = new FormData();
             dataform.append('seleccionados', this.seleccionados);
             dataform.append('fecha', this.fecha);
@@ -261,7 +258,7 @@ const app = new Vue({
     		var length = number.toString().length; /* Largo del número */
 		    var zero = "0"; /* String de cero */
 
-		    if (width <= length) {
+		    if (width <= length){
 		        if (number < 0) {
 		             return ("-" + numberOutput.toString());
 		        } else {

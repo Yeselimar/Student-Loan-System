@@ -64,6 +64,7 @@
                         </div>
                     </template>
                     <template v-else>
+
                         <div class="col-lg-4 col-md-4 col-sm-6">
                            
                             <label class="control-label">*Seleccione becario @{{index+1}}</label>
@@ -73,10 +74,11 @@
                                     @{{ becario.user.name }} @{{ becario.user.last_name }}
                                 </option>
                             </select>
-                                <!-- @{{ input.id}} -->
+                            <!-- @{{ input.id}} -->
                             <!-- @{{ input.nombre }}-->
-                                
+                            
                         </div>
+
                         <div class="col-lg-4 col-md-4 col-sm-6">
                             <label class="control-label">*Horas Facilitador @{{index+1}}</label>
                             <div class="input-group">
@@ -130,19 +132,19 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Fecha</label>
-                    {{ Form::text('fecha', ($model=='crear') ? null : date("d/m/Y", strtotime($actividad->fecha)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fecha",'v-model'=>'fecha'])}}
+                    <date-picker class="sisbeca-input" name="fecha" v-model="fecha" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
                     <span v-if="errores.fecha" :class="['label label-danger']">@{{ errores.fecha[0] }}</span>
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Hora inicio</label>
-                    {{ Form::text('hora_inicio', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_inicio",':value'=>'hora_inicio'])}}
+                    <date-picker class="sisbeca-input" v-model="hora_inicio" placeholder="HH:MM AA" placeholder="HH:MM AA" :config="{ enableTime: true, enableSeconds: false, noCalendar: true,  dateFormat: 'h:i K'}"></date-picker>
                     <span v-if="errores.hora_inicio" :class="['label label-danger']">@{{ errores.hora_inicio[0] }}</span>
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Hora fin</label>
-                    {{ Form::text('hora_fin', ($model=='crear') ? null : null, ['class' => 'sisbeca-input', 'placeholder'=>'HH:MM AA', 'id'=>"hora_fin",':value'=>'hora_fin'])}}
+                    <date-picker class="sisbeca-input" v-model="hora_fin" placeholder="HH:MM AA" placeholder="HH:MM AA" :config="{ enableTime: true, enableSeconds: false, noCalendar: true,  dateFormat: 'h:i K'}"></date-picker>
                     <span v-if="errores.hora_fin" :class="['label label-danger']">@{{ errores.hora_fin[0] }}</span>
                 </div>
 
@@ -151,13 +153,6 @@
                     {{ Form::text('limite_participantes', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'limite_participantes'])}}
                     <span v-if="errores.limite" :class="['label label-danger']">@{{ errores.limite[0] }}</span>
                 </div>
-                <!--
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <label class="control-label">*Horas voluntariados</label>
-                    {{ Form::text('horas_voluntariados', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'horas_voluntariados'])}}
-                    <span v-if="errores.horas" :class="['label label-danger']">@{{ errores.horas[0] }}</span>
-                </div>
-                -->
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <label class="control-label">Descripción</label>
                     {{ Form::text('descripcion', ($model=='crear') ? null : $actividad->descripcion , ['class' => 'sisbeca-input', 'placeholder'=>'Ingrese descripción','v-model'=>'descripcion'])}}
@@ -193,6 +188,7 @@
 <script>
 const app = new Vue({
 
+    components:{DatePicker},
     el: '#app',
     data:
     {
@@ -200,7 +196,7 @@ const app = new Vue({
         actividad:[],
         id_actividad:'',
         nombre:'',
-        tipo:'taller',
+        tipo:'chat club',
         modalidad:'presencial',
         nivel:'inicio',
         anho_academico:'',
@@ -230,42 +226,9 @@ const app = new Vue({
     },
     mounted()
     {
-        $('#fecha').datepicker({
-            format: 'dd/mm/yyyy',
-            language: 'es',
-            orientation: 'bottom',
-            autoclose: true
-        }).on(
-            'changeDate', () => { this.fecha = $('#fecha').val();
-        });
-
-        $('#hora_inicio').datetimepicker({
-            format: 'hh:mm A',
-        }).on('dp.change', function(e) {
-            /*console.log("holaaa");
-            console.log($('#hora_inicio').val());
-            this.hora_inicio = $('#hora_inicio').val();
-            console.log(this.hora_inicio);
-            console.log(e.date);
-            var d = new Date(e.date);
-            console.log(moment(d).format('hh:mm A'));
-            this.hora_inicio = moment(d).format('hh:mm A');
-            console.log(this.hora_inicio);*/
-        });
-
-        $('#hora_fin').datetimepicker({
-            format: 'hh:mm A',
-        }).on('dp.change', function(e) {
-            /*this.hora_fin = $('#hora_fin').val();*/
-        });
     },
     methods: 
     {
-        cambiarfecha(hora)
-        {
-            this.hora_inicio = hora;
-            console.log("ajaja");
-        },
         actualizarfacilitadores(tipo)
         {
             if(tipo=='taller')
@@ -334,11 +297,9 @@ const app = new Vue({
                     this.descripcion = this.actividad.descripcion;
                     var dia = new Date (this.actividad.fecha);
                     this.fecha = moment(dia).format('DD/MM/YYYY');
-                    $('#fecha').datepicker('setDate', new Date (this.actividad.fecha));
-                    $('#fecha').datepicker('update');
-                    var dia = new Date ("2018-11-11 "+this.actividad.hora_inicio);
+                    var dia = new Date ("2030-11-11 "+this.actividad.hora_inicio);
                     this.hora_inicio = moment(dia).format('hh:mm A');
-                    var dia = new Date ("2018-11-11 "+this.actividad.hora_fin);
+                    var dia = new Date ("2030-11-11 "+this.actividad.hora_fin);
                     this.hora_fin = moment(dia).format('hh:mm A');
                    
                 });
@@ -360,7 +321,6 @@ const app = new Vue({
                     "horas":''
                 })
             }
-            
         },
         eliminar(index)
         {
@@ -368,10 +328,12 @@ const app = new Vue({
         },
         guardaractividad()
         {
-            console.log(this.inputs);
+            //console.log(this.inputs);
             //------------------Guardar actividad
-            this.hora_inicio = $('#hora_inicio').val();
-            this.hora_fin = $('#hora_fin').val();
+            var dia = new Date ("2030-11-11 "+this.hora_inicio);
+            this.hora_inicio = moment(dia).format('hh:mm A');
+            var dia = new Date ("2030-11-11 "+this.hora_fin);
+            this.hora_fin = moment(dia).format('hh:mm A');
             var url = '{{route('actividad.guardar')}}';
             let data = JSON.stringify({
                 facilitadores: this.inputs,
@@ -418,8 +380,10 @@ const app = new Vue({
             var id = '{{ (empty($actividad->id)) ? 'null': $actividad->id}}';
             var url = "{{ route('actividad.actualizar',':id' ) }}";
             url = url.replace(':id', id);
-            this.hora_inicio = $('#hora_inicio').val();
-            this.hora_fin = $('#hora_fin').val();
+            var dia = new Date ("2030-11-11 "+this.hora_inicio);
+            this.hora_inicio = moment(dia).format('hh:mm A');
+            var dia = new Date ("2030-11-11 "+this.hora_fin);
+            this.hora_fin = moment(dia).format('hh:mm A');
             let data = JSON.stringify({
                 facilitadores: this.inputs,
                 nombre: this.nombre,
@@ -456,9 +420,4 @@ const app = new Vue({
 });    
 </script>
 
-<script>
-
-    
-	
-</script>
 @endsection

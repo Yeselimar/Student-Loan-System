@@ -388,10 +388,15 @@
                 @if((Auth::user()->esCoordinador()) || (Auth::user()->esDirectivo()))
                 <li class="nav-label">Actividades Becarias</li>
                 <li>
-                    <a class="has-arrow  " href="{{route('becarios.todos')}}" aria-expanded="false">
-                        <i class="fa  fa-list"></i>
-                        <span class="hide-menu">Listar Becarios</span>
+                    <a class="has-arrow  " href="#" aria-expanded="false">
+                        <i class="fa fa-group"></i>
+                        <span class="hide-menu">Becarios</span>
                     </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('becarios.reporte.general')}}">Reporte General</a></li>
+                        <li><a href="{{route('becarios.todos')}}">Actualizar Estatus</a></li>
+                    </ul>
+
                 </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">

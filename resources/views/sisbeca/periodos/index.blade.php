@@ -103,7 +103,8 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-			    	<h5 class="modal-title"><strong>Eliminar Periodo</strong></h5>
+			    	<h5 class="modal-title pull-left"><strong>Eliminar Periodo</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 			    </div>
 				<div class="modal-body">
 					<div class="col-lg-12">

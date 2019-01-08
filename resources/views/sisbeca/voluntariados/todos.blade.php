@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{route('becarios.todos')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
+		<a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
 	</div>
 
 	<div class="table-responsive">
@@ -54,10 +54,10 @@
 				</template>
 
 				<template slot="actions" slot-scope="row">
-					<a :href="urlEditarVoluntariado(row.item.id)" class="btn btn-xs sisbeca-btn-primary" title="Editar Periodo">
+					<a v-b-popover.hover.bottom="'Editar Voluntariado'" :href="urlEditarVoluntariado(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
 						<i class="fa fa-pencil"></i>
 					</a>
-					<a :href="urlVerComprobante(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" title="Ver Comprobante" target="_blank">
+					<a v-b-popover.hover.bottom="'Ver Comprobante'" :href="urlVerComprobante(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
 						<template v-if="row.item.aval.extension=='imagen'">
 							<i class="fa fa-photo"></i>
 						</template>
@@ -68,12 +68,12 @@
 					</a>
 					
 					<template v-if="row.item.aval.estatus!='aceptada'">
-						<button type="button" class="btn btn-xs sisbeca-btn-default" title="Eliminar CVA" @click="modalEliminar(row.item.ava.id,row.item.becario)">
+						<button v-b-popover.hover.bottom="'Eliminar Voluntariado'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminar(row.item,row.item.becario)">
 							<i class="fa fa-trash"></i>
 						</button>
 					</template>
 					<template v-else>
-						<button type="button" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
+						<button v-b-popover.hover.bottom="'Eliminar Voluntariado'" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
 							<i class="fa fa-trash"></i>
 						</button>
 					</template>
@@ -101,7 +101,8 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title"><strong>Eliminar Voluntariado</strong></h5>
+					<h5 class="modal-title pull-left"><strong>Eliminar Voluntariado</strong></h5>
+					<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 				</div>
 				<div class="modal-body">
 					<div class="col-lg-12">
@@ -123,9 +124,9 @@
 
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
-	<div>
-		<svg class="circular" viewBox="25 25 50 50">
-			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
 		</div>
 	</section>
 	<!-- Cargando.. -->
@@ -160,7 +161,7 @@
 			[{
 				"id": null,
 				"nombre": "",
-				"instituto": "",
+				"horas": "",
 				"responsable": "",
 				"aval": {
 					"id": null,
@@ -171,13 +172,12 @@
 				"becario": ""
 			}],
 			fields: [
-			{ key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
 			{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 			{ key: 'nombre', label: 'Nombre voluntariado', sortable: true, 'class': 'text-center' },
-			{ key: 'instituto', label: 'Instituto', sortable: true, 'class': 'text-center' },
+			{ key: 'horas', label: 'Horas', sortable: true, 'class': 'text-center' },
 			{ key: 'aval', label: 'Estatus', sortable: true, 'class': 'text-center' },
 			{ key: 'responsable', label: 'Responsable', sortable: true, 'class': 'text-center' },
-			{ key: 'actions', label: 'Actions' }
+			{ key: 'actions', label: 'Acciones' }
 			],
 			currentPage: 1,
 			perPage: 5,
@@ -221,7 +221,7 @@
 			{
 				this.id=voluntariado.id;
 				this.nombre_voluntariado=voluntariado.nombre;
-				this.becario_voluntariado=becario.name+' '+becario.last_name;
+				this.becario_voluntariado=voluntariado.becario;
 				$('#eliminarvoluntariado').modal('show');
 			},
 			eliminarVoluntariado(id)
@@ -232,7 +232,7 @@
 				{
 					$('#eliminarvoluntariado').modal('hide');
 					toastr.success(response.data.success);
-					this.obtenervoluntariados();			
+					this.obtenervoluntariadosapi();			
 				});
 			},
 			urlVerComprobante(slug)
@@ -284,7 +284,7 @@
 				url = url.replace(':id', id);
 				axios.post(url,dataform).then(response => 
 				{
-					this.obtenervoluntariados();
+					this.obtenervoluntariadosapi();
 					toastr.success(response.data.success);
 				});
 			},
@@ -297,7 +297,7 @@
 				return moment(new Date (fecha)).format('DD/MM/YYYY hh:mm A');
 			}
 		}
-});
+	});
 </script>
 
 @endsection

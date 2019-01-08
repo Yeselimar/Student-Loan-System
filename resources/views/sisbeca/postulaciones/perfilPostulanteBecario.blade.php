@@ -121,6 +121,7 @@
     @endif
 
      <br>
+     
 </div>
 
     <!-- Modal para aprobar -->
@@ -131,7 +132,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"> &times;</span>
                   </button>
-
+                
                   <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
 
                </div>
@@ -163,9 +164,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Confirmación</h4>
+                <h4 class="modal-title pull-left">Confirmación</h4>
+                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
           </div>
           <div class="modal-body">
             <br>

@@ -53,7 +53,7 @@ class GetPublicController extends Controller
         $becario->fecha_entrevista = DateTime::createFromFormat('d/m/Y', "14/02/2019" )->format('Y-m-d');
         $becario->save();
         return "exito";*/
-        $hora = DateTime::createFromFormat('H:i a', "03:22 AM" )->format('H:i:s');
+        //$hora = DateTime::createFromFormat('H:i a', "03:22 AM" )->format('H:i:s');
         //$hora = date("h:i A", strtotime("3:22 PM"));
         //$fecha = "14/02/1993".' '.date("h:i a", strtotime("3:22 PM"));
         //$fechan = DateTime::createFromFormat('d/m/Y h:i A', $fecha )->format('Y-m-d H:i:s');
@@ -120,11 +120,28 @@ class GetPublicController extends Controller
                 }
         return "enviado";
         //relación de becarios a actividades
-        /*
-        $becario = Becario::find(5);
-        return  $becario->actividades;
         */
-
+        /*
+        $becario = Becario::find(8);
+        return  $becario->actividades;*/
+        /*
+        $id=54;
+        $anho =date('Y');
+        //obtengo el  nivel de cva
+        $curso = DB::table('cursos')
+            ->where('aval.tipo','=','nota')
+            ->where('aval.estatus','=','aceptada')
+            ->orderby('cursos.modulo','desc')
+            ->join('aval', function ($join) use($id,$anho)
+        {
+          $join->on('cursos.aval_id','=','aval.id')
+            ->where('cursos.becario_id','=',$id)
+            ;
+            
+        })->first();
+        return $curso->modulo.' - '.$curso->modo;
+        */
+        
         //relacion actividad_becario a aval
         /*
         $actividad_becario = ActividadBecario::where('becario_id','=','5')->where('actividad_id','=','1')->first();
@@ -195,7 +212,7 @@ class GetPublicController extends Controller
 
         //relación becarios a actividadesfacilitadas (becario como facilitador de una actividad)
         /*
-        $becario = Becario::find(5);
+        $becario = Becario::find(6);
         return $becario->actividadesfacilitadas;
         */
 
@@ -292,6 +309,8 @@ class GetPublicController extends Controller
         $editor->save();
 
         $usuario = User::find(6);
+        $usuario->user->name="Rafael";
+        $usuario->user->last_name="Delgado";
         $usuario->email='rafael1delgado@hotmail.com';
         $usuario->save();
 

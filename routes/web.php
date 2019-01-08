@@ -5,6 +5,19 @@
 | 2018
 */
 
+Auth::routes();
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
+
+Route::get('/registrar/postulante-mentor', 'RegistroSisbecaController@registropostulantementor')->name('registro.postulante.mentor' );
+Route::post('/guardar-postulante-mentor', 'RegistroSisbecaController@guardarpostulantementor')->name('guardar.postulante.mentor' );
+
+Route::get('/registrar/postulante-becario', 'RegistroSisbecaController@registropostulantebecario')->name('registro.postulante.becario' );
+Route::post('/guardar-postulante-becario', 'RegistroSisbecaController@guardarpostulantebecario')->name('guardar.postulante.becario' );
+//esta ruta sirve para desloguear al usuario
+
+//Route::get('/home', 'HomeController@index')->name('home');
+
 //Web Site
 Route::get('cache', function(){
     Artisan::call('cache:clear');
@@ -68,6 +81,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     {
         //resumen becario
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+        Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
@@ -127,6 +141,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
+        Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
+        Route::get('/becarios/obtener-estatus/api', 'SeguimientoController@obtenerestatusbecarios')->name('obtener.estatus.becarios');
+        Route::post('/becario/{id}/actualizar-estatus', 'SeguimientoController@actualizarestatusbecario')->name('actualizar.estatus.becario');
+        Route::post('/becario/{id}/guardar-fecha-carga-academica', 'SeguimientoController@guardarfechaacademica')->name('guardar.fecha.academica');
+        Route::get('/becarios/reporte-general', 'SeguimientoController@becariosreportegeneral')->name('becarios.reporte.general');
         //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
@@ -160,12 +179,14 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
+         Route::get('/periodos/obtener-todos/api', 'PeriodosController@obtenertodosapi')->name('periodos.obtenertodos.api');
 
         //cursos ó cva
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
-
-         //voluntariados
+        Route::get('/cursos/obtener-todos/api', 'CursoController@obtenertodosapi')->name('cursos.obtenertodos.api');
+        
+        //voluntariados
         Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
         Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
         Route::get('/voluntariados/obtener-todos/api', 'VoluntariadoController@obtenertodosapi')->name('voluntariados.obtenertodos.api');
@@ -795,10 +816,4 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
 });
 
-Auth::routes();
 
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
-
-//esta ruta sirve para desloguear al usuario
-
-//Route::get('/home', 'HomeController@index')->name('home');
