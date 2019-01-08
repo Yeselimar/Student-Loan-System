@@ -81,18 +81,18 @@
                 {{--Inicio de Vistas del Coordinador Educativo es decir el Editor--}}
                 @if(Auth::user()->rol==='editor')
                     <li class="nav-label">Inicio</li>
-                    
+
                     <li>
                         <a class="has-arrow " href="{{route('costos.index')}}" aria-expanded="false">
                         <i class="fa fa-usd"></i><span class="hide-menu">Costos</span></a>
                         </a>
                     </li>
 
-                    <li> 
+                    <li>
                         <a class="has-arrow " href="{{route('noticia.index')}}" aria-expanded="false">
                             <i class="fa fa-list-alt"></i><span class="hide-menu">Publicaciones</span>
                         </a>
-                        
+
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('noticia.index')}}">Listar publicaciones</a></li>
                             <li><a href="{{route('noticia.create')}}">Crear publicación</a></li>
@@ -135,9 +135,7 @@
 
                 {{--Inicio de Vistas del Directivo Unicamente--}}
                 @if(Auth::user()->rol==='directivo')
-                   
-                    
-                      <li class="nav-label">Inicio</li>
+                <li class="nav-label">Inicio</li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-plus"></i><span class="hide-menu">Postulaciones
                                 @if($numT>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numT}}</span>
@@ -145,10 +143,6 @@
                         </span></a>
 
                         <ul aria-expanded="false" class="collapse">
-
-                                          
-                                          
-
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
@@ -159,11 +153,11 @@
                                 </ul>
 
                             </li>
-                     
-                                         
+
+
                             <li><a href="{{ route('listarPostulantesMentores')}}">Mentores</a></li>
-                            
-                          
+
+
 
                         </ul>
                     </li>
@@ -220,7 +214,7 @@
 
                 @endif
                 {{--Fin de Vistas del Coordinador--}}
-                
+
                 {{--Inicio de Vista Compartida Coordinador/Directivo --}}
                 @if((Auth::user()->rol==='coordinador') || (Auth::user()->rol==='directivo'))
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-question-circle"></i><span class="hide-menu">Solic./Reclamos
@@ -246,7 +240,7 @@
                         </ul>
                     </li>
                     <li> <a class="has-arrow none-list" href="{{route('formularioReporte.solicitudes')}}" aria-expanded="false"><i class="fa fa-clone"></i><span class="hide-menu">Solicitudes</span></a>
-                        
+
                     </li>
                     @if((Auth::user()->rol==='directivo'))
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-eject"></i><span class="hide-menu">Egresados</span></a>
@@ -308,7 +302,7 @@
                             <li><a href="#">Notas(Periodo Lectivo)</a></li>
                         </ul>
                     </li> --}}
-                    
+
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-book"></i><span class="hide-menu">Libros</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('facturas.listar')}}">Listar Facturas</a></li>
@@ -389,7 +383,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('voluntariados.crear',Auth::user()->id)}}">Cargar Voluntariado</a></li>
                     </ul>
-                </li> 
+                </li>
                 @endif
                 @if((Auth::user()->esCoordinador()) || (Auth::user()->esDirectivo()))
                 <li class="nav-label">Actividades Becarias</li>
@@ -438,7 +432,7 @@
                         <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
                     </ul>
                 </li>
-               
+
                 @endif
 
                 <!-- Rutas para entrevistadores -->

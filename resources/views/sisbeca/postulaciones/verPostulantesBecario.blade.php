@@ -5,10 +5,10 @@
     <strong> Lista de todos los becarios</strong>
 
     <div class=" table-responsive">
-    
+
         <form class="form-horizontal" method="post" action ="">
          {{csrf_field()}}
-                           
+
             <table id="postulantes" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -26,7 +26,7 @@
                     @foreach($becarios as $becario)
                         @if($becario->status !='pre-postulante')
                             <tr>
-                                <!--     @if(($becario->status=='entrevista')||($becario->status=='rechazado')) 
+                                <!--     @if(($becario->status=='entrevista')||($becario->status=='rechazado'))
                                 <td class="text-center"><a class="btn btn-success btn-xs"><span style="color:#26dad2;display:none">.</span> </td></a>
                                 @else
                                 <td class="text-center"><a class="btn btn-warning btn-xs"><span style="display:none">..</span> </td></a>
@@ -34,10 +34,14 @@
                                 <td class="text-center">{{ $becario->user->name.' '.$becario->user->last_name }}</td>
                                 <td class="text-center">{{ $becario->user->cedula }}</td>
 
-                                @if($becario->status=='entrevista')                                        
+                                @if($becario->status=='entrevista')
                                     <td class="text-center">
                                         <span class="label label-inverse">A Entrevista</span>
                                     </td>
+                                @elseif($becario->status=='no_entrevista')
+                                <td class="text-center">
+                                    <span class="label label-danger">Rechazado</span>
+                                </td>
                                 @elseif($becario->status=='rechazado')
                                 <td class="text-center">
                                     <span class="label label-danger">Rechazado</span>
@@ -58,13 +62,13 @@
 
                                 <td class="text-center">{{ $becario->user->email }}</td>
 
-                                
+
                                 <td class="text-center">
                                     <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Expediente" >
                                         <i class='fa fa-eye' ></i>
                                     </a>
                                 </td>
-                                
+
                             </tr>
                         @endif
                     @endforeach
@@ -77,7 +81,7 @@
             </table>
 
         </form>
-        
+
     </div>
 
 </div>
@@ -87,7 +91,7 @@
 
 <script>
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 

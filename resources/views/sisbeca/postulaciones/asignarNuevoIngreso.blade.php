@@ -33,7 +33,7 @@
                             <span class="label label-danger">Rechazado</span>
                         </template>
                     </td>
-                    <td class="text-center"> @{{postulante.user.name}} @{{postulante.user.last_name}} </td>
+                    <td class="text-center">@{{postulante.user.id}} @{{postulante.user.name}} @{{postulante.user.last_name}} </td>
                     <td class="text-center">@{{postulante.user.cedula}}</td>
                     <td class="text-center">
                         <template v-if="postulante.entrevistadores.length!=0">
@@ -57,9 +57,12 @@
                     <td class="text-center">
                         <template v-if="postulante.fecha_bienvenida">
                             @{{fechaformatear(postulante.fecha_bienvenida)}}
+                            <button v-b-popover.hover="'Editar Reunión de Bienvenida'" class="btn btn-xs sisbeca-btn-primary" @click.prevent="mostrarModalBienvenida(postulante)" data-target="modal-fecha-bienvenida" >
+                                <i class="fa fa-edit"></i>
+                            </button>
                         </template>
                         <template v-else>
-                            <button v-b-popover.hover="'Asignar Fecha de Bienvenida'" class="btn btn-xs sisbeca-btn-primary" @click.prevent="mostrarModalBienvenida(postulantes)" data-target="modal-fecha-bienvenida" >
+                            <button v-b-popover.hover="'Asignar Fecha de Bienvenida'" class="btn btn-xs sisbeca-btn-primary" @click.prevent="mostrarModalBienvenida(postulante)" data-target="modal-fecha-bienvenida" >
                                 <i class="fa fa-calendar"></i> Asignar Fecha
                             </button>
                         </template>
@@ -108,10 +111,25 @@
                     <div class="modal-body text-center">
                         <br>
                     <template v-if="funcion==='Aprobar'">
-                    <h5>¿Esta Seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"> @{{nombreyapellido}}</div>
+                        <div class="row panel-body">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <img class="img-responsive w-50 m-b-20" :src="imagen_postulante">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+                                    <div>Edad:@{{edad}}</div>
+                                    <div><b>Promedio Universitario:</b>@{{promedio}}</div>
+                                    <div>Observación:@{{observacion}}</div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer"><h5>¿Esta Seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
+                    </div>
                     </template>
                     <template v-else>
-                    <h5>¿Esta Seguro que desea <strong class="letras-rojas">@{{funcion}}</strong> a @{{nombreyapellido}} Becario de ProExcelencia?</h5>
+                        <h5>¿Esta Seguro que desea <strong class="letras-rojas">@{{funcion}}</strong> a @{{nombreyapellido}} Becario de ProExcelencia?</h5>
                     </template>
                     </div>
                     <div class="modal-footer">
@@ -135,9 +153,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="alert  alert-warning alert-important" role="alert">
-                                    Actualmente no hay Postulantes aprobados para entrevistas...
-                            </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
                                 <label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
                                 <date-picker data-trigger="focus" class="sisbeca-input input-sm" name="fecha" v-model="fecha" placeholder="Seleccione la Fecha" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
@@ -175,7 +190,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="alert  alert-warning alert-important" role="alert">
-                                    Estos cambios se aplicarán a todos los postulantes listados en la vista anterior
+                                    Atención: Estos cambios se aplicarán a todos los postulantes por igual.
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
                                 <label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
@@ -226,6 +241,9 @@
             fecha:'',
             hora:'',
             lugar:'',
+            edad:'',
+            promedio:'',
+            observacion:'',
             postulantes:[],
             contador:0,
 
@@ -249,14 +267,16 @@
             veredictopostulantesbecarios:function(id)
             {
                 var url = '{{route('veredicto.postulantes.becarios')}}';
+               // console.log('ID:' , id);
                 axios.post(url,{
-                   id:this.id,
+                    id:this.id,
                     funcion:this.funcion
                     }).then(response=>{
                     $('#modal-asignar').modal('hide');
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });
+
             },
             mostrarModal:function(postulante,imagenes,funcion)
 		    {
@@ -265,13 +285,17 @@
                 }else if(funcion=='0'){
                     this.funcion='Rechazar';
                 }
-              //  this.id = postulante.user_id;
+                this.id = postulante.user_id;
                 this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
+                this.edad = postulante.user.edad;
+                this.observacion = postulante.observacion_privada;
+                this.promedio = postulante.promedio_universidad;
                 for (var i = 0; i < imagenes.length; i++)
                 {
                     if(imagenes[i].titulo=='img_perfil')
                     {
-                        this.imagen_postulante=imagenes[i].titulo;
+                        this.imagen_postulante=imagenes[i].url;
+                        console.log(this.imagen_postulante);
                     }
                 }
                 $('#modal-asignar').modal('show');
@@ -286,42 +310,19 @@
             {
                 var url ='{{route('asignar.fecha.bienvenida')}}';
                 axios.post(url,{
-                   id:this.id,
-                   fecha:this.fecha,
-                   lugar:this.lugar,
-                   hora:this.hora,
+                id:this.id,
+                fecha:this.fecha,
+                lugar:this.lugar,
+                hora:this.hora,
                 }).then(response =>
                 {
                     $('#modal-fecha-bienvenida').modal('hide');
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });
-         /*       this.hora = $('#hora').val();
-               this.id= id,
-    			this.fecha = $('#fecha').val();
-                var url = '{{route('asignar.fecha.bienvenida')}}';
-                let data = JSON.stringify({
-                    postulante: this.postulante,
-                    lugar: this.lugar,
-                    fecha: this.fecha,
-                });
-                axios.post(url,data,{
-                    headers:
-                    {
-                        'Content-Type': 'application/json',
-                    }
-                }).then(response =>
-                {
-                    $('#modal-fecha-bienvenida').modal('hide');
-                    this.obtenerpostulantes();
-                    toastr.success(response.data.success);
-                });*/
             },
             mostrarModalBienvenidaTodos:function(postulantes)
             {
-                //this.id = postulante.user_id;
-              //  this.postulantes=postulantes;
-            // console.log('ID:' , postulante.user_id);
                 $('#modal-fecha-bienvenida-todos').modal('show');
             },
             fechadebienvenidaparatodos: function()
@@ -333,6 +334,7 @@
                     //postulantes: this.postulantes,
                     lugar: this.lugar,
                     fecha: this.fecha,
+                    hora: this.hora,
                 });
                 axios.post(url,data,{
                     headers:

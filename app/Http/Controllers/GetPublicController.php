@@ -23,7 +23,7 @@ use avaa\Aval;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
-use Mail; 
+use Mail;
 use DateTime;
 
 class GetPublicController extends Controller
@@ -57,13 +57,13 @@ class GetPublicController extends Controller
         //$hora = date("h:i A", strtotime("3:22 PM"));
         //$fecha = "14/02/1993".' '.date("h:i a", strtotime("3:22 PM"));
         //$fechan = DateTime::createFromFormat('d/m/Y h:i A', $fecha )->format('Y-m-d H:i:s');
-        return response()->json( date("h:i a", strtotime($hora)) ); 
+        return response()->json( date("h:i a", strtotime($hora)) );
         /*$entrevistadores = User::entrevistadores()->get();
         return $entrevistadores;
         */
         //prueba para enviar email
         /*$request= "";
-        Mail::send('emails.base',  
+        Mail::send('emails.base',
             array(
                 'name'          => 'Rafael Delgado',
                 'addressee'     => 'delgadorafael2011@gmail.com',
@@ -72,7 +72,7 @@ class GetPublicController extends Controller
             ), function($message) use ($request)
         {
             $message->from('no-reply@bdc.com.co');
-            $message->to('delgadorafael2011@gmail.com', 'delgadorafael2011@gmail.com')->subject('Avvaa.');   
+            $message->to('delgadorafael2011@gmail.com', 'delgadorafael2011@gmail.com')->subject('Avvaa.');
         });/*
 
         //otra forma
@@ -91,9 +91,9 @@ class GetPublicController extends Controller
         $mail = new PHPMailer(true);
                 try
                 {
-                    $mail->isSMTP();  
+                    $mail->isSMTP();
                     $mail->CharSet = "utf-8";
-                    $mail->SMTPAuth = true; 
+                    $mail->SMTPAuth = true;
                     $mail->SMTPSecure = "SSL";
                     $mail->Host = "mail.hotelcoralsuites.com";
                     $mail->Port = 25;
@@ -124,7 +124,7 @@ class GetPublicController extends Controller
         $becario = Becario::find(5);
         return  $becario->actividades;
         */
-        
+
         //relacion actividad_becario a aval
         /*
         $actividad_becario = ActividadBecario::where('becario_id','=','5')->where('actividad_id','=','1')->first();
@@ -135,7 +135,7 @@ class GetPublicController extends Controller
         /*
         $actividad = Actividad::find(2);
         return $actividad->becarios->count();
-        foreach($actividad->becarios as $becario) 
+        foreach($actividad->becarios as $becario)
         {
             return  $becario->user;
         }
@@ -200,12 +200,12 @@ class GetPublicController extends Controller
         */
 
         //relacion de becario a entrevistador
-        
+
         /*$becario = Becario::find(4);
         return $becario->entrevistadores;
-        
+
         //relacion de entrevistador a becario
-        
+
         $entrevistador = User::find(47)->;
         return $entrevistador->entrevistados;
         */
@@ -225,7 +225,7 @@ class GetPublicController extends Controller
         $mentores = Mentor::all();//listo mis mentores
         return $mentores;
         */
-    }  
+    }
 
     public function getNoticias($tip=1)
     {
@@ -288,13 +288,17 @@ class GetPublicController extends Controller
 
         $editor = User::find(5);
         $editor->rol = 'entrevistador';
-        $editor->email='entrevistador@avaa.com';
+        $editor->email='entrevistador1@avaa.com';
         $editor->save();
-        
 
         $usuario = User::find(6);
         $usuario->email='rafael1delgado@hotmail.com';
         $usuario->save();
+
+        $editor = User::find(7);
+        $editor->rol = 'entrevistador';
+        $editor->email='entrevistador2@avaa.com';
+        $editor->save();
 
         //$editor->editor()->save(new Editor());
 
@@ -336,7 +340,7 @@ class GetPublicController extends Controller
             $becario->status='activo';
             $becario->cuenta_bancaria= $this->getRandomCode();
             $becario->save();
-            
+
            /* $documento = new Documento();
             $titulo = str_random(10);
             $documento->titulo = $titulo;
@@ -358,7 +362,7 @@ class GetPublicController extends Controller
             //return $factlibro;
 
         }
-        
+
         for($i=10;$i<=30;$i++)
         {
             $usuarios->get($i)->rol= 'postulante_becario';
