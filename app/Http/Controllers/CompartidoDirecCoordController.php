@@ -135,6 +135,7 @@ class CompartidoDirecCoordController extends Controller
             $usuario=User::where('rol','=','postulante_becario')->get();
             //return $usuario;
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            
             //$becarios= Becario::where('user_id','=','$usuario->id')->where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             //dd($becarios);
         }
