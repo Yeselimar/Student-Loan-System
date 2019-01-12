@@ -83,17 +83,17 @@ class GetPublicController extends Controller
             $message->to('delgadorafael2011@gmail.com');
         });
         return "exito";
-
         */
+        
 
 
         /*
         $mail = new PHPMailer(true);
                 try
                 {
-                    $mail->isSMTP();
+                    $mail->isSMTP();  
                     $mail->CharSet = "utf-8";
-                    $mail->SMTPAuth = true;
+                    $mail->SMTPAuth = true; 
                     $mail->SMTPSecure = "SSL";
                     $mail->Host = "mail.hotelcoralsuites.com";
                     $mail->Port = 25;
@@ -120,7 +120,7 @@ class GetPublicController extends Controller
                 }
         return "enviado";
         //relación de becarios a actividades
-        */
+        
         /*
         $becario = Becario::find(8);
         return  $becario->actividades;*/
@@ -141,7 +141,20 @@ class GetPublicController extends Controller
         })->first();
         return $curso->modulo.' - '.$curso->modo;
         */
-        
+
+        //obtengo el año/semestre de carrera aprobada
+        $id=58;
+        $periodo = DB::table('periodos')
+            ->where('aval.tipo','=','constancia')
+            ->where('aval.estatus','=','aceptada')
+            ->orderby('periodos.numero_periodo','desc')
+            ->join('aval', function ($join) use($id)
+        {
+          $join->on('periodos.aval_id','=','aval.id')
+            ->where('periodos.becario_id','=',$id);
+        })->first();
+
+        return $periodo->numero_periodo;
         //relacion actividad_becario a aval
         /*
         $actividad_becario = ActividadBecario::where('becario_id','=','5')->where('actividad_id','=','1')->first();
@@ -309,8 +322,8 @@ class GetPublicController extends Controller
         $editor->save();
 
         $usuario = User::find(6);
-        $usuario->user->name="Rafael";
-        $usuario->user->last_name="Delgado";
+        $usuario->name="Rafael";
+        $usuario->last_name="Delgado";
         $usuario->email='rafael1delgado@hotmail.com';
         $usuario->save();
 
