@@ -57,7 +57,7 @@ class GetPublicController extends Controller
         //$hora = date("h:i A", strtotime("3:22 PM"));
         //$fecha = "14/02/1993".' '.date("h:i a", strtotime("3:22 PM"));
         //$fechan = DateTime::createFromFormat('d/m/Y h:i A', $fecha )->format('Y-m-d H:i:s');
-        //return response()->json( date("h:i a", strtotime($hora)) ); 
+        //return response()->json( $fechan ); 
         /*$entrevistadores = User::entrevistadores()->get();
         return $entrevistadores;
         */
@@ -86,7 +86,7 @@ class GetPublicController extends Controller
         */
         
 
-        $mail = new \PHPMailer();
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
         try
         {
             $mail->isSMTP();  
@@ -323,8 +323,8 @@ class GetPublicController extends Controller
         
 
         $usuario = User::find(6);
-        $usuario->user->name="Rafael";
-        $usuario->user->last_name="Delgado";
+        $usuario->name="Rafael";
+        $usuario->last_name="Delgado";
         $usuario->email='rafael1delgado@hotmail.com';
         $usuario->save();
 
