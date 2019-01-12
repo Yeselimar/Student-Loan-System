@@ -204,12 +204,6 @@ class DirectivoController extends Controller
     public function listarPostulantesMentores()
     {
         $postulantes = User::query()->where('rol','=','postulante_mentor')->orWhere('rol','=','rechazado')->get();
-      
-             if(($postulantes->count()==0))
-            {
-                flash('Disculpe, no existen mentores postulados','danger');
-                
-            }
        
         return view('sisbeca.postulaciones.postulantesMentores')->with('users',$postulantes);   
     }
@@ -241,11 +235,7 @@ class DirectivoController extends Controller
     public function listarBecariosInactivos()
     {
         $becarios = Becario::query()->where('acepto_terminos', '=', true)->where('status', ['inactivo'])->get();
-        if($becarios->count()==0)
-        {
 
-            flash('Disculpe, no existen becarios inactivos en el sistema','danger');
-        }
         return view('sisbeca.becarios.egresados.listarInactivos')->with('becarios',$becarios);
     }
 
