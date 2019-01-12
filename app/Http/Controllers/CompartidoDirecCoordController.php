@@ -135,8 +135,7 @@ class CompartidoDirecCoordController extends Controller
         //    $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','no_entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios);
-            //$becarios= Becario::where('user_id','=','$usuario->id')->where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-            //dd($becarios);
+            
         }
         else if(($data==1)) //no se usa
         {
