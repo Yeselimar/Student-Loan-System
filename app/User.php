@@ -33,6 +33,11 @@ class User extends Authenticatable
     {
         return $this->rol==='becario';
     }
+
+    public function esPostulanteBecario()
+    {
+        return $this->rol==='postulante_becario';
+    }
     
     public function esEntrevistador()
     {
@@ -57,6 +62,11 @@ class User extends Authenticatable
     public function esMentor()
     {
         return $this->rol==='mentor';
+    }
+
+    public function esPostulanteMentor()
+    {
+        return $this->rol==='postulante_mentor';
     }
 
     public function coordinador()//para la relación de 1 a 1 que tiene con la tabla coordinadores (de llegar a tener)

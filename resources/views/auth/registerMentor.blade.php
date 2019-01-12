@@ -46,10 +46,11 @@
                     <div class="login-form panel-body" style="padding: 0px 30px 20px">
 
                         <h6 class="text-left">
-                            <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón a ProExcelencia</strong>
+                            <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón como Mentor</strong>
                         </h6>
 
-                        <form role="form" class="f1 formMultiple" method="post" action="{{ route('registerMentor') }}" enctype="multipart/form-data" style="padding: 0px!important">
+                        <!--<form role="form" class="f1 formMultiple" method="post" action="{{ route('registerMentor') }}" enctype="multipart/form-data" style="padding: 0px!important">-->
+                        <form role="form" class="f1 formMultiple" method="post" action="{{ route('guardar.postulante.mentor') }}" enctype="multipart/form-data" style="padding: 0px!important">
                             {{ csrf_field() }}
 
                             <div class="f1-steps">
@@ -214,7 +215,7 @@
         <div class="modal-dialog">
             <div class="modal-content-ment">
                 <div class="text-center">
-                <img src="images/postulacion-mentor.png" class="img-responsive">
+                <img src="{{asset('images/postulacion-mentor.png')}}" class="img-responsive">
                 </div>
             </div>
         </div>
