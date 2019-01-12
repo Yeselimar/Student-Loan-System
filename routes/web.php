@@ -457,7 +457,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'finalizarConcursoMentor'
         ]);
 
-        /*Route::get('asignarNuevoIngreso', [
+       /* Route::get('asignarNuevoIngreso', [
             'uses' => 'DirectivoController@listarPostulantesBecarios',
             'as' => 'asignarNuevoIngreso'
         ]);
@@ -465,9 +465,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('perfilPostulanteBecario/{id}', [
             'uses' => 'DirectivoController@perfilPostulanteBecario',
             'as' => 'perfilPostulanteBecario'
-        ]);*/
-
-        //movido a compartido coord.
+        ]);*/ //movido a compartido coord.
 
         Route::post('verPostulantesBecario', [
             'uses' => 'DirectivoController@verPostulantesBecario',
