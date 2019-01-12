@@ -1,20 +1,20 @@
 @extends('sisbeca.layouts.main')
 @section('title','Postulante Becario: '.$postulante->user->nombreyapellido())
 @section('content')
-   
+
 
 <div class="text-right col-12" align="right" >
   <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
 <div class="card">
-       
+
     <div class="card-body" style="border: 1px solid #eee">
         <div class="card-two">
-            
+
             <div class="text-right col-12" align="right">
 
             </div>
-            
+
             <header>
                 <div class="avatar">
                   {{$img_perfil}}
@@ -32,19 +32,19 @@
 
                     @endif
                 </div>
-                
+
             </header>
 
             <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
 
             <div class="desc">
-               
+
                Postulante Becario
-               
+
             </div>
 
             <div class="desc">
-          
+
                 @if($postulante->status==='postulante')
                     <span class="label label-default">Postulante</span>
                 @else
@@ -71,7 +71,7 @@
             </div>
 
             <div class="text-center">
-                <span class="fa fa-venus-mars"> </span> 
+                <span class="fa fa-venus-mars"> </span>
                 {{ucwords($postulante->user->sexo)}} &nbsp;&nbsp;&nbsp;
 
                 <span class="fa fa-calendar"></span>
@@ -83,7 +83,7 @@
                 <div class="clear"></div>
                 <br>
             </div>
-           
+
         </div>
     </div>
 
@@ -111,7 +111,7 @@
     <br>
 
     @if($postulante->status==='postulante')
-   
+
       <div align="center">
       <h3>¿Que Acción Tomar para la Entrevista de {{$postulante->user->name.' '.$postulante->user->last_name}} ?</h3>
       <br>
@@ -119,42 +119,47 @@
           <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
       </div>
     @endif
+
+     <br>
      
-    <br>
 </div>
 
-    <!-- Modal para aprobar --> 
+    <!-- Modal para aprobar -->
     <div class="modal fade" id="modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
-                    <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"> &times;</span>
+                  </button>
+                
+                  <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
+
                </div>
-               
+
                <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
                   {{csrf_field()}}
                   {{method_field('PUT')}}
                   <input type="hidden" id='valor' name="valor"  value="1">
-                  
+
                   <div class="modal-body">
                     <br>
-                    ¿Está seguro que desea <strong>aprobar</strong> a <strong>{{$postulante->user->name}} {{$postulante->user->last_name}}</strong> para la entrevista?
+                    ¿Está seguro que desea <strong class="letras-verdes">Aprobar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
                   </div>
-                
+
                <div class="modal-footer">
                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
                    <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
-               
+
                </div>
 
                </form>
             </div>
         </div>
     </div>
-    <!-- Modal para aprobar --> 
+    <!-- Modal para aprobar -->
 
-    <!-- Modal para rechazar --> 
+    <!-- Modal para rechazar -->
     <div class="modal fade" id="modal-default">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -164,7 +169,7 @@
           </div>
           <div class="modal-body">
             <br>
-            ¿Está seguro que desea <strong>rechazar</strong> a <strong>{{$postulante->user->name}} {{ $postulante->user->last_name}}</strong> para la entrevista?
+            ¿Está seguro que desea <strong class="letras-rojas">Rechazar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
           </div>
           <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
 
@@ -181,9 +186,9 @@
           </form>
         </div>
       </div>
-      
+
     </div>
-    <!-- Modal para rechazar --> 
+    <!-- Modal para rechazar -->
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel-group Material-default-accordion" id="datos-personales" role="tablist" aria-multiselectable="true">
@@ -636,31 +641,31 @@
             </div>
         </div>
     </div>
-    
-  
-    <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">   
+
+
+    <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">
                     {{csrf_field()}}
-                   
+
             <div class="form-group">
                 <div class="col">
                     <label for="exampleFormControlTextarea1">Observaciones: (Visible al Postulante)</label>
                     <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
-                  
+
                     <button type='submit' title="Aprobar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>
-                 
+
                 </div>
             </div>
     </form>
-    @if(Auth::user()->rol==='entrevistador')       
-    
-     
+    @if(Auth::user()->rol==='entrevistador')
+
+
     @endif
 @endsection
 
 
 @section('personaljs')
     <script type="text/javascript">
-    function aprobar(){   
+    function aprobar(){
         var observaciones = $('#observaciones').val();
         alert("Debe Aceptar los Terminos y Condiciones");
     }
@@ -672,7 +677,7 @@
             })
             new Vue({
             el: '#app',
-           
+
         })
     </script>
 
