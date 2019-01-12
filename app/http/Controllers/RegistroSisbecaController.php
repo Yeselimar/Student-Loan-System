@@ -57,7 +57,7 @@ class RegistroSisbecaController extends Controller
             $img_perfil->user_id = $user->id;
             $img_perfil->save();
         }
-        flash("Gracias por postularse como mentor. Ahora puede iniciar sesión.",'success');
+        flash("Gracias postularse como mentor. Ahora puede iniciar sesión.",'success');
         return redirect('/login');
     	
     }
@@ -81,7 +81,6 @@ class RegistroSisbecaController extends Controller
         $user->save();
 
         $becario = new Becario;
-        $becario->status = "postulante";//se debe guardar como postulante. Si no coloco esta linea el default de estatus es prepostulante. No deberia ser prepostulante. 
         $becario->user_id = $user->id;
         $becario->mentor_id = null;
         $becario->save();

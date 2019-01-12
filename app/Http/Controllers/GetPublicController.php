@@ -57,7 +57,7 @@ class GetPublicController extends Controller
         //$hora = date("h:i A", strtotime("3:22 PM"));
         //$fecha = "14/02/1993".' '.date("h:i a", strtotime("3:22 PM"));
         //$fechan = DateTime::createFromFormat('d/m/Y h:i A', $fecha )->format('Y-m-d H:i:s');
-        return response()->json( date("h:i a", strtotime($hora)) );
+        //return response()->json( date("h:i a", strtotime($hora)) ); 
         /*$entrevistadores = User::entrevistadores()->get();
         return $entrevistadores;
         */
@@ -83,8 +83,8 @@ class GetPublicController extends Controller
             $message->to('delgadorafael2011@gmail.com');
         });
         return "exito";
+
         */
-        
 
 
         /*
@@ -120,7 +120,7 @@ class GetPublicController extends Controller
                 }
         return "enviado";
         //relación de becarios a actividades
-        
+        */
         /*
         $becario = Becario::find(8);
         return  $becario->actividades;*/
