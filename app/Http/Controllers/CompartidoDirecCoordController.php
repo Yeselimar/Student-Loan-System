@@ -107,6 +107,7 @@ class CompartidoDirecCoordController extends Controller
         {
             $postulanteBecario->status='activo';
             $postulanteBecario->acepto_terminos=false;
+            $postulanteBecario->fecha_ingreso= date('Y-m-d H:i:s');
             $postulanteBecario->save();
             return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
         }
