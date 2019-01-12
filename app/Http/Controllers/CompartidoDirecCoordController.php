@@ -141,7 +141,6 @@ class CompartidoDirecCoordController extends Controller
 
     public function listarPostulantesBecarios($data)
     {
-        $concursos = Concurso::query()->get();
         if($data==0)
         {
             //Lista los q no tienen entrevista
@@ -149,7 +148,7 @@ class CompartidoDirecCoordController extends Controller
         }
         if($data==2) //todos los postulantes
         {
-            $usuario=User::where('rol','=','postulante_becario');
+            $usuario=User::where('rol','=','postulante_becario')->get();
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             //$becarios= Becario::where('user_id','=','$usuario->id')->where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             //dd($becarios);

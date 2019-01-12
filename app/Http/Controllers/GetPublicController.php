@@ -323,8 +323,8 @@ class GetPublicController extends Controller
         
 
         $usuario = User::find(6);
-        $usuario->user->name="Rafael";
-        $usuario->user->last_name="Delgado";
+        $usuario->name="Rafael";
+        $usuario->last_name="Delgado";
         $usuario->email='rafael1delgado@hotmail.com';
         $usuario->save();
 
