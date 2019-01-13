@@ -5,7 +5,7 @@
 <div class="col-lg-12" id="app">
 	<div class="text-right">
 		<a href="#" class="btn btn-sm sisbeca-btn-primary" target="_blank">
-			<i class="fa fa-file-pdf-o"></i> Descargar Planilla 
+			<i class="fa fa-file-pdf-o"></i> Descargar Planilla
 		</a>
 	</div>
 	<br>
@@ -21,14 +21,22 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="postulante in postulantes">
+				<tr v-for="postulante in postulantes" v-if="postulante.user.rol != 'becario'">
 					<td>@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
-					<td v-if="postulante.becario.status == 'entrevista'">
-						<span class="label label-default">Pendiente</span>
+
+						<td v-if="postulante.becario.status == 'entrevista'">
+							<span class="label label-default">Pendiente</span>
+						</td>
+						<td v-else-if="postulante.becario.status == 'entrevistado'">
+							<span class="label label-success">Entrevistado</span>
+						</td>
+						<td v-else-if="postulante.becario.status == 'rechazado'">
+							<span class="label label-danger">rechazado</span>
+						</td>
+						<td v-else-if="postulante.becario.status == 'activo'">
+						<span class="label label-success">Aprobado</span>
 					</td>
-					<td v-else="postulante.becario.status == 'entrevistado'">
-						<span class="label label-success">Entrevistado</span>
-					</td>
+
 					<!--<td class="text-center">
 						<span v-if="postulante.documento!=null" class="label label-success">
 							si
@@ -65,7 +73,7 @@
 						<button title="Marcar como Entrevistado" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
                             <i class="fa fa-check" data-target="modal-asignar"></i>
                          </button>
-                       
+
 						<template>
 							<a :href="getRutaVerPerfil(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-eye"></i>
@@ -73,12 +81,12 @@
 						</template>
 						<template v-if="postulante.documento_final_entrevista==null">
 							<a title="Cargar Resumen Entrevista Individual" :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload"></i> 
+								<i class="fa fa-upload"></i>
 							</a>
 						</template>
 						<template  v-else>
 							<a title="Editar Resumen Entrevista Individual" :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-pencil"></i> 
+								<i class="fa fa-pencil"></i>
 							</a>
 						</template>
 						<template v-if="postulante.becario.documento_final_entrevista==null">
@@ -181,7 +189,7 @@ const app = new Vue({
 		obtenerentrevistados:function()
 		{
 			var url = '{{route('lista.Entrevistas.Postulantes')}}';
-			axios.get(url).then(response => 
+			axios.get(url).then(response =>
 			{
 				this.postulantes = response.data.becarios;
 			});
@@ -208,20 +216,20 @@ const app = new Vue({
 		zfill: function(number, width)
 		{
 			var numberOutput = Math.abs(number); /* Valor absoluto del número */
-    		var length = number.toString().length; /* Largo del número */ 
-		    var zero = "0"; /* String de cero */  
-		    
+    		var length = number.toString().length; /* Largo del número */
+		    var zero = "0"; /* String de cero */
+
 		    if (width <= length) {
 		        if (number < 0) {
-		             return ("-" + numberOutput.toString()); 
+		             return ("-" + numberOutput.toString());
 		        } else {
-		             return numberOutput.toString(); 
+		             return numberOutput.toString();
 		        }
 		    } else {
 		        if (number < 0) {
-		            return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); 
+		            return ("-" + (zero.repeat(width - length)) + numberOutput.toString());
 		        } else {
-		            return ((zero.repeat(width - length)) + numberOutput.toString()); 
+		            return ((zero.repeat(width - length)) + numberOutput.toString());
 		        }
 		    }
 		},

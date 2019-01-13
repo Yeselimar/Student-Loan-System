@@ -1,7 +1,7 @@
 
 
-@if(Auth::user()->rol==='becario'&& Auth::user()->becario->status==='activo' &&  Auth::user()->becario->acepto_terminos== 0 )
-	@section('title','Inicio')
+@if(Auth::user()->rol==='postulante_becario'&& Auth::user()->becario->status==='activo' &&  Auth::user()->becario->acepto_terminos== 0 && Auth::user()->becario->getfechabienvenida()=='true')
+	@section('title','Terminos y Condiciones ProExcelencia')
 	@section('subtitle','Terminos y Condiciones')
 	@section('content')
 		@include('sisbeca.becarios.terminosCondiciones')
@@ -16,7 +16,7 @@
 	@endif
 
 @section('content')
-	
+
 	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
 		<h3 class="text-center" >
 			<strong>!Hola, {{ Auth::user()->nombreyapellido()}}!</strong>
@@ -79,7 +79,7 @@
 				@foreach($actividades as $actividad)
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border: 1px solid #eee;padding-top: 10px;padding-bottom: 5px" >
 					<div data-mh="actividad">
-						<h4>{{$actividad->getDia()}} {{$actividad->getMes()}} {{$actividad->getAnho()}}</h4> 
+						<h4>{{$actividad->getDia()}} {{$actividad->getMes()}} {{$actividad->getAnho()}}</h4>
 						<h5 style="color:#424242">{{$actividad->getHoraInicio()}} a {{$actividad->getHoraFin()}}</h5>
 						<div>
 							@if($actividad->modalidad=='virtual')
@@ -112,4 +112,3 @@
 @endsection
 @endif
 
-          
