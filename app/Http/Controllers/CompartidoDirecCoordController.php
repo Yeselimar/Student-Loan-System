@@ -76,6 +76,7 @@ class CompartidoDirecCoordController extends Controller
             else
             {
                 $postulante->status='no_entrevista';
+                $postulante->acepto_terminos ='0';
                 $postulante->save();
                 flash( $postulante->user->name . ' ha sido rechazado para ir a entrevista. ', 'danger')->important();
             }
@@ -105,15 +106,19 @@ class CompartidoDirecCoordController extends Controller
         $postulanteBecario = Becario::find($request->id);
          if($request->funcion=='Aprobar')
         {
+          //  $postulanteBecario->user->rol='becario';
+          //  $postulanteBecario->user->save();
             $postulanteBecario->status='activo';
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->fecha_ingreso= date('Y-m-d H:i:s');
             $postulanteBecario->save();
-            return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
+            return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente'.$request->id]);
         }
         else
         {
             $postulanteBecario->status='rechazado';
+            $postulanteBecario->user->rol='rechazado';
+            $postulanteBecario->user->save();
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->save();
             return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
@@ -135,7 +140,7 @@ class CompartidoDirecCoordController extends Controller
         //    $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','no_entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios);
-            
+
         }
         else if(($data==1)) //no se usa
         {

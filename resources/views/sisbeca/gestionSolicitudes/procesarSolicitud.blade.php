@@ -134,10 +134,14 @@
                 {{csrf_field()}}
                 {{method_field('PUT')}}
                 <input type="hidden" id='valor' name="valor" value="1">
-                @if($solicitud->titulo==='retroactivo')
-                    <label>Indique Retroactivo: </label>
-                    <input type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Indique Retroactivo" size=23 id='retroactivo' value="{{number_format(old('retroactivo'), 2, ',', '.')}}" name="retroactivo" required >
-                @endif
+                    <textarea
+                    class="sisbeca-input sisbeca-textarea"
+                    name="descripcion"
+                    id="descripcion"
+                    rows="15"
+                    placeholder="Ingrese observación de la solicitud"
+                    required
+                    ></textarea>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-sm sisbeca-btn-primary">Si</button>
@@ -166,6 +170,14 @@
                 {{csrf_field()}}
                 {{method_field('PUT')}}
                 <input type="hidden" id='valor2' name="valor"  value="0">
+                <textarea
+                    class="sisbeca-input sisbeca-textarea"
+                    name="observacion"
+                    id="observacion"
+                    rows="15"
+                    placeholder="Ingrese observación de la solicitud"
+                    required
+                    ></textarea>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-sm sisbeca-btn-primary" >Si</button>

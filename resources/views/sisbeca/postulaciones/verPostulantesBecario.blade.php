@@ -2,8 +2,6 @@
 @section('title','Todos los Postulantes a ProExcelencia')
 @section('content')
 <div class="col-12">
-    <strong> Lista de todos los becarios</strong>
-
     <div class=" table-responsive">
 
         <form class="form-horizontal" method="post" action ="">
@@ -26,21 +24,16 @@
                     @foreach($becarios as $becario)
                         @if($becario->status !='pre-postulante')
                             <tr>
-                                <!--     @if(($becario->status=='entrevista')||($becario->status=='rechazado'))
-                                <td class="text-center"><a class="btn btn-success btn-xs"><span style="color:#26dad2;display:none">.</span> </td></a>
-                                @else
-                                <td class="text-center"><a class="btn btn-warning btn-xs"><span style="display:none">..</span> </td></a>
-                                @endif -->
-                                <td class="text-center">{{ $becario->user->name.' '.$becario->user->last_name }}</td>
+                                <td class="text-center">{{ $becario->user_id.' '.$becario->user->name.' '.$becario->user->last_name }}</td>
                                 <td class="text-center">{{ $becario->user->cedula }}</td>
 
                                 @if($becario->status=='entrevista')
                                     <td class="text-center">
-                                        <span class="label label-inverse">A Entrevista</span>
+                                        <span class="label label-inverse">Por entrevistar</span>
                                     </td>
                                 @elseif($becario->status=='no_entrevista')
                                 <td class="text-center">
-                                    <span class="label label-danger">Rechazado</span>
+                                    <span class="label label-danger">No Seleccionado</span>
                                 </td>
                                 @elseif($becario->status=='rechazado')
                                 <td class="text-center">

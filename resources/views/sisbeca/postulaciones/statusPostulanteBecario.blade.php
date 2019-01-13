@@ -6,14 +6,14 @@
         <div class="col-md-12">
             <br>
             <strong>
-                <span class="fa fa-users fa-fw"></span> Postulación 
+                <span class="fa fa-users fa-fw"></span> Postulación
             </strong>
             <hr>
                 <div class="offset-md-4 col-md-4 offset-lg-4 col-lg-4">
                     <div class="panel panel-default">
                         <div align="center">
                             <div class="panel-heading"> {{$postulante->user->name}} {{$postulante->user->last_name}}</div>
-                            <div class="panel-body">              
+                            <div class="panel-body">
                                 @if($postulante->status==='entrevista')
                                 <div class="alert  alert alert-info" role="alert">
                                         Su postulación ha sido revisada y usted ha sido seleccionado para ir a Entrevista
@@ -41,11 +41,16 @@
                                         Su postulación ha sido revisada y usted no ha quedo asignado en el proceso de selección. Agradecemos por su participación.
                                 </div>
                                     <p>Estatus: <span class="label label-danger">No Aprobado</span></p>
-                                @elseif($postulante->status==='activo')    
+                                @elseif($postulante->status==='activo')
                                 <div class="alert  alert alert-success" role="alert">
                                         ¡Felicidades! {{$postulante->user->name}} {{$postulante->user->last_name}} has sido asignad@ como Becario al programa ProExcelencia. Esta atent@ para la fecha de inicio de actividades.
                                 </div>
                                     <p>Estatus: <span class="label label-success"> Aprobado</span></p>
+                                @elseif($postulante->status==='no_entrevista')
+                                <div class="alert alert-danger" role="alert">
+                                        Su postulación ha sido revisada y usted no ha quedo seleccionado para el proceso de entrevista. Agradecemos su participación.
+                                </div>
+                                    <p>Estatus: <span class="label label-danger">No seleccionado</span></p>
                                 @else
                                     <div class="alert  alert-info alert-important" role="alert">
                                             Su postulación fue enviada exitosamente, actualmente se encuentra en proceso de ser revisada por nuestro equipo técnico.

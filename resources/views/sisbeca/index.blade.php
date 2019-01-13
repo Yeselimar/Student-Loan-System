@@ -1,6 +1,6 @@
 
 
-@if(Auth::user()->rol==='becario'&& Auth::user()->becario->status==='activo' &&  Auth::user()->becario->acepto_terminos== 0 )
+@if(Auth::user()->rol==='postulante_becario'&& Auth::user()->becario->status==='activo' &&  Auth::user()->becario->acepto_terminos== 0 )
 	@section('title','Inicio')
 	@section('subtitle','Terminos y Condiciones')
 	@section('content')
