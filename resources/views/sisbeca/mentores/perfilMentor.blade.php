@@ -1,5 +1,9 @@
 @extends('sisbeca.layouts.main')
-@section('title','Mentor: '.$mentor->user->nombreyapellido())
+@if($mentor)
+@section('title','Mentor: '.$mentor->user->nombreyapellido()) 
+@else
+@section('title','Mentor Asignado') 
+@endif
 @section('content')
 
     @if((Auth::user()->rol==='directivo' || Auth::user()->rol==='coordinador' || Auth::user()->rol==='mentor') && !is_null($documento))
@@ -8,6 +12,7 @@
         <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
     </div>
     @endif
+    @if($mentor)
     <div class="card">
   
         <div class="card-body" style="border: 1px solid #eee">
@@ -85,4 +90,9 @@
         <br>
 
     </div>
+    @else
+        <div class="alert  alert-warning alert-important" role="alert">
+        Actualmente no existe la relación Becario-Mentor para este usuario.
+    </div>
+    @endif
 @endsection

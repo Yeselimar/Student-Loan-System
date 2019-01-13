@@ -227,9 +227,9 @@ class CompartidoDirecCoordController extends Controller
     {
         $solicitudes = Solicitud::find($id);
 
-        /*$alerta= Alerta::query()->select()->where('solicitud','=',$id)->first();
+        $alerta= Alerta::query()->select()->where('solicitud','=',$id)->first();
         $alerta->leido=true;
-        $alerta->save();*/
+        $alerta->save();
 
         $img_perfil_postulante=Imagen::query()->where('user_id','=',$solicitudes->user_id)->where('titulo','=','img_perfil')->get();
 
@@ -376,6 +376,10 @@ class CompartidoDirecCoordController extends Controller
 
 
         $solicitud->usuario_respuesta= Auth::user()->id;
+        if($request->get('observacion'))
+        {
+            $solicitud->observacion = $request->get('observacion');
+        }
         $solicitud->save();
         event(new SolicitudesAlerts($solicitud));
         Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
