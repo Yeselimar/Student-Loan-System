@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use avaa\ActividadFacilitador;
 use avaa\ActividadBecario;
+use DateTime;
 
 class Becario extends Model
 {
@@ -24,7 +25,7 @@ class Becario extends Model
     {
        return date("h:i:s a", strtotime($this->hora_entrevista));
     }
-    
+
     public function user() //Relación uno a uno con USER
     {
         return $this->belongsTo('avaa\User','user_id');
@@ -65,17 +66,17 @@ class Becario extends Model
         return $this->hasMany('avaa\Periodo','becario_id');
     }
 
-    //busco mis entrevistados a 
+    //busco mis entrevistados a
     public function entrevistadores()//buena relacion
     {
         return $this->belongsToMany('avaa\User','becarios_entrevistadores','becario_id','entrevistador_id');
     }
-    
+
     public function notas()//creo que no va
     {
         return $this->hasMany('avaa\Nota','becario_id','user_id');
     }
-    
+
     public function nominas()
     {
         return $this->belongsToMany('avaa\Nomina','becarios_nominas','user_id','nomina_id','user_id',null)->withTimestamps();
@@ -158,7 +159,7 @@ class Becario extends Model
     {
         return $this->belongsToMany('avaa\NomBorrador','becarios_nomborradores','becario_id','nomborrador_id','user_id')->withTimestamps();
     }
-    
+
     public static function getCarpetaImagenes()
     {
         return '/images/becarios/';
@@ -198,7 +199,7 @@ class Becario extends Model
     {
         return $this->experiencias_padre.' años';
     }
-    
+
     public function getExperienciaMadre()
     {
         return $this->experiencias_madre.' años';
@@ -340,6 +341,25 @@ class Becario extends Model
         else
         {
             return "N/A";
+        }
+    }
+    public function getfechabienvenida()
+    {
+        $diff = 0;
+        $bienvenida = new DateTime($this->fecha_bienvenida);
+        $hoy = new DateTime();
+        // Muestra los terminos y condiciones si la fecha de bienvenida es mayor o igual a la actual
+        if($this->fecha_bienvenida != null){
+            $diff = $hoy->diff($bienvenida);
+            if(($diff->invert == 1)){
+                return 'true';
+            }
+            else{
+                return 'false';
+            }
+        }
+        else{
+            return 'false';
         }
     }
 }

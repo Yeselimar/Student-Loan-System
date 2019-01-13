@@ -76,27 +76,7 @@ class BecarioController extends Controller
         return view('sisbeca.becarios.terminosCondiciones');
     }
 
-    public function terminosCondicionesAprobar(Request $request)
-    {
-        if (Auth::user()->becario->acepto_termino == 1) {
-            return back();
-        }
 
-        $becario = User::find(Auth::user()->id)->becario;
-        // Auth::user()->rol='becario';
-        $becario->acepto_terminos = 1;
-
-
-        if ($becario->save()) {
-
-            flash('Ha Aceptado Terminos y Condiciones Exitosamente', 'success')->important();
-        } else {
-            flash('Disculpe, ha ocurrido un error inesperado.', 'success')->important();
-        }
-
-
-        return redirect()->route('sisbeca');
-    }
 
     public function verCuentaBancaria()
     {
@@ -141,6 +121,6 @@ class BecarioController extends Controller
         return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
     }
 
-    
+
 
 }

@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Postulantes')
+@section('title','Gestión de Entrevista')
 @section('content')
 
 <div class="col-lg-12" id="app">

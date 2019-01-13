@@ -188,7 +188,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
         Route::get('/cursos/obtener-todos/api', 'CursoController@obtenertodosapi')->name('cursos.obtenertodos.api');
-        
+
         //voluntariados
         Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
         Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
@@ -285,10 +285,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'inicio.aceptoTerminosCondiciones'
         ]);
 
-        Route::post('terminosCondicionesAprobar', [
+        /* Route::post('terminosCondicionesAprobar', [
             'uses' => 'BecarioController@terminosCondicionesAprobar',
             'as' => 'terminosCondiciones.aprobar'
-        ]);
+        ]); */
 
         Route::get('verCuentaBancaria', [
             'uses' => 'BecarioController@verCuentaBancaria',
@@ -357,6 +357,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['postulante_becario']],function ()
     {
+        Route::post('terminosCondicionesAprobar', [
+            'uses' => 'PostulanteBecarioController@terminosCondicionesAprobar',
+            'as' => 'terminosCondiciones.aprobar'
+        ]);
         Route::get('postulanteBecario/status', [
             'uses' => 'SisbecaController@statusPostulanteBecario',
             'as' => 'status.postulanteBecario'

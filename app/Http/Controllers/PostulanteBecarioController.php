@@ -19,9 +19,30 @@ use avaa\Documento;
 
 class PostulanteBecarioController extends Controller
 {
-    
+    public function terminosCondicionesAprobar(Request $request)
+    {
+        if (Auth::user()->becario->acepto_termino == 1) {
+            return back();
+        }
+
+        $becario = User::find(Auth::user()->id)->becario;
+        Auth::user()->rol='becario';
+        Auth::user()->save();
+        $becario->acepto_terminos = 1;
+        //$becario->save();
+
+        if ($becario->save()) {
+
+            flash('Ha Aceptado Terminos y Condiciones Exitosamente', 'success')->important();
+        } else {
+            flash('Disculpe, ha ocurrido un error inesperado.', 'success')->important();
+        }
+
+
+        return redirect()->route('sisbeca');
+    }
     public function enviarPostulacionGuardar($progreso)
-    {   
+    {
         $becario = Becario::find(Auth::user()->id);
         $usuario = User::find(Auth::user()->id);
 
@@ -41,7 +62,7 @@ class PostulanteBecarioController extends Controller
 
 
     public function enviarPostulacion()
-    {   
+    {
         $becario = Becario::find(Auth::user()->id);
         $usuario = User::find(Auth::user()->id);
         $progreso=0;
@@ -207,7 +228,7 @@ class PostulanteBecarioController extends Controller
     public function documentos()
     {
         $becario = Becario::find(Auth::user()->id);
-        
+
         $id = Auth::user()->id;
         $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
         $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
@@ -225,7 +246,7 @@ class PostulanteBecarioController extends Controller
         $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
         //return Response::json($fotografia);
         return view('sisbeca.postulantebecario.documentos')->with('becario',$becario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo);
-        
+
     }
 
     public function documentosguardar(Request $request)
@@ -419,7 +440,7 @@ class PostulanteBecarioController extends Controller
             $referencia_profesor2->user_id = $id;
             $referencia_profesor2->save();
         }
-        //-- Ensayo 
+        //-- Ensayo
         if(!isset($ensayo))
         {
             $file= $request->file('ensayo');
@@ -443,7 +464,7 @@ class PostulanteBecarioController extends Controller
     public function verdocumento($titulo)
     {
         //return $id;
-        //$pdf = Documento::where('user_id','=',Auth::user()->id)->where('titulo','=',$titulo)->first(); 
+        //$pdf = Documento::where('user_id','=',Auth::user()->id)->where('titulo','=',$titulo)->first();
         //$pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho'));
         //return $pdf;
         //$file = File::get(url($pdf->url));

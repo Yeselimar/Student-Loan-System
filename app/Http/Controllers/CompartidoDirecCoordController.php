@@ -106,13 +106,13 @@ class CompartidoDirecCoordController extends Controller
         $postulanteBecario = Becario::find($request->id);
          if($request->funcion=='Aprobar')
         {
-          //  $postulanteBecario->user->rol='becario';
-          //  $postulanteBecario->user->save();
+           //$postulanteBecario->user->rol='becario';
+           //$postulanteBecario->user->save();
             $postulanteBecario->status='activo';
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->fecha_ingreso= date('Y-m-d H:i:s');
             $postulanteBecario->save();
-            return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente'.$request->id]);
+            return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
         }
         else
         {

@@ -2945,7 +2945,7 @@ panel-default>.panel-heading {
 .content-terminos{
 
     background: linear-gradient(to bottom right, rgba(61, 145, 214, 0.03) , rgba(61, 145, 214, 0.07));
-    padding: 40px;
+    padding: 30px;
     font-size: 18px;
     text-align: justify !important;
 }
