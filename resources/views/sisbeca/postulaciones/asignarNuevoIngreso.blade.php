@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Seleccione los Postulante que seran elegidos como Becario')
+@section('title','Asignar los Nuevos Becarios')
 @section('content')
 
 <div class="col-12" id="app">

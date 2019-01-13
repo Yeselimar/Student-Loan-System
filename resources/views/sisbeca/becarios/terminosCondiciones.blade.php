@@ -1,14 +1,12 @@
  <div class="row">
         <div class="col-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="fa fa-list fa-fw"></span>
-                    Terminos y Conciciones
-                </div>
-
                 <div class="content-terminos">
-
+                <div class="alert  alert-warning alert-important" role="alert">
+                   Debes Aceptar los Términos y Condiciones de ProExcelencia para Acceder al Sistema como Becario.
+                </div>
                     <ul>
-                        <strong>El Becario AVAA se compromete a:</strong>
+                        <strong>El Becario de ProExcelencia AVAA se compromete a:</strong>
 
                         <li class="list_term"> 	Leer el Manual de Becarios que será enviado vía correo electrónico.</li>
                         <li class="list_term"> 	Mantener una conducta intachable y ejemplar como estudiante y ciudadano.</li>
@@ -31,9 +29,14 @@
 
                 <form action="{{route('terminosCondiciones.aprobar')}}" accept-charset="UTF-8"  method="POST" >
                     {{csrf_field()}}
-                <button type="submit" class="btn btn-primary col-lg-12">
-                    Acepto Terminos y Condiciones
+                    <div class="d-flex justify-content-center">
+                <button type="submit" class="sisbeca-btn-primary m-r-5">
+                    Aceptar Términos y Condiciones
                 </button>
+               <!--  <button type="submit" class="sisbeca-btn-default ">
+                       Rechazar
+                </button> -->
+                    </div>
                 </form>
 
             </div>

@@ -35,15 +35,14 @@
                         <li><a href="{{ route('postulantebecario.estudiosuniversitarios') }}">Estudios Universitarios</a></li>
                         <li><a href="{{ route('postulantebecario.informacionadicional') }}">Información Adicional</a></li>
                         <li><a href="{{ route('postulantebecario.documentos') }}">Documentos</a></li>
-
                     </ul>
-
                    </li>
                     <li>
                         <a href="{{route('postulantebecario.enviarPostulacion', Auth::user()->id)}}" >  <i class="fa fa-send-o"></i><span class="hide-menu">Enviar Postulación</span></a>
                    </li>
-
-
+                    @elseif(Auth::user()->becario->status=='activo')
+                       <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Términos Generales</span></a>
+                       </li>
                     @else
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-info"></i><span class="hide-menu">Postulación</span></a>
                         <ul aria-expanded="false" class="collapse">
@@ -256,13 +255,8 @@
 
 
                 {{--Inicio de Vista de Becarios Unicamente--}}
-                @if(Auth::user()->rol==='becario')
+            @if(Auth::user()->rol==='becario')
                     <li class="nav-label">Inicio</li>
-                @if(Auth::user()->becario->acepto_terminos==0)
-                    <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Terminos Generales</span></a>
-
-                    </li>
-                    @else
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Banco</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('verCuentaBancaria')}}">Ver o Cargar Cuenta</a></li>
@@ -318,8 +312,8 @@
 
                         </ul>
                     </li>
-                    @endif
-                @endif
+
+            @endif
                 {{--Fin de Vista de Becarios Unicamente--}}
 
                 {{--Inicio de Vista Compartida Becarios/Mentores--}}
@@ -334,7 +328,7 @@
                 @endif
 
 
-                @if(Auth::user()->rol==='becario')
+                @if(Auth::user()->rol==='becario' && Auth::user()->becario->acepto_terminos==1)
                 <li class="nav-label">Actividades Becarias</li>
                 <li>
                     <a class="has-arrow  " href="{{route('seguimiento.resumen',Auth::user()->id)}}" aria-expanded="false">

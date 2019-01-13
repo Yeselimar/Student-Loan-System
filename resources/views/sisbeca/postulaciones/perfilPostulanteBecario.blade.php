@@ -1,62 +1,83 @@
 @extends('sisbeca.layouts.main')
-@section('title','Postulante Becario: '.$postulante->user->nombreyapellido())
+@section('title','Perfil de '.$postulante->user->nombreyapellido())
 @section('content')
 
 
 <div class="text-right col-12" align="right" >
-  <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+<a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
 <div class="card">
-
     <div class="card-body" style="border: 1px solid #eee">
         <div class="card-two">
-
             <div class="text-right col-12" align="right">
-
             </div>
-
-            <header>
+                <!--<header>
                 <div class="avatar">
-                  {{$img_perfil}}
+                {{$img_perfil}}
                     @if($img_perfil->count()>0)
                         <img src="{{asset($img_perfil[0]->url)}}" style="height: 95px !important;">
-
                     @else
-
                         @if($postulante->user->sexo==='femenino')
                             <img src="{{asset('images/perfil/femenino.png')}}" style="height: 95px !important;">
                         @else
                             <img src="{{asset('images/perfil/masculino.png')}}" style="height: 95px !important;">
-
                         @endif
-
                     @endif
                 </div>
+            </header> -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="well well-sm m-4">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                        @if($img_perfil->count()>0)
+                                            <img src="{{asset($img_perfil[0]->url)}}" class="img-rounded img-responsive">
+                                        @else
+                                            @if($postulante->user->sexo==='femenino')
+                                                <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive">
+                                            @else
+                                                <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive">
+                                            @endif
+                                        @endif
 
-            </header>
-
-            <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
-
-            <div class="desc">
-
-               Postulante Becario
-
+                                </div>
+                                <div class="col-sm-6 col-md-8">
+                                    <h4>{{$postulante->user->name}} {{$postulante->user->last_name }}</h4>
+                                    <p>
+                                        <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulante->user->email}}
+                                        <br />
+                                        <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulante->user->cedula}}
+                                        <br/>
+                                        <i class="fa fa-phone">&nbsp; </i>Teléfono: {{$postulante->celular}}
+                                        <br/>
+                                        <i class="fa fa-graduation-cap">&nbsp; </i>Promedio Bachiller: {{$postulante->promedio_bachillerato}}
+                                        <br/>
+                                       <i class="fa fa-map-pin">&nbsp; </i>Dirección: {{$postulante->direccion_permanente}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
+            <!-- <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
             <div class="desc">
 
                 @if($postulante->status==='postulante')
-                    <span class="label label-default">Postulante</span>
+                    <span class="label label-default">Sin Revisar</span>
                 @else
                     @if($postulante->status==='entrevista')
                         <span class="label label-inverse">Aprobado para Entrevista</span>
                     @elseif($postulante->status==='entrevistado')
                         <span class="label label-warning">Entrevistado</span>
+                    @elseif($postulante->status==='no_entrevista')
+                    <span class="label label-danger">Rechazado</span>
                     @elseif($postulante->status==='rechazado')
                     <span class="label label-danger">Rechazado</span>
                     @elseif($postulante->status=='activo')
                         @if($postulante->acepto_terminos=='false')
-                        <span class="label label-success">Aprobado</span>
+                        <span class="label label-success">Aprobado a ProExcelencia</span>
                         @else
                         <span class="label label-success">Becario</span>
                         @endif
@@ -64,6 +85,10 @@
                     <span class="label label-warning">Probatorio1</span>
                     @elseif($postulante->status==='probatorio2')
                     <span class="label label-danger">Probatorio2</span>
+                    @elseif($postulante->status==='inactivo')
+                    <span class="label label-danger">Inactivo</span>
+                    @elseif($postulante->status==='desincorporado')
+                    <span class="label label-danger">Desincorporado</span>
                     @else
                         <span class="label label-default">Egresado</span>
                     @endif
@@ -82,12 +107,12 @@
 
                 <div class="clear"></div>
                 <br>
-            </div>
+            </div> -->
 
         </div>
     </div>
 
-    <div class="col-lg-12" style="border:1px solid #eee">
+    <!-- <div class="col-lg-12" style="border:1px solid #eee">
         <div class="row">
             <div class="col-md-3 col-xs-6 b-r"> <strong>Nombre Completo</strong>
                 <br>
@@ -108,20 +133,15 @@
         </div>
     </div>
 
-    <br>
-
+    <br> -->
     @if($postulante->status==='postulante')
 
-      <div align="center">
-      <h3>¿Que Acción Tomar para la Entrevista de {{$postulante->user->name.' '.$postulante->user->last_name}} ?</h3>
-      <br>
-          <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
-          <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;&nbsp;
-      </div>
+    <div align="center">
+    <h3>¿Desea seleccionar a {{$postulante->user->name.' '.$postulante->user->last_name}} para <b>Entrevista? </b>
+        <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
+        <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
+    </div>
     @endif
-
-     <br>
-     
 </div>
 
     <!-- Modal para aprobar -->
@@ -129,31 +149,31 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"> &times;</span>
-                  </button>
-                
-                  <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
+                </button>
 
-               </div>
+                <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
 
-               <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
-                  {{csrf_field()}}
-                  {{method_field('PUT')}}
-                  <input type="hidden" id='valor' name="valor"  value="1">
+            </div>
 
-                  <div class="modal-body">
+            <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
+                {{csrf_field()}}
+                {{method_field('PUT')}}
+                <input type="hidden" id='valor' name="valor"  value="1">
+
+                <div class="modal-body">
                     <br>
-                    ¿Está seguro que desea <strong class="letras-verdes">Aprobar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
-                  </div>
+                    ¿Está seguro que desea <strong class="letras-verdes">Seleecionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
+                </div>
 
-               <div class="modal-footer">
-                   <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                   <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
 
-               </div>
+            </div>
 
-               </form>
+            </form>
             </div>
         </div>
     </div>
@@ -161,31 +181,31 @@
 
     <!-- Modal para rechazar -->
     <div class="modal fade" id="modal-default">
-      <div class="modal-dialog">
+    <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
+        <div class="modal-header">
                 <h4 class="modal-title pull-left">Confirmación</h4>
                 <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
-          </div>
-          <div class="modal-body">
-            <br>
-            ¿Está seguro que desea <strong class="letras-rojas">Rechazar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
-          </div>
-          <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
-
-               {{csrf_field()}}
-               {{method_field('PUT')}}
-
-               <input type="hidden" id='valor' name="valor"  value="0">
-
-               <div class="modal-footer">
-                   <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                   <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right" >Si</button>
-               </div>
-
-          </form>
         </div>
-      </div>
+        <div class="modal-body">
+            <br>
+            ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
+        </div>
+        <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
+
+            {{csrf_field()}}
+            {{method_field('PUT')}}
+
+            <input type="hidden" id='valor' name="valor"  value="0">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right" >Si</button>
+            </div>
+
+        </form>
+        </div>
+    </div>
 
     </div>
     <!-- Modal para rechazar -->
