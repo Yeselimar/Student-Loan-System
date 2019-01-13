@@ -57,9 +57,9 @@ class RegistroSisbecaController extends Controller
             $img_perfil->user_id = $user->id;
             $img_perfil->save();
         }
-        flash("Gracias postularse como mentor. Ahora puede iniciar sesión.",'success');
+        flash("Gracias postularse como mentor. Ahora puede iniciar sesión para ver el proceso de su postulación.",'success');
         return redirect('/login');
-    	
+
     }
 
     public function registropostulantebecario()
@@ -98,7 +98,7 @@ class RegistroSisbecaController extends Controller
             $img_perfil->user_id = $user->id;
             $img_perfil->save();
         }
-        flash("Gracias por postularse a Pro-excelencia. Ahora puede iniciar sesión.",'success');
+        flash("Gracias por Registrarse en Pro-excelencia. Ahora puede iniciar sesión para comenzar el proceso de Postulación.",'success');
         return redirect('/login');
     }
 }
