@@ -25,12 +25,26 @@ use Redirect;
 use Yajra\Datatables\Datatables;
 use Mail;
 use DateTime;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class GetPublicController extends Controller
 {
-
     public function prueba()
     {
+        /*Mail::send('emails.change_password', array(
+            //'user_names'     => $enterprise_name,
+            'email'     => $enterprise_email,
+            'password'       => $clave_por_correo,
+            //'route_signin'   => 'melagoso.app/api/v1/user/signin',
+            //'route_change_password'   => 'melagoso.app/api/v1/password/reset'
+          ),
+          function ($message) use($request,$enterprise_email,$enterprise_name )
+          {
+            $message->from('delgadorafael2011@gmail.com');
+            $message->to($enterprise_email)->subject('¡Bienvenido! '. $enterprise_name);
+          });*/
+
         /*$actividad = Actividad::find(1);
         $listadeespera  = $actividad->listadeespera();
         if($listadeespera->count()>=1)
@@ -86,41 +100,59 @@ class GetPublicController extends Controller
 
         */
 
+        //contraseña del correo de rafael
+        //scxxuchujshrgpao
 
-        /*
+
+        //return date("d-m-Y H:i A");
+        $data = array(
+            "nombre_completo" => "Ivan Delgado",
+            "correo" => "ee@hh.ll",
+            "telefono" => "04265556677",
+            "asunto" => "Urgente",
+            "mensaje" => "hola adios",
+            "fecha_hora" => date("d/m/Y H:i A"),
+        );
+
         $mail = new PHPMailer(true);
-                try
-                {
-                    $mail->isSMTP();  
-                    $mail->CharSet = "utf-8";
-                    $mail->SMTPAuth = true; 
-                    $mail->SMTPSecure = "SSL";
-                    $mail->Host = "mail.hotelcoralsuites.com";
-                    $mail->Port = 25;
-                    $mail->Username = "webmaster@hotelcoralsuites.com";
-                    $mail->Password = "Mars$2905";
-                    $mail->setFrom("info@hotelcoralsuites.com", "Hotel Coral Suites");
-                    $mail->Subject = "Contacto";
-                    $mail->MsgHTML($body);
-                    foreach($correos as $correo)
-                    {
-                        $mail->addAddress($correo, " ");
-                    }
-                    $mail->send();
-                }
-                catch (phpmailerException $e)
-                {
-                    $enviado = false;
-                    $error = "01";
-                }
-                catch (Exception $e)
-                {
-                    $enviado = false;
-                    $error = "02";
-                }
+        try
+        {
+            $mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->Timeout  = 60;
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true; 
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+
+            $mail->setFrom("info@sisbeca.com", "Sisbeca");
+            $mail->Subject = "Contacto";
+            $body = view("emails.contacto")->with(compact("data"));
+            $mail->MsgHTML($body);
+            //foreach($correos as $correo)
+            //{
+                $mail->addAddress("delgadorafael2011@gmail.com", "Rafael Delgado");
+            //}
+            $mail->addBCC('darwin@gmail.com');
+            $mail->send();
+        }
+        catch (phpmailerException $e)
+        {
+            $enviado = false;
+            $error = "01";
+        }
+        catch (Exception $e)
+        {
+            $enviado = false;
+            $error = "02";
+            //return "enviado".$mail->ErrorInfo;
+        }
         return "enviado";
+        
         //relación de becarios a actividades
-        */
         /*
         $becario = Becario::find(8);
         return  $becario->actividades;*/
@@ -143,7 +175,7 @@ class GetPublicController extends Controller
         */
 
         //obtengo el año/semestre de carrera aprobada
-        $id=58;
+        /*$id=58;
         $periodo = DB::table('periodos')
             ->where('aval.tipo','=','constancia')
             ->where('aval.estatus','=','aceptada')
@@ -154,7 +186,7 @@ class GetPublicController extends Controller
             ->where('periodos.becario_id','=',$id);
         })->first();
 
-        return $periodo->numero_periodo;
+        return $periodo->numero_periodo;*/
         //relacion actividad_becario a aval
         /*
         $actividad_becario = ActividadBecario::where('becario_id','=','5')->where('actividad_id','=','1')->first();

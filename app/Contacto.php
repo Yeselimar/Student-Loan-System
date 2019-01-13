@@ -10,6 +10,6 @@ class Contacto extends Model
 
     public function fechaCreacion()
     {
-        return date("d/m/Y h:i:s a", strtotime($this->created_at));
+        return date("d/m/Y h:i A", strtotime($this->created_at));
     }
 }

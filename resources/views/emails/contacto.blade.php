@@ -2,16 +2,15 @@
 
 @section('content')
 
-<ul style="list-style: none">
+<ul style="list-style: none;color:#003865">
 	<li><strong><h1>Contacto</h1></strong></li>
-	<br>
-	<li><strong>Nombre y Apellido:</strong> Rafael </li>
-	<li><strong>Teléfono:</strong> 33333 </li>
-	<li><strong>Correo electrónico:</strong> fff@kfkfk.com </li>
-	<li><strong>Habitación:</strong> eeeee </li>
-	<li><strong>Asunto:</strong> fffff </li>
-	<li><strong>Fecha y Hora:</strong> ggggg </li>
-	<li><strong>Mensaje:</strong> hhhhhhhhhhhhhh </li>
+	<li></li>
+	<li><strong>Nombre y Apellido:</strong> {{$data["nombre_completo"]}}</li>
+	<li><strong>Correo electrónico:</strong> {{$data["correo"]}} </li>
+	<li><strong>Teléfono:</strong> {{$data["telefono"]}} </li>
+	<li><strong>Asunto:</strong> {{$data["asunto"]}} </li>
+	<li><strong>Mensaje:</strong> {{$data["mensaje"]}} </li>
+	<li><strong>Fecha y Hora:</strong> {{$data["fecha_hora"]}} </li>
 </ul>
 
 @stop
