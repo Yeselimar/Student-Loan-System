@@ -28,13 +28,10 @@ use DateTime;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-
 class GetPublicController extends Controller
 {
-
     public function prueba()
     {
-
         /*Mail::send('emails.change_password', array(
             //'user_names'     => $enterprise_name,
             'email'     => $enterprise_email,
@@ -103,15 +100,26 @@ class GetPublicController extends Controller
 
         */
 
-
+        //contraseña del correo de rafael
         //scxxuchujshrgpao
+
+
+        //return date("d-m-Y H:i A");
+        $data = array(
+            "nombre_completo" => "Ivan Delgado",
+            "correo" => "ee@hh.ll",
+            "telefono" => "04265556677",
+            "asunto" => "Urgente",
+            "mensaje" => "hola adios",
+            "fecha_hora" => date("d/m/Y H:i A"),
+        );
 
         $mail = new PHPMailer(true);
         try
         {
-            $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-            $mail->isSMTP();  
-            $mail->Timeout       =   60; // set the timeout (seconds)
+            $mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->Timeout  = 60;
             $mail->CharSet = "utf-8";
             $mail->SMTPAuth = true; 
             $mail->SMTPSecure = "TLS";
@@ -122,12 +130,13 @@ class GetPublicController extends Controller
 
             $mail->setFrom("info@sisbeca.com", "Sisbeca");
             $mail->Subject = "Contacto";
-            $body = view("emails.contacto");
+            $body = view("emails.contacto")->with(compact("data"));
             $mail->MsgHTML($body);
             //foreach($correos as $correo)
             //{
                 $mail->addAddress("delgadorafael2011@gmail.com", "Rafael Delgado");
             //}
+            $mail->addBCC('darwin@gmail.com');
             $mail->send();
         }
         catch (phpmailerException $e)
@@ -139,7 +148,7 @@ class GetPublicController extends Controller
         {
             $enviado = false;
             $error = "02";
-             return "error 2:".$mail->ErrorInfo;
+            //return "enviado".$mail->ErrorInfo;
         }
         return "enviado";
         
