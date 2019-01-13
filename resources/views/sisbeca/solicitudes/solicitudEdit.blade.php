@@ -19,20 +19,6 @@
       >Atrás</a
     >
   </div>
-  <br />
-  @if($solicitud->status ==='enviada')
-  <div class="alert  alert-info alert-important" role="alert">
-    Actualmente su solicitud se encuentra enviada y pendiente por procesar.
-  </div>
-  @else @if($solicitud->status==='aceptada')
-  <div class="alert  alert-success alert-important" role="alert">
-    Su solicitud fue aceptada exitosamente.!
-  </div>
-  @else
-  <div class="alert  alert-danger alert-important" role="alert">
-    Su solicitud ha sido rechazada.
-  </div>
-  @endif @endif
 
   <div class="col sisbeca-container-formulario">
     @if($solicitud->status==='enviada' &&
@@ -204,12 +190,6 @@
       <div class="form-group">
         <div class="row">
           <div class="col-lg-12 text-right">
-            <a
-              href="{{ route('solicitud.listar') }}"
-              class="btn sisbeca-btn-default"
-            >
-              Atras
-            </a>
 
             <button type="submit" class="btn sisbeca-btn-primary">
               Actualizar solicitud
@@ -225,7 +205,7 @@
         <br />
         <strong> <span class="fa fa-users fa-fw"></span> Solicitud </strong>
         <hr />
-        <div class="offset-md-4 col-md-4 offset-lg-4 col-lg-4">
+        <div class=" col-sm-12 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
           <div class="panel panel-default">
             <div align="center">
               <div class="panel-heading">
@@ -251,7 +231,7 @@
                 <p>
                   Estatus: <span class="label label-danger">Negada</span>
                 </p>
-                @elseif($postulante->status==='aceptada')
+                @elseif($solicitud->status==='aceptada')
                 <div class="alert  alert alert-success" role="alert">
                   Su solicitud ha sido aceptada
                 </div>
@@ -260,7 +240,8 @@
                 </p>
                 @endif
                 <p><b>Datos de Solicitud:</b></p>
-                <p><b>Fecha Solicitud: </b> {{$solicitud->fechaCreacion()}}</p>
+                <div class="d-flex flex-column">
+                <p><b>Fecha Solicitud: </b> {{date("d/m/Y", strtotime($solicitud->created_at))}}</p>
                 <p><b>Tipo: </b>{{$solicitud->titulo}}</p>
                 <p><b>Descripción: </b>{{$solicitud->descripcion}}</p>
                 @if($solicitud->observacion)
@@ -268,6 +249,7 @@
                   Observación: <span class="label label-info"> {{$solicitud->observacion}}</span>
                 </p>
                 @endif
+                </div>
               </div>
             </div>
           </div>
