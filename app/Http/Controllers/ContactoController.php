@@ -46,7 +46,28 @@ class ContactoController extends Controller
             "mensaje" => $contacto->mensaje,
             "fecha_hora" => date("d/m/Y H:i A"),
         );
- 
+        //Enviar correo a la persona que escribe por el formulario
+        $mail = new PHPMailer(true);
+        
+            $mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->Timeout  = 60;
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Contacto";
+            $body = view("emails.contacto.gracias")->with(compact("data"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($contacto->correo);
+            $mail->send();
+       
+        //Enviar correo al administrador del sistema: Bapssy
         $mail = new PHPMailer(true);
         try
         {
@@ -62,25 +83,19 @@ class ContactoController extends Controller
             $mail->Password = "scxxuchujshrgpao";
 
             $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-            $mail->Subject = "Contacto";
-            $body = view("emails.contacto")->with(compact("data"));
+            $mail->Subject = "Contacto Nuevo";
+            $body = view("emails.contacto.info")->with(compact("data"));
             $mail->MsgHTML($body);
-            $mail->addAddress($contacto->correo);
-            $mail->addBCC('darwin@gmail.com');
+            $mail->addAddress("rafael1delgado@hotmail.com");
             $mail->send();
         }
         catch (phpmailerException $e)
         {
-            $enviado = false;
-            $error = "01";
-            return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactaremos!']);
         }
         catch (Exception $e)
         {
-            $enviado = false;
-            $error = "02";
-            return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactaremos!']);
         }
+        return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactaremos!']);
     }
 
     public function show($id)

@@ -230,7 +230,6 @@ const app = new Vue({
             "showDuration": "500",
             "hideDuration": "600",
             "hideEasing": "linear",
-
          };
          axios.post(url, dataform).then(response =>
          {
@@ -241,7 +240,7 @@ const app = new Vue({
             this.mensaje = '';
             this.errores = [];
             this.aviso = '';
-            toastr.success(response.data.success);
+            toastr.success("Gracias por escribirnos, a la brevedad te contactarémos.");
          }).catch( error =>
          {
             this.errores = error.response.data.errors;
@@ -282,7 +281,6 @@ const app = new Vue({
                   }
                }
             }
-
             toastr.error(this.aviso);
             //console.log(this.aviso);
          });

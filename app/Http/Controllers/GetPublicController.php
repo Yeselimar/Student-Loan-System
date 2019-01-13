@@ -30,6 +30,11 @@ use PHPMailer\PHPMailer\Exception;
 
 class GetPublicController extends Controller
 {
+    public function sendmail(Request $request)
+    {
+    return response()->json(['nombre'=>$request->data]);
+    }
+
     public function prueba()
     {
         /*Mail::send('emails.change_password', array(
@@ -107,12 +112,19 @@ class GetPublicController extends Controller
         //return date("d-m-Y H:i A");
         $data = array(
             "nombre_completo" => "Ivan Delgado",
-            "correo" => "ee@hh.ll",
+            "correo" => "rafael1delgado@hotmail.com",
             "telefono" => "04265556677",
             "asunto" => "Urgente",
             "mensaje" => "hola adios",
             "fecha_hora" => date("d/m/Y H:i A"),
         );
+        Mail::send('emails.contacto.gracias', ['data' => $data], function($message) use ($data)
+        {
+            $message->from( 'not-reply@sisbeca.com', 'Sisbeca');
+            $message->to( $data['correo'] )->subject('Notificación');
+        });
+        return "exitoo";
+
 
         $mail = new PHPMailer(true);
         try

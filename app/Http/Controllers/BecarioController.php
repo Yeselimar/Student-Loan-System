@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class BecarioController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('becario');

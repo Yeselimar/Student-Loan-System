@@ -66,6 +66,9 @@ Route::get('/foo', function ()
 });
 
 
+Route::post('/sendmail/', 'GetPublicController@sendmail')->name('send.mail');//borrar
+
+
 
 // Get Noticia para obtener todas las noticias en el datatable
 Route::get('datatable/getNoticia/{tip?}', 'GetPublicController@getNoticias')->name('datatable/getNoticia');
