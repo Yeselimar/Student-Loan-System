@@ -203,6 +203,7 @@ class Todo extends Migration
             $table->increments('id');
             $table->enum('titulo',['desincorporacion temporal','desincorporacion definitiva','reincorporacion','retroactivo','otros'])->default('otros');
             $table->text('descripcion');
+            $table->text('observacion')->nullable();
             $table->enum('status',['enviada','aceptada','rechazada'])->default('enviada');
             $table->unsignedInteger('usuario_respuesta')->nullable();
             $table->datetime('fecha_desincorporacion')->nullable();

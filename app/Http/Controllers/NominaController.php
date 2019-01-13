@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
 use avaa\Http\Requests\NominaRequest;
+use DateTime;
 
 
 class NominaController extends Controller
@@ -185,70 +186,123 @@ class NominaController extends Controller
     public function generartodo($mes,$anho)
     {
     	//validar que no se haya generado para una fecha
-    	$becarios = Becario::where('acepto_terminos','=',1)->where('status','=','activo')->get();
-    	$costo = Costo::first();
+    	//$becarios = Becario::where('acepto_terminos','=',1)->where('status','=','activo')->get();
+    	//$costo = Costo::first();
         /*$control = Control::first();
         if(is_null($control))
         {
             cantidad=0;
         }*/
         //$control = count(Nomina::groupby('mes','year')->get());
-    	foreach($becarios as $becario)
-    	{
-    		$nomina = new Nomina();
-    		$nomina->retroactivo = $becario->retroactivo;
-    		$nomina->datos_nombres= $becario->user->name;
-    		$nomina->datos_apellidos = $becario->user->last_name;
-            $nomina->datos_cedula = $becario->user->cedula;
-            $nomina->datos_email = $becario->user->email;
-            $nomina->datos_cuenta = $becario->cuenta_bancaria;
-            $nomina->datos_id= $becario->user_id;
-            $becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
-            $becario->save();
-    		$nomina->sueldo_base = $costo->sueldo_becario;
-    		$total = 0;
-    		foreach($becario->factlibros as $factlibro)
-    		{
-                if($factlibro->status === 'cargada')
-                {
-                    //$total = $total + $factlibro->costo; //se comenta porque no se sumara aún
-                    $factlibro->status='por procesar';
-                    $factlibro->save();
-                }
-    		}
-            $nomina->monto_libros = $total;
-    		$nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $total;
-    		$nomina->mes = $mes;
-    		$nomina->year = $anho;
-    		$nomina->status = 'pendiente';
-    		$nomina->fecha_pago = null;
-    		$nomina->fecha_generada = null;
-    		$nomina->save();
+        $anho = date ( 'Y' , strtotime(date('Y-m-d H:i:s')) );
+        $mes = date ( 'm' , strtotime(date('Y-m-d H:i:s')) );
+        $nominasaux = Nomina::where('mes',$mes)->where('year',$anho)->get();
 
-    		$bn = new BecarioNomina();
-    		$bn->user_id = $becario->user_id;//--becario_id
-    		$bn->nomina_id = $nomina->id;
-    		$bn->save();
+        if(count($nominasaux)==0)
+        {
+           $becarios = Becario::where('acepto_terminos','=',1)->where('status','=','activo')->get();
+               $costo = Costo::first();
 
-    	}
-    	/*Enviar Alerta al directivo */
-    	//primero veo si la alerta existe
-        $alerta= Alerta::query()->where('titulo','=','Nomina(s) pendiente(s) por procesar')->where('tipo','=','nomina')->where('status','=','enviada')->first();
-        if(!is_null($alerta))
-        {
-            $alerta->leido=false;
-            $alerta->save();
-        }
-        else
-        {
-            $alerta = new Alerta();
-            $alerta->titulo= 'Nomina(s) pendiente(s) por procesar';
-            $alerta->descripcion= 'Tiene Nomina(s) pendiente(s) por procesar, se le aconseja procesar las nominas que tiene pendiente en el Menu de Nominas->Por Procesar';
-            $alerta->user_id=null;
-            $alerta->tipo = 'nomina';
-            $alerta->nivel='alto';
-            $alerta->save();
-        }
+               foreach($becarios as $becario)
+               {
+                    $inNomina = false;
+                    $diff = 0;
+                    $date1 = new DateTime($becario->fecha_bienvenida);
+                    $date2 = new DateTime();
+                    // Entran en nomina aquellos becarios que su fecha de bienvendida sea mayor a un mes
+                    if($becario->fecha_bienvenida != null){
+                        $diff = $date1->diff($date2);
+
+                        if(($diff->invert == 0) && ($diff->m > 0) || ($diff->y > 0)){
+                            $inNomina =true;
+                        }
+                        else {
+                            $inNomina =false;
+                        }
+                    }
+
+                    if($inNomina) {
+                        //Entran en nomina aquellos becarios cuyo fecha fin de carga academica no sea  mayor a 6 meses
+                        $diff = 0;
+                        $date1 = new DateTime($becario->final_carga_academica);
+                        $date2 = new DateTime();
+                        if ($becario->final_carga_academica != null)
+                        {
+                            $diff = $date2->diff($date1);
+                            if(($diff->invert == 0) || (($diff->invert ==1) && ($diff->m <= 6) && ($diff->y == 0)) ){
+                                $inNomina =true;
+                            }
+                            else {
+                                $inNomina =false;
+                            }
+                        } else {
+                            $inNomina = true;
+                        }
+                    }
+
+                   if ($inNomina)
+                   {
+                       $nomina = new Nomina();
+                       $nomina->retroactivo = $becario->retroactivo;
+                       $nomina->datos_nombres= $becario->user->name;
+                       $nomina->datos_apellidos = $becario->user->last_name;
+                       $nomina->datos_cedula = $becario->user->cedula;
+                       $nomina->datos_email = $becario->user->email;
+                       $nomina->datos_cuenta = $becario->cuenta_bancaria;
+                       $nomina->datos_id= $becario->user_id;
+                       $becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
+                       $becario->save();
+                       $nomina->sueldo_base = $costo->sueldo_becario;
+                       $total = 0;
+                       foreach($becario->factlibros as $factlibro)
+                       {
+                           if($factlibro->status === 'cargada')
+                           {
+                               //$total = $total + $factlibro->costo; //se comenta porque no se sumara aún
+                               $factlibro->status='por procesar';
+                               $factlibro->save();
+                           }
+                       }
+                       $nomina->monto_libros = $total;
+                       $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $total;
+                       $nomina->mes = $mes;
+                       $nomina->year = $anho;
+                       $nomina->status = 'pendiente';
+                       $nomina->fecha_pago = null;
+                       $nomina->fecha_generada = null;
+                       $nomina->save();
+   
+                       $bn = new BecarioNomina();
+                       $bn->user_id = $becario->user_id;//--becario_id
+                       $bn->nomina_id = $nomina->id;
+                       $bn->save();
+                   }
+
+
+               }
+               /*Enviar Alerta al directivo */
+               //primero veo si la alerta existe
+               if ($inNomina)
+               {
+                   $alerta= Alerta::query()->where('titulo','=','Nomina(s) pendiente(s) por procesar')->where('tipo','=','nomina')->where('status','=','enviada')->first();
+                   if(!is_null($alerta))
+                   {
+                       $alerta->leido=false;
+                       $alerta->save();
+                   }
+                   else
+                   {
+                       $alerta = new Alerta();
+                       $alerta->titulo= 'Nomina(s) pendiente(s) por procesar';
+                       $alerta->descripcion= 'Tiene Nomina(s) pendiente(s) por procesar, se le aconseja procesar las nominas que tiene pendiente en el Menu de Nominas->Por Procesar';
+                       $alerta->user_id=null;
+                       $alerta->tipo = 'nomina';
+                       $alerta->nivel='alto';
+                       $alerta->save();
+                   }
+               }
+
+     }
         /* $control->cont = $control->cont+1
         $control->save();*/
         flash("La nómina del ".$mes."/".$anho." esta lista para ser procesada.",'success');
