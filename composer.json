@@ -24,7 +24,6 @@
         "symfony/thanks": "^1.0",
         "phpmailer/phpmailer": "~6.0"
 
-
     },
     "autoload": {
         "classmap": [

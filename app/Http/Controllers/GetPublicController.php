@@ -27,9 +27,62 @@ use Mail;
 use DateTime;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class GetPublicController extends Controller
 {
+    public function enviarcorreo(Request $request)
+    {
+        return response()->json(['nombre'=>"exitoo!!"]);
+        /*
+        $data = array(
+            "nombre_completo" => "Ivan Delgado",
+            "correo" => "rafael1delgado@hotmail.com",
+            "telefono" => "04265556677",
+            "asunto" => "Urgente",
+            "mensaje" => "hola adios",
+            "fecha_hora" => date("d/m/Y H:i A"),
+        );
+        $mail = new PHPMailer(true);
+        try
+        {
+            $mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->Timeout  = 60;
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true; 
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+
+            $mail->setFrom("info@sisbeca.com", "Sisbeca");
+            $mail->Subject = "Contacto";
+            $body = view("emails.contacto.info")->with(compact("data"));
+            $mail->MsgHTML($body);
+            //foreach($correos as $correo)
+            //{
+                $mail->addAddress("delgadorafael2011@gmail.com", "Rafael Delgado");
+            //}
+            //$mail->addBCC('darwin@gmail.com');
+            $mail->send();
+        }
+        catch (phpmailerException $e)
+        {
+            $enviado = false;
+            $error = "01";
+        }
+        catch (Exception $e)
+        {
+            $enviado = false;
+            $error = "02";
+            //return "enviado".$mail->ErrorInfo;
+        }*/
+        
+    }
+
     public function sendmail(Request $request)
     {
     return response()->json(['nombre'=>$request->data]);
@@ -37,6 +90,23 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        //$client = new Client();
+       
+        //return response()->json(route('enviarcorreo'));
+        /*$client = new \GuzzleHttp\Client();
+        $request = $client->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
+        return $result= $request->getBody();
+        return  "";*/
+       /* $client = new \GuzzleHttp\Client();
+        //return $client;
+        $request = $client->request('POST', route('enviarcorreo'), [
+            'form_params' => [
+                'asunto' => "urgente",
+                'correo' => "rafael1delgado@hotmail.com",
+                'cuerpo' => view("emails.contacto.info")->with(compact("data")),
+            ]
+        ]);*/
+       
         /*Mail::send('emails.change_password', array(
             //'user_names'     => $enterprise_name,
             'email'     => $enterprise_email,
@@ -118,51 +188,57 @@ class GetPublicController extends Controller
             "mensaje" => "hola adios",
             "fecha_hora" => date("d/m/Y H:i A"),
         );
-        Mail::send('emails.contacto.gracias', ['data' => $data], function($message) use ($data)
+        /*Mail::send('emails.contacto.gracias', ['data' => $data], function($message) use ($data)
         {
             $message->from( 'not-reply@sisbeca.com', 'Sisbeca');
             $message->to( $data['correo'] )->subject('Notificación');
         });
         return "exitoo";
-
+        */
 
         $mail = new PHPMailer(true);
-        try
-        {
-            $mail->SMTPDebug = 2;
+        /*try
+        {*/
+            
             $mail->isSMTP();
-            $mail->Timeout  = 60;
+            $mail->SMTPDebug = 0;
+            //$mail->Timeout  = 60;
             $mail->CharSet = "utf-8";
             $mail->SMTPAuth = true; 
-            $mail->SMTPSecure = "TLS";
+            $mail->SMTPSecure = "tls";
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 587;
+            $mail->IsHTML(true);
+
             $mail->Username = "delgadorafael2011@gmail.com";
             $mail->Password = "scxxuchujshrgpao";
 
             $mail->setFrom("info@sisbeca.com", "Sisbeca");
             $mail->Subject = "Contacto";
-            $body = view("emails.contacto")->with(compact("data"));
+            $body = view("emails.contacto.info")->with(compact("data"));
             $mail->MsgHTML($body);
             //foreach($correos as $correo)
             //{
                 $mail->addAddress("delgadorafael2011@gmail.com", "Rafael Delgado");
             //}
-            $mail->addBCC('darwin@gmail.com');
+            //$mail->addBCC('darwin@gmail.com');
             $mail->send();
-        }
+            return "asasas";
+        /*}
         catch (phpmailerException $e)
         {
             $enviado = false;
             $error = "01";
+            return "exito";
         }
         catch (Exception $e)
         {
             $enviado = false;
             $error = "02";
+            return "exito";
             //return "enviado".$mail->ErrorInfo;
         }
-        return "enviado";
+        die('success');*/
         
         //relación de becarios a actividades
         /*

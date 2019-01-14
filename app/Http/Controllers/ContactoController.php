@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use avaa\Contacto;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class ContactoController extends Controller
 {
@@ -44,58 +46,47 @@ class ContactoController extends Controller
             "telefono" => $contacto->telefono,
             "asunto" => $contacto->asunto,
             "mensaje" => $contacto->mensaje,
-            "fecha_hora" => date("d/m/Y H:i A"),
+            "fecha_hora" => date("d/m/Y h:i A"),
         );
-        //Enviar correo a la persona que escribe por el formulario
-        $mail = new PHPMailer(true);
-        
-            $mail->SMTPDebug = 2;
-            $mail->isSMTP();
-            $mail->Timeout  = 60;
-            $mail->CharSet = "utf-8";
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = "TLS";
-            $mail->Host = "smtp.gmail.com";
-            $mail->Port = 587;
-            $mail->Username = "delgadorafael2011@gmail.com";
-            $mail->Password = "scxxuchujshrgpao";
 
-            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-            $mail->Subject = "Contacto";
-            $body = view("emails.contacto.gracias")->with(compact("data"));
-            $mail->MsgHTML($body);
-            $mail->addAddress($contacto->correo);
-            $mail->send();
-       
+        //Enviar correo a la persona que escribe por el formulario
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Contacto";
+        $body = view("emails.contacto.gracias");
+        $mail->MsgHTML($body);
+        $mail->addAddress($contacto->correo);
+        $mail->send();
+        
         //Enviar correo al administrador del sistema: Bapssy
         $mail = new PHPMailer(true);
-        try
-        {
-            $mail->SMTPDebug = 2;
-            $mail->isSMTP();
-            $mail->Timeout  = 60;
-            $mail->CharSet = "utf-8";
-            $mail->SMTPAuth = true; 
-            $mail->SMTPSecure = "TLS";
-            $mail->Host = "smtp.gmail.com";
-            $mail->Port = 587;
-            $mail->Username = "delgadorafael2011@gmail.com";
-            $mail->Password = "scxxuchujshrgpao";
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true; 
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Contacto Nuevo";
+        $body = view("emails.contacto.info")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress("rafael1delgado@hotmail.com");
+        $mail->send();
 
-            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-            $mail->Subject = "Contacto Nuevo";
-            $body = view("emails.contacto.info")->with(compact("data"));
-            $mail->MsgHTML($body);
-            $mail->addAddress("rafael1delgado@hotmail.com");
-            $mail->send();
-        }
-        catch (phpmailerException $e)
-        {
-        }
-        catch (Exception $e)
-        {
-        }
-        return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactaremos!']);
+        return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactarémos!']);
+        
     }
 
     public function show($id)

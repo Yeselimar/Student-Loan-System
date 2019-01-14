@@ -256,60 +256,71 @@ class ActividadController extends Controller
                     $ab->estatus = "lista de espera";
                     $ab->save();
 
-                    $estatus = "LISTA DE ESPERA";
+                    $estatus = "LISTA DE ESPERA";//Variable que se usa para enviar el correo
                     $data = array(
-                    "asunto"=>"Notificación",
-                    "body"=>"emails.actividades.notificacion-inscripcion",
-                    "email" => $becario->user->email,
-                    "becario" => $becario->user->nombreyapellido(),
-                    "estatus" => $estatus,
-                    "actividad_tipo" => $actividad->getTipo(),
-                    "actividad_nombre" => $actividad->nombre,
-                    "actividad_fecha" => $actividad->getDiaFecha().", ".$actividad->getFecha(),
-                    "actividad_hora" => $actividad->getHoraInicio().' a '.$actividad->getHoraFin(),
+                        "email" => $becario->user->email,
+                        "becario" => $becario->user->nombreyapellido(),
+                        "estatus" => $estatus,
+                        "actividad_tipo" => $actividad->getTipo(),
+                        "actividad_nombre" => $actividad->nombre,
+                        "actividad_fecha" => $actividad->getDiaFecha().", ".$actividad->getFecha(),
+                        "actividad_hora" => $actividad->getHoraInicio().' a '.$actividad->getHoraFin(),
                     );
+
                     //Enviar correo a la persona que se inscribio a la actividad
-                    /*$mail = new PHPMailer();
-                    try
-                    {
-                        $mail->SMTPDebug = 2;
-                        $mail->isSMTP();
-                        $mail->Timeout  = 60;
-                        $mail->CharSet = "utf-8";
-                        $mail->SMTPAuth = true;
-                        $mail->SMTPSecure = "TLS";
-                        $mail->Host = "smtp.gmail.com";
-                        $mail->Port = 587;
-                        $mail->Username = "delgadorafael2011@gmail.com";
-                        $mail->Password = "scxxuchujshrgpao";
+                    $mail = new PHPMailer();
+                    $mail->SMTPDebug = 0;
+                    $mail->isSMTP();
+                    $mail->CharSet = "utf-8";
+                    $mail->SMTPAuth = true;
+                    $mail->SMTPSecure = "TLS";
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port = 587;
+                    $mail->Username = "delgadorafael2011@gmail.com";
+                    $mail->Password = "scxxuchujshrgpao";
+                    $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+                    $mail->Subject = "Notificación";
+                    $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
+                    $mail->MsgHTML($body);
+                    $mail->addAddress($becario->user->email);
+                    $mail->send();
 
-                        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-                        $mail->Subject = "Notificación";
-                        $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
-                        $mail->MsgHTML($body);
-                        $mail->addAddress($becario->user->email);
-
-                        $mail->send();
-
-                        return response()->json(['nombre'=>'success-mail-sisbeca-wait-list']);
-
-                        return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA del '.$actividad->tipo.' '.$actividad->nombre.'. Bien']);
-                    }
-                    catch (Exception $e)
-                    {
-                        return response()->json(['nombre'=>'danger-mail-sisbeca']);
-
-                        return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA del '.$actividad->tipo.' '.$actividad->nombre.'. Mal']);
-                    }*/
-
-                    
-
-                    return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA del '.$actividad->tipo.' '.$actividad->nombre.'. Mal',"info"=>$data]);
+                    return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA del '.$actividad->tipo.' '.$actividad->nombre.'.']);
                 }
                 else
                 {
                     $ab->estatus = "asistira";
                     $ab->save();
+
+                    $estatus = "ASISTIRA";//Variable que se usa para enviar el correo
+                    $data = array(
+                        "email" => $becario->user->email,
+                        "becario" => $becario->user->nombreyapellido(),
+                        "estatus" => $estatus,
+                        "actividad_tipo" => $actividad->getTipo(),
+                        "actividad_nombre" => $actividad->nombre,
+                        "actividad_fecha" => $actividad->getDiaFecha().", ".$actividad->getFecha(),
+                        "actividad_hora" => $actividad->getHoraInicio().' a '.$actividad->getHoraFin(),
+                    );
+
+                    //Enviar correo a la persona que se inscribio a la actividad
+                    $mail = new PHPMailer();
+                    $mail->SMTPDebug = 0;
+                    $mail->isSMTP();
+                    $mail->CharSet = "utf-8";
+                    $mail->SMTPAuth = true;
+                    $mail->SMTPSecure = "TLS";
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port = 587;
+                    $mail->Username = "delgadorafael2011@gmail.com";
+                    $mail->Password = "scxxuchujshrgpao";
+                    $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+                    $mail->Subject = "Notificación";
+                    $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
+                    $mail->MsgHTML($body);
+                    $mail->addAddress($becario->user->email);
+                    $mail->send();
+
                     return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito al '.$actividad->tipo.' '.$actividad->nombre.'.']);
                 }
             }
@@ -363,7 +374,7 @@ class ActividadController extends Controller
                 else
                 {
                     $estatus = "ASISTIRÁ";
-                    flash('El becario '.$becario->user->nombreyapellido().' fue inscrito como ASISTIRÁ al '.$ucwords($actividad->tipo).': '.$actividad->nombre.'.', 'success')->important();
+                    flash('El becario '.$becario->user->nombreyapellido().' fue inscrito como ASISTIRÁ al '.ucwords($actividad->tipo).': '.$actividad->nombre.'.', 'success')->important();
                 }
                 $data = array(
                     "becario" => $becario->user->nombreyapellido(),
@@ -375,34 +386,22 @@ class ActividadController extends Controller
                 );
                 //Enviar correo a la persona que se inscribio a la actividad
                 $mail = new PHPMailer(true);
-                try
-                {
-                    $mail->SMTPDebug = 2;
-                    $mail->isSMTP();
-                    $mail->Timeout  = 60;
-                    $mail->CharSet = "utf-8";
-                    $mail->SMTPAuth = true;
-                    $mail->SMTPSecure = "TLS";
-                    $mail->Host = "smtp.gmail.com";
-                    $mail->Port = 587;
-                    $mail->Username = "delgadorafael2011@gmail.com";
-                    $mail->Password = "scxxuchujshrgpao";
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->CharSet = "utf-8";
+                $mail->SMTPAuth = true;
+                $mail->SMTPSecure = "TLS";
+                $mail->Host = "smtp.gmail.com";
+                $mail->Port = 587;
+                $mail->Username = "delgadorafael2011@gmail.com";
+                $mail->Password = "scxxuchujshrgpao";
+                $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+                $mail->Subject = "Notificación";
+                $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
+                $mail->MsgHTML($body);
+                $mail->addAddress($becario->user->email);
+                $mail->send();
 
-                    $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-                    $mail->Subject = "Notificación";
-                    $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
-                    $mail->MsgHTML($body);
-                    $mail->addAddress($becario->user->email);
-                    $mail->send();
-                }
-                catch (phpmailerException $e)
-                {
-                    return redirect()->route('actividad.detalles',$id);
-                }
-                catch (Exception $e)
-                {
-                    return redirect()->route('actividad.detalles',$id);
-                }
                 $ab->save();
                 return redirect()->route('actividad.detalles',$id);
             }

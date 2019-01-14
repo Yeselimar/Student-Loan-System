@@ -240,11 +240,11 @@ const app = new Vue({
             this.mensaje = '';
             this.errores = [];
             this.aviso = '';
-            toastr.success("Gracias por escribirnos, a la brevedad te contactarémos.");
+            toastr.success(response.data.success);
          }).catch( error =>
          {
             this.errores = error.response.data.errors;
-            //console.log(this.errores);
+            //console.log(error.response.data);
             if(this.errores.nombre_completo)
             {
                this.aviso = this.errores.nombre_completo[0];

@@ -66,7 +66,8 @@ Route::get('/foo', function ()
 });
 
 
-Route::post('/sendmail/', 'GetPublicController@sendmail')->name('send.mail');//borrar
+Route::post('/sendmail', 'GetPublicController@sendmail')->name('send.mail');//borrar
+Route::post('/enviar-correo', 'GetPublicController@enviarcorreo')->name('enviarcorreo');//borrar
 
 
 

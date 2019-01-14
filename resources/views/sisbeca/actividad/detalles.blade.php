@@ -620,7 +620,7 @@ const app = new Vue({
     		url = url.replace(':b_id', becario_id);
             axios.get(url).then(response => 
             {
-            	console.log("Hola");
+            	/*console.log("Hola");
             	console.log(response);
             	url = '{{route('send.mail')}}';
             	let data = JSON.stringify({
@@ -630,7 +630,7 @@ const app = new Vue({
             	axios.post(url,data).then(response => 
 	            {
 	            	console.log(response.data.nombre);
-	            });
+	            });*/
 
             	this.obtenerdetallesactividad();
             	if(response.data.tipo=='danger')
