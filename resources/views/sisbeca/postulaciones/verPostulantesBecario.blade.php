@@ -11,11 +11,14 @@
                 <thead>
                     <tr>
                         <!--  <th class="text-center">Revisado</th> -->
+                        <th class="text-center">Estatus</th>
                         <th class="text-center">Nombre y Apellido</th>
                         <th class="text-center">Cédula</th>
-                        <th class="text-center">Estatus</th>
-                        <th class="text-center">Correo Electrónico</th>
-                        <th class="text-center">Ver Postulación</th>
+
+                        <th class="text-center">Teléfono</th>
+                        <th class="text-center">P. Bachiller</th>
+
+                        <th class="text-center">Ver Perfil</th>
 
                     </tr>
                 </thead>
@@ -24,10 +27,7 @@
                     @foreach($becarios as $becario)
                         @if($becario->status !='pre-postulante')
                             <tr>
-                                <td class="text-center">{{ $becario->user_id.' '.$becario->user->name.' '.$becario->user->last_name }}</td>
-                                <td class="text-center">{{ $becario->user->cedula }}</td>
-
-                                @if($becario->status=='entrevista')
+                            @if($becario->status=='entrevista')
                                     <td class="text-center">
                                         <span class="label label-inverse">Por entrevistar</span>
                                     </td>
@@ -52,12 +52,19 @@
                                     <span class="label label-default">Sin Revisar</span>
                                 </td>
                                 @endif
+                                <td class="text-center">{{ $becario->user->name.' '.$becario->user->last_name }}</td>
+                                <td class="text-center">{{ $becario->user->cedula }}</td>
 
-                                <td class="text-center">{{ $becario->user->email }}</td>
+
+                                <td class="text-center">{{ $becario->celular }}</td>
+
+                                <!-- <td class="text-center">{{ $becario->user->email }}</td>
+ -->
+                                <td class="text-center">{{ $becario->promedio_bachillerato }}</td>
 
 
                                 <td class="text-center">
-                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Expediente" >
+                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="popover" data-trigger="hover" data-content="Ver Perfil" data-placement="left" >
                                         <i class='fa fa-eye' ></i>
                                     </a>
                                 </td>
@@ -127,5 +134,9 @@ $('#select_all').change(function() {
 */
 
 </script>
-
+<script>
+$(document).ready(function(){
+$('[data-toggle="popover"]').popover();
+});
+</script>
 @endsection
