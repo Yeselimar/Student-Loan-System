@@ -4,136 +4,73 @@
 
 
 <div class="text-right col-12" align="right" >
-<a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+<a href="{{route('listarPostulantesBecarios',"2")}}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
-<div class="card">
-    <div class="card-body" style="border: 1px solid #eee">
-        <div class="card-two">
-            <div class="text-right col-12" align="right">
-            </div>
-                <!--<header>
-                <div class="avatar">
-                {{$img_perfil}}
-                    @if($img_perfil->count()>0)
-                        <img src="{{asset($img_perfil[0]->url)}}" style="height: 95px !important;">
-                    @else
-                        @if($postulante->user->sexo==='femenino')
-                            <img src="{{asset('images/perfil/femenino.png')}}" style="height: 95px !important;">
-                        @else
-                            <img src="{{asset('images/perfil/masculino.png')}}" style="height: 95px !important;">
-                        @endif
-                    @endif
-                </div>
-            </header> -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6">
-                        <div class="well well-sm m-4">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-4">
-                                        @if($img_perfil->count()>0)
-                                            <img src="{{asset($img_perfil[0]->url)}}" class="img-rounded img-responsive">
-                                        @else
-                                            @if($postulante->user->sexo==='femenino')
-                                                <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive">
-                                            @else
-                                                <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive">
-                                            @endif
-                                        @endif
+<div class="container">
+    <div class="card card-body bg-light border border-info p-2">
+        <div class="col-xs-12 col-sm-8 col-md-8">
 
-                                </div>
-                                <div class="col-sm-6 col-md-8">
-                                    <h4>{{$postulante->user->name}} {{$postulante->user->last_name }}</h4>
-                                    <p>
-                                        <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulante->user->email}}
-                                        <br />
-                                        <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulante->user->cedula}}
-                                        <br/>
-                                        <i class="fa fa-phone">&nbsp; </i>Teléfono: {{$postulante->celular}}
-                                        <br/>
-                                        <i class="fa fa-graduation-cap">&nbsp; </i>Promedio Bachiller: {{$postulante->promedio_bachillerato}}
-                                        <br/>
-                                       <i class="fa fa-map-pin">&nbsp; </i>Dirección: {{$postulante->direccion_permanente}}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col xs-6 col-sm-4 col-md-4 p-t-20">
+                            @if($img_perfil->count()>0)
+                                <img src="{{asset($img_perfil[0]->url)}}" class="img-rounded img-responsive">
+                            @else
+                                @if($postulante->user->sexo==='femenino')
+                                    <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive">
+                                @else
+                                    <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive">
+                                @endif
+                            @endif
+<br/>
+                    </div>
+                    <div class="col-sm-6 col-md-8 p-4">
+                        <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
+                        <p>
+                        @if($postulante->status==='postulante')
+                                <span class="label label-default">Sin Revisar</span>
+                            @else
+                                @if($postulante->status==='entrevista')
+                                    <span class="label label-inverse">Aprobado para Entrevista</span>
+                                @elseif($postulante->status==='entrevistado')
+                                    <span class="label label-warning">Entrevistado</span>
+                                @elseif($postulante->status==='no_entrevista')
+                                <span class="label label-danger">Rechazado</span>
+                                @elseif($postulante->status==='rechazado')
+                                <span class="label label-danger">Rechazado</span>
+                                @elseif($postulante->status=='activo')
+                                    @if($postulante->acepto_terminos=='false')
+                                    <span class="label label-success">Aprobado a ProExcelencia</span>
+                                    @else
+                                    <span class="label label-success">Becario</span>
+                                    @endif
+                                @elseif($postulante->status==='probatorio1')
+                                <span class="label label-warning">Probatorio1</span>
+                                @elseif($postulante->status==='probatorio2')
+                                <span class="label label-danger">Probatorio2</span>
+                                @elseif($postulante->status==='inactivo')
+                                <span class="label label-danger">Inactivo</span>
+                                @elseif($postulante->status==='desincorporado')
+                                <span class="label label-danger">Desincorporado</span>
+                                @else
+                                    <span class="label label-default">Egresado</span>
+                                @endif
+                            @endif
+                            <br/>
+                            <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulante->user->email}}
+                            <br />
+                            <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulante->user->cedula}}
+                            <br/>
+                            <i class="fa fa-phone">&nbsp; </i>Teléfono: {{$postulante->celular}}
+                            <br/>
+                            <i class="fa fa-graduation-cap">&nbsp; </i>Promedio Bachiller: {{$postulante->promedio_bachillerato}}
+                            <br/>
+                            <i class="fa fa-map-pin">&nbsp; </i>Dirección: {{$postulante->direccion_permanente}}
+                        </p>
                     </div>
                 </div>
-            </div>
-            <!-- <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
-            <div class="desc">
-
-                @if($postulante->status==='postulante')
-                    <span class="label label-default">Sin Revisar</span>
-                @else
-                    @if($postulante->status==='entrevista')
-                        <span class="label label-inverse">Aprobado para Entrevista</span>
-                    @elseif($postulante->status==='entrevistado')
-                        <span class="label label-warning">Entrevistado</span>
-                    @elseif($postulante->status==='no_entrevista')
-                    <span class="label label-danger">Rechazado</span>
-                    @elseif($postulante->status==='rechazado')
-                    <span class="label label-danger">Rechazado</span>
-                    @elseif($postulante->status=='activo')
-                        @if($postulante->acepto_terminos=='false')
-                        <span class="label label-success">Aprobado a ProExcelencia</span>
-                        @else
-                        <span class="label label-success">Becario</span>
-                        @endif
-                    @elseif($postulante->status==='probatorio1')
-                    <span class="label label-warning">Probatorio1</span>
-                    @elseif($postulante->status==='probatorio2')
-                    <span class="label label-danger">Probatorio2</span>
-                    @elseif($postulante->status==='inactivo')
-                    <span class="label label-danger">Inactivo</span>
-                    @elseif($postulante->status==='desincorporado')
-                    <span class="label label-danger">Desincorporado</span>
-                    @else
-                        <span class="label label-default">Egresado</span>
-                    @endif
-                @endif
-            </div>
-
-            <div class="text-center">
-                <span class="fa fa-venus-mars"> </span>
-                {{ucwords($postulante->user->sexo)}} &nbsp;&nbsp;&nbsp;
-
-                <span class="fa fa-calendar"></span>
-                {{$postulante->user->edad}} Años &nbsp;&nbsp;&nbsp;
-
-                <span class="fa fa-birthday-cake"></span>
-                {{ date("d/m/Y", strtotime($postulante->user->fecha_nacimiento)) }}
-
-                <div class="clear"></div>
-                <br>
-            </div> -->
 
         </div>
     </div>
-
-    <!-- <div class="col-lg-12" style="border:1px solid #eee">
-        <div class="row">
-            <div class="col-md-3 col-xs-6 b-r"> <strong>Nombre Completo</strong>
-                <br>
-                <p class="">{{$postulante->user->name.' '.$postulante->user->last_name}}</p>
-            </div>
-            <div class="col-md-3 col-xs-6 b-r"> <strong>Cédula</strong>
-                <br>
-                <p class="text-muted">{{$postulante->user->cedula}}</p>
-            </div>
-            <div class="col-md-3 col-xs-6 b-r"> <strong>Correo Electrónico</strong>
-                <br>
-                <p class="text-muted">{{$postulante->user->email}}</p>
-            </div>
-            <div class="col-md-3 col-xs-6"> <strong>Dirección</strong>
-                <br>
-                <p class="text-muted">{{$postulante->direccion_permanente}}</p>
-            </div>
-        </div>
-    </div>
-
-    <br> -->
     @if($postulante->status==='postulante')
 
     <div align="center">
@@ -144,71 +81,6 @@
     @endif
 </div>
 
-    <!-- Modal para aprobar -->
-    <div class="modal fade" id="modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"> &times;</span>
-                </button>
-
-                <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
-
-            </div>
-
-            <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
-                {{csrf_field()}}
-                {{method_field('PUT')}}
-                <input type="hidden" id='valor' name="valor"  value="1">
-
-                <div class="modal-body">
-                    <br>
-                    ¿Está seguro que desea <strong class="letras-verdes">Seleecionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
-                </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
-
-            </div>
-
-            </form>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para aprobar -->
-
-    <!-- Modal para rechazar -->
-    <div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-                <h4 class="modal-title pull-left">Confirmación</h4>
-                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
-        </div>
-        <div class="modal-body">
-            <br>
-            ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
-        </div>
-        <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
-
-            {{csrf_field()}}
-            {{method_field('PUT')}}
-
-            <input type="hidden" id='valor' name="valor"  value="0">
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right" >Si</button>
-            </div>
-
-        </form>
-        </div>
-    </div>
-
-    </div>
-    <!-- Modal para rechazar -->
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel-group Material-default-accordion" id="datos-personales" role="tablist" aria-multiselectable="true">
@@ -529,7 +401,7 @@
                                     @if(!is_null($fotografia))
                                         <a target="_blank" href="{{ asset($fotografia->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Fotografia</strong></span>
+                                        <span class="label label-default"><strong>Sin Fotografia</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -539,7 +411,7 @@
                                     @if(!is_null($cedula))
                                         <a target="_blank" href="{{ asset($cedula->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Cedula</strong></span>
+                                        <span class="label label-default"><strong>Sin Cedula</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -549,7 +421,7 @@
                                     @if(!is_null($constancia_cnu))
                                         <a target="_blank" href="{{ asset($constancia_cnu->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Constancia CNU</strong></span>
+                                        <span class="label label-default"><strong>Sin Constancia CNU</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -559,7 +431,7 @@
                                     @if(!is_null($calificaciones_bachillerato))
                                         <a target="_blank" href="{{ asset($calificaciones_bachillerato->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Calificaciones de Bachillerato</strong></span>
+                                        <span class="label label-default"><strong>Sin Calificaciones de Bachillerato</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -569,7 +441,7 @@
                                     @if(!is_null($constancia_aceptacion))
                                         <a target="_blank" href="{{ asset($constancia_aceptacion->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Constancia de Aceptación</strong></span>
+                                        <span class="label label-default"><strong>Sin Constancia de Aceptación</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -579,7 +451,7 @@
                                     @if(!is_null($constancia_estudios))
                                         <a target="_blank" href="{{ asset($constancia_estudios->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Constancia de Estudio</strong></span>
+                                        <span class="label label-default"><strong>Sin Constancia de Estudio</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -589,7 +461,7 @@
                                     @if(!is_null($calificaciones_universidad))
                                         <a target="_blank" href="{{ asset($calificaciones_universidad->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Calificaciones de la Universidad</strong></span>
+                                        <span class="label label-default"><strong>Sin Calificaciones de la Universidad</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -599,7 +471,7 @@
                                     @if(!is_null($constancia_trabajo))
                                         <a target="_blank" href="{{ asset($constancia_trabajo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Constanca de Trabajo</strong></span>
+                                        <span class="label label-default"><strong>Sin Constanca de Trabajo</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -609,7 +481,7 @@
                                     @if(!is_null($declaracion_impuestos))
                                         <a target="_blank" href="{{ asset($declaracion_impuestos->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Declaración de Impuestos</strong></span>
+                                        <span class="label label-default"><strong>Sin Declaración de Impuestos</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -619,7 +491,7 @@
                                     @if(!is_null($recibo_pago))
                                         <a target="_blank" href="{{ asset($recibo_pago->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Recibo de pago</strong></span>
+                                        <span class="label label-default"><strong>Sin Recibo de pago</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -629,7 +501,7 @@
                                     @if(!is_null($referencia_profesor1))
                                         <a target="_blank" href="{{ asset($referencia_profesor1->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Referencia del Profesor 1</strong></span>
+                                        <span class="label label-default"><strong>Sin Referencia del Profesor 1</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -639,7 +511,7 @@
                                     @if(!is_null($referencia_profesor2))
                                         <a target="_blank" href="{{ asset($referencia_profesor2->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Referencia del Profesor 2</strong></span>
+                                        <span class="label label-default"><strong>Sin Referencia del Profesor 2</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -649,7 +521,7 @@
                                     @if(!is_null($ensayo))
                                         <a target="_blank" href="{{ asset($ensayo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
                                     @else
-                                        <span class="label label-light-danger"><strong>Sin Ensayo</strong></span>
+                                        <span class="label label-default"><strong>Sin Ensayo</strong></span>
                                     @endif
                                 </td>
                             </tr>
@@ -676,6 +548,71 @@
                 </div>
             </div>
     </form>
+    <!-- Modal para aprobar -->
+    <div class="modal fade" id="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"> &times;</span>
+                </button>
+
+                <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
+
+            </div>
+
+            <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
+                {{csrf_field()}}
+                {{method_field('PUT')}}
+                <input type="hidden" id='valor' name="valor"  value="1">
+
+                <div class="modal-body">
+                    <br>
+                    ¿Está seguro que desea <strong class="letras-verdes">Seleecionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
+                </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
+
+            </div>
+
+            </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para aprobar -->
+
+    <!-- Modal para rechazar -->
+    <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+                <h4 class="modal-title pull-left">Confirmación</h4>
+                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+        </div>
+        <div class="modal-body">
+            <br>
+            ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
+        </div>
+        <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
+
+            {{csrf_field()}}
+            {{method_field('PUT')}}
+
+            <input type="hidden" id='valor' name="valor"  value="0">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right" >Si</button>
+            </div>
+
+        </form>
+        </div>
+    </div>
+
+    </div>
+    <!-- Modal para rechazar -->
     @if(Auth::user()->rol==='entrevistador')
 
 
@@ -690,16 +627,5 @@
         alert("Debe Aceptar los Terminos y Condiciones");
     }
     </script>
-
-    <script>
-        Vue.component('modal', {
-            template: '#modal-template'
-            })
-            new Vue({
-            el: '#app',
-
-        })
-    </script>
-
 
 @endsection

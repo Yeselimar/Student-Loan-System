@@ -245,7 +245,7 @@ color: #dc3545;
 
 
 .Material-default-accordion .panel-default-accordion{border:0;box-shadow:1px 3px 10px rgba(0,0,0,0.2)}.Material-default-accordion .panel-default-accordion .panel-accordion{padding:0;margin-bottom:15px}.Material-default-accordion .panel-default-accordion .panel-accordion .panel-title{font-size:18px}
-.Material-default-accordion .panel-default-accordion .panel-accordion .collapsed::after{content:"\f415"}.Material-default-accordion .panel-default-accordion .panel-accordion a{font-weight:500;padding:15px 20px;display:inline-block;width:100%;color:#ffffff;position:relative;text-decoration:none}.Material-default-accordion .panel-default-accordion .panel-accordion a:after{font-family: Verdana, Geneva, sans-serif;content:"\f374";position:absolute;right:15px;font-size:14px;font-weight:300;top:50%;line-height:1;margin-top:-7px}.Material-default-accordion .panel-default-accordion .panel-body{padding:15px}.Material-accordion-2 .panel-default-accordion{border:0}.Material-accordion-2 .panel-default-accordion .panel-accordion{padding:0}
+.Material-default-accordion .panel-default-accordion .panel-accordion .collapsed::after{content:"\f068"}.Material-default-accordion .panel-default-accordion .panel-accordion a{font-weight:500;padding:15px 20px;display:inline-block;width:100%;color:#ffffff;position:relative;text-decoration:none}.Material-default-accordion .panel-default-accordion .panel-accordion a:after{font-family: Verdana, Geneva, sans-serif;content:"\f374";position:absolute;right:15px;font-size:14px;font-weight:300;top:50%;line-height:1;margin-top:-7px}.Material-default-accordion .panel-default-accordion .panel-body{padding:15px}.Material-accordion-2 .panel-default-accordion{border:0}.Material-accordion-2 .panel-default-accordion .panel-accordion{padding:0}
 .Material-accordion-2 .panel-default-accordion .panel-accordion .collapsed::after{content:"\f415"}.Material-accordion-2 .panel-default-accordion .panel-accordion a{font-weight:500;padding:15px 20px;display:inline-block;width:100%;color:#333;background:#EEEEEE !important;position:relative;text-decoration:none}.Material-accordion-2 .panel-default-accordion .panel-accordion a:after{font-family: Verdana, Geneva, sans-serif;content:"\f374";position:absolute;right:15px;font-size:14px;font-weight:300;top:50%;line-height:1;margin-top:-7px}
 
 
@@ -537,7 +537,7 @@ h6 {
   background-color: #f6f6f6;
 }
 .bg-light {
-  background-color: #f2f4f8;
+  background-color: #e7e7eb !important;
 }
 .bg-white {
   background-color: #ffffff;
@@ -1111,13 +1111,13 @@ h6.h1 {
 /*    Border Mixins
 --------------------------*/
 .border-primary {
-  border-color: #4680ff;
+  border: 1px solid #003865 !important;
 }
 .border-success {
   border-color: #26dad2;
 }
 .border-info {
-  border-color: #62d1f3;
+  border-color: #478ea3 !important;
 }
 .border-danger {
   border-color: #fc6180;
