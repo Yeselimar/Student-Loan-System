@@ -137,6 +137,31 @@ class ActividadController extends Controller
         $ab->aval_id = $aval->id;
         $ab->save();
 
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "fecha_hora" =>  date("d/m/Y h:i A"),
+            "actividad_tipo" => $actividad->getTipo(),
+            "actividad_nombre" => $actividad->nombre
+        );
+
+        //Enviar correo a la persona notificando que fue recibido su justificativo
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.actividades.notificacion-justificativo-cargado")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+
         flash("El justificativo del becario ".$becario->user->nombreyapellido()." al ".$actividad->tipo." ".$actividad->nombre." fue cargado.",'success');
         return redirect()->route('actividad.detalles',$actividad->id);
     }
@@ -446,6 +471,37 @@ class ActividadController extends Controller
             {
                 $ab->delete();
             }
+
+            $estatus = "ELIMINADO";
+            if($becario->user->sexo=="femenino")
+            {
+                $estatus = "ELIMINADA";
+            }
+            $data = array(
+                "becario" => $becario->user->nombreyapellido(),
+                "estatus" => $estatus,
+                "actividad_tipo" => $actividad->getTipo(),
+                "actividad_nombre" => $actividad->nombre,
+                "actividad_fecha" => $actividad->getDiaFecha().", ".$actividad->getFecha(),
+                "actividad_hora" => $actividad->getHoraInicio().' a '.$actividad->getHoraFin(),
+            );
+            //Enviar correo al becario, notificando que fue elimiado de la actividad
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.actividades.notificacion-eliminar-inscripcion")->with(compact("data"));
+            $mail->MsgHTML($body);
+            $mail->addAddress("delgadorafael2011@gmail.com");
+            $mail->send();
             return response()->json(['tipo'=>'success','mensaje'=>'El becario '.$becario->user->nombreyapellido().' fue eliminado del '.$actividad->tipo.'.']);
         //}
         //else
@@ -644,6 +700,38 @@ class ActividadController extends Controller
         $ab = ActividadBecario::paraActividad($actividad->id)->paraBecario($becario->user_id)->first();
         $ab->estatus = "asistio";
         $ab->save();
+        
+        $genero = "apuntado";
+        if($becario->user->sexo=="femenino")
+        {
+            $genero = "apuntada";
+        }
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "genero" => $genero,
+            "estatus" => "ASISTIÓ",
+            "actividad_tipo" => $actividad->getTipo(),
+            "actividad_nombre" => $actividad->nombre,
+            "actividad_fecha" => $actividad->getDiaFecha().", ".$actividad->getFecha(),
+            "actividad_hora" => $actividad->getHoraInicio().' a '.$actividad->getHoraFin(),
+        );
+        //Notificar que colocado como asistió
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.actividades.notificacion-asistio")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress("delgadorafael2011@gmail.com");
+        $mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como ASISTIÓ.']);
     }
 
@@ -654,6 +742,38 @@ class ActividadController extends Controller
         $ab = ActividadBecario::paraActividad($actividad->id)->paraBecario($becario->user_id)->first();
         $ab->estatus = "no asistio";
         $ab->save();
+
+        $genero = "apuntado";
+        if($becario->user->sexo=="femenino")
+        {
+            $genero = "apuntada";
+        }
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "genero" => $genero,
+            "estatus" => "NO ASISTIÓ",
+            "actividad_tipo" => $actividad->getTipo(),
+            "actividad_nombre" => $actividad->nombre,
+            "actividad_fecha" => $actividad->getDiaFecha().", ".$actividad->getFecha(),
+            "actividad_hora" => $actividad->getHoraInicio().' a '.$actividad->getHoraFin(),
+        );
+        //Notificar que colocado como no asistió
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.actividades.notificacion-no-asistio")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress("delgadorafael2011@gmail.com");
+        $mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como NO ASISTIÓ.']);
     }
 }   

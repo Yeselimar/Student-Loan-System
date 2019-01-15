@@ -574,6 +574,7 @@ const app = new Vue({
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	console.log(response);
             	if(response.data.tipo=='danger')
             	{
             		toastr.error(response.data.mensaje);

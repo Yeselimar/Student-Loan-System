@@ -27,8 +27,7 @@ use Mail;
 use DateTime;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client;
+
 
 class GetPublicController extends Controller
 {
@@ -90,6 +89,44 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $aval = Aval::find(2);
+        $aval->estatus = "aceptada";
+        //$aval->save();
+
+        $ab = ActividadBecario::paraAval(2)->first();
+        $ab->estatus = "asistio";
+        //$ab->save();
+        
+        $actividad = $ab->actividad;
+        $becario = $aval->becario;
+
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "fecha_hora" =>  date("d/m/Y h:i A"),
+            "actividad_tipo" => $actividad->getTipo(),
+            "actividad_nombre" => $actividad->nombre,
+            "estatus_justificativo" => "ACEPTADA",
+            "estatus_actividad" => "ASISTIÓ",
+        );
+        //Enviar correo al becario notificandole
+        $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.actividades.notificacion-justificativo-aceptada")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+
+        return "bien";
         //$client = new Client();
        
         //return response()->json(route('enviarcorreo'));
@@ -181,13 +218,33 @@ class GetPublicController extends Controller
 
         //return date("d-m-Y H:i A");
         $data = array(
-            "nombre_completo" => "Ivan Delgado",
+            "becario" => "Ivan Delgado",
+            "actividad_tipo" => "Chat Club",
+            "actividad_nombre" => "Valores Ciudadanos",
+            "actividad_fecha" =>  "Lunes, 14/01/2019",
+            "actividad_hora" => "01:00pm a 02:00pm",
             "correo" => "rafael1delgado@hotmail.com",
             "telefono" => "04265556677",
             "asunto" => "Urgente",
             "mensaje" => "hola adios",
             "fecha_hora" => date("d/m/Y H:i A"),
         );
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.actividades.notificacion-eliminar-inscripcion")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress("delgadorafael2011@gmail.com");
+        $mail->send();
         /*Mail::send('emails.contacto.gracias', ['data' => $data], function($message) use ($data)
         {
             $message->from( 'not-reply@sisbeca.com', 'Sisbeca');
@@ -196,10 +253,11 @@ class GetPublicController extends Controller
         return "exitoo";
         */
 
-        $mail = new PHPMailer(true);
+        
         /*try
+        $mail = new PHPMailer(true);
         {*/
-            
+            /*
             $mail->isSMTP();
             $mail->SMTPDebug = 0;
             //$mail->Timeout  = 60;
@@ -223,7 +281,7 @@ class GetPublicController extends Controller
             //}
             //$mail->addBCC('darwin@gmail.com');
             $mail->send();
-            return "asasas";
+            return "asasas";*/
         /*}
         catch (phpmailerException $e)
         {

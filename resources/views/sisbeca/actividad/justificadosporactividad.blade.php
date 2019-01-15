@@ -147,7 +147,7 @@ const app = new Vue({
             url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
-                console.log("aprobar");
+                //console.log("aprobar");
                 toastr.success(response.data.success);
             });
             this.obtenerjustificativos();
@@ -158,7 +158,7 @@ const app = new Vue({
             url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
-                console.log("negar");
+                //console.log("negar");
                 toastr.success(response.data.success);
             });
             this.obtenerjustificativos();
@@ -169,7 +169,7 @@ const app = new Vue({
             url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
-                console.log("devolver");
+                //console.log("devolver");
                 toastr.success(response.data.success);
             });
             this.obtenerjustificativos();
