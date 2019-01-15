@@ -210,6 +210,29 @@ class ActividadController extends Controller
             $aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
             $aval->save();
         }
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "fecha_hora" =>  date("d/m/Y h:i A"),
+            "actividad_tipo" => $actividad->getTipo(),
+            "actividad_nombre" => $actividad->nombre,
+        );
+        //Enviar correo al becario notificandole
+        $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.actividades.notificacion-justificativo-actualizado")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
 
         flash("El justificativo del becario ".$becario->user->nombreyapellido()." al ".$actividad->tipo." ".$actividad->nombre." fue actualizado.",'success');
         return redirect()->route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>$becario->user_id));
