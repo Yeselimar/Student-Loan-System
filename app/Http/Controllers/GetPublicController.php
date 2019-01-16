@@ -89,6 +89,111 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        return "Inicio";
+        //$aval->estatus = $request->estatus;
+        //$aval->save();
+
+        /*PARA VOLUNTARIADOS*/
+        /*
+        $aval = Aval::find(3);
+        $becario = $aval->becario;
+        $voluntariado = Voluntariado::paraBecario($becario->user->id)->paraAval($aval->id)->first();
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "estatus_voluntariado" => strtoupper("NEGADIS"),
+            "nombre_voluntariado" =>  $voluntariado->nombre,
+            "tipo_voluntariado" => ucwords($voluntariado->tipo),
+            "fecha_voluntariado" => $voluntariado->getFecha(),
+            "horas_volutariado" => $voluntariado->getHorasVoluntariado().' hora(s)',
+            "fecha_hora" =>  date("d/m/Y h:i A"),
+        );
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.voluntariados.notificacion-comprobante-estatus")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return "exitoooVoluntariado";
+        */
+
+        /*PARA CVA*/
+        /*$aval = Aval::find(2);
+        $becario = $aval->becario;
+        $curso = Curso::paraBecario($becario->user->id)->paraAval($aval->id)->first();
+
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "estatus_cva" => strtoupper("gola"),
+            "modulo_cva" =>  $curso->getModulo(),
+            "modo_cva" => $curso->getModo(),
+            "mes_cva" => $curso->getMes(),
+            "anho_cva" => $curso->getAnho(),
+            "nota_cva" => $curso->getNota(),
+            "fecha_hora" =>  date("d/m/Y h:i A"),
+        );
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.cursos.notificacion-nota-estatus")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return "exito";*/
+
+        /*PARA PERIODOS*/
+        /*
+        $aval = Aval::find(1);
+        $becario = $aval->becario;
+        $periodo = Periodo::ParaBecario($becario->user->id)->ParaAval($aval->id)->first();
+        $data = array(
+            "becario" => $becario->user->nombreyapellido(),
+            "numero_periodo" =>  $periodo->getNumeroPeriodo(),
+            "anho_lectivo" => $periodo->anho_lectivo,
+            "promedio_periodo" => $periodo->getPromedio(),
+            "estatus_periodo" => strtoupper("hola vale"),
+            "fecha_hora" =>  date("d/m/Y h:i A"),
+        );
+
+        //Enviar correo al becario notificandole del cambio de estatus.
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.periodos.notificacion-constancia-estatus")->with(compact("data"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return "Exitoo";
+
+        */
+        /*
         $aval = Aval::find(2);
         $aval->estatus = "aceptada";
         //$aval->save();
@@ -126,7 +231,7 @@ class GetPublicController extends Controller
         $mail->addAddress($becario->user->email);
         $mail->send();
 
-        return "bien";
+        return "bien";*/
         //$client = new Client();
        
         //return response()->json(route('enviarcorreo'));

@@ -28,9 +28,19 @@ class Voluntariado extends Model
         return date("d/m/Y", strtotime($this->fecha));
     }
 
+    public function getHorasVoluntariado()
+    {
+        return str_pad($this->horas, 2, '0', STR_PAD_LEFT);
+    }
+
     public function scopeParaBecario($query,$id)
     {
         return $query->where('becario_id', '=', $id);
+    }
+
+    public function scopeParaAval($query,$id)
+    {
+        return $query->where('aval_id', '=', $id);
     }
 
     public function scopePorAnho($query,$anho)

@@ -304,7 +304,7 @@ $(document).ready(function(){
 		},
 		actualizarestatus(estatu,id)
 		{
-			console.log("Actualiza el "+id+" con "+estatu);
+			//console.log("Actualiza el "+id+" con "+estatu);
 			var dataform = new FormData();
             dataform.append('estatus', estatu);
             var url = '{{route('aval.actualizarestatus',':id')}}';

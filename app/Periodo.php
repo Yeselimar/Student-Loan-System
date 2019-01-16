@@ -34,6 +34,11 @@ class Periodo extends Model
         return $query->where('becario_id', '=', $id);
     }
 
+    public function scopeParaAval($query,$id)
+    {
+        return $query->where('aval_id', '=', $id);
+    }
+
     public function scopePorAnho($query,$anho)
     {
         return $query->whereYear('created_at', '=', $anho);

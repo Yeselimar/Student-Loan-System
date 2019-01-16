@@ -43,6 +43,11 @@ class Curso extends Model
         return $query->where('becario_id', '=', $id);
     }
 
+    public function scopeParaAval($query,$id)
+    {
+        return $query->where('aval_id', '=', $id);
+    }
+
     public function scopePorAnho($query,$anho)
     {
         return $query->whereYear('created_at', '=', $anho);
@@ -71,5 +76,25 @@ class Curso extends Model
     public function getNota()
     {
         return number_format($this->nota, 2, '.', ',');
+    }
+
+    public function getModulo()
+    {
+        return $this->modulo." Nivel";
+    }
+
+    public function getModo()
+    {
+        return ucwords($this->modo);
+    }
+
+    public function getMes()
+    {
+        return date("m", strtotime($this->fecha_inicio));
+    }
+
+    public function getAnho()
+    {
+        return date("Y", strtotime($this->fecha_inicio));
     }
 }

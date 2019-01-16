@@ -4,6 +4,9 @@ namespace avaa\Http\Controllers;
 
 use Illuminate\Http\Request;
 use avaa\Aval;
+use avaa\Periodo;
+use avaa\Curso;
+use avaa\Voluntariado;
 use avaa\ActividadBecario;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -23,6 +26,101 @@ class AvalController extends Controller
 		$aval = Aval::find($id);
 		$aval->estatus = $request->estatus;
 		$aval->save();
+
+        $becario = $aval->becario;
+
+        //Para los PERIODOS el aval es tipo CONSTANCIA
+        
+        if($aval->tipo=="constancia")
+        {
+            $periodo = Periodo::ParaBecario($becario->user->id)->ParaAval($aval->id)->first();
+            $data = array(
+                "becario" => $becario->user->nombreyapellido(),
+                "estatus_periodo" => strtoupper($request->estatus),
+                "numero_periodo" =>  $periodo->getNumeroPeriodo(),
+                "anho_lectivo" => $periodo->anho_lectivo,
+                "promedio_periodo" => $periodo->getPromedio(),
+                "fecha_hora" =>  date("d/m/Y h:i A"),
+            );
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.periodos.notificacion-constancia-estatus")->with(compact("data"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+        }
+        //Para los CVA el aval es tipo NOTA
+        if($aval->tipo=="nota")
+        {
+            $curso = Curso::paraBecario($becario->user->id)->paraAval($aval->id)->first();
+            $data = array(
+                "becario" => $becario->user->nombreyapellido(),
+                "estatus_cva" => strtoupper($request->estatus),
+                "modulo_cva" =>  $curso->getModulo(),
+                "modo_cva" => $curso->getModo(),
+                "mes_cva" => $curso->getMes(),
+                "anho_cva" => $curso->getAnho(),
+                "nota_cva" => $curso->getNota(),
+                "fecha_hora" =>  date("d/m/Y h:i A"),
+            );
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.cursos.notificacion-nota-estatus")->with(compact("data"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+        }
+        //Para los VOLUNTARIADOS el aval es tipo COMPROBANTE
+        if($aval->tipo=="comprobante")
+        {
+            $voluntariado = Voluntariado::paraBecario($becario->user->id)->paraAval($aval->id)->first();
+            $data = array(
+                "becario" => $becario->user->nombreyapellido(),
+                "estatus_voluntariado" => strtoupper($request->estatus),
+                "nombre_voluntariado" =>  $voluntariado->nombre,
+                "tipo_voluntariado" => ucwords($voluntariado->tipo),
+                "fecha_voluntariado" => $voluntariado->getFecha(),
+                "horas_volutariado" => $voluntariado->getHorasVoluntariado().' hora(s)',
+                "fecha_hora" =>  date("d/m/Y h:i A"),
+            );
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.voluntariados.notificacion-comprobante-estatus")->with(compact("data"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+        }
+
 		return response()->json(['success'=>'El estatus fue actualizado exitosamente.']);
 	}
 
