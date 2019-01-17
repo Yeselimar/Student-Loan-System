@@ -89,7 +89,42 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        return "Inicio";
+        //return "Inicio";
+        $id=6;
+        $anho = date('Y');
+        $mes = date('m');
+        $periodos = Periodo::paraBecario($id)->porAnho($anho)->porMes($mes)->ordenadoPorPeriodo('asc')->get();
+
+        $voluntariados = DB::table('voluntariados')
+            ->where('aval.tipo','=','comprobante')
+            ->where('aval.estatus','=','aceptada')
+            ->groupby('voluntariados.tipo')
+            ->selectRaw('*,SUM(horas) as horas_voluntariado,Count(*) as total_voluntariado,voluntariados.tipo as tipo_voluntariado')
+            ->join('aval', function ($join) use($id,$anho)
+        {
+          $join->on('voluntariados.aval_id','=','aval.id')
+            ->where('voluntariados.becario_id','=',$id)
+            ->whereYear('voluntariados.fecha', '=', $anho)
+            ->orderby('voluntariados.fecha','asc');
+            
+        })->get();
+        $cursos = DB::table('cursos')
+            ->where('aval.tipo','=','nota')
+            ->where('aval.estatus','=','aceptada')
+            ->groupby('cursos.modulo')
+            ->orderby('cursos.modulo','asc')
+            ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
+            ->join('aval', function ($join) use($id,$anho)
+        {
+          $join->on('cursos.aval_id','=','aval.id')
+            ->where('cursos.becario_id','=',$id)
+            ->whereYear('cursos.created_at', '=', $anho)
+            ;
+            
+        })->get();
+        return $cursos;
+        return $voluntariados;
+        return $periodos;
         //$aval->estatus = $request->estatus;
         //$aval->save();
 

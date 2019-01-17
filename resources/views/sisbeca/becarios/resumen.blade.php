@@ -13,12 +13,209 @@
 </style>
 @endsection
 @section('content')
-<div class="col-lg-12">
+<div class="col-lg-12" id ="app">
+	<div class="row" style="border:1px solid #fff">
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			<select class="form-control sisbeca-input" v-model="anho">
+			  	<option disabled value="">Año</option>
+			  	<option>2019</option>
+			  	<option>2018</option>
+			  	<option>2017</option>
+			</select>
+			<!--<span>Año: @{{ anho }}</span>-->
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			<select class="form-control sisbeca-input" v-model="mes">
+			  	<option disabled value="">Mes</option>
+			  	<option value="00">Todos</option>
+			  	<option value="1">Enero</option>
+			  	<option value="2">Febrero</option>
+			  	<option value="03">Marzo</option>
+			  	<option value="04">Abril</option>
+			  	<option value="05">Mayo</option>
+			  	<option value="06">Junio</option>
+			  	<option value="07">Julio</option>
+			  	<option value="08">Agosto</option>
+			  	<option value="09">Septiembre</option>
+			  	<option value="10">Octubre</option>
+			  	<option value="11">Noviembre</option>
+			  	<option value="12">Diciembre</option>
+			</select>
+			<!--<span>Año: @{{ mes }}</span>-->
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			<button @click="consultarreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
+		</div>
+	</div>
     <div class="text-right">
         <a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
         	<i class="fa fa-file-pdf-o"></i> PDF
     	</a>
     </div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="5" class="cabecera-sisbeca">NOTAS ACADÉMICAS</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left"><strong>Año</strong></td>
+					<td class="text-left"><strong>Número Periodo</strong></td>
+					<td class="text-left"><strong>Año Lectivo</strong></td>
+					<td class="text-left"><strong>Total Materias</strong></td>
+					<td class="text-right"><strong>Promedio</strong></td>
+				</tr>
+				<template v-if="periodos.length!=0">
+					<tr v-for="(periodo, index) in periodos">
+						<template v-if="periodo.aval.estatus=='aceptada'">
+							<td class="text-left">
+								@{{obtenermes(periodo.fecha_inicio)}} - @{{obteneranho(periodo.fecha_inicio) }}
+							</td>
+							<td class="text-left">
+								@{{periodo.numero_periodo}}
+								<template v-if="regimen=='anual'">
+									año
+								</template>
+								<template  v-else>
+									<template v-if="regimen=='semestral'">
+										semestre
+									</template>
+									<template v-else>
+										trimestral
+									</template>
+								</template>
+							</td>
+							<td class="text-left">
+								@{{periodo.anho_lectivo}}
+							</td>
+							<td>
+								@{{periodo.materias.length}}
+							</td>
+							<td>
+								@{{ calcularpromedioperiodo(periodo.materias)}}
+							</td>
+						</template>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="5" class="text-center">No hay <strong>periodos</strong></td>
+					</tr>
+				</template>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="4" class="cabecera-sisbeca">VOLUNTARIADO</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left"><strong>Año</strong></td>
+					<td class="text-left"><strong>Tipo Voluntariado</strong></td>
+					<td class="text-left"><strong>Total</strong></td>
+					<td class="text-right"><strong>Horas Voluntariado</strong></td>
+				</tr>
+				<template v-if="voluntariados.length!=0">
+					<tr v-for="(voluntariado, index) in voluntariados">
+						<td class="text-left">
+							@{{obtenermes(voluntariado.fecha)}}-@{{obteneranho(voluntariado.fecha)}}
+						</td>
+						<td class="text-left">
+							@{{voluntariado.tipo_voluntariado}}
+						</td>
+						<td class="text-left">
+							@{{voluntariado.total_voluntariado}}
+						</td>
+						<td class="text-right">
+							@{{voluntariado.horas_voluntariado}}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="4" class="text-center">No hay <strong>voluntariados</strong></td>
+					</tr>
+				</template>
+
+				<template v-if="actividades_facilitadas.id!=null">
+					<tr>
+						<td class="text-left">
+							@{{obtenermes(actividades_facilitadas.created_at)}}-@{{obteneranho(actividades_facilitadas.created_at)}}
+						</td>
+						<td class="text-left">
+							Facilitador en Chat Club
+						</td>
+						<td class="text-left">
+							@{{actividades_facilitadas.total_actividades}}
+						</td>
+						<td class="text-right">
+							@{{actividades_facilitadas.horas_voluntariado}}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="4" class="text-center">No ha sido facilitador de <strong>ningún chat club</strong></td>
+					</tr>
+				</template>
+				<tr>
+					<td colspan="2"></td>
+					<td class="text-right"><strong>Total Horas</strong></td>
+					<td class="text-right"><strong>@{{ total_horas_voluntariados(voluntariados,actividades_facilitadas) }}</strong></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="4" class="cabecera-sisbeca">CVA</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left"><strong>Año</strong></td>
+					<td class="text-left"><strong>Módulo</strong></td>
+					<td class="text-left"><strong>Total por Nivel</strong></td>
+					<td class="text-right"><strong>Promedio</strong></td>
+				</tr>
+				<template v-if="cursos.length!=0">
+					<tr v-for="(curso, index) in cursos">
+						<td class="text-left">
+							@{{obtenermes(curso.created_at)}}-@{{obteneranho(curso.created_at)}}
+						</td>
+						<td class="text-left">
+							@{{curso.modulo}} Nivel
+						</td>
+						<td class="text-left">
+							@{{curso.modo}}
+						</td>
+						<td class="text-right">
+							@{{curso.promedio_modulo.toFixed(2)}}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="4" class="text-center">No hay <strong>CVA</strong></td>
+					</tr>
+				</template>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<!--
+	<p>PHP</p>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -35,7 +232,7 @@
 					<td class="text-right"><strong>Horas Voluntariado</strong></td>
 				</tr>
 				@php ($horas = 0)
-				@if($cursos->count()!=0)
+				@if($voluntariados->count()!=0)
 					@foreach($voluntariados as $voluntariado)
 					@php ($horas = $horas + $voluntariado->horas_voluntariado)
 					<tr>
@@ -188,7 +385,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- ASISTIO -->
+				
 				@php ($total_taller=$a_t_p->total_actividades+$a_t_v->total_actividades)
 				@php ($total_chat=$a_c_p->total_actividades+$a_c_v->total_actividades)
 				@php ($total_presencial=$a_t_p->total_actividades+$a_c_p->total_actividades)
@@ -222,9 +419,8 @@
 						</strong>
 					</td>
 				</tr>
-				<!-- ASISTIO -->
+				
 
-				<!-- NO ASISTIO -->
 				@php ($total_n_taller=$na_t_p->total_actividades+$na_t_v->total_actividades)
 				@php ($total_n_chat=$na_c_p->total_actividades+$na_c_v->total_actividades)
 				@php ($total_n_presencial=$na_t_p->total_actividades+$na_c_p->total_actividades)
@@ -258,9 +454,140 @@
 						</strong>
 					</td>
 				</tr>
-				<!-- NO ASISTIO -->
+				
 			</tbody>
 		</table>
 	</div>
+	-->
+	<!-- Cargando.. -->
+	
+	<section class="loading" id="preloader">
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>
+	<!-- Cargando.. -->
 </div>
+@endsection
+
+
+@section('personaljs')
+<script>
+const app = new Vue({
+
+	el: '#app',
+	data:
+	{
+		anho_consultado:'',
+		mes_consultado:'',
+		anho:'',
+		mes:'',
+		regimen:'',
+		periodos:[],
+		voluntariados:[],
+		cursos:[],
+		actividades_facilitadas:'',
+	},
+	created: function()
+	{
+		this.obtenerreportegeneral();
+	},
+	methods:
+	{
+		obtenerreportegeneral()
+		{
+			var url = '{{route('seguimiento.resumen.anhomes',array('id'=>':id','anho'=>':anho','mes'=>':mes'))}}';
+			var id = '{{$becario->user->id}}';
+			var anho = '{{date('Y')}}';
+			var mes = '00';
+			url = url.replace(':id', id);
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			this.anho = anho;
+			this.mes = mes;
+			console.log(url);
+			this.anho_consultado = anho;//a lo mejor  no es necesario
+			this.mes_consultado = mes;//a lo mejor  no es necesario
+            axios.get(url).then(response => 
+            {
+               	this.periodos = response.data.periodos;
+               	this.cursos = response.data.cursos;
+               	this.voluntariados = response.data.voluntariados;
+               	this.actividades_facilitadas = response.data.actividades_facilitadas;
+               	this.regimen = response.data.regimen;
+               	//console.log(this.periodos);
+			$("#preloader").hide();
+			}).catch( error => {
+				console.log(error);
+				//console.log("hay un error");
+				$("#preloader").hide();
+			});
+		},
+		consultarreportegeneral(anho,mes)
+		{
+			//console.log(anho+' '+mes);
+			var url = '{{route('seguimiento.resumen.anhomes',array('id'=>':id','anho'=>':anho','mes'=>':mes'))}}';
+			var id = '{{$becario->user->id}}';
+			url = url.replace(':id', id);
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			$("#preloader").show();
+			axios.get(url).then(response => 
+            {
+               	this.periodos = response.data.periodos;
+               	this.cursos = response.data.cursos;
+               	this.voluntariados = response.data.voluntariados;
+               	this.actividades_facilitadas = response.data.actividades_facilitadas;
+               	this.regimen = response.data.regimen;
+               	//console.log(this.periodos);
+			$("#preloader").hide();
+			}).catch( error => {
+				console.log(error);
+				//console.log("hay un error");
+				$("#preloader").hide();
+			});
+		},
+		calcularpromedioperiodo(materias)
+		{
+			var total = 0;
+            var length = materias.length;
+            for (var i = 0; i < length; i++)
+            {
+                total += parseFloat(materias[i].nota);
+            }
+            if(length==0)
+            {
+            	return Number(0).toFixed(2);
+            }
+            return (total / length).toFixed(2);;
+		},
+		total_horas_voluntariados(voluntariados,actividades_facilitadas)
+		{
+			var total = 0;
+			var length = voluntariados.length;
+			for (var i = 0; i < length; i++)
+            {
+                total += parseFloat(voluntariados[i].horas_voluntariado);
+            }
+            if(actividades_facilitadas.horas_voluntariado!=null)
+            {
+            	return parseInt(total)+parseInt(actividades_facilitadas.horas_voluntariado);
+            }
+            return total;
+		},
+		obtenermes(fecha)
+		{
+			var dia = new Date (fecha);
+			return moment(dia).format('MM');
+		},
+		obteneranho(fecha)
+		{
+			var dia = new Date (fecha);
+			return moment(dia).format('YYYY');
+		}
+	}
+
+});
+</script>
 @endsection

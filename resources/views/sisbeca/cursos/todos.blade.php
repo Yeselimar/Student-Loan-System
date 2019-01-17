@@ -289,9 +289,11 @@ $(document).ready(function(){
             dataform.append('estatus', estatu);
             var url = '{{route('aval.actualizarestatus',':id')}}';
             url = url.replace(':id', id);
+            $("#preloader").show();
 			axios.post(url,dataform).then(response => 
 			{
 				this.obtenercursosapi();
+				$("#preloader").hide();
 				toastr.success(response.data.success);
 			});
 		},

@@ -71,6 +71,16 @@
 			</tbody>
 		</table>
 	</div>
+
+	<!-- Cargando.. -->
+	<!--
+	<section class="loading" id="preloader">
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>-->
+	<!-- Cargando.. -->
 </div>
 
 @endsection
@@ -106,17 +116,16 @@ $(document).ready(function() {
 </script>
 
 <script>
-	const app = new Vue({
+const app = new Vue({
 
-		el: '#app',
-		data:
-		{
-			anho:'',
-			mes:'',
-		},
-		methods:
-		{
-		}
-	});
+	el: '#app',
+	data:
+	{
+		anho:'',
+		mes:'',
+		periodos:[],
+	},
+
+});
 </script>
 @endsection
