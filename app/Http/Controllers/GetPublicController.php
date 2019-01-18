@@ -34,6 +34,7 @@ class GetPublicController extends Controller
     public function enviarcorreo(Request $request)
     {
         return response()->json(['nombre'=>"exitoo!!"]);
+
         /*
         $data = array(
             "nombre_completo" => "Ivan Delgado",
@@ -93,6 +94,24 @@ class GetPublicController extends Controller
         $id=6;
         $anho = date('Y');
         $mes = date('m');
+        $na_c_v = DB::table('actividades')
+            ->selectRaw('*,Count(*) as total_actividades')
+            ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+        {
+           $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                ->where('actividades_becarios.estatus','=','no asistio');
+
+        })->first();
+        $noasistio = array(
+            "na_t_v" => 0,
+            "na_t_p" => 0,
+            "na_c_v" => $na_c_v->total_actividades,
+            "na_c_p" => 0,
+        );
+        return $noasistio['na_c_v'];
         $periodos = Periodo::paraBecario($id)->porAnho($anho)->porMes($mes)->ordenadoPorPeriodo('asc')->get();
 
         $voluntariados = DB::table('voluntariados')

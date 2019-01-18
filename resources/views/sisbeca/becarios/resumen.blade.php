@@ -16,20 +16,11 @@
 <div class="col-lg-12" id ="app">
 	<div class="row" style="border:1px solid #fff">
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-			<select class="form-control sisbeca-input" v-model="anho">
-			  	<option disabled value="">Año</option>
-			  	<option>2019</option>
-			  	<option>2018</option>
-			  	<option>2017</option>
-			</select>
-			<!--<span>Año: @{{ anho }}</span>-->
-		</div>
-		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<select class="form-control sisbeca-input" v-model="mes">
 			  	<option disabled value="">Mes</option>
 			  	<option value="00">Todos</option>
-			  	<option value="1">Enero</option>
-			  	<option value="2">Febrero</option>
+			  	<option value="01">Enero</option>
+			  	<option value="02">Febrero</option>
 			  	<option value="03">Marzo</option>
 			  	<option value="04">Abril</option>
 			  	<option value="05">Mayo</option>
@@ -44,14 +35,131 @@
 			<!--<span>Año: @{{ mes }}</span>-->
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			<select class="form-control sisbeca-input" v-model="anho">
+			  	<option disabled value="">Año</option>
+			  	<option>2019</option>
+			  	<option>2018</option>
+			  	<option>2017</option>
+			</select>
+			<!--<span>Año: @{{ anho }}</span>-->
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<button @click="consultarreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
 		</div>
 	</div>
     <div class="text-right">
-        <a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
+        <!--<a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
         	<i class="fa fa-file-pdf-o"></i> PDF
+    	</a>-->
+    	<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
     	</a>
     </div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="4" class="cabecera-sisbeca">VOLUNTARIADO</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left"><strong>Año</strong></td>
+					<td class="text-left"><strong>Tipo Voluntariado</strong></td>
+					<td class="text-left"><strong>Total</strong></td>
+					<td class="text-right"><strong>Horas Voluntariado</strong></td>
+				</tr>
+				<template v-if="voluntariados.length!=0">
+					<tr v-for="(voluntariado, index) in voluntariados">
+						<td class="text-left">
+							@{{obtenermes(voluntariado.fecha)}}-@{{obteneranho(voluntariado.fecha)}}
+						</td>
+						<td class="text-left">
+							@{{primeraLetraEnMayusculas(voluntariado.tipo_voluntariado)}}
+						</td>
+						<td class="text-left">
+							@{{voluntariado.total_voluntariado}}
+						</td>
+						<td class="text-right">
+							@{{voluntariado.horas_voluntariado}}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="4" class="text-center">No hay <strong>voluntariados</strong></td>
+					</tr>
+				</template>
+
+				<template v-if="actividades_facilitadas.id!=null">
+					<tr>
+						<td class="text-left">
+							@{{obtenermes(actividades_facilitadas.created_at)}}-@{{obteneranho(actividades_facilitadas.created_at)}}
+						</td>
+						<td class="text-left">
+							Facilitador en Chat Club
+						</td>
+						<td class="text-left">
+							@{{actividades_facilitadas.total_actividades}}
+						</td>
+						<td class="text-right">
+							@{{actividades_facilitadas.horas_voluntariado}}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="4" class="text-center">No ha sido facilitador de <strong>ningún Chat Club</strong></td>
+					</tr>
+				</template>
+				<tr>
+					<td colspan="2"></td>
+					<td class="text-right"><strong>Total Horas</strong></td>
+					<td class="text-right"><strong>@{{ total_horas_voluntariados(voluntariados,actividades_facilitadas) }}</strong></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="4" class="cabecera-sisbeca">CVA</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left"><strong>Año</strong></td>
+					<td class="text-left"><strong>Módulo</strong></td>
+					<td class="text-left"><strong>Total por Nivel</strong></td>
+					<td class="text-right"><strong>Promedio</strong></td>
+				</tr>
+				<template v-if="cursos.length!=0">
+					<tr v-for="(curso, index) in cursos">
+						<td class="text-left">
+							@{{obtenermes(curso.created_at)}}-@{{obteneranho(curso.created_at)}}
+						</td>
+						<td class="text-left">
+							@{{curso.modulo}} Nivel
+						</td>
+						<td class="text-left">
+							@{{curso.total_modulo}}
+						</td>
+						<td class="text-right">
+							@{{curso.promedio_modulo.toFixed(2)}}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="4" class="text-center">No hay <strong>CVA</strong></td>
+					</tr>
+				</template>
+			</tbody>
+		</table>
+	</div>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -72,7 +180,7 @@
 					<tr v-for="(periodo, index) in periodos">
 						<template v-if="periodo.aval.estatus=='aceptada'">
 							<td class="text-left">
-								@{{obtenermes(periodo.fecha_inicio)}} - @{{obteneranho(periodo.fecha_inicio) }}
+								@{{obtenermes(periodo.fecha_inicio)}}-@{{obteneranho(periodo.fecha_inicio) }}
 							</td>
 							<td class="text-left">
 								@{{periodo.numero_periodo}}
@@ -113,109 +221,86 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
-					<th colspan="4" class="cabecera-sisbeca">VOLUNTARIADO</th>
+					<th colspan="4" class="cabecera-sisbeca">TALLER Y CHAT CLUB (@{{obtenermescompleto(mes)}}-@{{anho}})</th>
 				</tr>
 			</thead>
 			<tbody>
+				<!--@{{total_taller=$a_t_p->total_actividades+$a_t_v->total_actividades}}
+				@{{$total_chat=$a_c_p->total_actividades+$a_c_v->total_actividades}}
+				@{{$total_presencial=$a_t_p->total_actividades+$a_c_p->total_actividades}}
+				@{{$total_virtual=$a_t_v->total_actividades+$a_c_v->total_actividades}}-->
 				<tr>
-					<td class="text-left"><strong>Año</strong></td>
-					<td class="text-left"><strong>Tipo Voluntariado</strong></td>
-					<td class="text-left"><strong>Total</strong></td>
-					<td class="text-right"><strong>Horas Voluntariado</strong></td>
+					<td><strong>ASISTIO</strong></td>
+					<td><strong>Presencial</strong></td>
+					<td><strong>Virtual</strong></td>
+					<td><strong>Total</strong></td>
 				</tr>
-				<template v-if="voluntariados.length!=0">
-					<tr v-for="(voluntariado, index) in voluntariados">
-						<td class="text-left">
-							@{{obtenermes(voluntariado.fecha)}}-@{{obteneranho(voluntariado.fecha)}}
-						</td>
-						<td class="text-left">
-							@{{voluntariado.tipo_voluntariado}}
-						</td>
-						<td class="text-left">
-							@{{voluntariado.total_voluntariado}}
-						</td>
-						<td class="text-right">
-							@{{voluntariado.horas_voluntariado}}
-						</td>
-					</tr>
-				</template>
-				<template v-else>
-					<tr>
-						<td colspan="4" class="text-center">No hay <strong>voluntariados</strong></td>
-					</tr>
-				</template>
+				<tr>
+					<td><strong>Taller</strong></td>
+					<td>@{{asistio.a_t_p}}</td>
+					<td>@{{asistio.a_t_v}}</td>
+					<td>@{{asistio.a_t_p+asistio.a_t_v}}</td>
+				</tr>
+				<tr>
+					<td><strong>Chat Club</strong></td>
+					<td>@{{asistio.a_c_p}} </td>
+					<td>@{{asistio.a_c_v}} </td>
+					<td>@{{asistio.a_c_p+asistio.a_c_v}}</td>
+				</tr>
+				<tr>
+					<td><strong>Total</strong></td>
+					<td>@{{asistio.a_t_p+asistio.a_c_p}}</td>
+					<td>@{{asistio.a_t_v+asistio.a_c_v}}</td>
+					<td>
+						<strong>
+						@{{asistio.a_t_p+asistio.a_t_v
+						+asistio.a_c_p+asistio.a_c_v}}
+						</strong>
+					</td>
+				</tr>
+				
+				
+				<!--@{{$total_n_taller=$na_t_p->total_actividades+$na_t_v->total_actividades}}
+				@{{$total_n_chat=$na_c_p->total_actividades+$na_c_v->total_actividades}}
+				@{{$total_n_presencial=$na_t_p->total_actividades+$na_c_p->total_actividades}}
+				@{{$total_n_virtual=$na_t_v->total_actividades+$na_c_v->total_actividades}}-->
+				<tr>
+					<td><strong>NO ASISTIO</strong></td>
+					<td><strong>Presencial</strong></td>
+					<td><strong>Virtual</strong></td>
+					<td><strong>Total</strong></td>
+				</tr>
+				<tr>
+					<td><strong>Taller</strong></td>
+					<td>@{{noasistio.na_t_p}}</td>
+					<td>@{{noasistio.na_t_v}}</td>
+					<td>@{{noasistio.na_t_p+noasistio.na_t_v}}</td>
+				</tr>
 
-				<template v-if="actividades_facilitadas.id!=null">
-					<tr>
-						<td class="text-left">
-							@{{obtenermes(actividades_facilitadas.created_at)}}-@{{obteneranho(actividades_facilitadas.created_at)}}
-						</td>
-						<td class="text-left">
-							Facilitador en Chat Club
-						</td>
-						<td class="text-left">
-							@{{actividades_facilitadas.total_actividades}}
-						</td>
-						<td class="text-right">
-							@{{actividades_facilitadas.horas_voluntariado}}
-						</td>
-					</tr>
-				</template>
-				<template v-else>
-					<tr>
-						<td colspan="4" class="text-center">No ha sido facilitador de <strong>ningún chat club</strong></td>
-					</tr>
-				</template>
 				<tr>
-					<td colspan="2"></td>
-					<td class="text-right"><strong>Total Horas</strong></td>
-					<td class="text-right"><strong>@{{ total_horas_voluntariados(voluntariados,actividades_facilitadas) }}</strong></td>
+					<td><strong>Chat Club</strong></td>
+					<td>@{{noasistio.na_c_p}} </td>
+					<td>@{{noasistio.na_c_v}} </td>
+					<td>@{{noasistio.na_c_p+noasistio.na_c_v}}</td>
 				</tr>
+				
+				<tr>
+					<td><strong>Total</strong></td>
+					<td>@{{noasistio.na_t_p+noasistio.na_c_p}}</td>
+					<td>@{{noasistio.na_t_v+noasistio.na_c_v}}</td>
+					<td>
+						<strong>
+						@{{noasistio.na_t_p+noasistio.na_t_v
+						+noasistio.na_c_p+noasistio.na_c_v}}
+						</strong>
+					</td>
+				</tr>
+				
 			</tbody>
 		</table>
 	</div>
-	<br>
-	<div class="table-responsive">
-		<table class="table table-bordered table-hover">
-			<thead>
-				<tr>
-					<th colspan="4" class="cabecera-sisbeca">CVA</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="text-left"><strong>Año</strong></td>
-					<td class="text-left"><strong>Módulo</strong></td>
-					<td class="text-left"><strong>Total por Nivel</strong></td>
-					<td class="text-right"><strong>Promedio</strong></td>
-				</tr>
-				<template v-if="cursos.length!=0">
-					<tr v-for="(curso, index) in cursos">
-						<td class="text-left">
-							@{{obtenermes(curso.created_at)}}-@{{obteneranho(curso.created_at)}}
-						</td>
-						<td class="text-left">
-							@{{curso.modulo}} Nivel
-						</td>
-						<td class="text-left">
-							@{{curso.modo}}
-						</td>
-						<td class="text-right">
-							@{{curso.promedio_modulo.toFixed(2)}}
-						</td>
-					</tr>
-				</template>
-				<template v-else>
-					<tr>
-						<td colspan="4" class="text-center">No hay <strong>CVA</strong></td>
-					</tr>
-				</template>
-			</tbody>
-		</table>
-	</div>
-	<br>
 	<!--
-	<p>PHP</p>
+	<p>No borrar este código, aún funciona. Pero está hecho en PHP</p>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -459,8 +544,9 @@
 		</table>
 	</div>
 	-->
+
+
 	<!-- Cargando.. -->
-	
 	<section class="loading" id="preloader">
 		<div>
 			<svg class="circular" viewBox="25 25 50 50">
@@ -479,8 +565,6 @@ const app = new Vue({
 	el: '#app',
 	data:
 	{
-		anho_consultado:'',
-		mes_consultado:'',
 		anho:'',
 		mes:'',
 		regimen:'',
@@ -488,6 +572,8 @@ const app = new Vue({
 		voluntariados:[],
 		cursos:[],
 		actividades_facilitadas:'',
+		asistio:[],
+		noasistio:[],
 	},
 	created: function()
 	{
@@ -506,27 +592,23 @@ const app = new Vue({
 			url = url.replace(':mes', mes);
 			this.anho = anho;
 			this.mes = mes;
-			console.log(url);
-			this.anho_consultado = anho;//a lo mejor  no es necesario
-			this.mes_consultado = mes;//a lo mejor  no es necesario
             axios.get(url).then(response => 
             {
                	this.periodos = response.data.periodos;
                	this.cursos = response.data.cursos;
                	this.voluntariados = response.data.voluntariados;
                	this.actividades_facilitadas = response.data.actividades_facilitadas;
+               	this.asistio = response.data.asistio;
+               	this.noasistio = response.data.noasistio;
                	this.regimen = response.data.regimen;
-               	//console.log(this.periodos);
 			$("#preloader").hide();
 			}).catch( error => {
 				console.log(error);
-				//console.log("hay un error");
 				$("#preloader").hide();
 			});
 		},
 		consultarreportegeneral(anho,mes)
 		{
-			//console.log(anho+' '+mes);
 			var url = '{{route('seguimiento.resumen.anhomes',array('id'=>':id','anho'=>':anho','mes'=>':mes'))}}';
 			var id = '{{$becario->user->id}}';
 			url = url.replace(':id', id);
@@ -539,12 +621,12 @@ const app = new Vue({
                	this.cursos = response.data.cursos;
                	this.voluntariados = response.data.voluntariados;
                	this.actividades_facilitadas = response.data.actividades_facilitadas;
+               	this.asistio = response.data.asistio;
+               	this.noasistio = response.data.noasistio;
                	this.regimen = response.data.regimen;
-               	//console.log(this.periodos);
 			$("#preloader").hide();
 			}).catch( error => {
 				console.log(error);
-				//console.log("hay un error");
 				$("#preloader").hide();
 			});
 		},
@@ -576,6 +658,60 @@ const app = new Vue({
             }
             return total;
 		},
+		descargarpdf(anho,mes)
+		{
+			var url = '{{route('seguimiento.resumen.anhomes.pdf',array('id'=>':id','anho'=>':anho','mes'=>':mes'))}}'
+			var id = '{{$becario->user->id}}';
+			url = url.replace(':id', id);
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			return url;
+		},
+		obtenermescompleto(mes)
+		{
+			switch(mes)
+			{
+				case '00':
+			    	return "Todos";
+			    break;
+			 	case '01':
+			    	return "Enero";
+			    break;
+			  	case '02':
+			    	return "Febrero";
+			    break;
+			    case '03':
+			    	return "Marzo";
+			    break;
+			    case '04':
+			    	return "Abril";
+			    break;
+			    case '05':
+			    	return "Mayo";
+			    break;
+			    case '06':
+			    	return "Junio";
+			    break;
+			    case '07':
+			    	return "Julio";
+			    break;
+			    case '08':
+			    	return "Agosto";
+			    break;
+			    case '09':
+			    	return "Septiembre";
+			    break;
+			    case '10':
+			    	return "Octubre";
+			    break;
+			    case '11':
+			    	return "Noviembre";
+			    break;
+			    case '12':
+			    	return "Diciembre";
+			    break;
+			}
+		},
 		obtenermes(fecha)
 		{
 			var dia = new Date (fecha);
@@ -585,6 +721,10 @@ const app = new Vue({
 		{
 			var dia = new Date (fecha);
 			return moment(dia).format('YYYY');
+		},
+		primeraLetraEnMayusculas(cadena)
+		{
+  			return cadena.charAt(0).toUpperCase() + cadena.slice(1);
 		}
 	}
 
