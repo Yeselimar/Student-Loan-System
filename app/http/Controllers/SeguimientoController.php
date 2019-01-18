@@ -17,12 +17,127 @@ use DateTime;
 
 class SeguimientoController extends Controller
 {
+    public function becariosreportegeneralapi($anho,$mes)
+    {
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+        $todos = collect();
+        foreach ($becarios as $becario)
+        {
+            $id = $becario->user->id;
+            $periodo = DB::table('periodos')
+                ->where('aval.tipo','=','constancia')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->join('aval', function ($join) use($id)
+            {
+            $join->on('periodos.aval_id','=','aval.id')
+                ->where('periodos.becario_id','=',$id);
+            })->first();
+            $voluntariado = DB::table('voluntariados')
+                ->where('aval.tipo','=','comprobante')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('voluntariados.aval_id','=','aval.id')
+                ->where('voluntariados.becario_id','=',$id)
+                ->whereYear('voluntariados.fecha', '=', $anho)
+                //->whereMonth('voluntariados.fecha', '=', $mes)
+                ->orderby('voluntariados.fecha','asc');
+                
+            })->first();
+
+            $asistio_t = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total')
+                ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                //->whereMonth('actividades_becarios.created_at', '=', $mes)
+                ->where('actividades_becarios.estatus','=','asistio');
+            })->first();
+
+            $asistio_cc = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total')
+                ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                //->whereMonth('actividades_becarios.created_at', '=', $mes)
+                ->where('actividades_becarios.estatus','=','asistio');
+            })->first();
+
+            $curso = DB::table('cursos')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,MAX(modulo) as nivel')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('cursos.aval_id','=','aval.id')
+                ->where('cursos.becario_id','=',$id)
+                ->whereYear('cursos.created_at', '=', $anho)
+                //->whereMonth('cursos.created_at', '=', $mes)
+                ;
+            })->first();
+
+            $curso_aux = DB::table('cursos')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,AVG(nota) as promedio_modulo')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('cursos.aval_id','=','aval.id')
+                ->where('cursos.becario_id','=',$id)
+                ->whereYear('cursos.created_at', '=', $anho)
+                //->whereMonth('cursos.created_at', '=', $mes)
+                ;
+                
+            })->first();
+            if($becario->esAnual())
+            {
+                $regimen = "año";
+            }
+            else
+            {
+                if($becario->esSemestral())
+                {
+                    $regimen = "semestre";
+                }
+                else
+                {
+                    $regimen = "trimestre";
+                }
+            }
+            $todos->push(array(
+                'nivel_carrera' => ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen,
+                'horas_voluntariados' => ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado,
+                'asistio_t' => ($asistio_t->total==null) ? '0' : $asistio_t->total,
+                'asistio_cc' => ($asistio_cc->total==null) ? '0' : $asistio_cc->total,
+                'nivel_cva' => ($curso->nivel==null) ? 'N/A' : $curso->nivel.' Nivel - '.$curso->modo,
+                'avg_cva' => ($curso_aux->promedio_modulo==null)? '0' : $curso_aux->promedio_modulo,
+                'avg_academico' => $becario->promediotodosperiodos(),
+                "becario" => array(
+                   'id' => $becario->user->id,
+                   'nombreyapellido' => $becario->user->nombreyapellido()),
+            ));
+        }
+        return response()->json(['becarios'=>$todos]);
+    }
     public function becariosreportegeneral()
     {
+        //no borrar
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
         return view('sisbeca.becarios.reportegeneral')->with(compact('becarios'));
     }
 
+    public function becariosreportegeneralpdf()
+    {
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+        $pdf = PDF::loadView('pdf.seguimiento.resumen', compact('becarios'));
+        return $pdf->stream('reporte-general.pdf');
+    }
    	public function todosbecarios()
    	{
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
