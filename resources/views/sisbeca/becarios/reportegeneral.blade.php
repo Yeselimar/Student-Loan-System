@@ -4,15 +4,6 @@
 <div class="col-lg-12" id="app">
 	<div class="row" style="border:1px solid #fff">
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-			<select class="form-control sisbeca-input" v-model="anho">
-			  	<option disabled value="">Año</option>
-			  	<option>2019</option>
-			  	<option>2018</option>
-			  	<option>2017</option>
-			</select>
-			<!--<span>Año: @{{ anho }}</span>-->
-		</div>
-		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<select class="form-control sisbeca-input" v-model="mes">
 			  	<option disabled value="">Mes</option>
 			  	<option value="00">Todos</option>
@@ -32,12 +23,21 @@
 			<!--<span>Año: @{{ mes }}</span>-->
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			<select class="form-control sisbeca-input" v-model="anho">
+			  	<option disabled value="">Año</option>
+			  	<option>2019</option>
+			  	<option>2018</option>
+			  	<option>2017</option>
+			</select>
+			<!--<span>Año: @{{ anho }}</span>-->
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<button @click="consultabecariosreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
 		</div>
 	</div>
 	<div class="text-right">
-		<a target="_blank" href="#" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF 
+		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
     	</a>
 	</div>
 	<div class="table-responsive">
@@ -140,8 +140,8 @@
 		</table>
 	</div>
 	-->
-	<!-- Cargando.. -->
 	
+	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>
 			<svg class="circular" viewBox="25 25 50 50">
@@ -288,6 +288,58 @@ $(document).ready(function() {
 				console.log(error);
 				$("#preloader").hide();
 			});
+		},
+		descargarpdf(anho,mes)
+		{
+			var url = '{{route('becarios.reporte.general.pdf',array('anho'=>':anho','mes'=>':mes'))}}'
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			return url;
+		},
+		obtenermescompleto(mes)
+		{
+			switch(mes)
+			{
+				case '00':
+			    	return "Todos";
+			    break;
+			 	case '01':
+			    	return "Enero";
+			    break;
+			  	case '02':
+			    	return "Febrero";
+			    break;
+			    case '03':
+			    	return "Marzo";
+			    break;
+			    case '04':
+			    	return "Abril";
+			    break;
+			    case '05':
+			    	return "Mayo";
+			    break;
+			    case '06':
+			    	return "Junio";
+			    break;
+			    case '07':
+			    	return "Julio";
+			    break;
+			    case '08':
+			    	return "Agosto";
+			    break;
+			    case '09':
+			    	return "Septiembre";
+			    break;
+			    case '10':
+			    	return "Octubre";
+			    break;
+			    case '11':
+			    	return "Noviembre";
+			    break;
+			    case '12':
+			    	return "Diciembre";
+			    break;
+			}
 		}
 	}
 

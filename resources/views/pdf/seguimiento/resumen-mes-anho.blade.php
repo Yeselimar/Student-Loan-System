@@ -201,6 +201,7 @@
             </tr>
         </tbody>
     </table>
+
     <table class="table-sisbeca">
         <thead>
             <tr>
@@ -210,6 +211,7 @@
             </tr>
         </thead>
     </table>
+    
     <table class="table-sisbeca">
         <thead>
             <tr>

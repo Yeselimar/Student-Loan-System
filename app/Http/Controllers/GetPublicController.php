@@ -10,6 +10,7 @@ use avaa\User;
 use avaa\Becario;
 use avaa\Actividad;
 use avaa\ActividadBecario;
+use avaa\ActividadFacilitador;
 use avaa\Voluntariado;
 use avaa\Curso;
 use avaa\Materia;
@@ -93,6 +94,41 @@ class GetPublicController extends Controller
         $anho = '2019';
         $mes = 2;
         $id=6;
+        $becario = Becario::find($id);
+
+        $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
+        $total_horas_facilitador = 0;
+        foreach ($actividades_facilitadas as $ab)
+        {
+            $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+        }
+
+        $voluntariado = DB::table('voluntariados')
+            ->where('aval.tipo','=','comprobante')
+            ->where('aval.estatus','=','aceptada')
+            //->groupby('voluntariados.tipo')
+            ->selectRaw('*,SUM(horas) as horas_voluntariado')
+            ->join('aval', function ($join) use($id,$anho,$mes)
+        {
+            $join->on('voluntariados.aval_id','=','aval.id')
+            ->where('voluntariados.becario_id','=',$id)
+            ->whereYear('voluntariados.fecha', '=', $anho)
+            //->whereMonth('voluntariados.fecha', '=', $mes)
+            ->orderby('voluntariados.fecha','asc');
+            
+        })->first();
+
+        $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+            $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+        $todos = collect();
+        $todos->push(array(
+                
+                'horas_voluntariados' => $horas_voluntariado,
+               
+                   'id' => $becario->user->id,
+                   'nombreyapellido' => $becario->user->nombreyapellido())
+            );
+        return $todos;
         $periodos = DB::table('periodos')
             ->where('aval.tipo','=','constancia')
             ->where('aval.estatus','=','aceptada')

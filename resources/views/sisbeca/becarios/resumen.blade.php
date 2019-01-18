@@ -210,7 +210,7 @@
 				</template>
 				<template v-else>
 					<tr>
-						<td colspan="5" class="text-center">No hay <strong>periodos</strong> @{{periodos.length }}</td>
+						<td colspan="5" class="text-center">No hay <strong>periodos</strong> <!--@{{periodos.length }}--></td>
 					</tr>
 				</template>
 			</tbody>

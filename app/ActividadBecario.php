@@ -47,4 +47,9 @@ class ActividadBecario extends Model
     {
         return $query->whereYear('created_at', '=', $anho);
     }
+
+    public function scopePorMes($query,$mes)
+    {
+        return $query->whereMonth('created_at', '=', $mes);
+    }
 }

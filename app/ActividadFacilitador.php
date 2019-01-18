@@ -27,4 +27,14 @@ class ActividadFacilitador extends Model
     {
         return $query->where('becario_id','=',$id);
     }
+
+    public function scopeParaAnho($query,$anho)
+    {
+        return $query->whereYear('created_at', '=', $anho);
+    }
+
+    public function scopeParaMes($query,$mes)
+    {
+        return $query->whereMonth('created_at', '=', $mes);
+    }
 }
