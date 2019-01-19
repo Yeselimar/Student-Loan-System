@@ -93,9 +93,93 @@ class GetPublicController extends Controller
     {   
         $anho = '2019';
         $mes = 2;
-        $id=6;
+        $id=7;
         $becario = Becario::find($id);
+        //para actividades
+        $actividades = DB::table('actividades')
+            ->join('actividades_becarios', function ($join) use($id)
+        {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->where('actividades_becarios.estatus','=','asistio')
+                ;
+        }) ->orderby('fecha', 'desc')->first();
+        //para cva
+        $cursos = DB::table('cursos')
+            ->orderby('cursos.created_at', 'desc')
+            ->selectRaw('*,cursos.created_at as fecha')
+            ->join('aval', function ($join) use($id)
+        {
+            $join->on('cursos.aval_id','=','aval.id')
+            ->where('aval.tipo','=','nota')
+            ->where('aval.estatus','=','aceptada')
+            ->where('cursos.becario_id','=',$id)
+            ;
+        })->first();
+        //para voluntariados
+        $voluntariados = DB::table('voluntariados')
+            ->orderby('voluntariados.fecha','desc')
+            ->join('aval', function ($join) use($id)
+        {
+            $join->on('voluntariados.aval_id','=','aval.id')
+            ->where('voluntariados.becario_id','=',$id)
+             ->where('aval.tipo','=','comprobante')
+            ->where('aval.estatus','=','aceptada')
+            ;
+        })->get();
+        //para periodos
+        $periodos = DB::table('periodos')
+            ->orderby('periodos.created_at','desc')
+            ->selectRaw('*,periodos.created_at as fecha')
+            ->join('aval', function ($join) use($id)
+        {
+            $join->on('periodos.aval_id','=','aval.id')
+            ->where('periodos.becario_id','=',$id)
+             ->where('aval.tipo','=','constancia')
+            ->where('aval.estatus','=','aceptada')
+            ;
+        })->get();
+        //return response()->json($actividades);
+        $tiempo_actividades = "Nunca";
+        $tiempo_cva = "Nunca";
+        $tiempo_voluntariados = "Nunca";
+        $tiempo_periodos = "Nunca";
+        if(!empty($actividades))
+        {
+            $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+            $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($actividades->fecha)));
+            $desde = $fechainicial->diff($fechafinal);
+            
+            if($desde->y==0)//año
+            {
+                if($desde->m==0)//mes
+                {
+                    if($desde->d==0)//días
+                    {
+                        if($desde->h==0)//horas
+                        {
+                            if($desde->i==0)//minutos
+                            {
+                                $tiempo_actividades = "Hace un momento";
+                            }
+                            else
+                                $tiempo_actividades = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                        }
+                        else
+                            $tiempo_actividades = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                    }
+                    else
+                        $tiempo_actividades = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                }
+                else
+                    $tiempo_actividades = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+            }
+            else
+                $tiempo_actividades = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+        }
+        return $tiempo_actividades;
 
+        return $becario->getTiempoParticipaTaller();
         $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
         $total_horas_facilitador = 0;
         foreach ($actividades_facilitadas as $ab)

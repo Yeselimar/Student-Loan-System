@@ -394,6 +394,7 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('becarios.reporte.general')}}">Reporte General</a></li>
+                        <li><a href="{{route('seguimiento.reportetiempo')}}">Reporte Tiempo</a></li>
                         <li><a href="{{route('becarios.todos')}}">Actualizar Estatus</a></li>
                     </ul>
 

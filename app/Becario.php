@@ -343,6 +343,7 @@ class Becario extends Model
             return "N/A";
         }
     }
+
     public function getfechabienvenida()
     {
         $diff = 0;
@@ -361,5 +362,11 @@ class Becario extends Model
         else{
             return 'false';
         }
+    }
+
+    public function getTiempoParticipaTaller()//no sirve
+    {
+        $ab = ActividadBecario::paraBecario($this->user->id)->orderby('created_at','desc')->get();
+        return $ab->count();
     }
 }
