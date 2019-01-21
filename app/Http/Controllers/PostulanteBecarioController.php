@@ -19,12 +19,17 @@ use avaa\Documento;
 
 class PostulanteBecarioController extends Controller
 {
+    public function statusPostulanteBecario()
+    {
+        $postulante = Becario::find(Auth::User()->id);
+        $entrevistadores = User::entrevistadores()->get();
+        return view('sisbeca.postulaciones.statusPostulanteBecario')->with('postulante',$postulante)->with('entrevistadores',$entrevistadores);
+    }
     public function terminosCondicionesAprobar(Request $request)
     {
         if (Auth::user()->becario->acepto_termino == 1) {
             return back();
         }
-
         $becario = User::find(Auth::user()->id)->becario;
         Auth::user()->rol='becario';
         Auth::user()->save();
@@ -37,8 +42,6 @@ class PostulanteBecarioController extends Controller
         } else {
             flash('Disculpe, ha ocurrido un error inesperado.', 'success')->important();
         }
-
-
         return redirect()->route('sisbeca');
     }
     public function enviarPostulacionGuardar($progreso)

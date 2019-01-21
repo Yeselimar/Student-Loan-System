@@ -185,7 +185,7 @@
                                         @endif
                                     </div>
                                     
-                                    <div class="col-lg-12">
+                                    <!-- <div class="col-lg-12">
                                         <label for="url_pdf">Cargue su Hoja de Vida</label>
                                         <input name="url_pdf" accept="application/pdf" type="file" id="url_pdf" class="sisbeca-input" required>
                                         @if ($errors->has('url_pdf'))
@@ -193,7 +193,7 @@
                                             <strong>{{ $errors->first('url_pdf') }}</strong>
                                         </span>
                                         @endif
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="f1-buttons">

@@ -3,7 +3,7 @@
 @section('content').
 	<div class="col-lg-12">
         <div class="text-right">
-            <a href="{{route('entrevistador.misentrevistados')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            <a href="{{route('entrevistador.asignar')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         </div>
 		<br>
 		<div class="col sisbeca-container-formulario">

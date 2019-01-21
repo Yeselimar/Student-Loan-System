@@ -13,18 +13,18 @@
 		<table class="table table-bordered ">
 			<thead>
 				<tr>
-					<th class="text-left">Postulante a Becario</th>
-					<th>Entrevista</th>
+					<th class="text-center">Postulante a Becario</th>
+					<th class="text-center">Entrevista</th>
 					<!--<th class="text-center">Documento Cargado</th>-->
-					<th>Fecha Hora Lugar</th>
-					<th clas="text-right">Acciones</th>
+					<th class="text-center">Fecha Hora Lugar</th>
+					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="postulante in postulantes" v-if="postulante.user.rol != 'becario'">
-					<td>@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
+					<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
 
-						<td v-if="postulante.becario.status == 'entrevista'">
+						<td class="text-center" v-if="postulante.becario.status == 'entrevista'">
 							<span class="label label-default">Pendiente</span>
 						</td>
 						<td v-else-if="postulante.becario.status == 'entrevistado'">
@@ -45,51 +45,51 @@
 							no
 						</span>
 					</td>-->
-					<td>
-						<div class="col-lg-12 row">
-							<div v-if="postulante.becario.fecha_entrevista!=null">
-								<span class="label label-warning">@{{ fechaformartear(postulante.becario.fecha_entrevista) }}</span>
-							</div>
-							<div v-else>
+					<td class="text-center">
+						<div class="col-lg-12 ">
+							<template v-if="postulante.becario.fecha_entrevista!=null">
+								<span class="label label-inverse">@{{ fechaformartear(postulante.becario.fecha_entrevista) }}</span>
+							</template>
+							<template v-else>
 								<span class="label label-default">Sin Fecha</span>
-							</div>
+							</template>
 							&nbsp;
-							<div v-if="postulante.becario.hora_entrevista!=null">
-								<span class="label label-info">@{{ horaformatear(postulante.becario.hora_entrevista) }}</span>
-							</div>
-							<div v-else>
+							<template v-if="postulante.becario.hora_entrevista!=null">
+								<span class="label label-inverse">@{{ horaformatear(postulante.becario.hora_entrevista) }}</span>
+							</template>
+							<template v-else>
 								<span class="label label-default">Sin Hora</span>
-							</div>
+							</template>
 							&nbsp;
-							<div v-if="postulante.becario.lugar_entrevista!=null">
-								<span class="label label-danger">@{{ postulante.becario.lugar_entrevista }}</span>
-							</div>
-							<div v-else>
+							<template v-if="postulante.becario.lugar_entrevista!=null">
+								<span class="label label-inverse">@{{ postulante.becario.lugar_entrevista }}</span>
+							</template>
+							<template v-else>
 								<span class="label label-default">Sin Lugar</span>
-							</div>
+							</template>
 						</div>
 					</td>
-					<td>
-						<button title="Marcar como Entrevistado" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
+					<td class="text-center">
+						<button v-b-popover.hover="'Marcar como Entrevistado'" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
                             <i class="fa fa-check" data-target="modal-asignar"></i>
                          </button>
 
 						<template>
-							<a :href="getRutaVerPerfil(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+							<a :href="getRutaVerPerfil(postulante.user.id)" class='btn btn-xs sisbeca-btn-primary' v-b-popover.hover="'Ver Perfil'">
 								<i class="fa fa-eye"></i>
 							</a>
 						</template>
-						<template v-if="postulante.documento_final_entrevista==null">
-							<a title="Cargar Resumen Entrevista Individual" :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+						<template v-if="postulante.documento==null">
+							<a v-b-popover.hover="'Cargar Resumen Entrevista Individual'" :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-upload"></i>
 							</a>
 						</template>
 						<template  v-else>
-							<a title="Editar Resumen Entrevista Individual" :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+							<a v-b-popover.hover="'Editar Resumen Entrevista Individual'" :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-pencil"></i>
 							</a>
 						</template>
-						<template v-if="postulante.becario.documento_final_entrevista==null">
+						<!-- <template v-if="postulante.becario.documento_final_entrevista==null">
 							<a title="Cargar Resumen Entrevista Grupal" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-upload"></i>
 							</a>
@@ -98,7 +98,7 @@
 							<a title="Editar Resumen Entrevista Grupal" :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-pencil"></i>
 							</a>
-						</template>
+						</template> -->
 					</td>
 				</tr>
 				<tr v-if="postulantes.length==0">
@@ -250,6 +250,10 @@ const app = new Vue({
 		}
 	}
 });
-
+</script>
+<script>
+	$(document).ready(function(){
+	$('[data-toggle="popover"]').popover();
+	});
 </script>
 @endsection

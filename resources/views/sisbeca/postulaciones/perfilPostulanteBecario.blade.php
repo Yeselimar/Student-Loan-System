@@ -4,7 +4,7 @@
 
 
 <div class="text-right col-12" align="right" >
-<a href="{{route('listarPostulantesBecarios',"2")}}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+<a href="{{URL::previous()}}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
 <div class="container">
     <div class="card card-body bg-light border border-info p-2">
@@ -21,7 +21,7 @@
                                     <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive">
                                 @endif
                             @endif
-<br/>
+                    <br/>
                     </div>
                     <div class="col-sm-6 col-md-8 p-4">
                         <h3>{{$postulante->user->name}} {{$postulante->user->last_name }}</h3>
@@ -540,7 +540,7 @@
 
             <div class="form-group">
                 <div class="col">
-                    <label for="exampleFormControlTextarea1">Observaciones: (Visible al Postulante)</label>
+                    <label for="exampleFormControlTextarea1">Observaciones: </label>
                     <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
 
                     <button type='submit' title="Aprobar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>

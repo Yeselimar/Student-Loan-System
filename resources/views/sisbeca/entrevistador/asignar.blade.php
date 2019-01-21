@@ -8,16 +8,16 @@
 		<table class="table table-bordered ">
 			<thead>
 				<tr>
-					<th class="text-left">Postulante Becario</th>
-					<th>Entrevistadores</th>
-					<th>Fecha Hora Lugar</th>
-					<th>Acciones</th>
+					<th class="text-center">Postulante Becario</th>
+					<th class="text-center">Entrevistadores</th>
+					<th class="text-center">Fecha Hora Lugar</th>
+					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="postulante in postulantes">
-					<td class="text-left">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
-					<td>
+					<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
+					<td class="text-center">
 						<template v-if="postulante.entrevistadores">
 							<template v-for="entrevistador in postulante.entrevistadores">
 									<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>&nbsp;
@@ -27,34 +27,46 @@
 							<span class="label label-default">sin entrevistadores</span>
 						</template>
 					</td>
-					<td>
-						<div class="col-lg-12 row">
-							<div v-if="postulante.fecha_entrevista!=null">
+					<td class="text-center">
+						<div class="col-lg-12">
+							<template v-if="postulante.fecha_entrevista!=null">
 								<span class="label label-inverse">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
-							</div>
-							<div v-else>
+							</template>
+							<template v-else>
 								<span class="label label-default">Sin Fecha</span>
-							</div>
+							</template>
 							&nbsp;
-							<div v-if="postulante.hora_entrevista!=null">
+							<template v-if="postulante.hora_entrevista!=null">
 								<span class="label label-inverse">@{{ horaformatear(postulante.hora_entrevista) }}</span>
-							</div>
-							<div v-else>
+							</template>
+							<template v-else>
 								<span class="label label-default">Sin Hora</span>
-							</div>
+							</template>
 							&nbsp;
-							<div v-if="postulante.lugar_entrevista!=null">
+							<template v-if="postulante.lugar_entrevista!=null">
 								<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
-							</div>
-							<div v-else>
+							</template>
+							<template v-else>
 								<span class="label label-default">Sin Lugar</span>
-							</div>
+							</template>
 						</div>
 					</td>
-					<td>
-						<span data-toggle="tooltip" data-placement="bottom" title="Asignar Entrevistadores" >
+					<td class="text-center">
+
+					<template v-if="postulante.documento_final_entrevista==null">
+						<a v-b-popover.hover="'Cargar Resumen Entrevista Grupal'" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+							<i class="fa fa-upload"></i>
+						</a>
+					</template>
+					<template v-else>
+						<a v-b-popover.hover="'Editar Resumen Entrevista Grupal'" :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+							<i class="fa fa-pencil"></i>
+						</a>
+					</template>
+
+						<span v-b-popover.hover="'Asignar Entrevistadores'">
 							<button type="button" class="btn btn-xs sisbeca-btn-primary"  @click.prevent="mostrarModal(postulante,postulante.entrevistadores)">
-								<i class="fa fa-pencil"></i>
+								<i class="fa fa-user"></i>
 							</button>
 						</span>
 					</td>
@@ -226,6 +238,18 @@ const app = new Vue({
 			{
 				this.postulantes = response.data.becarios;
 			});
+		},
+		getRutaCargarDocumentoConjunto: function(id)
+		{
+			var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
+			url = url.replace(':id', id);
+			return url;
+		},
+		getRutaEditarDocumentoConjunto:function(id)
+		{
+			var url = "{{route('entrevistador.editardocumentoconjunto',array('id'=>':id'))}}";
+			url = url.replace(':id', id);
+			return url;
 		},
 		asignarentrevistadores: function(id,seleccionados)
 		{

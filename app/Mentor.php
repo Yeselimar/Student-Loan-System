@@ -26,4 +26,8 @@ class Mentor extends Model
     {
         return $this->becarios()->count();
     }
+    public function esPostulante()
+    {
+        return $this->status=="postulante";
+    }
 }

@@ -23,7 +23,7 @@ class EntrevistadorController extends Controller
 		$becarios = BecarioEntrevistador::where('entrevistador_id','=',Auth::user()->id)->with("user")->with("becario")->get();
 		return response()->json(['becarios'=>$becarios]);
 	}
-	
+
 	public function cargardocumento($id)
 	{
 		$becario =  Becario::find($id);
@@ -76,7 +76,7 @@ class EntrevistadorController extends Controller
 		if($request->file('documento'))
         {
             File::delete($be->documento);
-            
+
             $archivo= $request->file('documento');
 	        $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
 	        $ruta = public_path().'/'.BecarioEntrevistador::carpetaDocumento();
@@ -116,7 +116,7 @@ class EntrevistadorController extends Controller
         $becario->save();
 
         flash("El documento conjunto del becario ".$becario->user->nombreyapellido()." fue cargado exitosamente.",'success');
-        return redirect()->route('entrevistador.misentrevistados');
+        return redirect()->route('entrevistador.asignar');
 	}
 
 	public function editardocumentoconjunto($id)
@@ -148,7 +148,7 @@ class EntrevistadorController extends Controller
 	        $becario->save();
 	    }
         flash("El documento conjunto del becario ".$becario->user->nombreyapellido()." fue actualizado exitosamente.",'success');
-        return redirect()->route('entrevistador.misentrevistados');
+        return redirect()->route('entrevistador.asignar');
 	}
 
 	public function asignarentrevistadores()
@@ -176,12 +176,12 @@ class EntrevistadorController extends Controller
 		$becario->hora_entrevista = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
 		$becario->fecha_entrevista = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
 		$becario->save();
-	 
+
 		foreach ($becario->entrevistadores as $entrevistador)
 		{
 			$entrevistador_becario = BecarioEntrevistador::where('becario_id','=',$id)->where('entrevistador_id','=',$entrevistador->id)->delete();
 		}
-		
+
 		if($request->has('seleccionados') and $request->get('seleccionados')!=null)
 		{
 			$tmp = explode(',', $request->get('seleccionados'));
@@ -199,7 +199,7 @@ class EntrevistadorController extends Controller
 	public function obtenerbecario($id)
 	{
 		$becario = Becario::find($id);
-		return response()->json(['becario'=>$becario]);	
+		return response()->json(['becario'=>$becario]);
 	}
 
 	public function documentoindividual()

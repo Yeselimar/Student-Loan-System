@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('edad')->nullable();
             $table->string('email',30)->unique();
             $table->string('password');
-            $table->enum('rol',['rechazado','admin','coordinador','mentor','postulante_becario','postulante_mentor','becario','editor','directivo','mentor desincorporado','becario desincorporado','entrevistador'])->default('postulante_becario');//el rol rechazado puede eliminarse.
+            $table->enum('rol',['rechazado','admin','coordinador','mentor','postulante_becario','postulante_mentor','pre_postulante_mentor','becario','editor','directivo','mentor desincorporado','becario desincorporado','entrevistador'])->default('postulante_becario');//el rol rechazado puede eliminarse.
             $table->string('cedula',15)->nullable()->unique();
             $table->string('descripcion')->nullable();
             $table->timestamp('fecha_nacimiento')->nullable();

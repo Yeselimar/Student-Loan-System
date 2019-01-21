@@ -24,7 +24,7 @@ class PostulanteMentor
     public function handle($request, Closure $next)
     {
         //si es verdadero sigue con  la petición
-        if($this->auth->user()->rol==='postulante_mentor')
+        if(($this->auth->user()->rol==='postulante_mentor') || ($this->auth->user()->rol==='pre_postulante_mentor'))
             return $next($request);
         else
             return abort(404,'Acceso Denegado');

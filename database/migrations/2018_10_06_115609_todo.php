@@ -11,7 +11,7 @@ class Todo extends Migration
         /*Schema::create('coordinadores', function (Blueprint $table)
         {
             $table->primary('user_id'); //se coloca el mismo id porque la relacion uno a uno no pueden existir dos perfiles con el mismo user
-            
+
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')->on('users')
@@ -23,8 +23,12 @@ class Todo extends Migration
         Schema::create('mentores', function (Blueprint $table)
         {
             $table->primary('user_id'); //se coloca el mismo id porque la relacion uno a uno no pueden existir dos perfiles con el mismo user
-            $table->enum('status',['activo','inactivo','desincorporado'])->default('activo');
-
+            $table->enum('status',['postulante','activo','inactivo','desincorporado'])->default('activo');
+            $table->text('profesion')->nullable();
+            $table->text('empresa')->nullable();
+            $table->text('cargo_actual')->nullable();
+            $table->text('areas_de_interes')->nullable();
+            $table->datetime('fecha_ingreso_empresa')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')->on('users')
@@ -109,7 +113,7 @@ class Todo extends Migration
             $table->boolean('estudios_universitarios')->default(false);
             $table->boolean('informacion_adicional')->default(false);
             $table->boolean('documentos')->default(false);
-            
+
             //
             $table->enum('tipo',['nuevo','viejo'])->default('nuevo');
             $table->enum('regimen',['anual','semestral','trimestral'])->default('anual');
@@ -117,7 +121,7 @@ class Todo extends Migration
             $table->boolean('estatus_curso');
             $table->boolean('estatus_voluntariado');
 
-            
+
 
             /*$table->unsignedInteger('coordinador_id');
             $table->foreign('coordinador_id')
@@ -147,13 +151,13 @@ class Todo extends Migration
             $table->time('hora_bienvenida')->nullable();
             $table->text('lugar_bienvenida')->nullable();
             $table->text('observacion_privada')->nullable();
-            
+
             //campo para control de nómina
             $table->datetime('final_carga_academica')->nullable();
 
             $table->timestamps();
         });
-        
+
         /*
         Schema::create('entrevistadores', function (Blueprint $table)
         {
@@ -181,7 +185,7 @@ class Todo extends Migration
 
             $table->timestamps();
         });
-        
+
         Schema::create('alertas', function (Blueprint $table)
         {
             $table->increments('id');
@@ -228,10 +232,10 @@ class Todo extends Migration
             $table->timestamps();
         });
 
-        Schema::create('editores', function (Blueprint $table) 
+        Schema::create('editores', function (Blueprint $table)
         {
             $table->primary('user_id'); //se coloca el mismo id porque la relacion uno a uno no pueden existir dos perfiles con el mismo user
-            
+
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')->on('users')
@@ -290,8 +294,8 @@ class Todo extends Migration
             $table->time('hora_inicio')->nullable();
             $table->time('hora_fin')->nullable();
             $table->enum('status',['suspendido','bloqueado','disponible'])->default('disponible');
-            
-            
+
+
 
             $table->timestamps();
         });
@@ -308,7 +312,7 @@ class Todo extends Migration
             $table->string('nombreyapellido')->nullable();
 
             $table->integer('horas')->nullable();
-            
+
             $table->timestamps();
         });
 
@@ -324,7 +328,7 @@ class Todo extends Migration
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->timestamps();
-        }); 
+        });
 
         Schema::create('periodos', function (Blueprint $table)
         {
@@ -352,7 +356,7 @@ class Todo extends Migration
             $table->foreign('periodo_id')->references('id')->on('periodos')->onDelete('cascade');
 
             $table->timestamps();
-        });    
+        });
 
         Schema::create('actividades_becarios',function(Blueprint $table)
         {
@@ -361,9 +365,9 @@ class Todo extends Migration
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
-            $table->unsignedInteger('actividad_id');            
+            $table->unsignedInteger('actividad_id');
             $table->foreign('actividad_id')->references('id')->on('actividades')->onDelete('cascade');
-           	
+
            	$table->unsignedInteger('aval_id')->nullable();
             $table->foreign('aval_id')->references('id')->on('aval');
 
@@ -378,10 +382,10 @@ class Todo extends Migration
             $table->string('titulo');
             $table->string('url');
             $table->boolean('verificado');
-            
+
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
+
             $table->timestamps();
         });
 
@@ -395,7 +399,7 @@ class Todo extends Migration
             $table->unsignedInteger('mes')->nullable();
             $table->unsignedInteger('year')->nullable();
             $table->enum('status',['cargada','por procesar','revisada','pagada','rechazada'])->default('cargada');
-            
+
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
@@ -408,7 +412,7 @@ class Todo extends Migration
             $table->string('nombre');
             $table->string('abreviatura');
             $table->text('descripcion');
-            
+
             $table->timestamps();
         });
 
@@ -446,15 +450,15 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->unsignedInteger('modulo');//modulo de cva (1...15)
-            $table->enum('modo',['sabatino','interdiario','diario','intensivo'])->default('sabatino');//modo cva 
+            $table->enum('modo',['sabatino','interdiario','diario','intensivo'])->default('sabatino');//modo cva
             $table->datetime('fecha_inicio');//fecha inicio del cva
             $table->datetime('fecha_fin');//fecha fin del cva
             $table->float('nota');//nota en ese modulo
             $table->enum('status',['aprobado','reprobado'])->default('reprobado');//verificar si este campo se mantiene
-            
+
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
-            
+
             $table->unsignedInteger('tipocurso_id');
             $table->foreign('tipocurso_id')->references('id')->on('tiposcursos')->onDelete('cascade');
 
@@ -469,7 +473,7 @@ class Todo extends Migration
             $table->increments('id');
             $table->decimal('promedio');
             $table->enum('status',['aprobado','reprobado'])->default('aprobado');
-                
+
             $table->unsignedInteger('curso_id');
             $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
 
@@ -508,7 +512,7 @@ class Todo extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('becarios')->onDelete('cascade');
-            
+
             $table->unsignedInteger('nomina_id');
             $table->foreign('nomina_id')->references('id')->on('nominas')->onDelete('cascade');
 
@@ -532,7 +536,7 @@ class Todo extends Migration
             $table->increments('id');
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
-            
+
             $table->unsignedInteger('nomborrador_id');
             $table->foreign('nomborrador_id')->references('id')->on('nomborradores')->onDelete('cascade');
 
@@ -549,7 +553,7 @@ class Todo extends Migration
 
             $table->timestamps();
         });
-        
+
         Schema::create('desincorporaciones', function (Blueprint $table)
         {
             $table->increments('id');
@@ -607,7 +611,7 @@ class Todo extends Migration
             $table->timestamps();
         });
     }
-    
+
     public function down()
     {
         Schema::dropIfExists('charlas');

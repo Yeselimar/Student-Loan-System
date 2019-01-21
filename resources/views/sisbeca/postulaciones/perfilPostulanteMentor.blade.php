@@ -2,20 +2,17 @@
 @if(Auth::user()->rol==='directivo')
   @section('title','Postulante Mentor: '.$postulanteMentor->name.' '.$postulanteMentor->last_name)
 @else
-  @section('title','Mi Perfil: '.$postulanteMentor->name.' '.$postulanteMentor->last_name)
+  @section('title','Perfil Mentor '.$postulanteMentor->name.' '.$postulanteMentor->last_name)
 @endif
 
 @section('content')
 <div class="text-right col-12" align="right" >
-  @if(!is_null($documento))
-    <a target="_blank" href="{{asset($documento->url)}}" class='btn btn-sm sisbeca-btn-primary'>Ver Hoja de Vida</a>
-  @endif
-  <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+  <a href="{{URL::previous()}}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
-                
-<div class="card">
-  
-    
+
+<!-- <div class="card">
+
+
 
       <div class="card-body" style="border: 1px solid #eee">
           <div class="card-two">
@@ -54,18 +51,18 @@
               <div class="text-center">
                 <span class=" fa fa-venus-mars"></span>
                 {{ucwords($postulanteMentor->sexo)}} &nbsp;&nbsp;&nbsp;
-                
 
-                <span class=" fa fa-calendar"></span> 
+
+                <span class=" fa fa-calendar"></span>
                 {{$postulanteMentor->edad}} Años &nbsp;&nbsp;&nbsp;
-                
+
                 <span class="fa fa-birthday-cake"></span>
                 {{ date("d/m/Y", strtotime($postulanteMentor->fecha_nacimiento)) }}
-                
+
                 <div class="clear"></div>
                 <br>
               </div>
-          
+
           </div>
       </div>
 
@@ -105,14 +102,57 @@
       @endif
 
       <br>
+</div> -->
+<div class="container">
+  <div class="card card-body bg-light border border-info p-2">
+      <div class="col-xs-12 col-sm-8 col-md-8">
+              <div class="row">
+                  <div class="col xs-6 col-sm-4 col-md-4 p-t-20 p-b-20">
+                      @if($img_perfil_postulante->count()>0)
+                        <img src="{{asset($img_perfil_postulante[0]->url)}}" class="img-rounded img-responsive">
+                      @else
+                        @if($postulanteMentor->sexo==='femenino')
+                          <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive">
+                        @else
+                          <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive">
+
+                        @endif
+                    @endif
+                </div>
+                  <div class="col-sm-6 col-md-8 p-4">
+                      <h3>{{$postulanteMentor->name}} {{$postulanteMentor->last_name }}</h3>
+                      <p>
+                          <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulanteMentor->email}}
+                          <br />
+                          <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulanteMentor->cedula}}
+                          <br/>
+                          <i class="fa fa-map-pin"> &nbsp;</i>Descripción: {{$postulanteMentor->descripcion}}
+                          <br/>
+                          @if(!is_null($documento))
+                          <a target="_blank" href="{{asset($documento->url)}}" class='m-t-10 btn btn-sm sisbeca-btn-primary'>Ver Hoja de Vida</a>
+                        @endif
+                      </p>
+                  </div>
+              </div>
+      </div>
+  </div>
+  @if($postulanteMentor->rol==='postulante_mentor')
+
+  <div align="center">
+  <h3>¿Desea seleccionar a {{$postulanteMentor->name.' '.$postulanteMentor->last_name}} para <b>Entrevista? </b>
+      <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
+      <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
+  </div>
+  @endif
 </div>
-    
+
+
 
 
 
   @if(Auth::user()->rol==='directivo')
 
-    <!-- Modal para aprobar  --> 
+    <!-- Modal para aprobar  -->
     <div class="modal fade" id="modal">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -124,7 +164,7 @@
             <br>
             ¿Está seguro que desea <strong>aprobar</strong> <strong>{{$postulanteMentor->name}} {{$postulanteMentor->last_name}}</strong> como mentor?
             </div>
-           
+
 
            <form method="POST" action={{route('postulanteMentor.update',$postulanteMentor->id)}} accept-charset="UTF-8">
 
@@ -143,10 +183,10 @@
       </div>
 
     </div>
-    <!-- Modal para aprobar  --> 
+    <!-- Modal para aprobar  -->
 
 
-    <!-- Modal para rechazar --> 
+    <!-- Modal para rechazar -->
     <div class="modal fade" id="modal-default">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -176,7 +216,7 @@
         </div>
       </div>
     </div>
-    <!-- Modal para rechazar --> 
+    <!-- Modal para rechazar -->
 
   @endif
 

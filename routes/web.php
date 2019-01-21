@@ -356,6 +356,14 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'SisbecaController@verMiPerfilMentor',
             'as' => 'ver.miPerfilPostulanteMentor'
         ]);
+        Route::get('enviarPostulancionMentor', [
+            'uses' => 'SisbecaController@postulacionMentor',
+            'as' => 'enviarPostulancionMentor'
+        ]);
+        Route::post('enviar/PostulancionMentor/guardar', [
+            'uses' => 'SisbecaController@postulacionMentorGuardar',
+            'as' => 'enviarPostulancionMentorGuardar'
+        ]);
     });
 
     Route::group(['middleware'=>['postulante_becario']],function ()
@@ -365,7 +373,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'terminosCondiciones.aprobar'
         ]);
         Route::get('postulanteBecario/status', [
-            'uses' => 'SisbecaController@statusPostulanteBecario',
+            'uses' => 'PostulanteBecarioController@statusPostulanteBecario',
             'as' => 'status.postulanteBecario'
         ]);
 
@@ -661,6 +669,13 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {
+        //documento en conjunto
+        Route::get('/postulante/{id}/cargar-documento-conjunto/', 'EntrevistadorController@documentoconjunto')->name('entrevistador.documentoconjunto');
+        Route::post('/postulante/{id}/guardar-documento-conjunto/', 'EntrevistadorController@guardardocumentoconjunto')->name('entrevistador.guardardocumentoconjunto');
+
+        Route::get('/postulante/{id}/editar-documento-conjunto/', 'EntrevistadorController@editardocumentoconjunto')->name('entrevistador.editardocumentoconjunto');
+        Route::post('/postulante/{id}/actualizar-documento-conjunto/', 'EntrevistadorController@actualizardocumentoconjunto')->name('entrevistador.actualizardocumentoconjunto');
+
         Route::post('asignarFechaBienvenidaTodos', [
             'uses' => 'CompartidoDirecCoordController@asignarfechabienvenidaparatodos',
             'as' => 'asignar.fecha.bienvenida.todos'
@@ -767,13 +782,13 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/entrevistador/documento-individual/', 'EntrevistadorController@documentoindividual')->name('entrevistador.documentoindividual');
 
-        //documento en conjunto
+        /* //documento en conjunto
         Route::get('/postulante/{id}/cargar-documento-conjunto/', 'EntrevistadorController@documentoconjunto')->name('entrevistador.documentoconjunto');
         Route::post('/postulante/{id}/guardar-documento-conjunto/', 'EntrevistadorController@guardardocumentoconjunto')->name('entrevistador.guardardocumentoconjunto');
 
         Route::get('/postulante/{id}/editar-documento-conjunto/', 'EntrevistadorController@editardocumentoconjunto')->name('entrevistador.editardocumentoconjunto');
         Route::post('/postulante/{id}/actualizar-documento-conjunto/', 'EntrevistadorController@actualizardocumentoconjunto')->name('entrevistador.actualizardocumentoconjunto');
-
+ */
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
             'as' => 'lista.Entrevistas.Postulantes'

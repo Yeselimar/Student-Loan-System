@@ -29,11 +29,11 @@ class RegistroSisbecaController extends Controller
         $user->password = bcrypt($request->password);
         $user->cedula = $request->cedula;
         $user->sexo = $request->sexo;
-        $user->rol= 'postulante_mentor';
+        $user->rol= 'pre_postulante_mentor';
         $user->edad = $request->edad;//redundante
         $user->save();
 
-    	$file = $request->file('url_pdf');
+    	/* $file = $request->file('url_pdf');
         $name = 'HojaDeVida_' . time() . '.' . $file->getClientOriginalExtension();
         $path = public_path() . '/documentos/mentores/';
         $file->move($path, $name);
@@ -42,7 +42,7 @@ class RegistroSisbecaController extends Controller
         $documento->url = '/documentos/mentores/'.$name;
         $documento->titulo='hoja_vida';
         $documento->save();
-
+ */
         $file = $request->file('image_perfil');
 
         if(!is_null($file))
@@ -57,7 +57,7 @@ class RegistroSisbecaController extends Controller
             $img_perfil->user_id = $user->id;
             $img_perfil->save();
         }
-        flash("Gracias postularse como mentor. Ahora puede iniciar sesión para ver el proceso de su postulación.",'success');
+        flash("Gracias registrarse. Ahora puede iniciar sesión para culminar su proceso de postulación.",'success');
         return redirect('/login');
 
     }

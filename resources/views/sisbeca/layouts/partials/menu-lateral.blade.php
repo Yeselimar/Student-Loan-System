@@ -62,10 +62,15 @@
                             <li><a href="{{route('status.postulanteMentor')}}">Ver Postulación</a></li>
                         </ul>
                     </li>
+                @elseif(Auth::user()->rol==='pre_postulante_mentor')
+                <li class="nav-label">Inicio</li>
+                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-info"></i><span class="hide-menu">Postulación</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('enviarPostulancionMentor')}}">Enviar Postulación</a></li>
+                    </ul>
+                </li>
                 @endif
                 {{--Fin de Vistas del Postulante a Mentor--}}
-
-
                 {{--Inicio de Vistas del  Mentor--}}
                 @if(Auth::user()->rol==='mentor')
                     <li class="nav-label">Inicio</li>
@@ -135,7 +140,7 @@
                 {{--Inicio de Vistas del Directivo Unicamente--}}
                 @if(Auth::user()->rol==='directivo')
                 <li class="nav-label">Inicio</li>
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-plus"></i><span class="hide-menu">Postulaciones
+                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Postulaciones
                                 @if($numT>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numT}}</span>
                                 @endif
@@ -146,22 +151,12 @@
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
                                     <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
-                                   <!-- <li><a href="{{route('listarPostulantesBecarios',"0")}}">Asignar Entrevistas</a></li>
-                                    <li><a href="{{route('listarPostulantesBecarios',"1")}}">Gestion-viejo</a></li> -->
                                     <li><a href="{{route('listarPostulantesBecarios',"3")}}">Asignar Nuevo Ingreso</a></li>
                                 </ul>
-
                             </li>
-
-
                             <li><a href="{{ route('listarPostulantesMentores')}}">Mentores</a></li>
-
-
-
                         </ul>
                     </li>
-
-
                     <li class="nav-label">Gestionar</li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nomina
                                 @if($numNominas>0)
@@ -205,6 +200,22 @@
                         </ul> --}}
                     </li>
                     <li class="nav-label">Gestionar </li>
+                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Postulaciones
+                                @if($numT>0)
+                                    <span class="label label-rouded label-danger pull-center">{{$numT}}</span>
+                                @endif
+                        </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
+                                    <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
+
+                                </ul>
+                            </li>
+                            <li><a href="{{ route('listarPostulantesMentores')}}">Mentores</a></li>
+                        </ul>
+                    </li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-users"></i><span class="hide-menu">Mentorias</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('asignarBecarios')}}">Asignacion de Mentores</a></li>

@@ -23,8 +23,6 @@ class SisbecaController extends Controller
     {
         $this->middleware('auth');
     }
-
-
     public function index()
     {
         $usuario =  Auth::user();
@@ -32,7 +30,6 @@ class SisbecaController extends Controller
         $actividades = Actividad::conEstatus('disponible')->ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
         return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
     }
-    
     public function allNotificaciones()
     {
         if(Auth::user()->rol==='coordinador' or Auth::user()->rol==='directivo')
@@ -55,7 +52,6 @@ class SisbecaController extends Controller
 
             $alertas = Alerta::query()->where('status','=','enviada')->whereIn('user_id',[$listaBecariosA,$listaMentoresA])->get();
             Alerta::where('status','=','enviada')->whereIn('user_id',[$listaBecariosA,$listaMentoresA])->update(array('leido' => true));
-
         }
         else
         {
@@ -64,19 +60,6 @@ class SisbecaController extends Controller
         }
         return  view('sisbeca.notificaciones.listarNotificaciones')->with('notificaciones',$alertas);
     }
-
-    public function statusPostulanteMentor()
-    {
-        return view('sisbeca.postulaciones.statusMentoria');
-    }
-
-    public function statusPostulanteBecario()
-    {
-        $postulante = Becario::find(Auth::User()->id);
-        $entrevistadores = User::entrevistadores()->get();
-        return view('sisbeca.postulaciones.statusPostulanteBecario')->with('postulante',$postulante)->with('entrevistadores',$entrevistadores);
-    }
-
     public function perfil($id)
     {
         if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or (Auth::user()->esBecario() and Auth::user()->id==$id) or (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or (Auth::user()->esMentor() and Auth::user()->id==$id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
@@ -98,7 +81,6 @@ class SisbecaController extends Controller
             $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
             $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
             $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-
             return view('sisbeca.becarios.perfil')->with('becario',$becario)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil);
         }
         else
@@ -106,7 +88,6 @@ class SisbecaController extends Controller
             return view('sisbeca.error.404');
         }
     }
-
     public function verMiPerfilMentor()
     {
         $postulante= User::find(Auth::user()->id);
@@ -114,6 +95,32 @@ class SisbecaController extends Controller
         $documento = Documento::query()->where('user_id', '=', $postulante->id)->where('titulo', '=', 'hoja_vida')->first();
         return view('sisbeca.postulaciones.perfilPostulanteMentor')->with('postulanteMentor',$postulante)->with('documento', $documento)
             ->with('img_perfil_postulante',$img_perfil_postulante);
+    }
+    public function statusPostulanteMentor()
+    {
+        return view('sisbeca.postulaciones.statusMentoria');
+    }
+
+    public function postulacionMentorGuardar(Request $request)
+    {
+        $user =  Auth::user();
+        $mentor = new Mentor();
+        $mentor->empresa = $request->empresa;
+        $mentor->save();
+        $file = $request->file('url_pdf');
+        $name = 'HojaDeVida_' . time() . '.' . $file->getClientOriginalExtension();
+        $path = public_path() . '/documentos/mentores/';
+        $file->move($path, $name);
+        $documento = new Documento();
+        $documento->user_id = $user->id;
+        $documento->url = '/documentos/mentores/'.$name;
+        $documento->titulo='hoja_vida';
+        $documento->save();
+        return view('sisbeca.postulaciones.statusMentoria');
+    }
+    public function postulacionMentor()
+    {
+        return view('sisbeca.postulaciones.enviarPostulacionMentor');
     }
 
 }
