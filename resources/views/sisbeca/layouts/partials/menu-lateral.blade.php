@@ -344,7 +344,13 @@
                 <li>
                     <a class="has-arrow  " href="{{route('seguimiento.resumen',Auth::user()->id)}}" aria-expanded="false">
                         <i class="fa fa-line-chart"></i>
-                        <span class="hide-menu">Resumen Becario</span>
+                        <span class="hide-menu">Mi Resumen Becario</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="has-arrow  " href="{{route('seguimiento.becarioreportegeneral',Auth::user()->id)}}" aria-expanded="false">
+                        <i class="fa fa-bar-chart"></i>
+                        <span class="hide-menu">Mi Reporte General</span>
                     </a>
                 </li>
                 <li>
@@ -399,6 +405,7 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{route('becarios.reporte.general')}}">Reporte General</a></li>
+                        <li><a href="{{route('seguimiento.reportetiempo')}}">Reporte Tiempo</a></li>
                         <li><a href="{{route('becarios.todos')}}">Actualizar Estatus</a></li>
                     </ul>
 

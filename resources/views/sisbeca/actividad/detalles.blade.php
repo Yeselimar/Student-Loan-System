@@ -440,6 +440,15 @@
 		</div>
 	</div>
 	<!-- Modal para eliminar actividad -->
+
+	<!-- Cargando.. -->
+	<section class="loading" id="preloader">
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>
+	<!-- Cargando.. -->
 </div>
 @endsection
 
@@ -514,9 +523,11 @@ const app = new Vue({
     		var url = '{{route('actividad.colocar.asistio',array('a_id'=>':a_id','b_id'=>':b_id'))}}';
     		url = url.replace(':b_id', b_id);
     		url = url.replace(':a_id', a_id);
+    		$("#preloader").show();
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     		//console.log("Asitio "+b_id);
@@ -527,9 +538,11 @@ const app = new Vue({
     		var url = '{{route('actividad.colocar.noasistio',array('a_id'=>':a_id','b_id'=>':b_id'))}}';
     		url = url.replace(':b_id', b_id);
     		url = url.replace(':a_id', a_id);
+    		$("#preloader").show();
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     		//console.log("No Asitio "+b_id);
@@ -660,6 +673,7 @@ const app = new Vue({
                 this.lapso_justificar = response.data.lapso_justificar;
                 this.estatus_becario = response.data.estatus_becario;
                 this.estatus_aval = response.data.estatus_aval;
+                $("#preloader").hide();
             });
     	},
     	eliminarActividad: function()

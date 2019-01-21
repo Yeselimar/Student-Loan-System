@@ -4,18 +4,9 @@
 <div class="col-lg-12" id="app">
 	<div class="row" style="border:1px solid #fff">
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-			<select class="form-control sisbeca-input" v-model="anho">
-			  	<option disabled value="">Año</option>
-			  	<option>2019</option>
-			  	<option>2018</option>
-			  	<option>2017</option>
-			</select>
-			<!--<span>Año: @{{ anho }}</span>-->
-		</div>
-		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<select class="form-control sisbeca-input" v-model="mes">
 			  	<option disabled value="">Mes</option>
-			  	<option value="01">Todos</option>
+			  	<option value="00">Todos</option>
 			  	<option value="01">Enero</option>
 			  	<option value="02">Febrero</option>
 			  	<option value="03">Marzo</option>
@@ -32,9 +23,86 @@
 			<!--<span>Año: @{{ mes }}</span>-->
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-			<button type="submit" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
+			<select class="form-control sisbeca-input" v-model="anho">
+			  	<option disabled value="">Año</option>
+			  	<option>2019</option>
+			  	<option>2018</option>
+			  	<option>2017</option>
+			</select>
+			<!--<span>Año: @{{ anho }}</span>-->
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			<button @click="consultabecariosreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
 		</div>
 	</div>
+	<div class="text-right">
+		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+	</div>
+	<div class="table-responsive">
+		<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+			<div class="row">
+				<div class="col-sm-12 col-md-6">
+					<div class="dataTables_length" style="">
+						<label>Mostrar 
+							<select aria-controls="dd" v-model="perPage" class="custom-select custom-select-sm form-control form-control-sm">
+								<option v-for="(value, key) in pageOptions" :key="key">
+									@{{value}}
+								</option>
+							</select> Entradas</label>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-6">
+						<div class="dataTables_filter pull-right">
+							<b-input-group-append>
+								<label>Buscar<input type="search" v-model="filter" class="form-control form-control-sm" placeholder="" >
+								</label>
+							</b-input-group-append>
+						</div>
+					</div>
+				</div>
+
+				<b-table 
+				show-empty
+				empty-text ="No hay becarios"
+				empty-filtered-text="
+				No hay registros que coincidan con su búsqueda"
+				class="table table-bordered table-hover dataTable no-footer"
+				stacked="md"
+				:items="items"
+				:fields="fields"
+				:current-page="currentPage"
+				:per-page="perPage"
+				:filter="filter"
+				:sort-by.sync="sortBy"
+				:sort-desc.sync="sortDesc"
+				:sort-direction="sortDirection"
+				@filtered="onFiltered"
+				>
+				
+				<template slot="becario" slot-scope="row">
+					@{{ row.item.becario.nombreyapellido}} (@{{ row.item.nivel_carrera}})
+				</template>
+
+				
+
+				<!--
+				<template slot="actions" slot-scope="row">
+					<p>mis acciones</p>
+				</template>
+				-->
+			</b-table>
+
+			<b-row class="my-0 pull-right" >
+				<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+			</b-row>
+
+
+		</div>
+	</div>
+	<p>Falta average de desempeño</p>
+	<!--
 	<div class="table-responsive">
 		<table class="table table-hover table-bordered" id="reporte">
 			<thead>
@@ -71,21 +139,22 @@
 			</tbody>
 		</table>
 	</div>
-
+	-->
+	
 	<!-- Cargando.. -->
-	<!--
 	<section class="loading" id="preloader">
 		<div>
 			<svg class="circular" viewBox="25 25 50 50">
 				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
 		</div>
-	</section>-->
+	</section>
 	<!-- Cargando.. -->
 </div>
 
 @endsection
 
 @section('personaljs')
+<!--
 <script>
 $(document).ready(function() {
     $('#reporte').DataTable({
@@ -114,17 +183,165 @@ $(document).ready(function() {
     });
 });
 </script>
-
+-->
 <script>
-const app = new Vue({
+	Vue.use(BootstrapVue);
+	const app = new Vue({
 
 	el: '#app',
 	data:
 	{
 		anho:'',
 		mes:'',
-		periodos:[],
+		becarios:[],
+		items:
+		[{
+			"nivel_carrera": '',
+			"horas_voluntariados": "",
+			"asistio_t": "",
+			"asistio_cc": "",
+			"nivel_cva": "",
+			"avg_cva": "",
+			"avg_academico": "",
+			"becario": {
+				"id": null,
+				"nombreyapellido": "",
+			},
+		}],
+		fields: [
+		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
+		{ key: 'horas_voluntariados', label: 'H. Vol', sortable: true, 'class': 'text-center' },
+		{ key: 'asistio_t', label: '# Taller', sortable: true, 'class': 'text-center' },
+		{ key: 'asistio_cc', label: '# Chat', sortable: true, 'class': 'text-center' },
+		{ key: 'nivel_cva', label: 'CVA', sortable: true, 'class': 'text-center' },
+		{ key: 'avg_cva', label: 'AVG CVA', sortable: true, 'class': 'text-center' },
+		{ key: 'avg_academico', label: 'AVG Acad.', sortable: true, 'class': 'text-center' },
+		//{ key: 'actions', label: 'Acciones' }
+		],
+		currentPage: 1,
+		perPage: 5,
+		totalRows: 0,
+		pageOptions: [ 5, 10, 15 ],
+		sortBy: null,
+		sortDesc: false,
+		sortDirection: 'asc',
+		filter: null,
+		modalInfo: { title: '', content: '' }
 	},
+	beforeCreate:function()
+	{
+		$("#preloader").show();
+	},
+	created: function()
+	{
+		this.obtenerbecariosreporte();
+	},
+	computed:
+	{
+		sortOptions ()
+		{
+			// Create an options list from our fields
+			return this.fields
+			.filter(f => f.sortable)
+			.map(f => { return { text: f.label, value: f.key } })
+		}
+	},
+	methods:
+	{
+		onFiltered (filteredItems)
+		{
+			// Trigger pagination to update the number of buttons/pages due to filtering
+			this.totalRows = filteredItems.length
+			this.currentPage = 1
+		},
+		obtenerbecariosreporte()
+		{
+			var url = '{{route('becarios.reporte.general.api',array('anho'=>':anho','mes'=>':mes'))}}';
+			var anho = '{{date('Y')}}';
+			var mes = '00';
+			this.anho=anho;
+			this.mes=mes;
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			axios.get(url).then(response => 
+			{
+				this.items = response.data.becarios;
+				this.totalRows = this.items.length;
+				$("#preloader").hide();
+			}).catch( error => {
+				console.log(error);
+				$("#preloader").hide();
+			});
+		},
+		consultabecariosreportegeneral(anho,mes)
+		{
+			var url = '{{route('becarios.reporte.general.api',array('anho'=>':anho','mes'=>':mes'))}}';
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			$("#preloader").show();
+			axios.get(url).then(response => 
+			{
+				this.items = response.data.becarios;
+				this.totalRows = this.items.length;
+				$("#preloader").hide();
+			}).catch( error => {
+				console.log(error);
+				$("#preloader").hide();
+			});
+		},
+		descargarpdf(anho,mes)
+		{
+			var url = '{{route('becarios.reporte.general.pdf',array('anho'=>':anho','mes'=>':mes'))}}'
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			return url;
+		},
+		obtenermescompleto(mes)
+		{
+			switch(mes)
+			{
+				case '00':
+			    	return "Todos";
+			    break;
+			 	case '01':
+			    	return "Enero";
+			    break;
+			  	case '02':
+			    	return "Febrero";
+			    break;
+			    case '03':
+			    	return "Marzo";
+			    break;
+			    case '04':
+			    	return "Abril";
+			    break;
+			    case '05':
+			    	return "Mayo";
+			    break;
+			    case '06':
+			    	return "Junio";
+			    break;
+			    case '07':
+			    	return "Julio";
+			    break;
+			    case '08':
+			    	return "Agosto";
+			    break;
+			    case '09':
+			    	return "Septiembre";
+			    break;
+			    case '10':
+			    	return "Octubre";
+			    break;
+			    case '11':
+			    	return "Noviembre";
+			    break;
+			    case '12':
+			    	return "Diciembre";
+			    break;
+			}
+		}
+	}
 
 });
 </script>

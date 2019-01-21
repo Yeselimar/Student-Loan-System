@@ -10,17 +10,677 @@ use DB;
 use avaa\Becario;
 use avaa\Actividad;
 use avaa\ActividadBecario;
+use avaa\ActividadFacilitador;
 use avaa\Curso;
 use avaa\Voluntariado;
 use avaa\Periodo;
 use DateTime;
 
 class SeguimientoController extends Controller
-{
-    public function becariosreportegeneral()
+{   
+    public function reportetiempo()
+    {
+        return view('sisbeca.becarios.reporte-tiempo');
+    }
+
+    public function reportetiempoapi()
     {
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+        $todos = collect();
+        foreach ($becarios as $becario)
+        {
+            $id = $becario->user->id;
+            $actividades = DB::table('actividades')
+                ->join('actividades_becarios', function ($join) use($id)
+            {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->where('actividades_becarios.estatus','=','asistio')
+                    ;
+            }) ->orderby('fecha', 'desc')->first();
+            //para cva
+            $cursos = DB::table('cursos')
+                ->orderby('cursos.created_at', 'desc')
+                ->selectRaw('*,cursos.created_at as fecha')
+                ->join('aval', function ($join) use($id)
+            {
+                $join->on('cursos.aval_id','=','aval.id')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->where('cursos.becario_id','=',$id)
+                ;
+            })->first();
+            //para voluntariados
+            $voluntariados = DB::table('voluntariados')
+                ->orderby('voluntariados.fecha','desc')
+                ->join('aval', function ($join) use($id)
+            {
+                $join->on('voluntariados.aval_id','=','aval.id')
+                ->where('voluntariados.becario_id','=',$id)
+                 ->where('aval.tipo','=','comprobante')
+                ->where('aval.estatus','=','aceptada')
+                ;
+            })->first();
+            //para periodos
+            $periodos = DB::table('periodos')
+                ->orderby('periodos.created_at','desc')
+                ->selectRaw('*,periodos.created_at as fecha')
+                ->join('aval', function ($join) use($id)
+            {
+                $join->on('periodos.aval_id','=','aval.id')
+                ->where('periodos.becario_id','=',$id)
+                 ->where('aval.tipo','=','constancia')
+                ->where('aval.estatus','=','aceptada')
+                ;
+            })->first();
+            $tiempo_actividades = "Nunca";
+            $tiempo_cva = "Nunca";
+            $tiempo_voluntariados = "Nunca";
+            $tiempo_periodos = "Nunca";
+            if(!empty($actividades))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($actividades->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_actividades = "Hace un momento";
+                                }
+                                else
+                                    $tiempo_actividades = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                            }
+                            else
+                                $tiempo_actividades = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                        }
+                        else
+                            $tiempo_actividades = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                    }
+                    else
+                        $tiempo_actividades = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                }
+                else
+                    $tiempo_actividades = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+            }
+            if(!empty($cursos))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($cursos->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_cva = "Hace un momento";
+                                }
+                                else
+                                    $tiempo_cva = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                            }
+                            else
+                                $tiempo_cva = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                        }
+                        else
+                            $tiempo_cva = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                    }
+                    else
+                        $tiempo_cva = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                }
+                else
+                    $tiempo_cva = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+            }
+            if(!empty($voluntariados))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($voluntariados->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_voluntariados = "Hace un momento";
+                                }
+                                else
+                                    $tiempo_voluntariados = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                            }
+                            else
+                                $tiempo_voluntariados = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                        }
+                        else
+                            $tiempo_voluntariados = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                    }
+                    else
+                        $tiempo_voluntariados = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                }
+                else
+                    $tiempo_voluntariados = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+            }
+            if(!empty($periodos))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($periodos->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_periodos = "Hace un momento";
+                                }
+                                else
+                                    $tiempo_periodos = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                            }
+                            else
+                                $tiempo_periodos = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                        }
+                        else
+                            $tiempo_periodos = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                    }
+                    else
+                        $tiempo_periodos = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                }
+                else
+                    $tiempo_periodos = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+            }
+
+            $todos->push(array(
+                'tiempo_actividades' => $tiempo_actividades,
+                'tiempo_cva' => $tiempo_cva,
+                'tiempo_voluntariado' => $tiempo_voluntariados,
+                'tiempo_periodos' => $tiempo_periodos,
+                "becario" => array(
+                   'id' => $becario->user->id,
+                   'cedula' => $becario->user->cedula,
+                   'nombreyapellido' => $becario->user->nombreyapellido()
+                ),
+            ));
+        }
+        return response()->json(['becarios'=>$todos]);
+    }
+
+    public function becariosreportegeneralapi($anho,$mes)
+    {
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+        $todos = collect();
+        foreach ($becarios as $becario)
+        {
+            $id = $becario->user->id;
+
+            if($mes!='00')
+            {
+                $periodo = DB::table('periodos')
+                    ->where('aval.tipo','=','constancia')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                    ->join('aval', function ($join) use($id)
+                {
+                $join->on('periodos.aval_id','=','aval.id')
+                    ->where('periodos.becario_id','=',$id);
+                })->first();
+
+                $voluntariado = DB::table('voluntariados')
+                    ->where('aval.tipo','=','comprobante')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('voluntariados.aval_id','=','aval.id')
+                    ->where('voluntariados.becario_id','=',$id)
+                    ->whereYear('voluntariados.fecha', '=', $anho)
+                    ->whereMonth('voluntariados.fecha', '=', $mes)
+                    ->orderby('voluntariados.fecha','asc');
+                    
+                })->first();
+
+                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->paraMes($mes)->get();
+                $total_horas_facilitador = 0;
+                foreach ($actividades_facilitadas as $ab)
+                {
+                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+                }
+                $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+                $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+
+                $asistio_t = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $asistio_cc = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $curso = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(modulo) as nivel')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ->whereMonth('cursos.created_at', '=', $mes)
+                    ;
+                })->first();
+
+                $curso_aux = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,AVG(nota) as promedio_modulo')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ->whereMonth('cursos.created_at', '=', $mes)
+                    ;
+                    
+                })->first();
+            }
+            else
+            {
+                $periodo = DB::table('periodos')
+                    ->where('aval.tipo','=','constancia')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                    ->join('aval', function ($join) use($id)
+                {
+                $join->on('periodos.aval_id','=','aval.id')
+                    ->where('periodos.becario_id','=',$id);
+                })->first();
+
+                $voluntariado = DB::table('voluntariados')
+                    ->where('aval.tipo','=','comprobante')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('voluntariados.aval_id','=','aval.id')
+                    ->where('voluntariados.becario_id','=',$id)
+                    ->whereYear('voluntariados.fecha', '=', $anho)
+                    ->orderby('voluntariados.fecha','asc');
+                    
+                })->first();
+
+                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
+                $total_horas_facilitador = 0;
+                foreach ($actividades_facilitadas as $ab)
+                {
+                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+                }
+                $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+                $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+
+                $asistio_t = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $asistio_cc = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $curso = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(modulo) as nivel')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ;
+                })->first();
+
+                $curso_aux = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,AVG(nota) as promedio_modulo')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ;
+                    
+                })->first();
+            }
+
+            if($becario->esAnual())
+            {
+                $regimen = "año";
+            }
+            else
+            {
+                if($becario->esSemestral())
+                {
+                    $regimen = "semestre";
+                }
+                else
+                {
+                    $regimen = "trimestre";
+                }
+            }
+
+            $todos->push(array(
+                'nivel_carrera' => ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen,
+                'horas_voluntariados' => $horas_voluntariado,
+                'asistio_t' => ($asistio_t->total==null) ? '0' : $asistio_t->total,
+                'asistio_cc' => ($asistio_cc->total==null) ? '0' : $asistio_cc->total,
+                'nivel_cva' => ($curso->nivel==null) ? 'N/A' : $curso->nivel.' Nivel - '.$curso->modo,
+                'avg_cva' => ($curso_aux->promedio_modulo==null)? '0' : $curso_aux->promedio_modulo,
+                'avg_academico' => $becario->promediotodosperiodos(),
+                "becario" => array(
+                   'id' => $becario->user->id,
+                   'nombreyapellido' => $becario->user->nombreyapellido()),
+            ));
+        }
+        return response()->json(['becarios'=>$todos]);
+    }
+    public function becariosreportegeneral()
+    {
+        //no borrar
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
         return view('sisbeca.becarios.reportegeneral')->with(compact('becarios'));
+    }
+
+    public function becariosreportegeneralpdf($anho,$mes)
+    {
+        $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
+        $todos = collect();
+        foreach ($becarios as $becario)
+        {
+            $id = $becario->user->id;
+            if($mes!='00')
+            {
+                $periodo = DB::table('periodos')
+                    ->where('aval.tipo','=','constancia')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                    ->join('aval', function ($join) use($id)
+                {
+                $join->on('periodos.aval_id','=','aval.id')
+                    ->where('periodos.becario_id','=',$id);
+                })->first();
+
+                $voluntariado = DB::table('voluntariados')
+                    ->where('aval.tipo','=','comprobante')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('voluntariados.aval_id','=','aval.id')
+                    ->where('voluntariados.becario_id','=',$id)
+                    ->whereYear('voluntariados.fecha', '=', $anho)
+                    ->whereMonth('voluntariados.fecha', '=', $mes)
+                    ->orderby('voluntariados.fecha','asc');
+                    
+                })->first();
+
+                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->paraMes($mes)->get();
+                $total_horas_facilitador = 0;
+                foreach ($actividades_facilitadas as $ab)
+                {
+                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+                }
+                $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+                $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+
+                $asistio_t = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $asistio_cc = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $curso = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(modulo) as nivel')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ->whereMonth('cursos.created_at', '=', $mes)
+                    ;
+                })->first();
+
+                $curso_aux = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,AVG(nota) as promedio_modulo')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ->whereMonth('cursos.created_at', '=', $mes)
+                    ;
+                    
+                })->first();
+            }
+            else
+            {
+                $periodo = DB::table('periodos')
+                    ->where('aval.tipo','=','constancia')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                    ->join('aval', function ($join) use($id)
+                {
+                $join->on('periodos.aval_id','=','aval.id')
+                    ->where('periodos.becario_id','=',$id);
+                })->first();
+
+                $voluntariado = DB::table('voluntariados')
+                    ->where('aval.tipo','=','comprobante')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('voluntariados.aval_id','=','aval.id')
+                    ->where('voluntariados.becario_id','=',$id)
+                    ->whereYear('voluntariados.fecha', '=', $anho)
+                    ->orderby('voluntariados.fecha','asc');
+                    
+                })->first();
+
+                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
+                $total_horas_facilitador = 0;
+                foreach ($actividades_facilitadas as $ab)
+                {
+                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+                }
+                $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+                $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+
+                $asistio_t = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $asistio_cc = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total')
+                    ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->whereYear('actividades_becarios.created_at', '=', $anho)
+                    ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                $curso = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,MAX(modulo) as nivel')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ;
+                })->first();
+
+                $curso_aux = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->selectRaw('*,AVG(nota) as promedio_modulo')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ;
+                    
+                })->first();
+            }
+
+            if($becario->esAnual())
+            {
+                $regimen = "año";
+            }
+            else
+            {
+                if($becario->esSemestral())
+                {
+                    $regimen = "semestre";
+                }
+                else
+                {
+                    $regimen = "trimestre";
+                }
+            }
+
+            $todos->push(array(
+                'nivel_carrera' => ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen,
+                'horas_voluntariados' => $horas_voluntariado,
+                'asistio_t' => ($asistio_t->total==null) ? '0' : $asistio_t->total,
+                'asistio_cc' => ($asistio_cc->total==null) ? '0' : $asistio_cc->total,
+                'nivel_cva' => ($curso->nivel==null) ? 'N/A' : $curso->nivel.' Nivel - '.$curso->modo,
+                'avg_cva' => ($curso_aux->promedio_modulo==null)? '0' : $curso_aux->promedio_modulo,
+                'avg_academico' => $becario->promediotodosperiodos(),
+                "becario" => array(
+                   'id' => $becario->user->id,
+                   'nombreyapellido' => $becario->user->nombreyapellido()),
+            ));
+        }
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        //return response()->json($todos[0]['becario']);
+        $pdf = PDF::loadView('pdf.seguimiento.reporte-general-mes-anho', compact('todos','mes_completo','anho'));
+        $pdf->setPaper('A4', 'landscape');//PDF Horizontal
+        return $pdf->stream('Reporte General - '.$mes_completo.'-'.$anho.'.pdf');
     }
 
    	public function todosbecarios()
@@ -87,7 +747,6 @@ class SeguimientoController extends Controller
         $becario = Becario::find($id);
         if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
         {
-            $becario = Becario::find($id);
             if($mes!='00')
             {
                 $periodos = Periodo::paraBecario($id)->porAnho($anho)->porMes($mes)->ordenadoPorPeriodo('asc')->with('aval')->with('materias')->get();
@@ -130,6 +789,109 @@ class SeguimientoController extends Controller
                         ->whereMonth('actividades_facilitadores.created_at', '=', $mes)
                         ;
                 })->get();
+                // asistio talleres presenciales
+                $a_t_p = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                //asistio talleres virtuales
+                $a_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club presenciales
+                $a_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club virtuales
+                $a_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+                
+                
+                //no asistio taller presencial
+                $na_t_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio taller virtual
+                $na_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club presencial
+                $na_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club virtual
+                $na_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
             }
             else
             {
@@ -169,12 +931,321 @@ class SeguimientoController extends Controller
                         ->where('actividades_facilitadores.becario_id', '=', $id)
                         ->whereYear('actividades_facilitadores.created_at', '=', $anho);
                 })->get();
+                // asistio talleres presenciales
+                $a_t_p = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
 
+                //asistio talleres virtuales
+                $a_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club presenciales
+                $a_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club virtuales
+                $a_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+                
+                
+                //no asistio taller presencial
+                $na_t_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio taller virtual
+                $na_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club presencial
+                $na_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club virtual
+                $na_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+                
             }
-            return response()->json(['regimen'=>$becario->regimen,'anho'=>$anho,'mes'=>$mes,'periodos'=>$periodos,'voluntariados'=>$voluntariados,'cursos'=>$cursos,'actividades_facilitadas'=>$actividades_facilitadas[0]]);
+            $asistio = array(
+                "a_t_v" => $a_t_v->total_actividades,
+                "a_t_p" => $a_t_p->total_actividades,
+                "a_c_v" => $a_c_v->total_actividades,
+                "a_c_p" => $a_c_p->total_actividades,
+            );
+            $noasistio = array(
+                "na_t_v" => $na_t_v->total_actividades,
+                "na_t_p" => $na_t_p->total_actividades,
+                "na_c_v" => $na_c_v->total_actividades,
+                "na_c_p" => $na_c_p->total_actividades,
+            );
+            return response()->json(['regimen'=>$becario->regimen,'anho'=>$anho,'mes'=>$mes,'periodos'=>$periodos,'voluntariados'=>$voluntariados,'cursos'=>$cursos,'actividades_facilitadas'=>$actividades_facilitadas[0],"asistio"=>$asistio,"noasistio"=>$noasistio]);
         }
-        return response()->json(['error'=>"Error de permiso"]);
+        return response()->json(['error'=>"Error de permisos"]);
     }   
+
+    public function becarioreportegeneral($id)
+    {
+        $becario = Becario::find($id);
+        return view('sisbeca.becarios.reportegeneral-becario')->with(compact('becario'));
+    }
+
+    public function becarioreportegeneralapi($id,$anho,$mes)
+    {
+        //$todo = collect();
+        $becario = Becario::find($id);
+        if($mes!='00')
+        {
+            $periodo = DB::table('periodos')
+                ->where('aval.tipo','=','constancia')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->join('aval', function ($join) use($id)
+            {
+            $join->on('periodos.aval_id','=','aval.id')
+                ->where('periodos.becario_id','=',$id);
+            })->first();
+
+            $voluntariado = DB::table('voluntariados')
+                ->where('aval.tipo','=','comprobante')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('voluntariados.aval_id','=','aval.id')
+                ->where('voluntariados.becario_id','=',$id)
+                ->whereYear('voluntariados.fecha', '=', $anho)
+                ->whereMonth('voluntariados.fecha', '=', $mes)
+                ->orderby('voluntariados.fecha','asc');
+                
+            })->first();
+
+            $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->paraMes($mes)->get();
+            $total_horas_facilitador = 0;
+            foreach ($actividades_facilitadas as $ab)
+            {
+                $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+            }
+            $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+            $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+
+            $asistio_t = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total')
+                ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                ->where('actividades_becarios.estatus','=','asistio');
+            })->first();
+
+            $asistio_cc = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total')
+                ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                ->where('actividades_becarios.estatus','=','asistio');
+            })->first();
+
+            $curso = DB::table('cursos')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,MAX(modulo) as nivel')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('cursos.aval_id','=','aval.id')
+                ->where('cursos.becario_id','=',$id)
+                ->whereYear('cursos.created_at', '=', $anho)
+                ->whereMonth('cursos.created_at', '=', $mes)
+                ;
+            })->first();
+
+            $curso_aux = DB::table('cursos')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,AVG(nota) as promedio_modulo')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('cursos.aval_id','=','aval.id')
+                ->where('cursos.becario_id','=',$id)
+                ->whereYear('cursos.created_at', '=', $anho)
+                ->whereMonth('cursos.created_at', '=', $mes)
+                ;
+                
+            })->first();
+        }
+        else
+        {
+            $periodo = DB::table('periodos')
+                ->where('aval.tipo','=','constancia')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->join('aval', function ($join) use($id)
+            {
+            $join->on('periodos.aval_id','=','aval.id')
+                ->where('periodos.becario_id','=',$id);
+            })->first();
+
+            $voluntariado = DB::table('voluntariados')
+                ->where('aval.tipo','=','comprobante')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,SUM(horas) as horas_voluntariado')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('voluntariados.aval_id','=','aval.id')
+                ->where('voluntariados.becario_id','=',$id)
+                ->whereYear('voluntariados.fecha', '=', $anho)
+                ->orderby('voluntariados.fecha','asc');
+                
+            })->first();
+
+            $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
+            $total_horas_facilitador = 0;
+            foreach ($actividades_facilitadas as $ab)
+            {
+                $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
+            }
+            $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
+            $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
+
+            $asistio_t = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total')
+                ->where('tipo','taller')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                ->where('actividades_becarios.estatus','=','asistio');
+            })->first();
+
+            $asistio_cc = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total')
+                ->where('tipo','chat club')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                ->where('actividades_becarios.becario_id', '=', $id)
+                ->whereYear('actividades_becarios.created_at', '=', $anho)
+                ->where('actividades_becarios.estatus','=','asistio');
+            })->first();
+
+            $curso = DB::table('cursos')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,MAX(modulo) as nivel')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('cursos.aval_id','=','aval.id')
+                ->where('cursos.becario_id','=',$id)
+                ->whereYear('cursos.created_at', '=', $anho)
+                ;
+            })->first();
+
+            $curso_aux = DB::table('cursos')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->selectRaw('*,AVG(nota) as promedio_modulo')
+                ->join('aval', function ($join) use($id,$anho,$mes)
+            {
+            $join->on('cursos.aval_id','=','aval.id')
+                ->where('cursos.becario_id','=',$id)
+                ->whereYear('cursos.created_at', '=', $anho)
+                ;
+                
+            })->first();
+        }
+
+        if($becario->esAnual())
+        {
+            $regimen = "año";
+        }
+        else
+        {
+            if($becario->esSemestral())
+            {
+                $regimen = "semestre";
+            }
+            else
+            {
+                $regimen = "trimestre";
+            }
+        }
+
+        $todo = array(
+            'nivel_carrera' => ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen,
+            'horas_voluntariados' => $horas_voluntariado,
+            'asistio_t' => ($asistio_t->total==null) ? '0' : $asistio_t->total,
+            'asistio_cc' => ($asistio_cc->total==null) ? '0' : $asistio_cc->total,
+            'nivel_cva' => ($curso->nivel==null) ? 'N/A' : $curso->nivel.' Nivel - '.$curso->modo,
+            'avg_cva' => ($curso_aux->promedio_modulo==null)? '0' : $curso_aux->promedio_modulo,
+            'avg_academico' => $becario->promediotodosperiodos(),
+        );
+        return response()->json(['becario'=>$todo]);
+    }
 
    	public function resumen($id)
    	{
@@ -257,21 +1328,20 @@ class SeguimientoController extends Controller
             //return $actividades_facilitadas;
 
             // asistio talleres presenciales
-    	   		$a_t_p = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+    	   	$a_t_p = DB::table('actividades')
+            ->selectRaw('*,Count(*) as total_actividades')
+            ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
                     ->whereYear('actividades_becarios.created_at', '=', $anho)
                     ->where('actividades_becarios.estatus','=','asistio');
-
             })->first();
 
             //asistio talleres virtuales
             $a_t_v = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -282,8 +1352,8 @@ class SeguimientoController extends Controller
 
             //asistio chat club presenciales
             $a_c_p = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -294,8 +1364,8 @@ class SeguimientoController extends Controller
 
             //asistio chat club virtuales
             $a_c_v = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -307,8 +1377,8 @@ class SeguimientoController extends Controller
             
             //no asistio taller presencial
             $na_t_p = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -319,8 +1389,8 @@ class SeguimientoController extends Controller
 
             //no asistio taller virtual
             $na_t_v = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -331,8 +1401,8 @@ class SeguimientoController extends Controller
 
             //no asistio chat club presencial
             $na_c_p = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -343,8 +1413,8 @@ class SeguimientoController extends Controller
 
             //no asistio chat club virtual
             $na_c_v = DB::table('actividades')
-                    ->selectRaw('*,Count(*) as total_actividades')
-                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
             {
                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
                     ->where('actividades_becarios.becario_id', '=', $id)
@@ -515,6 +1585,352 @@ class SeguimientoController extends Controller
         })->first();
 
         $pdf = PDF::loadView('pdf.seguimiento.resumen', compact('becario','anho','periodos','voluntariados','cursos','actividades_facilitadas','a_t_p','a_t_v','a_c_p','a_c_v','na_t_p','na_t_v','na_c_p','na_c_v'));
-        return $pdf->stream('resuemen-becario.pdf');
+        return $pdf->stream('resumen-becario.pdf');
+    }
+
+    public function resumenanhomespdf($id,$anho,$mes)
+    {
+        $becario = Becario::find($id);
+        if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        {
+            if($mes!='00')
+            {
+                $periodos = Periodo::paraBecario($id)->porAnho($anho)->porMes($mes)->ordenadoPorPeriodo('asc')->with('aval')->with('materias')->get();
+                $voluntariados = DB::table('voluntariados')
+                    ->where('aval.tipo','=','comprobante')
+                    ->where('aval.estatus','=','aceptada')
+                    ->groupby('voluntariados.tipo')
+                    ->selectRaw('*,SUM(horas) as horas_voluntariado,Count(*) as total_voluntariado,voluntariados.tipo as tipo_voluntariado')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                    $join->on('voluntariados.aval_id','=','aval.id')
+                    ->where('voluntariados.becario_id','=',$id)
+                    ->whereYear('voluntariados.fecha', '=', $anho)
+                    ->whereMonth('voluntariados.fecha', '=', $mes)
+                    ->orderby('voluntariados.fecha','asc')
+                    ;
+                })->get();
+                $cursos = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->groupby('cursos.modulo')
+                    ->orderby('cursos.modulo','asc')
+                    ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                    $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ->whereMonth('cursos.created_at', '=', $mes)
+                    ;
+                })->get();
+                $actividades_facilitadas = DB::table('actividades')
+                ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
+                ->join('actividades_facilitadores', function ($join) use($id,$anho,$mes)
+                {
+                    $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
+                        ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->whereYear('actividades_facilitadores.created_at', '=', $anho)
+                        ->whereMonth('actividades_facilitadores.created_at', '=', $mes)
+                        ;
+                })->get();
+                // asistio talleres presenciales
+                $a_t_p = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                //asistio talleres virtuales
+                $a_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club presenciales
+                $a_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club virtuales
+                $a_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+                
+                
+                //no asistio taller presencial
+                $na_t_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio taller virtual
+                $na_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club presencial
+                $na_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club virtual
+                $na_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho,$mes)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->whereMonth('actividades_becarios.created_at', '=', $mes)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+            }
+            else
+            {
+                $periodos = Periodo::paraBecario($id)->porAnho($anho)->ordenadoPorPeriodo('asc')->with('aval')->with('materias')->get();
+                $voluntariados = DB::table('voluntariados')
+                    ->where('aval.tipo','=','comprobante')
+                    ->where('aval.estatus','=','aceptada')
+                    ->groupby('voluntariados.tipo')
+                    ->selectRaw('*,SUM(horas) as horas_voluntariado,Count(*) as total_voluntariado,voluntariados.tipo as tipo_voluntariado')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                    $join->on('voluntariados.aval_id','=','aval.id')
+                    ->where('voluntariados.becario_id','=',$id)
+                    ->whereYear('voluntariados.fecha', '=', $anho)
+                    ->orderby('voluntariados.fecha','asc');
+                    
+                })->get();
+                $cursos = DB::table('cursos')
+                    ->where('aval.tipo','=','nota')
+                    ->where('aval.estatus','=','aceptada')
+                    ->groupby('cursos.modulo')
+                    ->orderby('cursos.modulo','asc')
+                    ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
+                    ->join('aval', function ($join) use($id,$anho,$mes)
+                {
+                    $join->on('cursos.aval_id','=','aval.id')
+                    ->where('cursos.becario_id','=',$id)
+                    ->whereYear('cursos.created_at', '=', $anho)
+                    ;
+                    
+                })->get();
+                $actividades_facilitadas = DB::table('actividades')
+                ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
+                ->join('actividades_facilitadores', function ($join) use($id,$anho)
+                {
+                    $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
+                        ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->whereYear('actividades_facilitadores.created_at', '=', $anho);
+                })->get();
+                // asistio talleres presenciales
+                $a_t_p = DB::table('actividades')
+                ->selectRaw('*,Count(*) as total_actividades')
+                ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+                })->first();
+
+                //asistio talleres virtuales
+                $a_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club presenciales
+                $a_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+
+                //asistio chat club virtuales
+                $a_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','asistio');
+
+                })->first();
+                
+                
+                //no asistio taller presencial
+                $na_t_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio taller virtual
+                $na_t_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','taller')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club presencial
+                $na_c_p = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','presencial')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+
+                //no asistio chat club virtual
+                $na_c_v = DB::table('actividades')
+                    ->selectRaw('*,Count(*) as total_actividades')
+                    ->where('tipo','chat club')->where('modalidad','virtual')->join('actividades_becarios', function ($join) use($id,$anho)
+                {
+                   $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                        ->where('actividades_becarios.becario_id', '=', $id)
+                        ->whereYear('actividades_becarios.created_at', '=', $anho)
+                        ->where('actividades_becarios.estatus','=','no asistio');
+
+                })->first();
+                
+            }
+            $asistio = array(
+                "a_t_v" => $a_t_v->total_actividades,
+                "a_t_p" => $a_t_p->total_actividades,
+                "a_c_v" => $a_c_v->total_actividades,
+                "a_c_p" => $a_c_p->total_actividades,
+            );
+            $noasistio = array(
+                "na_t_v" => $na_t_v->total_actividades,
+                "na_t_p" => $na_t_p->total_actividades,
+                "na_c_v" => $na_c_v->total_actividades,
+                "na_c_p" => $na_c_p->total_actividades,
+            );
+            $actividades_facilitadas=$actividades_facilitadas[0];
+            switch ($mes)
+            {
+                case '00':
+                    $mes_completo = "Todos";
+                break;
+                case '01':
+                    $mes_completo = "Enero";
+                break;
+                case '02':
+                    $mes_completo = "Febrero";
+                break;
+                case '03':
+                    $mes_completo = "Marzo";
+                break;
+                case '04':
+                    $mes_completo = "Abril";
+                break;
+                case '05':
+                    $mes_completo = "Mayo";
+                break;
+                case '06':
+                    $mes_completo = "Junio";
+                break;
+                case '07':
+                    $mes_completo = "Julio";
+                break;
+                case '08':
+                    $mes_completo = "Agosto";
+                break;
+                case '09':
+                    $mes_completo = "Septiembre";
+                break;
+                case '10':
+                    $mes_completo = "Octubre";
+                break;
+                case '11':
+                    $mes_completo = "Noviembre";
+                break;
+                case '12':
+                    $mes_completo = "Diciembre";
+                break;
+            }
+            $pdf = PDF::loadView('pdf.seguimiento.resumen-mes-anho', compact('becario','regimen','anho','mes','periodos','voluntariados','cursos','actividades_facilitadas','asistio','noasistio','mes_completo'));
+
+            return $pdf->stream('Resumen-Becario-'.$mes_completo.'-'.$anho.'-'.$becario->user->nombreyapellido().'.pdf');
+        }
     }
 }

@@ -83,11 +83,18 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
-        //resumen becario
+        //resumen becario y reporte general
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+        Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
+
         Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
 
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
+
+        Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
+        Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
@@ -152,6 +159,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::post('/becario/{id}/actualizar-estatus', 'SeguimientoController@actualizarestatusbecario')->name('actualizar.estatus.becario');
         Route::post('/becario/{id}/guardar-fecha-carga-academica', 'SeguimientoController@guardarfechaacademica')->name('guardar.fecha.academica');
         Route::get('/becarios/reporte-general', 'SeguimientoController@becariosreportegeneral')->name('becarios.reporte.general');
+         Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becariosreportegeneralapi')->name('becarios.reporte.general.api');
+        Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/pdf', 'SeguimientoController@becariosreportegeneralpdf')->name('becarios.reporte.general.pdf');
         //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
