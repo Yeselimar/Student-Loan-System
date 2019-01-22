@@ -87,7 +87,7 @@ class SessionController extends Controller
 			{
 				$user = User::where('remember_token','=',$token)->first();
 				$user->edad = 99; 
-				$user->password = bcrypt($request->newpassword);
+				$user->password = bcrypt($request->contrasena_nueva);
 				$user->remember_token = str_random(10);
 				$user->save();
 
