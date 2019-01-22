@@ -135,4 +135,14 @@ class User extends Authenticatable
         return $this->edad.' años';
     }
 
+    public static function findByToken($token)
+    {
+        $user = User::where('remember_token','=',$token)->first();
+        if(count($user)==1)
+        {
+            return $user;
+        }
+        else
+            return false;
+    }
 }

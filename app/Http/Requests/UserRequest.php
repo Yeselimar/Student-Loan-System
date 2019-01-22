@@ -45,4 +45,12 @@ class UserRequest extends FormRequest
 
         ];
     }
+
+    public static function reglasContrasena()
+    {
+        return [
+            'contrasena_nueva' => 'between:6,16|required',
+        ];
+    }
+
 }

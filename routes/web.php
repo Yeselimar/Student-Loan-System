@@ -9,6 +9,13 @@ Auth::routes();
 
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
+Route::get('/recuperar-contrasena', 'SessionController@recuperarcontrasena')->name('recuperar.contrasena' );
+
+Route::post('/recuperar-contrasena/enviar-correo', 'SessionController@enviarcorreo')->name('enviar.correo' );
+
+Route::get('/restablecer/{token}/contrasena', 'SessionController@restablecercontrasena')->name('restablecer.contrasena' );
+Route::post('/restablecer/{token}/contrasena', 'SessionController@postrestablecercontrasena')->name('restablecer.contrasena.post' );
+
 Route::get('/registrar/postulante-mentor', 'RegistroSisbecaController@registropostulantementor')->name('registro.postulante.mentor' );
 Route::post('/guardar-postulante-mentor', 'RegistroSisbecaController@guardarpostulantementor')->name('guardar.postulante.mentor' );
 

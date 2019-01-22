@@ -33,7 +33,6 @@
 
        <div class="unix-login">
           <div class="container-fluid">
-
             <div class="row justify-content-center">
               <div class="col-lg-5 col-md-6 col-sm-7">
                   <div class="login-content panel panel-default">
@@ -68,7 +67,7 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <label class="pull-left">
-                              <a href="{{ route('password.request') }}" style="color:#424242" >¿Olvidaste tú contraseña?</a>
+                              <a href="{{ route('recuperar.contrasena') }}" style="color:#424242" >¿Olvidaste tú contraseña?</a>
                               </label>
                             </div>
                             

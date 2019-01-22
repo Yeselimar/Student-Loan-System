@@ -24,7 +24,6 @@ class SisbecaController extends Controller
         $this->middleware('auth');
     }
 
-
     public function index()
     {
         $usuario =  Auth::user();
