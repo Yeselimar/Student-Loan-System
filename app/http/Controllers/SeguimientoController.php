@@ -225,6 +225,281 @@ class SeguimientoController extends Controller
         return response()->json(['becarios'=>$todos]);
     }
 
+    public function reportetiempobecario($id)
+    {
+        $becario = Becario::find($id);
+        if(!empty($becario))
+        {
+            $id = $becario->user->id;
+            $actividades = DB::table('actividades')
+                ->join('actividades_becarios', function ($join) use($id)
+            {
+                $join->on('actividades.id', '=', 'actividades_becarios.actividad_id')
+                    ->where('actividades_becarios.becario_id', '=', $id)
+                    ->where('actividades_becarios.estatus','=','asistio')
+                    ;
+            }) ->orderby('fecha', 'desc')->first();
+            //para cva
+            $cursos = DB::table('cursos')
+                ->orderby('cursos.created_at', 'desc')
+                ->selectRaw('*,cursos.created_at as fecha')
+                ->join('aval', function ($join) use($id)
+            {
+                $join->on('cursos.aval_id','=','aval.id')
+                ->where('aval.tipo','=','nota')
+                ->where('aval.estatus','=','aceptada')
+                ->where('cursos.becario_id','=',$id)
+                ;
+            })->first();
+            //para voluntariados
+            $voluntariados = DB::table('voluntariados')
+                ->orderby('voluntariados.fecha','desc')
+                ->join('aval', function ($join) use($id)
+            {
+                $join->on('voluntariados.aval_id','=','aval.id')
+                ->where('voluntariados.becario_id','=',$id)
+                 ->where('aval.tipo','=','comprobante')
+                ->where('aval.estatus','=','aceptada')
+                ;
+            })->first();
+            //para periodos
+            $periodos = DB::table('periodos')
+                ->orderby('periodos.created_at','desc')
+                ->selectRaw('*,periodos.created_at as fecha')
+                ->join('aval', function ($join) use($id)
+            {
+                $join->on('periodos.aval_id','=','aval.id')
+                ->where('periodos.becario_id','=',$id)
+                 ->where('aval.tipo','=','constancia')
+                ->where('aval.estatus','=','aceptada')
+                ;
+            })->first();
+            $tiempo_actividades = "Nunca";
+            $tiempo_cva = "Nunca";
+            $tiempo_voluntariados = "Nunca";
+            $tiempo_periodos = "Nunca";
+            if(!empty($actividades))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($actividades->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_actividades = "Hace un momento";
+                                    $color_actividad =   "#C8E6C9";
+                                }
+                                else
+                                {
+                                    $tiempo_actividades = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                                    $
+                                    $color_actividad =   "#C8E6C9";
+                                }
+                            }
+                            else
+                            {
+                                $tiempo_actividades = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                                $color_actividad =   "#C8E6C9";
+                            }
+                        }
+                        else
+                        {
+                            $tiempo_actividades = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                            $color_actividad =   "#C8E6C9";
+                        }
+                    }
+                    else
+                    {
+                        $tiempo_actividades = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                        $color_actividad =   "#FFF59D";
+                    }
+                }
+                else
+                {
+                    $tiempo_actividades = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+                    $color_actividad =   "#EF9A9A";
+                }
+            }
+            if(!empty($cursos))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($cursos->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_cva = "Hace un momento";
+                                    $color_cva =   "##C8E6C9";
+                                }
+                                else
+                                {
+                                    $tiempo_cva = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                                    $color_cva =   "##C8E6C9";
+                                }
+                            }
+                            else
+                            {
+                                $tiempo_cva = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                                $color_cva =   "##C8E6C9";
+                            }
+                        }
+                        else
+                        {
+                            $tiempo_cva = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                            $color_cva =   "##C8E6C9";
+                        }
+                    }
+                    else
+                    {
+                        $tiempo_cva = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                        $color_cva =   "#FFF59D";
+                    }
+                }
+                else
+                {
+                    $tiempo_cva = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+                    $color_cva = "#EF9A9A";
+                }
+            }
+            if(!empty($voluntariados))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($voluntariados->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_voluntariados = "Hace un momento";
+                                    $color_voluntariado =   "#C8E6C9";
+                                }
+                                else
+                                {
+                                    $tiempo_voluntariados = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                                    $color_voluntariado =   "#C8E6C9";
+                                }
+                            }
+                            else
+                            {
+                                $tiempo_voluntariados = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                                $color_voluntariado =   "#C8E6C9";
+                            }
+                        }
+                        else
+                        {
+                            $tiempo_voluntariados = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                            $color_voluntariado =   "#C8E6C9";
+                        }
+                    }
+                    else
+                    {
+                        $tiempo_voluntariados = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                        $color_voluntariado = "#FFF59D";
+                    }
+                }
+                else
+                {
+                    $tiempo_voluntariados = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+                    $color_voluntariado = "#EF9A9A";
+                }
+            }
+            if(!empty($periodos))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($periodos->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_periodos = "Hace un momento";
+                                    $color_periodos =   "#C8E6C9";
+                                }
+                                else
+                                {
+                                    $tiempo_periodos = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                                    $color_periodos =   "#C8E6C9";
+                                }
+                            }
+                            else
+                            {
+                                $tiempo_periodos = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                                $color_periodos =   "#C8E6C9";
+                            }
+                        }
+                        else
+                        {
+                            $tiempo_periodos = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                            $color_periodos =   "#C8E6C9";
+                        }
+                    }
+                    else
+                    {
+                        $tiempo_periodos = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                        $color_periodos = "#FFF59D";
+                    }
+                }
+                else
+                {
+                    $tiempo_periodos = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+                    $color_periodos = "#EF9A9A";
+                }
+            }
+
+            $becario = array(
+                'tiempo_actividades' => $tiempo_actividades,
+                'tiempo_cva' => $tiempo_cva,
+                'tiempo_voluntariado' => $tiempo_voluntariados,
+                'tiempo_periodos' => $tiempo_periodos,
+                'color_actividad' => $color_actividad,
+                'color_cva' => $color_cva,
+                'color_voluntariado'=> $color_voluntariado,
+                'color_periodo' => $color_periodos,
+                "becario" => array(
+                   'id' => $becario->user->id,
+                   'cedula' => $becario->user->cedula,
+                   'nombreyapellido' => $becario->user->nombreyapellido()
+                )
+            );
+            return response()->json(['becario'=>$becario]);
+        }
+        else
+        {
+            return response()->json(['error'=>"El becario no existe"]);
+        }
+        
+    }
+
     public function becariosreportegeneralapi($anho,$mes)
     {
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();

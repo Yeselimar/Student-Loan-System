@@ -22,9 +22,24 @@
 		background-color: #fff;
 		color:#212121 !important;
 	}
+	.reporte-caja-gris
+	{
+		border:1px solid #003865;
+		border-radius: 5px;
+		background-color: #F5F5F5;
+		color:#212121 !important;
+	}
 	.reporte-subtitulo,.h5
 	{
 		color:#212121 !important;
+	}
+	.reporte-notificaciones
+	{
+		border:1px solid #212121;
+		border-radius: 5px;
+		padding:10px;
+		text-align: left;
+		margin-bottom: 5px;
 	}
 	.caja-subtitulo
 	{
@@ -68,115 +83,133 @@
 		</div>
 	</div>
 	<br>
-	<div class="">
-		<div class="row">
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido">
-						<p class="h1 text-center">@{{becario.horas_voluntariados}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong>Horas Voluntariados</strong>
-						</p>
-					</div>
+	<div class="row">
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja">
+				<div data-mh="reporte-contenido">
+					<p class="h1 text-center">@{{becario.horas_voluntariados}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong>Horas Voluntariados</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido">
-						<p class="h1 text-center">@{{becario.asistio_t}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong># Talleres</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja">
+				<div data-mh="reporte-contenido">
+					<p class="h1 text-center">@{{becario.asistio_t}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong># Talleres</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido">
-						<p class="h1 text-center">@{{becario.asistio_cc}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong># Chat Club</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja">
+				<div data-mh="reporte-contenido">
+					<p class="h1 text-center">@{{becario.asistio_cc}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong># Chat Club</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido">
-						<p class="h1 text-center">@{{becario.avg_cva}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong>AVG CVA</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja">
+				<div data-mh="reporte-contenido">
+					<p class="h1 text-center">@{{becario.avg_cva}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong>AVG CVA</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido">
-						<p class="h1 text-center">@{{becario.avg_academico}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong>AVG Académico</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja">
+				<div data-mh="reporte-contenido">
+					<p class="h1 text-center">0</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong>AVG Desempeño</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido">
-						<p class="h1 text-center">0</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong>AVG Desempeño</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja-gris">
+				<div data-mh="reporte-contenido">
+					<p class="h1 text-center">@{{becario.avg_academico}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong>AVG Académico</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido" style="padding-top: 10px;">
-						<p class="h5 text-center">@{{becario.nivel_cva}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong>Nivel CVA</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja-gris">
+				<div data-mh="reporte-contenido" style="padding-top: 10px;">
+					<p class="h5 text-center">@{{becario.nivel_cva}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong>Nivel CVA</strong>
+					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
-				<div class="col-lg-12 reporte-caja">
-					<div data-mh="reporte-contenido" style="padding-top: 10px;">
-						<p class="h5 text-center">@{{becario.nivel_carrera}}</p>
-					</div>
-					<hr class="reporte-linea">
-					<div class="caja-subtitulo" data-mh="reporte-titulo">
-						<p class="h6 text-center reporte-subtitulo">
-						<strong>Carrera</strong>
-						</p>
-					</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+			<div class="col-lg-12 reporte-caja-gris">
+				<div data-mh="reporte-contenido" style="padding-top: 10px;">
+					<p class="h5 text-center">@{{becario.nivel_carrera}}</p>
+				</div>
+				<hr class="reporte-linea">
+				<div class="caja-subtitulo" data-mh="reporte-titulo">
+					<p class="h6 text-center reporte-subtitulo">
+					<strong>Carrera</strong>
+					</p>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	<br>
+	<div style="border:1px solid #003865;border-radius: 5px;padding:10px;text-align: center;">
+		<strong>Tú ultima participación en las actividades becarias</strong>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
+				<i class="fa fa-commenting-o"></i> Tú última participación a un <strong>Taller / Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividades}}</strong>
+			</div>
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
+				<i class="fa fa-book"></i> Tú última participación a un <strong>CVA</strong> fue <strong>@{{tiempo.tiempo_cva}}</strong>
+			</div>
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
+				<i class="fa fa-star-o"></i> Tú última participación a un <strong>Voluntariado</strong> fue <strong>@{{tiempo.tiempo_voluntariado}}</strong>
+			</div>
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
+				<i class="fa fa-graduation-cap"></i> Tú última vez que cargaste <strong>Notas Académicas</strong> fue <strong>@{{tiempo.tiempo_periodo}}</strong>
+			</div>
+		</div>
+	</div>
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>
@@ -198,6 +231,7 @@
 		anho:'',
 		mes:'',
 		becario:[],
+		tiempo:[],
 	},
 	created: function()
 	{
@@ -224,6 +258,14 @@
 				console.log(error);
 				$("#preloader").hide();
 			});
+			url = '{{route('seguimiento.reportetiempo.becario',array('id'=>':id'))}}';
+			url = url.replace(':id', id);
+			axios.get(url).then(response => 
+			{
+				this.tiempo = response.data.becario;
+			}).catch( error => {
+				console.log(error);
+			});
 		},
 		consultabecariosreportegeneral(anho,mes)
 		{
@@ -241,6 +283,11 @@
 				console.log(error);
 				$("#preloader").hide();
 			});
+		},
+		minuscula(cadena)
+		{
+			console.log(cadena);
+			return cadena.toLowerCase();
 		}
 	}
 });

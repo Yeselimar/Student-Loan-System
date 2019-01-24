@@ -102,6 +102,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
         Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
+        Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
