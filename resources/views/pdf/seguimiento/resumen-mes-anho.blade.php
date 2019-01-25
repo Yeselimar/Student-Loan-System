@@ -230,7 +230,7 @@
                 @foreach($voluntariados as $voluntariado)
                 @php ($horas = $horas + $voluntariado->horas_voluntariado)
                 <tr>
-                    <td class="text-left ancho-sisbeca">{{$anho}}</td>
+                    <td class="text-left ancho-sisbeca">{{date("m", strtotime($voluntariado->fecha))}}-{{date("Y", strtotime($voluntariado->fecha))}}</td>
                     <td class="text-left">{{ucwords($voluntariado->tipo_voluntariado)}}</td>
                     <td class="text-left">{{$voluntariado->total_voluntariado}}</td>
                     <td class="text-right">{{$voluntariado->horas_voluntariado}}</td>
@@ -245,7 +245,7 @@
             @if($actividades_facilitadas->id!=null)
             <tr>
                 @php ($horas = $horas + $actividades_facilitadas->horas_voluntariado)
-                <td class="text-left">{{$anho}}</td>
+                <td class="text-left">{{date("m", strtotime($actividades_facilitadas->fecha))}}-{{date("Y", strtotime($actividades_facilitadas->fecha))}}</td>
                 <td class="text-left">Facilitador en {{ucwords($actividades_facilitadas->tipo)}}</td>
                 <td class="text-left">{{$actividades_facilitadas->total_actividades }}</td>
                 <td class="text-right">{{$actividades_facilitadas->horas_voluntariado}}</td>
@@ -283,7 +283,7 @@
                 @php ($promedio = $promedio + $curso->promedio_modulo)
                 @php ($total_curso = $total_curso + $curso->total_modulo)
                 <tr>
-                    <td class="text-left ancho-sisbeca">{{$anho}}</td>
+                    <td class="text-left ancho-sisbeca">{{date("m", strtotime($curso->fecha_inicio))}}-{{date("Y", strtotime($curso->fecha_inicio))}}</td>
                     <td class="text-left">{{$curso->modulo}} Nivel</td>
                     <td class="text-left">{{$curso->total_modulo}}</td>
                     <td class="text-right">{{number_format($curso->promedio_modulo, 2, '.', ',')}}</td>
@@ -333,7 +333,7 @@
                 @php ($j++)
                 @php ($promedio_periodo = $promedio_periodo + $periodo->getPromedio())
                 <tr>
-                    <td class="text-left ancho-sisbeca">{{$anho}}</td>
+                    <td class="text-left ancho-sisbeca">{{date("m", strtotime($periodo->fecha_inicio))}}-{{date("Y", strtotime($periodo->fecha_inicio))}}</td>
                     <td class="text-left">
                         {{$periodo->getNumeroPeriodo()}} 
                     </td>

@@ -199,14 +199,14 @@
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
 				<i class="fa fa-commenting-o"></i> Tú última participación a un <strong>Taller / Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividades}}</strong>
 			</div>
-			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_cva }">
 				<i class="fa fa-book"></i> Tú última participación a un <strong>CVA</strong> fue <strong>@{{tiempo.tiempo_cva}}</strong>
 			</div>
-			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_voluntariado }">
 				<i class="fa fa-star-o"></i> Tú última participación a un <strong>Voluntariado</strong> fue <strong>@{{tiempo.tiempo_voluntariado}}</strong>
 			</div>
-			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
-				<i class="fa fa-graduation-cap"></i> Tú última vez que cargaste <strong>Notas Académicas</strong> fue <strong>@{{tiempo.tiempo_periodo}}</strong>
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_periodo }">
+				<i class="fa fa-graduation-cap"></i> Tú última vez que cargaste <strong>Notas Académicas</strong> fue <strong>@{{tiempo.tiempo_periodos}}</strong>
 			</div>
 		</div>
 	</div>

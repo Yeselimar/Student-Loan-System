@@ -92,9 +92,42 @@ class GetPublicController extends Controller
     public function prueba()
     {   
         $anho = '2019';
-        $mes = 2;
-        $id=7;
+        $mes = 1;
+        $id=6;
         $becario = Becario::find($id);
+        $periodos = DB::table('periodos')
+            ->orderby('periodos.fecha_inicio','desc')
+            ->selectRaw('*,periodos.fecha_inicio as fecha,periodos.created_at as fecha_carga')
+            ->join('aval', function ($join) use($id)
+        {
+            $join->on('periodos.aval_id','=','aval.id')
+            ->where('periodos.becario_id','=',$id)
+             ->where('aval.tipo','=','constancia')
+            ->where('aval.estatus','=','aceptada')
+            ;
+        })->first();
+        return response()->json($periodos);
+        $actividades_facilitadas = DB::table('actividades')
+        ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
+        ->join('actividades_facilitadores', function ($join) use($id,$anho,$mes)
+        {
+            $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
+                ->where('actividades_facilitadores.becario_id', '=', $id)
+                ->whereYear('actividades.fecha', '=', $anho)
+                ->whereMonth('actividades.fecha', '=', $mes)
+                ;
+        })->get();
+        $actividades_facilitadas = DB::table('actividades')
+                ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
+                ->join('actividades_facilitadores', function ($join) use($id,$anho,$mes)
+                {
+                    $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
+                        ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->whereYear('actividades_facilitadores.created_at', '=', $anho)
+                        ->whereMonth('actividades_facilitadores.created_at', '=', $mes)
+                        ;
+                })->get();
+        return response()->json($actividades_facilitadas);
         //para actividades
         $actividades = DB::table('actividades')
             ->join('actividades_becarios', function ($join) use($id)
@@ -106,8 +139,8 @@ class GetPublicController extends Controller
         }) ->orderby('fecha', 'desc')->first();
         //para cva
         $cursos = DB::table('cursos')
-            ->orderby('cursos.created_at', 'desc')
-            ->selectRaw('*,cursos.created_at as fecha')
+            ->orderby('cursos.fecha_inicio', 'desc')
+            ->selectRaw('*,cursos.fecha_inicio as fecha')
             ->join('aval', function ($join) use($id)
         {
             $join->on('cursos.aval_id','=','aval.id')
@@ -116,6 +149,7 @@ class GetPublicController extends Controller
             ->where('cursos.becario_id','=',$id)
             ;
         })->first();
+        //return response()->json($cursos);
         //para voluntariados
         $voluntariados = DB::table('voluntariados')
             ->orderby('voluntariados.fecha','desc')
@@ -129,8 +163,21 @@ class GetPublicController extends Controller
         })->get();
         //para periodos
         $periodos = DB::table('periodos')
-            ->orderby('periodos.created_at','desc')
-            ->selectRaw('*,periodos.created_at as fecha')
+            ->orderby('periodos.fecha_inicio','asc')
+            ->selectRaw('*,periodos.fecha_inicio as fecha,periodos.created_at as fecha_carga')
+            ->join('aval', function ($join) use($id,$mes)
+        {
+            $join->on('periodos.aval_id','=','aval.id')
+            ->where('periodos.becario_id','=',$id)
+            ->whereMonth('periodos.fecha_inicio', '<=', $mes)
+            ->whereMonth('periodos.fecha_fin', '>=', $mes)
+             ->where('aval.tipo','=','constancia')
+            ->where('aval.estatus','=','aceptada')
+            ;
+        })->first();
+        $periodos = DB::table('periodos')
+            ->orderby('periodos.fecha_inicio','desc')
+            ->selectRaw('*,periodos.fecha_inicio as fecha,periodos.created_at as fecha_carga')
             ->join('aval', function ($join) use($id)
         {
             $join->on('periodos.aval_id','=','aval.id')
@@ -138,8 +185,13 @@ class GetPublicController extends Controller
              ->where('aval.tipo','=','constancia')
             ->where('aval.estatus','=','aceptada')
             ;
-        })->get();
-        //return response()->json($actividades);
+        })->first();
+        $periodos = Periodo::paraBecario(6)->delAnho('2019')->ordenadoPorPeriodo('asc')->with('aval')->with('materias')->get();
+        return response()->json($periodos);
+        $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+            $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($periodos->fecha_carga)));
+            $desde = $fechainicial->diff($fechafinal);
+        return response()->json($desde);
         $tiempo_actividades = "Nunca";
         $tiempo_cva = "Nunca";
         $tiempo_voluntariados = "Nunca";

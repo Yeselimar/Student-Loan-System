@@ -1,5 +1,37 @@
 @extends('sisbeca.layouts.main')
 @section('title','Reporte General')
+@section('personalcss')
+<style>
+	.circulo-rojo
+	{
+		height: 15px;
+		width: 15px;
+		border-radius: 25px;
+		background-color: #EF5350;
+		border:1px solid #EEEEEE;
+	}
+	.circulo-verde
+	{
+		height: 15px;
+		width: 15px;
+		border-radius: 25px;
+		background-color: #66BB6A;
+		border:1px solid #EEEEEE;
+	}
+	.circulo-amarillo
+	{
+		height: 15px;
+		width: 15px;
+		border-radius: 25px;
+		background-color: #FFEE58;
+		border:1px solid #EEEEEE;
+	}
+	.circulo-texto
+	{
+		font-size: 5px;color:#fff;
+	}
+</style>
+@endsection
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="row" style="border:1px solid #fff">
@@ -85,13 +117,12 @@
 					@{{ row.item.becario.nombreyapellido}} (@{{ row.item.nivel_carrera}})
 				</template>
 
-				
-
-				<!--
 				<template slot="actions" slot-scope="row">
-					<p>mis acciones</p>
+					<div class="circulo-rojo">
+						<p class="circulo-texto">1</p>
+					</div>
 				</template>
-				-->
+				
 			</b-table>
 
 			<b-row class="my-0 pull-right" >
@@ -209,6 +240,7 @@ $(document).ready(function() {
 			},
 		}],
 		fields: [
+		{ key: 'actions', label: '', sortable: true, 'class': 'text-center' },
 		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 		{ key: 'horas_voluntariados', label: 'H. Vol', sortable: true, 'class': 'text-center' },
 		{ key: 'asistio_t', label: '# Taller', sortable: true, 'class': 'text-center' },
