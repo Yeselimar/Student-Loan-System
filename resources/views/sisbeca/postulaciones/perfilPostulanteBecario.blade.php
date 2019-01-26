@@ -399,7 +399,7 @@
                                 <td class="text-left"><strong>Foto Tipo Carnet</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($fotografia))
-                                        <a target="_blank" href="{{ asset($fotografia->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
+                                        <a target="_blank" href="{{ asset($fotografia->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Imagen</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Fotografia</strong></span>
                                     @endif
@@ -409,7 +409,7 @@
                                 <td class="text-left"><strong>Copia Cédula</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($cedula))
-                                        <a target="_blank" href="{{ asset($cedula->url) }}" class="btn btn-xs btn-primary">Ver Imagen</a>
+                                        <a target="_blank" href="{{ asset($cedula->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Imagen</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Cedula</strong></span>
                                     @endif
@@ -419,7 +419,7 @@
                                 <td class="text-left"><strong>Constancia CNU</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($constancia_cnu))
-                                        <a target="_blank" href="{{ asset($constancia_cnu->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($constancia_cnu->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Constancia CNU</strong></span>
                                     @endif
@@ -429,7 +429,7 @@
                                 <td class="text-left"><strong>Calificaciones de Bachillerato</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($calificaciones_bachillerato))
-                                        <a target="_blank" href="{{ asset($calificaciones_bachillerato->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($calificaciones_bachillerato->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Calificaciones de Bachillerato</strong></span>
                                     @endif
@@ -439,7 +439,7 @@
                                 <td class="text-left"><strong>Constancia de Aceptación</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($constancia_aceptacion))
-                                        <a target="_blank" href="{{ asset($constancia_aceptacion->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($constancia_aceptacion->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Constancia de Aceptación</strong></span>
                                     @endif
@@ -449,7 +449,7 @@
                                 <td class="text-left"><strong>Constancia de Estudio</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($constancia_estudios))
-                                        <a target="_blank" href="{{ asset($constancia_estudios->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($constancia_estudios->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Constancia de Estudio</strong></span>
                                     @endif
@@ -459,7 +459,7 @@
                                 <td class="text-left"><strong>Calificaciones de la Universidad</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($calificaciones_universidad))
-                                        <a target="_blank" href="{{ asset($calificaciones_universidad->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($calificaciones_universidad->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Calificaciones de la Universidad</strong></span>
                                     @endif
@@ -469,7 +469,7 @@
                                 <td class="text-left"><strong>Constanca de Trabajo</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($constancia_trabajo))
-                                        <a target="_blank" href="{{ asset($constancia_trabajo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($constancia_trabajo->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Constanca de Trabajo</strong></span>
                                     @endif
@@ -479,7 +479,7 @@
                                 <td class="text-left"><strong>Declaración de Impuestos</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($declaracion_impuestos))
-                                        <a target="_blank" href="{{ asset($declaracion_impuestos->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($declaracion_impuestos->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Declaración de Impuestos</strong></span>
                                     @endif
@@ -489,7 +489,7 @@
                                 <td class="text-left"><strong>Recibo de pago</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($recibo_pago))
-                                        <a target="_blank" href="{{ asset($recibo_pago->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($recibo_pago->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Recibo de pago</strong></span>
                                     @endif
@@ -499,7 +499,7 @@
                                 <td class="text-left"><strong>Referencia del Profesor 1</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($referencia_profesor1))
-                                        <a target="_blank" href="{{ asset($referencia_profesor1->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($referencia_profesor1->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Referencia del Profesor 1</strong></span>
                                     @endif
@@ -509,7 +509,7 @@
                                 <td class="text-left"><strong>Referencia del Profesor 2</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($referencia_profesor2))
-                                        <a target="_blank" href="{{ asset($referencia_profesor2->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($referencia_profesor2->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Referencia del Profesor 2</strong></span>
                                     @endif
@@ -519,7 +519,7 @@
                                 <td class="text-left"><strong>Ensayo</strong></td>
                                 <td class="text-left">
                                     @if(!is_null($ensayo))
-                                        <a target="_blank" href="{{ asset($ensayo->url) }}" class="btn btn-xs btn-primary">Ver Documento</a>
+                                        <a target="_blank" href="{{ asset($ensayo->url) }}" class="btn btn-xs sisbeca-btn-primary">Ver Documento</a>
                                     @else
                                         <span class="label label-default"><strong>Sin Ensayo</strong></span>
                                     @endif
@@ -532,6 +532,54 @@
                 </div>
             </div>
         </div>
+
+        @if((Auth::user()->rol=='coordinador')||(Auth::user()->rol=='directivo')||(Auth::user()->rol=='entrevistador')||(Auth::user()->rol=='mentor'))
+        <div class="panel-group Material-default-accordion" id="docs-entrevista" role="tablist" aria-multiselectable="true">
+
+                <div class="panel panel-default-accordion mb-3">
+                    <div class="panel-accordion" role="tab" id="heading">
+                        <h5 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#docs-entrevista" href="#docs-entrevistadores" aria-expanded="false" aria-controls="docs-entrevistadores">
+                    Documentos Entrevista
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="docs-entrevistadores" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                        <div align="justify" class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+
+                                @foreach( $entrevistadores as $entrevistador)
+                                <tr>
+                                        <td class="text-left"><strong> Informe de {{$entrevistador->user->nombreyapellido()}}</strong></td>
+                                        <td class="text-left">
+                                            @if(!is_null($entrevistador->documento))
+                                            <a target="_blank" href="{{asset($entrevistador->documento)}}" class="btn btn-xs sisbeca-btn-primary"> Ver Informe</a>
+                                            @else
+                                            <span class="label label-default"><strong>No ha cargado Documento</strong></span>
+                                            @endif
+                                        </td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                        <td class="text-left"><strong> Informe Final</strong></td>
+                                        <td class="text-left">
+                                            @if(!is_null($postulante->documento_final_entrevista))
+                                            <a target="_blank" href="{{asset($postulante->documento_final_entrevista)}}" class="btn btn-xs sisbeca-btn-primary"> Ver Informe</a>
+                                            @else
+                                            <span class="label label-default"><strong>No ha cargado Documento</strong></span>
+                                            @endif
+                                        </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
     </div>
 
 
@@ -612,11 +660,7 @@
     </div>
 
     </div>
-    <!-- Modal para rechazar -->
-    @if(Auth::user()->rol==='entrevistador')
 
-
-    @endif
 @endsection
 
 

@@ -8,6 +8,7 @@
 		<table class="table table-bordered ">
 			<thead>
 				<tr>
+					<th class="text-center">Estatus</th>
 					<th class="text-center">Postulante Becario</th>
 					<th class="text-center">Entrevistadores</th>
 					<th class="text-center">Fecha Hora Lugar</th>
@@ -16,64 +17,78 @@
 			</thead>
 			<tbody>
 				<tr v-for="postulante in postulantes">
-					<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
-					<td class="text-center">
-						<template v-if="postulante.entrevistadores">
-							<template v-for="entrevistador in postulante.entrevistadores">
-									<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>&nbsp;
-							</template>
+				<td class="text-center" v-if="postulante.status == 'entrevista'">
+					<span class="label label-default">Pendiente</span>
+				</td>
+				<td class="text-center" v-else-if="postulante.status == 'entrevistado'">
+						<span class="label label-warning">Entrevistado</span>
+				</td>
+				<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
+				<td class="text-center">
+					<template v-if="postulante.entrevistadores">
+						<template v-for="entrevistador in postulante.entrevistadores">
+								<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>&nbsp;
 						</template>
-						<template v-if="postulante.entrevistadores.length==0">
-							<span class="label label-default">sin entrevistadores</span>
+					</template>
+					<template v-if="postulante.entrevistadores.length==0">
+						<span class="label label-default">sin entrevistadores</span>
+					</template>
+				</td>
+				<td class="text-center">
+					<div class="col-lg-12">
+						<template v-if="postulante.fecha_entrevista!=null">
+							<span class="label label-inverse">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
 						</template>
-					</td>
-					<td class="text-center">
-						<div class="col-lg-12">
-							<template v-if="postulante.fecha_entrevista!=null">
-								<span class="label label-inverse">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
-							</template>
-							<template v-else>
-								<span class="label label-default">Sin Fecha</span>
-							</template>
-							&nbsp;
-							<template v-if="postulante.hora_entrevista!=null">
-								<span class="label label-inverse">@{{ horaformatear(postulante.hora_entrevista) }}</span>
-							</template>
-							<template v-else>
-								<span class="label label-default">Sin Hora</span>
-							</template>
-							&nbsp;
-							<template v-if="postulante.lugar_entrevista!=null">
-								<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
-							</template>
-							<template v-else>
-								<span class="label label-default">Sin Lugar</span>
-							</template>
-						</div>
-					</td>
-					<td class="text-center">
+						<template v-else>
+							<span class="label label-default">Sin Fecha</span>
+						</template>
+						&nbsp;
+						<template v-if="postulante.hora_entrevista!=null">
+							<span class="label label-inverse">@{{ horaformatear(postulante.hora_entrevista) }}</span>
+						</template>
+						<template v-else>
+							<span class="label label-default">Sin Hora</span>
+						</template>
+						&nbsp;
+						<template v-if="postulante.lugar_entrevista!=null">
+							<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
+						</template>
+						<template v-else>
+							<span class="label label-default">Sin Lugar</span>
+						</template>
+					</div>
+				</td>
+				<td class="text-center">
 
-					<template v-if="postulante.documento_final_entrevista==null">
-						<a v-b-popover.hover="'Cargar Resumen Entrevista Grupal'" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-							<i class="fa fa-upload"></i>
-						</a>
-					</template>
-					<template v-else>
-						<a v-b-popover.hover="'Editar Resumen Entrevista Grupal'" :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
-							<i class="fa fa-pencil"></i>
-						</a>
-					</template>
-
-						<span v-b-popover.hover="'Asignar Entrevistadores'">
-							<button type="button" class="btn btn-xs sisbeca-btn-primary"  @click.prevent="mostrarModal(postulante,postulante.entrevistadores)">
-								<i class="fa fa-user"></i>
-							</button>
-						</span>
-					</td>
-				</tr>
-				<tr v-if="postulantes.length==0">
-					<td colspan="4" class="text-center">No hay <strong>postulantes a entrevistas</strong></td>
-				</tr>
+				<template v-if="postulante.documento_final_entrevista==null">
+					<a v-b-popover.hover="'Cargar Resumen Final de Entrevista'" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+						<i class="fa fa-upload"></i>
+					</a>
+				</template>
+				<template v-else>
+					<a v-b-popover.hover="'Editar Resumen Final de Entrevista'" :href="getRutaEditarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+						<i class="fa fa-pencil"></i>
+					</a>
+				</template>
+				<template v-if="postulante.status == 'entrevista'">
+					<span v-b-popover.hover="'Asignar Entrevistadores'">
+						<button type="button" class="btn btn-xs sisbeca-btn-primary"  @click.prevent="mostrarModal(postulante,postulante.entrevistadores)">
+							<i class="fa fa-user"></i>
+						</button>
+					</span>
+				</template>
+				<template v-else>
+					<span v-b-popover.hover="'Este postulante ya fue entrevistado'">
+						<button type="button" class="btn btn-xs sisbeca-btn-primary disabled">
+							<i class="fa fa-user"></i>
+						</button>
+					</span>
+				</template>
+				</td>
+			</tr>
+			<tr v-if="postulantes.length==0">
+				<td colspan="4" class="text-center">No hay <strong>postulantes a entrevistas</strong></td>
+			</tr>
 			</tbody>
 		</table>
 	</div>
@@ -298,12 +313,6 @@ const app = new Vue({
 		}
 	},
 
-});
-</script>
-
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 

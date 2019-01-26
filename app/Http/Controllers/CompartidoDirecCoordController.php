@@ -17,7 +17,7 @@ use avaa\Imagen;
 use avaa\Events\SolicitudesAlerts;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
-
+use avaa\BecarioEntrevistador;
 use avaa\Concurso;
 
 class CompartidoDirecCoordController extends Controller
@@ -391,9 +391,12 @@ class CompartidoDirecCoordController extends Controller
     public function perfilPostulanteBecario($id)
     {
         $postulante = Becario::find($id);
+       // dd($postulante->user_id);
         $usuario = User::find($postulante->user_id);
         $documentos = Documento::query()->where('user_id','=',$id)->get();
         $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
+        $entrevistadores=BecarioEntrevistador::query()->where('becario_id','=',$id)->get();
+       // dd($entrevistadores);
 
         if(is_null($documentos))
         {
@@ -414,7 +417,7 @@ class CompartidoDirecCoordController extends Controller
             $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
             $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
             $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-            return view('sisbeca.postulaciones.perfilPostulanteBecario')->with('postulante',$postulante)->with('documentos', $documentos)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil);
+            return view('sisbeca.postulaciones.perfilPostulanteBecario')->with('postulante',$postulante)->with('documentos', $documentos)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil)->with('entrevistadores', $entrevistadores);
         }
     }
     public function verPerfilMentor($id)

@@ -27,13 +27,13 @@
                             <span class="label label-success">Aprobado</span>
                         </template>
                         <template v-else-if="postulante.status=='entrevistado'">
-                            <span class="label label-warning">Pendiente</span>
+                            <span class="label label-warning">Entrevistado</span>
                         </template>
                         <template v-else-if="postulante.status=='rechazado'">
                             <span class="label label-danger">Rechazado</span>
                         </template>
                     </td>
-                    <td class="text-center">@{{postulante.user.id}} @{{postulante.user.name}} @{{postulante.user.last_name}} </td>
+                    <td class="text-center">@{{postulante.user.name}} @{{postulante.user.last_name}} </td>
                     <td class="text-center">@{{postulante.user.cedula}}</td>
                     <td class="text-center">
                         <template v-if="postulante.entrevistadores.length!=0">

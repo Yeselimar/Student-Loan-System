@@ -10,7 +10,7 @@ class BecarioEntrevistador extends Model
 
     public function user()// probar
     {
-        return $this->belongsTo('avaa\User','becario_id');
+        return $this->belongsTo('avaa\User','id');
     }
 
     public function becario()// probar

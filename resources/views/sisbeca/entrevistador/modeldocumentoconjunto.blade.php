@@ -28,7 +28,7 @@
                         {{ Form::file('documento',['class' => 'sisbeca-input ', 'accept'=>'image/*,application/pdf' ] ) }}
                         <span class="errors">{{ $errors->first('documento') }}</span>
                     </div>
-                    
+
                     @if($model=='editar')
                     <div class="col-lg-4 col-md-4 col-sm-6">
                     	<label for="documento" class="control-label">Documento Actual</label>
@@ -41,7 +41,7 @@
 				</div>
 			</div>
 
-			<hr>	
+			<hr>
 
 			<div class="form-group">
 				<div class="row">
@@ -50,7 +50,7 @@
                         <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
 					</div>
 				</div>
-			</div>		
+			</div>
 
 			{{ Form::close() }}
 		</div>
@@ -61,6 +61,6 @@
 
 <script>
 
-	
+
 </script>
 @endsection

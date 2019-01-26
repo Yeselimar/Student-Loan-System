@@ -17,6 +17,7 @@ use avaa\User;
 use avaa\Imagen;
 use avaa\Documento;
 
+
 class PostulanteBecarioController extends Controller
 {
     public function statusPostulanteBecario()

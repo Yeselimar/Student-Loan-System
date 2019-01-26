@@ -13,7 +13,8 @@
 		<table class="table table-bordered ">
 			<thead>
 				<tr>
-					<th class="text-center">Postulante a Becario</th>
+					<th class="text-center">Veredicto Final</th>
+					<th class="text-center">Postulante</th>
 					<th class="text-center">Entrevista</th>
 					<!--<th class="text-center">Documento Cargado</th>-->
 					<th class="text-center">Fecha Hora Lugar</th>
@@ -21,21 +22,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="postulante in postulantes" v-if="postulante.user.rol != 'becario'">
-					<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
 
-						<td class="text-center" v-if="postulante.becario.status == 'entrevista'">
-							<span class="label label-default">Pendiente</span>
-						</td>
-						<td v-else-if="postulante.becario.status == 'entrevistado'">
-							<span class="label label-success">Entrevistado</span>
-						</td>
-						<td v-else-if="postulante.becario.status == 'rechazado'">
-							<span class="label label-danger">rechazado</span>
-						</td>
-						<td v-else-if="postulante.becario.status == 'activo'">
-						<span class="label label-success">Aprobado</span>
+				<tr v-for="postulante in postulantes" v-if="postulante.user.rol != 'becario'">
+					<td class="text-center" v-if="postulante.becario.status == 'rechazado'">
+						<span class="label label-danger">rechazado</span>
 					</td>
+					<td class="text-center" v-else-if="postulante.becario.status == 'activo'">
+					<span class="label label-success">Aprobado</span>
+					</td>
+					<td class="text-center" v-else>
+						<span class="label label-default">Sin Veredicto</span>
+					</td>
+					<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
+					<td class="text-center" v-if="postulante.becario.status == 'entrevista'">
+						<span class="label label-default">Pendiente</span>
+					</td>
+					<td class="text-center" v-else-if="postulante.becario.status == 'entrevistado'">
+						<span class="label label-warning">Entrevistado</span>
+					</td>
+					<!-- <td class="text-center" v-else-if="postulante.becario.status == 'rechazado'">
+						<span class="label label-danger">rechazado</span>
+					</td>
+					<td class="text-center" v-else-if="postulante.becario.status == 'activo'">
+					<span class="label label-success">Aprobado</span>
+					</td> -->
 
 					<!--<td class="text-center">
 						<span v-if="postulante.documento!=null" class="label label-success">
@@ -80,12 +90,12 @@
 							</a>
 						</template>
 						<template v-if="postulante.documento==null">
-							<a v-b-popover.hover="'Cargar Resumen Entrevista Individual'" :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+							<a v-b-popover.hover="'Cargar Resumen de Entrevista'" :href="getRutaCargarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-upload"></i>
 							</a>
 						</template>
 						<template  v-else>
-							<a v-b-popover.hover="'Editar Resumen Entrevista Individual'" :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
+							<a v-b-popover.hover="'Editar Resumen de Entrevista'" :href="getRutaEditarDocumento(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-pencil"></i>
 							</a>
 						</template>
@@ -107,7 +117,7 @@
 			</tbody>
 		</table>
 		<hr>
-		<p class="text-right">@{{postulantes.length}} entrevistado(s)</p>
+		<p class="text-right">@{{postulantes.length}} Entrevistado(s)</p>
 	</div>
 	<!-- Modal para Marcar como entrevistado -->
 	<form method="POST" @submit.prevent="marcarentrevistado(id)">

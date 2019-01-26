@@ -22,11 +22,11 @@ class CreateUsersTable extends Migration
             $table->string('descripcion')->nullable();
             $table->timestamp('fecha_nacimiento')->nullable();
             $table->rememberToken();
-            
+
             $table->timestamps();
         });
     }
-    
+
     public function down()
     {
         Schema::dropIfExists('users');
