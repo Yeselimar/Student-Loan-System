@@ -129,19 +129,23 @@
             <br>
             <p class="text-center">¿Esta seguro que desea <strong>aprobar</strong> la solicitud de {{$solicitud->user->name}}?</p>
 
-            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8">
+            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8" class="form-horizontal">
 
                 {{csrf_field()}}
                 {{method_field('PUT')}}
                 <input type="hidden" id='valor' name="valor" value="1">
-                    <textarea
-                    class="sisbeca-input sisbeca-textarea"
-                    name="descripcion"
-                    id="descripcion"
-                    rows="15"
-                    placeholder="Ingrese observación de la solicitud"
-                    required
-                    ></textarea>
+                 <div class="form-group">
+                    <div class="col-lg-12">
+                        <textarea
+                        class="sisbeca-input sisbeca-textarea"
+                        name="descripcion"
+                        id="descripcion"
+                        rows="15"
+                        placeholder="Ingrese observación de la solicitud"
+                        required
+                        ></textarea>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-sm sisbeca-btn-primary">Si</button>
@@ -165,19 +169,23 @@
             <br>
             <p class="text-center">¿Esta seguro que desea <strong>rechazar</strong> la solicitud de {{$solicitud->user->name}}?</p>
 
-            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8">
+            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8" class="form-horizontal">
 
                 {{csrf_field()}}
                 {{method_field('PUT')}}
                 <input type="hidden" id='valor2' name="valor"  value="0">
-                <textarea
-                    class="sisbeca-input sisbeca-textarea"
-                    name="observacion"
-                    id="observacion"
-                    rows="15"
-                    placeholder="Ingrese observación de la solicitud"
-                    required
-                    ></textarea>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <textarea
+                        class="sisbeca-input sisbeca-textarea"
+                        name="observacion"
+                        id="observacion"
+                        rows="15"
+                        placeholder="Ingrese observación de la solicitud"
+                        required
+                        ></textarea>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-sm sisbeca-btn-primary" >Si</button>

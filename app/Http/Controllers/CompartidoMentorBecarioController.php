@@ -9,6 +9,8 @@ use avaa\Solicitud;
 use Auth;
 use DateTime;
 use Timestamp;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class CompartidoMentorBecarioController extends Controller
 {
@@ -38,7 +40,7 @@ class CompartidoMentorBecarioController extends Controller
 
     public  function solicitudStore(Request $request)
     {
-
+        $becario = Auth::user()->becario;
         $status=null;
         if(Auth::user()->rol==='becario')
         {
@@ -79,12 +81,28 @@ class CompartidoMentorBecarioController extends Controller
                 $solicitud->fecha_inactividad=  DateTime::createFromFormat('d/m/Y H:i:s', $request->get('fecha_inactividad').' 00:00:00');
             }
         }
-
+        $solicitud->status = "enviada";
         $solicitud->user_id=Auth::user()->id;
 
         if($solicitud->save())
         {
             event(new SolicitudesAlerts($solicitud));
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.solicitudes.notificacion-recibida")->with(compact("becario","solicitud"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
             flash('Su solicitud fue enviada exitosamente','success')->important();
         }
         else

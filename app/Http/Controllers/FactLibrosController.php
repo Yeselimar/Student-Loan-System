@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use avaa\FactLibro;
 use Illuminate\Support\Facades\Auth;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class FactLibrosController extends Controller
 {
@@ -45,6 +47,7 @@ class FactLibrosController extends Controller
 
     public function guardar(Request $request)
     {
+        $becario = Auth::user()->becario;
         $file= $request->file('url_factura');
         $name = 'fact_'.Auth::user()->cedula . time() . '.' . $file->getClientOriginalExtension();
         $path = public_path() . '/documentos/facturas/';
@@ -52,19 +55,33 @@ class FactLibrosController extends Controller
         $factura = new FactLibro();
         $costoAux = str_replace(".","",$request->get('costo'));
         $costoAux= str_replace(",",".",$costoAux);
+        $factura->status = "cargada";
         $factura->costo=$costoAux;
         $factura->name= $request->get('name');
         $factura->curso= $request->get('curso');
         $factura->becario_id = Auth::user()->id;
         $factura->url= '/documentos/facturas/'.$name;
-        if($factura->save())
-        {
-            flash('La factura fue cargada exitosamente.','success')->important();
-        }
-        else
-        {
-            flash('Disculpe, se produjo error al cargar su factura.')->error()->important();
-        }
+        $factura->save();
+
+        //Enviar correo a la persona notificando que fue recibido su justificativo
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.facturas.notificacion-recibido")->with(compact("factura","becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        flash('La factura fue cargada exitosamente.','success')->important();
+
         return redirect()->route('facturas.listar');
     }
 
