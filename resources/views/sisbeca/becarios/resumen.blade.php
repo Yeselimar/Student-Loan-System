@@ -139,7 +139,7 @@
 				<template v-if="cursos.length!=0">
 					<tr v-for="(curso, index) in cursos">
 						<td class="text-left">
-							@{{obtenermes(curso.created_at)}}-@{{obteneranho(curso.created_at)}}
+							@{{obtenermes(curso.fecha_inicio)}}-@{{obteneranho(curso.fecha_inicio)}}
 						</td>
 						<td class="text-left">
 							@{{curso.modulo}} Nivel

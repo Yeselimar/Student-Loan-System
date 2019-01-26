@@ -1,5 +1,37 @@
 @extends('sisbeca.layouts.main')
 @section('title','Reporte Tiempo')
+@section('personalcss')
+<style>
+	.circulo-rojo
+	{
+		height: 15px;
+		width: 15px;
+		border-radius: 25px;
+		background-color: #EF5350;
+		border:1px solid #EEEEEE;
+	}
+	.circulo-verde
+	{
+		height: 15px;
+		width: 15px;
+		border-radius: 25px;
+		background-color: #66BB6A;
+		border:1px solid #EEEEEE;
+	}
+	.circulo-amarillo
+	{
+		height: 15px;
+		width: 15px;
+		border-radius: 25px;
+		background-color: #FFEE58;
+		border:1px solid #EEEEEE;
+	}
+	.circulo-texto
+	{
+		font-size: 5px;color:#fff;
+	}
+</style>
+@endsection
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="table-responsive">
@@ -62,11 +94,47 @@
 				<template slot="tiempo_periodos" slot-scope="row">
 					@{{ row.item.tiempo_periodos}}
 				</template>
-				<!--
-				<template slot="actions" slot-scope="row">
-					<p>mis acciones</p>
+				
+				<template slot="puntos" slot-scope="row">
+					
+					<template v-if="row.item.puntos==0">
+						<template v-if="row.item.tiempo_actividades=='Nunca' && row.item.tiempo_cva=='Nunca' && row.item.tiempo_voluntariado=='Nunca' && row.item.tiempo_periodos=='Nunca'">
+							<div class="circulo-rojo">
+								<p class="circulo-texto">@{{ row.item.puntos}}</p>
+							</div>
+						</template>
+						<template v-else>
+							<div class="circulo-verde">
+								<p class="circulo-texto">@{{ row.item.puntos}}</p>
+							</div>
+						</template>
+					</template>
+					<template v-if="row.item.puntos>0 && row.item.puntos<=4">
+						<div class="circulo-verde">
+							<p class="circulo-texto">@{{ row.item.puntos}}</p>
+						</div>
+					</template>
+					<template v-if="row.item.puntos>4 && row.item.puntos<=8">
+						<div class="circulo-verde">
+							<p class="circulo-texto">@{{ row.item.puntos}}</p>
+						</div>
+					</template>
+					<template v-if="row.item.puntos>8 && row.item.puntos<=20">
+						<div class="circulo-amarillo">
+							<p class="circulo-texto">@{{ row.item.puntos}}</p>
+						</div>
+					</template>
+					<template v-if="row.item.puntos>20 && row.item.puntos<=40">
+						<div class="circulo-rojo">
+							<p class="circulo-texto">@{{ row.item.puntos}}</p>
+						</div>
+					</template>
+					<template v-if="row.item.puntos>40">
+						<div class="circulo-rojo">
+							<p class="circulo-texto">@{{ row.item.puntos}}</p>
+						</div>
+					</template>
 				</template>
-				-->
 			</b-table>
 
 			<b-row class="my-0 pull-right" >
@@ -104,6 +172,7 @@
 			"tiempo_cva": "",
 			"tiempo_voluntariado": "",
 			"tiempo_periodos": "",
+			"puntos": "",
 			"becario": {
 				"id": null,
 				"cedula": '',
@@ -111,6 +180,7 @@
 			},
 		}],
 		fields: [
+		{ key: 'puntos', label: '', sortable: true, 'class': 'text-center'},
 		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 		{ key: 'tiempo_actividades', label: 'Chat Club/Talleres', sortable: true, 'class': 'text-center' },
 		{ key: 'tiempo_cva', label: 'CVA', sortable: true, 'class': 'text-center' },

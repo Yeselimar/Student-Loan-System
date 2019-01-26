@@ -44,6 +44,25 @@ class Periodo extends Model
         return $query->whereYear('created_at', '=', $anho);
     }
 
+    public function scopedelAnho($query,$anho)
+    {
+        return $query
+            ->whereYear('fecha_inicio', '<=', $anho)
+            ->whereYear('fecha_fin', '>=', $anho);
+    }
+
+    public function scopedelMes($query,$mes)
+    {
+        return $query
+            ->whereMonth('fecha_inicio', '<=', $mes)
+            ->whereMonth('fecha_fin', '>=', $mes);
+    }
+
+    public function scopeSeleccionAnho($query,$anho)
+    {
+        return $query->whereYear('fecha_inicio', '=', $anho);
+    }
+
     public function scopePorMes($query,$mes)
     {
         return $query->whereMonth('created_at', '=', $mes);

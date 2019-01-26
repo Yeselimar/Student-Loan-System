@@ -71,6 +71,9 @@
 							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver Perfil">
 								<i class='fa fa-eye'></i>
 							</a>
+							<a href="{{route('seguimiento.becarioreportegeneral',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Reporte General">
+								<i class='fa fa-bar-chart'></i>
+							</a>
 							<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Resumen Becario">
 								<i class="fa fa-user"></i>
 							</a>
