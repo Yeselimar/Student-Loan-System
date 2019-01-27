@@ -50,7 +50,7 @@
 							<span class="label label-default">Sin Hora</span>
 						</template>
 						&nbsp;
-						<template v-if="postulante.lugar_entrevista!=null || postulante.lugar_entrevista!='null'">
+						<template v-if="postulante.lugar_entrevista.lenght!=0">
 							<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
 						</template>
 						<template v-else>
