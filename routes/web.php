@@ -90,6 +90,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
+        
+        //Editar datos del usuario y becario
+        Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
+        Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
+        Route::post('/becario/{id}/actualizar-datos', 'UserController@actualizardatos')->name('becarios.actualizar.datos');
+
         //resumen becario y reporte general
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
         Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
@@ -161,6 +167,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
+       
+        
+
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
         Route::get('/becarios/obtener-estatus/api', 'SeguimientoController@obtenerestatusbecarios')->name('obtener.estatus.becarios');
@@ -685,7 +694,10 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
-    {
+    {   
+        
+       
+
         //documento en conjunto
         Route::get('/postulante/{id}/cargar-documento-conjunto/', 'EntrevistadorController@documentoconjunto')->name('entrevistador.documentoconjunto');
         Route::post('/postulante/{id}/guardar-documento-conjunto/', 'EntrevistadorController@guardardocumentoconjunto')->name('entrevistador.guardardocumentoconjunto');

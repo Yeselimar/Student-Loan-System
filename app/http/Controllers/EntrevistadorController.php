@@ -10,6 +10,8 @@ use File;
 use avaa\Becario;
 use avaa\BecarioEntrevistador;
 use avaa\User;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class EntrevistadorController extends Controller
 {
@@ -193,6 +195,25 @@ class EntrevistadorController extends Controller
 				$nuevo->save();
 			}
 		}
+
+		//Enviar correo a la persona notificando
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "IMPORTANTE";
+        $body = view("emails.becarios.notificacion-entrevista")->with(compact("becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+
 		return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
 	}
 

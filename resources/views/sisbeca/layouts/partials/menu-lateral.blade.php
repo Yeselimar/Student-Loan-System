@@ -142,7 +142,7 @@
                 <li class="nav-label">Inicio</li>
                      <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Postulaciones
                                 @if($numT>0)
-                                    <span class="label label-rouded label-danger pull-center">{{$numT}}</span>
+                                    <span class="label label-rouded label-danger pull-center">L-{{$numT}}</span>
                                 @endif
                         </span></a>
 
@@ -202,7 +202,7 @@
                     <li class="nav-label">Gestionar </li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Postulaciones
                                 @if($numT>0)
-                                    <span class="label label-rouded label-danger pull-center">{{$numT}}</span>
+                                    <span class="label label-rouded label-danger pull-center">R-{{$numT}}</span>
                                 @endif
                         </span></a>
                         <ul aria-expanded="false" class="collapse">

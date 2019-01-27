@@ -6,9 +6,9 @@
 <div class="text-right col-12" align="right" >
 <a href="{{URL::previous()}}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
-<div class="container">
-    <div class="card card-body bg-light border border-info p-2">
-        <div class="col-xs-12 col-sm-8 col-md-8">
+<div class="col-lg-12">
+    <div class="card card-body bg-light border border-info p-2" >
+        <div class="col-xs-12 col-sm-8 col-md-8" >
 
                 <div class="row">
                     <div class="col xs-6 col-sm-4 col-md-4 p-t-20">
@@ -58,7 +58,7 @@
                             <br/>
                             <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulante->user->email}}
                             <br />
-                            <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulante->user->cedula}}
+                            <i class="fa fa-user"> &nbsp;</i>Cédula: {{$postulante->user->cedula}}
                             <br/>
                             <i class="fa fa-phone">&nbsp; </i>Teléfono: {{$postulante->celular}}
                             <br/>
@@ -596,6 +596,7 @@
                 </div>
             </div>
     </form>
+
     <!-- Modal para aprobar -->
     <div class="modal fade" id="modal">
         <div class="modal-dialog">
@@ -616,7 +617,7 @@
 
                 <div class="modal-body">
                     <br>
-                    ¿Está seguro que desea <strong class="letras-verdes">Seleecionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
+                    ¿Está seguro que desea <strong class="letras-verdes">Seleccionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
                 </div>
 
             <div class="modal-footer">

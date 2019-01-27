@@ -90,7 +90,7 @@
                     </td>
                 </tr>
                 <tr v-if="postulantes.length==0">
-                    <td colspan="6" class="text-center">
+                    <td colspan="7" class="text-center">
                         No hay <strong>postulantes a entrevistados</strong>
                     </td>
                 </tr>
@@ -118,18 +118,18 @@
                                 <img class="img-responsive w-50 m-b-20" :src="imagen_postulante">
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
-                                    <div>Edad:@{{edad}}</div>
-                                    <div><b>Promedio Universitario:</b>@{{promedio}}</div>
-                                    <div>Observación:@{{observacion}}</div>
+                                    <div>Edad: @{{edad}}</div>
+                                    <div><b>Promedio Universitario:</b> @{{promedio}}</div>
+                                    <div>Observación: @{{observacion}}</div>
 
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer"><h5>¿Esta Seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
+                    <div class="panel-footer"><h5>¿Está seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
                     </div>
                     </template>
                     <template v-else>
-                        <h5>¿Esta Seguro que desea <strong class="letras-rojas">@{{funcion}}</strong> a @{{nombreyapellido}} Becario de ProExcelencia?</h5>
+                        <h5>¿Está seguro que desea <strong class="letras-rojas">@{{funcion}}</strong> a @{{nombreyapellido}} Becario de ProExcelencia?</h5>
                     </template>
                     </div>
                     <div class="modal-footer">
