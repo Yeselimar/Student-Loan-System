@@ -16,7 +16,8 @@ use avaa\Becario;
 use avaa\User;
 use avaa\Imagen;
 use avaa\Documento;
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class PostulanteBecarioController extends Controller
 {
@@ -54,6 +55,25 @@ class PostulanteBecarioController extends Controller
         {
             $becario->status='postulante';
             $becario->save();
+            
+            //Enviar correo a la persona notificando
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.postulantebecario.postulacion-enviada")->with(compact("solicitud","becario"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+            
             return redirect()->route('sisbeca');
 
         }

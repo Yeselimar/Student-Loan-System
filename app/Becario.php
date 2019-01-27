@@ -26,6 +26,11 @@ class Becario extends Model
        return date("h:i:s a", strtotime($this->hora_entrevista));
     }
 
+    public function horaEntrevistaCorta()
+    {
+       return date("h:i a", strtotime($this->hora_entrevista));
+    }
+
     public function user() //Relación uno a uno con USER
     {
         return $this->belongsTo('avaa\User','user_id');

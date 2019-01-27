@@ -163,6 +163,14 @@
 		</div>
 	</form>
 
+	<!-- Cargando.. -->
+	<section class="loading" id="preloader">
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>
+	<!-- Cargando.. -->
 </div>
 
 @endsection
@@ -251,6 +259,7 @@ const app = new Vue({
 			var url = '{{route('becario.obtenerpostulantes')}}';
 			axios.get(url).then(response =>
 			{
+				$("#preloader").hide();
 				this.postulantes = response.data.becarios;
 			});
 		},
@@ -292,9 +301,11 @@ const app = new Vue({
 			}
             var url = '{{route('entrevistador.asignar.guardar',':id')}}';
             url = url.replace(':id', id);
+            $("#preloader").show();
+            $('#asignarmodal').modal('hide');
 			axios.post(url,dataform).then(response =>
 			{
-				$('#asignarmodal').modal('hide');
+				$("#preloader").hide();
 				this.obtenerpostulantes();
 				toastr.success(response.data.success);
 			});

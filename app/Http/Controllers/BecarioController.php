@@ -76,8 +76,6 @@ class BecarioController extends Controller
         return view('sisbeca.becarios.terminosCondiciones');
     }
 
-
-
     public function verCuentaBancaria()
     {
         $becario = User::find(Auth::user()->id)->becario;
@@ -121,6 +119,6 @@ class BecarioController extends Controller
         return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
     }
 
-
+    
 
 }

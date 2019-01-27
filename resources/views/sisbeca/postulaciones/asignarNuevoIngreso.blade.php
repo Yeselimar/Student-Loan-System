@@ -90,7 +90,7 @@
                     </td>
                 </tr>
                 <tr v-if="postulantes.length==0">
-                    <td colspan="6" class="text-center">
+                    <td colspan="7" class="text-center">
                         No hay <strong>postulantes a entrevistados</strong>
                     </td>
                 </tr>
@@ -130,7 +130,7 @@
                     </div>
                     </template>
                     <template v-else>
-                        <h5>¿Esta Seguro que desea <strong class="letras-rojas">@{{funcion}}</strong> a @{{nombreyapellido}} Becario de ProExcelencia?</h5>
+                        <h5>¿Está seguro que desea <strong class="letras-rojas">@{{funcion}}</strong> a @{{nombreyapellido}} Becario de ProExcelencia?</h5>
                     </template>
                     </div>
                     <div class="modal-footer">
