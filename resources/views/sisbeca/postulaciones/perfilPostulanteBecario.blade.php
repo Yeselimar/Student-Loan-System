@@ -62,7 +62,7 @@
                             <br/>
                             <i class="fa fa-phone">&nbsp; </i>Teléfono: {{$postulante->celular}}
                             <br/>
-                            <i class="fa fa-graduation-cap">&nbsp; </i>Promedio Bachiller: {{$postulante->promedio_bachillerato}}
+                            <i class="fa fa-graduation-cap">&nbsp; </i>Promedio Universitario: {{$postulante->promedio_universidad}}
                             <br/>
                             <i class="fa fa-map-pin">&nbsp; </i>Dirección: {{$postulante->direccion_permanente}}
                         </p>
@@ -591,7 +591,7 @@
                     <label for="exampleFormControlTextarea1">Observaciones: </label>
                     <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
 
-                    <button type='submit' title="Aprobar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>
+                    <button type='submit' title="Guardar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>
 
                 </div>
             </div>
@@ -613,10 +613,28 @@
                 {{csrf_field()}}
                 {{method_field('PUT')}}
                 <input type="hidden" id='valor' name="valor"  value="1">
+                <div class="modal-body text-center">
+                <div class="panel panel-default">
+                    <div class="panel-heading"> {{$postulante->user->name}} {{$postulante->user->last_name}}</div>
+                    <div class="row panel-body">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            @if(!is_null($fotografia))
+                            <img class="img-responsive w-50 m-b-20" src="{{asset($fotografia->url)}}">
+                            @else
+                                <span class="label label-default"><strong>Sin Fotografia</strong></span>
+                            @endif
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+                                <div><b>Edad:</b>{{$postulante->user->edad}}</div>
+                                <div><b>Promedio Universitario:</b>{{$postulante->promedio_universidad}}</div>
+                                <div><b>Observación:</b>{{$postulante->observacion}}</div>
 
-                <div class="modal-body">
+                        </div>
+                    </div>
+                </div>
+
                     <br>
-                    ¿Está seguro que desea <strong class="letras-verdes">Seleecionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
+                    ¿Está seguro que desea <strong class="letras-verdes">Seleccionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
                 </div>
 
             <div class="modal-footer">
@@ -639,7 +657,25 @@
                 <h4 class="modal-title pull-left">Confirmación</h4>
                 <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-center">
+                <div class="panel panel-default">
+                        <div class="panel-heading"> {{$postulante->user->name}} {{$postulante->user->last_name}}</div>
+                        <div class="row panel-body">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    @if(!is_null($fotografia))
+                                    <img class="img-responsive w-50 m-b-20" src="{{asset($fotografia->url)}}">
+                                    @else
+                                        <span class="label label-default"><strong>Sin Fotografia</strong></span>
+                                    @endif
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+                                    <div><b>Edad:</b>{{$postulante->user->edad}}</div>
+                                    <div><b>Promedio Universitario:</b>{{$postulante->promedio_universidad}}</div>
+                                    <div><b>Observación:</b>{{$postulante->observacion}}</div>
+
+                            </div>
+                        </div>
+                    </div>
             <br>
             ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
         </div>

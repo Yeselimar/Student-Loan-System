@@ -22,9 +22,9 @@ class DirectivoController extends Controller
     {
         $this->middleware('directivo');
     }
-    
+
     //viejo
-   
+
     //vieja no se usa
     public function cambioStatus(Request $request)
     {
@@ -41,7 +41,7 @@ class DirectivoController extends Controller
                 $postulante->save();
                 $usuario=User::find($postulante->user_id);
                 $usuario->rol = 'becario';
-                $usuario->save();  
+                $usuario->save();
              }
             else if($request->get($postulante->user_id) == 1 )//cuando está check
             {
@@ -49,11 +49,11 @@ class DirectivoController extends Controller
                 $postulante->status='activo';
                 $postulante->acepto_terminos=false;
                 $postulante->save();
-                $usuario=User::find($postulante->user_id);           
+                $usuario=User::find($postulante->user_id);
                 $usuario->rol = 'becario';
-                $usuario->save(); 
+                $usuario->save();
                //falta: enviar correo al becario con su fecha de entrevista
-            }     
+            }
         }
 
         if($i>0)
@@ -107,7 +107,7 @@ class DirectivoController extends Controller
                 $becario->fecha_entrevista = DateTime::createFromFormat('d/m/Y', $request->get('fechaentrevista'));
                 $becario->acepto_terminos=true;
                 $becario->save();
-               //falta: enviar correo al becario con su fecha de entrevista 
+               //falta: enviar correo al becario con su fecha de entrevista
             }
         }
         if($i>0)
@@ -142,7 +142,7 @@ class DirectivoController extends Controller
                 $becario->acepto_terminos=true;
                 $becario->save();
                //falta: enviar correo al becario con su fecha de entrevista
-            }     
+            }
         }
         if($i>0)
         {
@@ -176,25 +176,25 @@ class DirectivoController extends Controller
 
     public function actualizarPostulanteMentor(Request $request, $id)
     {
-        $postulante = User::find($id);
-        if($postulante->rol==='postulante_mentor')
+        $postulante = Mentor::find($id);
+        if($postulante->user->rol==='postulante_mentor')
         {
             if ($request->valor === '1')
             {
-                $postulante->rol = 'mentor';
+                $postulante->user->rol = 'mentor';
+                $postulante->user->save();
+                $postulante->status = 'activo';
                 $postulante->save();
-                $mentor = new Mentor();
-                $mentor->user_id = $id;
-                $mentor->save();
-                flash($postulante->name . ' ha sido registrado como mentor exitosamente', 'success')->important();
+                flash($postulante->user->name . ' ha sido registrado como mentor exitosamente', 'success')->important();
                 //FALTA: AQUI SE ENVIA UN CORREO AL NUEVO MENTOR
             }
             else
             {
+
                 // $postulante->delete();
                 //falta borrar su hoja de vida si es rechazado
-                $postulante->rol='rechazado';
-                flash('!' . $postulante->name . ' ha sido rechazado como mentor.', 'danger')->important();
+                $postulante->status='rechazado';
+                flash('!' . $postulante->user->name . ' ha sido rechazado como mentor.', 'danger')->important();
                 $postulante->save();
             }
         }
@@ -203,30 +203,42 @@ class DirectivoController extends Controller
 
     public function listarPostulantesMentores()
     {
-        $postulantes = User::query()->where('rol','=','postulante_mentor')->orWhere('rol','=','rechazado')->get();
-       
-        return view('sisbeca.postulaciones.postulantesMentores')->with('users',$postulantes);   
+       $postulantes = Mentor::query()->where('status', '=', 'postulante')->orwhere('status', '=', 'rechazado')->get();
+      //$postulantes = User::query()->where('rol','=','postulante_mentor')->get();
+       //dd($postulantes);
+        /*  $postulantes = User::query()->where('rol','=','postulante_mentor')->get();
+        $rechazados = User::query()->where('rol','=','rechazado')->get();
+        foreach($rechazados as $rechazado){
+            $postulantes_becarios= Becario::find($rechazado->id);
+                if($postulantes_becarios==NULL){
+                    $postulantes = $postulantes->push($rechazado);
+                }
+        } */
+        return view('sisbeca.postulaciones.postulantesMentores')->with('postulantes',$postulantes);
     }
 
     public function perfilPostulantesMentores($id)
     {
-        $postulante = User::find($id);
+        $postulante = Mentor::find($id);
+        $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->user->id)->where('titulo','=','img_perfil')->get();
+        $documento = Documento::query()->where('user_id', '=', $id)->where('titulo', '=', 'hoja_vida')->first();
+      //  dd($img_perfil_postulante);
+        // $postulante = User::find($id);
 
-        if(!is_null($postulante) &&$postulante->rol==='postulante_mentor'||$postulante->rol==='rechazado')
+       /*  if(!is_null($postulante) &&$postulante->rol==='postulante_mentor'||$postulante->rol==='rechazado')
         {
             if (is_null($postulante)) {
                 flash('Disculpe, el archivo solicitado no fue encontrado', 'danger')->important();
                 return back();
             }
-            $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->id)->where('titulo','=','img_perfil')->get();
-            $documento = Documento::query()->where('user_id', '=', $id)->where('titulo', '=', 'hoja_vida')->first();
+
 
         }
         else
         {
             flash('Disculpe, el archivo solicitado no fue encontrado', 'danger')->important();
             return  redirect()->route('listarPostulantesMentores');
-        }
+        } */
 
         return view('sisbeca.postulaciones.perfilPostulanteMentor')->with('postulanteMentor',$postulante)->with('documento', $documento)
             ->with('img_perfil_postulante',$img_perfil_postulante);

@@ -120,35 +120,32 @@
                     @endif
                 </div>
                   <div class="col-sm-6 col-md-8 p-4">
-                      <h3>{{$postulanteMentor->name}} {{$postulanteMentor->last_name }}</h3>
+                      <h3>{{$postulanteMentor->user->name}} {{$postulanteMentor->user->last_name }}</h3>
                       <p>
-                          <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulanteMentor->email}}
+                          <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulanteMentor->user->email}}
                           <br />
-                          <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulanteMentor->cedula}}
+                          <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulanteMentor->user->cedula}}
                           <br/>
-                          <i class="fa fa-map-pin"> &nbsp;</i>Descripción: {{$postulanteMentor->descripcion}}
+                          <i class="fa fa-map-pin"> &nbsp;</i>Descripción: {{$postulanteMentor->user->descripcion}}
                           <br/>
                           @if(!is_null($documento))
                           <a target="_blank" href="{{asset($documento->url)}}" class='m-t-10 btn btn-sm sisbeca-btn-primary'>Ver Hoja de Vida</a>
-                        @endif
+                          @else
+                          <span class="label label-default"><strong>Sin Documento</strong></span>
+                          @endif
                       </p>
                   </div>
               </div>
       </div>
   </div>
-  @if($postulanteMentor->rol==='postulante_mentor')
-
+  @if(($postulanteMentor->status==='postulante')&&($postulanteMentor->user->rol==='postulante_mentor'))
   <div align="center">
-  <h3>¿Desea seleccionar a {{$postulanteMentor->name.' '.$postulanteMentor->last_name}} para <b>Entrevista? </b>
+  <h3>¿Que acción desea tomar para la postulación de <b>{{$postulanteMentor->user->name.' '.$postulanteMentor->user->last_name}}</b>
       <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
       <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
   </div>
   @endif
 </div>
-
-
-
-
 
   @if(Auth::user()->rol==='directivo')
 
@@ -162,12 +159,9 @@
             </div>
             <div class="modal-body">
             <br>
-            ¿Está seguro que desea <strong>aprobar</strong> <strong>{{$postulanteMentor->name}} {{$postulanteMentor->last_name}}</strong> como mentor?
+            ¿Está seguro que desea <strong class="letras-verdes">Aprobar</strong> <strong> a {{$postulanteMentor->user->name}} {{$postulanteMentor->user->last_name}}</strong> como Mentor de ProExcelencia?
             </div>
-
-
-           <form method="POST" action={{route('postulanteMentor.update',$postulanteMentor->id)}} accept-charset="UTF-8">
-
+           <form method="POST" action={{route('postulanteMentor.update',$postulanteMentor->user->id)}} accept-charset="UTF-8">
                {{csrf_field()}}
                {{method_field('PUT')}}
                <input type="hidden" id='valor' name="valor" value="1">
@@ -197,10 +191,10 @@
 
             <div class="modal-body">
               <br>
-              ¿Está seguro que desea <strong>rechazar</strong> a <strong>{{$postulanteMentor->name}} {{$postulanteMentor->last_name}}</strong> como mentor?
+              ¿Está seguro que desea <strong class="letras-rojas">Rechazar</strong> a <strong>{{$postulanteMentor->user->name}} {{$postulanteMentor->user->last_name}}</strong> como mentor?
             </div>
 
-            <form method="POST" action={{route('postulanteMentor.update',$postulanteMentor->id)}} accept-charset="UTF-8">
+            <form method="POST" action={{route('postulanteMentor.update',$postulanteMentor->user->id)}} accept-charset="UTF-8">
 
                 {{csrf_field()}}
                 {{method_field('PUT')}}

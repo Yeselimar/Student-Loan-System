@@ -105,8 +105,16 @@ class SisbecaController extends Controller
     public function postulacionMentorGuardar(Request $request)
     {
         $user =  Auth::user();
+        $user->rol='postulante_mentor';
+        $user->save();
         $mentor = new Mentor();
+        $mentor->user_id=$user->id;
+        $mentor->status= 'postulante';
+        $mentor->profesion = $request->profesion;
         $mentor->empresa = $request->empresa;
+        $mentor->cargo_actual = $request->cargo_actual;
+        $mentor->areas_de_interes = $request->areas_interes;
+        $mentor->fecha_ingreso_empresa = DateTime::createFromFormat('d/m/Y H:i:s', $request->fecha_ingreso.' 00:00:00');
         $mentor->save();
         $file = $request->file('url_pdf');
         $name = 'HojaDeVida_' . time() . '.' . $file->getClientOriginalExtension();

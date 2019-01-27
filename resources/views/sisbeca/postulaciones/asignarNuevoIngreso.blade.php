@@ -110,7 +110,7 @@
                     </div>
                     <div class="modal-body text-center">
                         <br>
-                    <template v-if="funcion==='Aprobar'">
+
                     <div class="panel panel-default">
                         <div class="panel-heading"> @{{nombreyapellido}}</div>
                         <div class="row panel-body">
@@ -120,11 +120,12 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
                                     <div>Edad:@{{edad}}</div>
                                     <div><b>Promedio Universitario:</b>@{{promedio}}</div>
-                                    <div>Observación:@{{observacion}}</div>
+                                    <div><b>Observación:</b>@{{observacion}}</div>
 
                             </div>
                         </div>
                     </div>
+                    <template v-if="funcion==='Aprobar'">
                     <div class="panel-footer"><h5>¿Esta Seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
                     </div>
                     </template>
@@ -295,7 +296,7 @@
                 this.promedio = postulante.promedio_universidad;
                 for (var i = 0; i < imagenes.length; i++)
                 {
-                    if(imagenes[i].titulo=='img_perfil')
+                    if(imagenes[i].titulo=='fotografia')
                     {
                         this.imagen_postulante=imagenes[i].url;
                         console.log(this.imagen_postulante);

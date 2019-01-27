@@ -680,7 +680,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         ]);
 
     });
-    Route::group(['middleware'=>'compartido_entrevistador'],function ()
+    Route::group(['middleware'=>'CompartidoDirCoordMentEntrev'],function ()
     {
 
     });

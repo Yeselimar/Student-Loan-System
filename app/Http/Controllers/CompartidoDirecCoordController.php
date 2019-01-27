@@ -117,7 +117,7 @@ class CompartidoDirecCoordController extends Controller
         else
         {
             $postulanteBecario->status='rechazado';
-            $postulanteBecario->user->rol='rechazado';
+           // $postulanteBecario->user->rol='rechazado';
             $postulanteBecario->user->save();
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->save();
@@ -170,19 +170,21 @@ class CompartidoDirecCoordController extends Controller
 
     public function listarMentores()
     {
-        $mentores = Mentor::all();
+        //$mentores = Mentor::where('status','=','activo')->orwhere('status','=','inactivo')->orwhere('status','=','desincorporado')->get();
+        //dd($mentores);
+        $mentores = Mentor::where('status','=','activo')->get();
+        //dd($mentores);
         if($mentores->count()>0)
         {
-            $mentores->each(function ($mentores)
-            {
-                $mentores->becarios;
-                foreach ($mentores->becarios as $becario)
+                $mentores->each(function ($mentores)
                 {
+                    $mentores->becarios;
+                    foreach ($mentores->becarios as $becario)
+                    {
 
-                    $becario->user;
-                }
-            });
-
+                        $becario->user;
+                    }
+                });
         }
         else
         {
@@ -198,7 +200,7 @@ class CompartidoDirecCoordController extends Controller
         $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
         if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
-            $mentoresNuevos= Mentor::all();
+            $mentoresNuevos= Mentor::where('status','=','activo')->orwhere('status','=','inactivo')->orwhere('status','=','desincorporado')->get();
             $collection = collect();
             foreach ($mentoresNuevos as $mentor)
             {
@@ -244,7 +246,7 @@ class CompartidoDirecCoordController extends Controller
             $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactvo'])->get();
             $listaBecariosA = $becariosAsignados->pluck('user_id')->toArray();
             $clave = array_search($solicitud->user_id, $listaBecariosA); // me devuelve falso si  no encontro elemento
-            $mentoresNuevos= Mentor::all();
+            $mentoresNuevos= Mentor::where('status','=','activo')->orwhere('status','=','inactivo')->orwhere('status','=','desincorporado')->get();
             $collection = collect();
             foreach ($mentoresNuevos as $mentor)
             {
@@ -390,34 +392,41 @@ class CompartidoDirecCoordController extends Controller
 
     public function perfilPostulanteBecario($id)
     {
-        $postulante = Becario::find($id);
-       // dd($postulante->user_id);
-        $usuario = User::find($postulante->user_id);
-        $documentos = Documento::query()->where('user_id','=',$id)->get();
-        $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
-        $entrevistadores=BecarioEntrevistador::query()->where('becario_id','=',$id)->get();
-       // dd($entrevistadores);
+        $usuario = User::find($id);
+       if(($usuario->rol==="becario")||($usuario->rol==="postulante_becario"))
+       {
+       // dd($id);
+            $postulante = Becario::find($id);
+            $documentos = Documento::query()->where('user_id','=',$id)->get();
+            $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
+            $entrevistadores=BecarioEntrevistador::query()->where('becario_id','=',$id)->get();
+        // dd($entrevistadores);
 
-        if(is_null($documentos))
-        {
-           flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
+            if(is_null($documentos))
+            {
+            flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
+            }
+            else
+            {
+                $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
+                $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
+                $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
+                $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
+                $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
+                $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
+                $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
+                $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
+                $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
+                $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
+                $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
+                $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
+                $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
+                return view('sisbeca.postulaciones.perfilPostulanteBecario')->with('postulante',$postulante)->with('documentos', $documentos)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil)->with('entrevistadores', $entrevistadores);
+            }
         }
-        else
-        {
-            $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
-            $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
-            $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
-            $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
-            $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
-            $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
-            $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
-            $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
-            $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
-            $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
-            $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
-            $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
-            $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-            return view('sisbeca.postulaciones.perfilPostulanteBecario')->with('postulante',$postulante)->with('documentos', $documentos)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil)->with('entrevistadores', $entrevistadores);
+        else{
+            flash('Usuario Inválido','danger')->important();
+            return redirect()->route('sisbeca');
         }
     }
     public function verPerfilMentor($id)

@@ -25,13 +25,13 @@
 
 				<tr v-for="postulante in postulantes" v-if="postulante.user.rol != 'becario'">
 					<td class="text-center" v-if="postulante.becario.status == 'rechazado'">
-						<span class="label label-danger">rechazado</span>
+						<span class="label label-danger">Rechazado</span>
 					</td>
 					<td class="text-center" v-else-if="postulante.becario.status == 'activo'">
 					<span class="label label-success">Aprobado</span>
 					</td>
 					<td class="text-center" v-else>
-						<span class="label label-default">Sin Veredicto</span>
+						<span class="label label-default">No Disponible</span>
 					</td>
 					<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
 					<td class="text-center" v-if="postulante.becario.status == 'entrevista'">
@@ -39,6 +39,9 @@
 					</td>
 					<td class="text-center" v-else-if="postulante.becario.status == 'entrevistado'">
 						<span class="label label-warning">Entrevistado</span>
+					</td>
+					<td class="text-center" v-else>
+						<span class="label label-default">Finalizada</span>
 					</td>
 					<!-- <td class="text-center" v-else-if="postulante.becario.status == 'rechazado'">
 						<span class="label label-danger">rechazado</span>
@@ -117,7 +120,7 @@
 			</tbody>
 		</table>
 		<hr>
-		<p class="text-right">@{{postulantes.length}} Entrevistado(s)</p>
+		<p class="text-right">@{{postulantes.length}} Postulante(s)</p>
 	</div>
 	<!-- Modal para Marcar como entrevistado -->
 	<form method="POST" @submit.prevent="marcarentrevistado(id)">
@@ -168,6 +171,7 @@ const app = new Vue({
 		getRutaVerPerfil: function(id)
 		{
 			//var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
+			console.log(this.id);
 			var url ="{{route('perfilPostulanteBecario', array('id'=>':id'))}}"
 			url = url.replace(':id', id);
             return url;

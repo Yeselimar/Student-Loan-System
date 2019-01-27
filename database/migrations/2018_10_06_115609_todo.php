@@ -23,7 +23,7 @@ class Todo extends Migration
         Schema::create('mentores', function (Blueprint $table)
         {
             $table->primary('user_id'); //se coloca el mismo id porque la relacion uno a uno no pueden existir dos perfiles con el mismo user
-            $table->enum('status',['postulante','activo','inactivo','desincorporado'])->default('activo');
+            $table->enum('status',['postulante','rechazado','activo','inactivo','desincorporado'])->default('activo');
             $table->text('profesion')->nullable();
             $table->text('empresa')->nullable();
             $table->text('cargo_actual')->nullable();

@@ -50,7 +50,7 @@
 							<span class="label label-default">Sin Hora</span>
 						</template>
 						&nbsp;
-						<template v-if="postulante.lugar_entrevista!=null">
+						<template v-if="postulante.lugar_entrevista!=null || postulante.lugar_entrevista!='null'">
 							<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
 						</template>
 						<template v-else>
@@ -270,10 +270,26 @@ const app = new Vue({
 		{
 			this.seleccionados = seleccionados;
 			var dataform = new FormData();
-            dataform.append('seleccionados', this.seleccionados);
-            dataform.append('fecha', this.fecha);
+			if('seleccionados'!=null){
+            	dataform.append('seleccionados', this.seleccionados);
+			}else{
+				dataform.append(null, this.seleccionados);
+			}
+			if('fecha'!=null){
+            	dataform.append('fecha', this.fecha);
+			}else{
+				dataform.append(null, this.fecha);
+			}
+			if('hora'!=null){
             dataform.append('hora', this.hora);
+			}else{
+				dataform.append(null, this.hora);
+			}
+			if('lugar'!=null){
 			dataform.append('lugar', this.lugar);
+			}else{
+				dataform.append(null, this.lugar);
+			}
             var url = '{{route('entrevistador.asignar.guardar',':id')}}';
             url = url.replace(':id', id);
 			axios.post(url,dataform).then(response =>

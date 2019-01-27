@@ -4,7 +4,7 @@
 <div class="col-lg-12">
 
     <div class="table-responsive">
-  
+
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
@@ -16,25 +16,25 @@
             </tr>
             </thead>
             <tbody>
-                @if($users->count()>0)
-                @foreach($users as $user)
+                @if($postulantes->count()>0)
+                @foreach($postulantes as $postulante)
                     <tr>
-                        <td class="text-center">{{ $user->name.' '.$user->last_name }}</td>
-                        <td class="text-center">{{ $user->cedula }}</td>
-                        <td class="text-center">{{ $user->email }}</td>
-                         @if($user->rol=='rechazado')                                        
-                      
+                        <td class="text-center">{{ $postulante->user->name.' '.$postulante->user->last_name }}</td>
+                        <td class="text-center">{{ $postulante->user->cedula }}</td>
+                        <td class="text-center">{{ $postulante->user->email }}</td>
+                         @if($postulante->status=='rechazado')
+
                         <td class="text-center">
-                            <span class="label label-danger">rechazado</span>
+                            <span class="label label-danger">Rechazado</span>
                         </td>
                         @else
                         <td class="text-center">
-                            <span class="label label-inverse">sin Revisar</span></td>
-                        @endif                                
+                            <span class="label label-default">Sin Revisar</span></td>
+                        @endif
 
                         <td class="text-center">
                             <span data-toggle="tooltip" data-placement="bottom" title="Ver Postulación">
-                                <a href="{{route('perfilPostulantesMentores', $user->id)}}" class='btn btn-xs sisbeca-btn-primary'>
+                                <a href="{{route('perfilPostulantesMentores', $postulante->user->id)}}" class='btn btn-xs sisbeca-btn-primary'>
                                     <i class='fa fa-eye -square-o'></i>
                                 </a>
                             </span>
@@ -50,14 +50,14 @@
         </table>
 
     </div>
-    
+
 </div>
 @endsection
 
 @section('personaljs')
 <script>
     $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 @endsection
