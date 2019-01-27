@@ -9,7 +9,7 @@
 @import url(animate.css);
 /*Estilos personalizados sisbeca */
 
-td{
+td, th, tr{
   vertical-align: middle !important;
 }
 .loading

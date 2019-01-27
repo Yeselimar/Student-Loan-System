@@ -14,7 +14,7 @@ class Solicitud extends Model
     }
 
     protected $fillable = [
-        'titulo', 'descripcion','fecha_inactividad','fecha_desincorporacion',
+        'titulo', 'descripcion','fecha_inactividad','fecha_desincorporacion', 'observacion',
     ];
 
     public function fechaActualizacion()

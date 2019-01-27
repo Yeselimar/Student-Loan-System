@@ -24,7 +24,7 @@ class CompartidoMentorBecarioController extends Controller
         $solicitudes = Solicitud::query()->where('user_id','=',Auth::user()->id)->get();
         return view('sisbeca.solicitudes.listar')->with(compact('solicitudes'));
     }
-    
+
     public function solicitud()
     {
         $id_user=Auth::user()->id;
@@ -40,7 +40,7 @@ class CompartidoMentorBecarioController extends Controller
 
     public  function solicitudStore(Request $request)
     {
-        $becario = Auth::user()->becario;
+       // $becario = Auth::user()->becario;
         $status=null;
         if(Auth::user()->rol==='becario')
         {
@@ -86,6 +86,8 @@ class CompartidoMentorBecarioController extends Controller
 
         if($solicitud->save())
         {
+            $usuario = Auth::user();
+          //  return($usuario);
             event(new SolicitudesAlerts($solicitud));
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
@@ -99,9 +101,9 @@ class CompartidoMentorBecarioController extends Controller
             $mail->Password = "scxxuchujshrgpao";
             $mail->setFrom("no-responder@avaa.org", "Sisbeca");
             $mail->Subject = "Notificación";
-            $body = view("emails.solicitudes.notificacion-recibida")->with(compact("becario","solicitud"));
+            $body = view("emails.solicitudes.notificacion-recibida")->with(compact("usuario","solicitud"));
             $mail->MsgHTML($body);
-            $mail->addAddress($becario->user->email);
+            $mail->addAddress($usuario->email);
             $mail->send();
             flash('Su solicitud fue enviada exitosamente','success')->important();
         }

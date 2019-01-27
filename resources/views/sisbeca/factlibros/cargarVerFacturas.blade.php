@@ -6,7 +6,7 @@
     <div class="text-right">
         <a href="{{route('facturas.crear')}}" class="btn btn-sm sisbeca-btn-primary">Cargar Factura</a>
     </div>
-    
+
     <div class="table-responsive">
         <table class="table table-bordered table-hover" id="facturas">
             <thead>
@@ -14,8 +14,8 @@
                 <th class="text-center">Nombre</th>
                 <th class="text-center">Curso</th>
                 <th class="text-center">Costo</th>
-                <th class="text-center">Estatus Actual</th>
-                <th class="text-center">Fecha Registro</th>
+                <th class="text-center">Estatus <br/> actual</th>
+                <th class="text-center">Fecha <br/> registro</th>
                 <th class="text-center">Acciones</th>
             </tr>
             </thead>
@@ -31,26 +31,26 @@
 
                         @if($factura->status==='cargada')
                             <td class="text-center">
-                                <span class="label label-warning">{{ $factura->status }}</span>
+                                <span class="label label-warning">Cargada</span>
                             </td>
                         @else
                             @if($factura->status==='por procesar')
                                 <td class="text-center">
-                                    <span class="label label-primary">{{ $factura->status }}</span>
+                                    <span class="label label-primary">Por Procesar</span>
                                 </td>
                             @else
                                 @if($factura->status==='revisada')
                                 <td class="text-center">
-                                    <span class="label label-info">{{ $factura->status }}</span>
+                                    <span class="label label-info">Revisada</span>
                                 </td>
                                 @else
                                     @if($factura->status==='pagada')
                                         <td class="text-center">
-                                            <span class="label label-success">{{ $factura->status }}</span>
+                                            <span class="label label-success">Pagada</span>
                                         </td>
                                     @else
                                         <td class="text-center">
-                                            <span class="label label-default">{{ $factura->status }}</span>
+                                            <span class="label label-default">{{ ucwords($factura->status) }}</span>
                                         </td>
 
                                     @endif
@@ -59,7 +59,7 @@
                             @endif
                         @endif
 
-                        <td class="text-center">{{$factura->fechaCreacion()}}</td>
+                        <td class="text-center">{{ date("d/m/Y", strtotime($factura->created_at))}}</td>
 
                         <td class="text-center">
 
@@ -78,13 +78,13 @@
         </table>
     </div>
 
-</div>           
+</div>
 @endsection
 
 @section('personaljs')
 <script>
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 
@@ -115,6 +115,6 @@ $(document).ready(function(){
         }
     });
 });
-   
+
 </script>
 @endsection

@@ -1,11 +1,10 @@
 <?php
 
 namespace avaa\Http\Controllers;
-
-use avaa\User;
 use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use avaa\FactLibro;
+use avaa\Becario;
 use Illuminate\Support\Facades\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -48,47 +47,51 @@ class FactLibrosController extends Controller
     public function guardar(Request $request)
     {
         $becario = Auth::user()->becario;
-        $file= $request->file('url_factura');
-        $name = 'fact_'.Auth::user()->cedula . time() . '.' . $file->getClientOriginalExtension();
-        $path = public_path() . '/documentos/facturas/';
-        $file->move($path, $name);
-        $factura = new FactLibro();
-        $costoAux = str_replace(".","",$request->get('costo'));
-        $costoAux= str_replace(",",".",$costoAux);
-        $factura->status = "cargada";
-        $factura->costo=$costoAux;
-        $factura->name= $request->get('name');
-        $factura->curso= $request->get('curso');
-        $factura->becario_id = Auth::user()->id;
-        $factura->url= '/documentos/facturas/'.$name;
-        $factura->save();
+        //$becario= Becario::find(Auth::user()->id);
 
-        //Enviar correo a la persona notificando que fue recibido su justificativo
-        $mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->CharSet = "utf-8";
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = "TLS";
-        $mail->Host = "smtp.gmail.com";
-        $mail->Port = 587;
-        $mail->Username = "delgadorafael2011@gmail.com";
-        $mail->Password = "scxxuchujshrgpao";
-        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-        $mail->Subject = "Notificación";
-        $body = view("emails.facturas.notificacion-recibido")->with(compact("factura","becario"));
-        $mail->MsgHTML($body);
-        $mail->addAddress($becario->user->email);
-        $mail->send();
-        flash('La factura fue cargada exitosamente.','success')->important();
+        if ($becario->status == 'activo')
+        {
+            $file= $request->file('url_factura');
+            $name = 'fact_'.Auth::user()->cedula . time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path() . '/documentos/facturas/';
+            $file->move($path, $name);
+            $factura = new FactLibro();
+            $factura->status = "cargada";
+            $costoAux = str_replace(".","",$request->get('costo'));
+            $costoAux= str_replace(",",".",$costoAux);
+            $factura->costo=$costoAux;
+            $factura->name= $request->get('name');
+            $factura->curso= $request->get('curso');
+            $factura->becario_id = Auth::user()->id;
+            $factura->url= '/documentos/facturas/'.$name;
+            $factura->save();
+
+            //Enviar correo a la persona notificando que fue recibido su justificativo
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.facturas.notificacion-recibido")->with(compact("factura","becario"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+            flash('La factura fue cargada exitosamente.','success')->important();
+
+
+        } else {
+            flash('Disculpe, actualmente su status es: '.$becario->status.' no puede cargar facturas con su status actual')->error()->important();
+        }
+
+
 
         return redirect()->route('facturas.listar');
-    }
-
-    public function contarfacturaslibros($mes,$anho,$id)
-    {
-        $total = FactLibro::where('mes','=',$mes)->where('year','=',$anho)->where('becario_id','=',$id)->get();
-        return $total;
-        return response()->json(['total'=>$total]);
     }
 }

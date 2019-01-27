@@ -13,34 +13,33 @@
             {{csrf_field()}}
 
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-3 col-md-4 col-sm-6">
                     <label class="control-label" for="name">Nombre</label>
                     <input class="sisbeca-input" type="text" name="name" id="name" placeholder="Ingrese el Nombre del Libro" value="{{old('name')}}" required>
                 </div>
 
 
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-3 col-md-4 col-sm-6">
                     <label class="control-label" for="curso">Curso</label>
                     <input class="sisbeca-input" type="text" name="curso" id="curso" placeholder="Ingrese el Nombre del Curso" value="{{old('curso')}}" required>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-3 col-md-4 col-sm-6">
                     <label class="control-label" for="costo">Costo</label>
                     <input class="sisbeca-input" type="text" onkeypress="handleNumber(event, '{20,2}')" placeholder="Ingrese el Costo del Libro" size=23 value="{{number_format(old('costo'), 2, ',', '.')}}"  name="costo" required id="costo" >
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-3 col-md-4 col-sm-6">
                     <label class="control-label" for="url_factura" >Factura(PDF)</label>
                     <input class="sisbeca-input" name="url_factura" accept="application/pdf" type="file" id="url_factura" required>
                 </div>
             </div>
 
-            <hr>    
+            <hr>
 
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-12 text-right" >
-                        <a href="{{route('facturas.listar')}}" class="btn sisbeca-btn-default">Cancelar</a>
                         <button type="submit" class="btn sisbeca-btn-primary">
                             Cargar Factura
                         </button>
@@ -49,15 +48,15 @@
             </div>
 
         </form>
-     </div>
+    </div>
 
- </div>
+</div>
 
 @endsection
 
 @section('personaljs')
 <script>
-    function handleNumber(event, mask) 
+    function handleNumber(event, mask)
     {
         /* numeric mask with pre, post, minus sign, dots and comma as decimal separator
             {}: positive integer

@@ -38,7 +38,7 @@ class User extends Authenticatable
     {
         return $this->rol==='postulante_becario';
     }
-    
+
     public function esEntrevistador()
     {
         return $this->rol==='entrevistador';
@@ -112,7 +112,7 @@ class User extends Authenticatable
     }
 
     // cuando el rol es entrevistador puedo acceder a mis entrevistados
-    public function entrevistados()//probar relacion 
+    public function entrevistados()//probar relacion
     {
         return $this->belongsToMany('avaa\Becario','becarios_entrevistadores','entrevistador_id','becario_id');
     }
@@ -127,7 +127,7 @@ class User extends Authenticatable
 
     public function getFechaNacimiento()
     {
-        return date("d/m/Y", strtotime($this->fecha_nacimiento)); 
+        return date("d/m/Y", strtotime($this->fecha_nacimiento));
     }
 
     public function getEdad()
@@ -138,7 +138,7 @@ class User extends Authenticatable
     public static function findByToken($token)
     {
         $user = User::where('remember_token','=',$token)->first();
-        if(count($user)==1)
+        if($user)
         {
             return $user;
         }

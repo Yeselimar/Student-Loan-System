@@ -12,7 +12,7 @@ use avaa\User;
 use avaa\Becario;
 use avaa\Documento;
 use DateTime;
-
+use avaa\Costo;
 use avaa\Concurso;
 use Timestamp;
 class DirectivoController extends Controller
@@ -313,4 +313,40 @@ class DirectivoController extends Controller
         $desincorporacionesSistema = Desincorporacion::query()->where('tipo','sistema')->get();
         return view('sisbeca.desincorporaciones.procesarDesincorporaciones')->with('desincorporacionesSolicitud',$desincorporacionesSolicitud)->with('desincorporacionesSistema',$desincorporacionesSistema);
     }
+
+    public function listarBecariosDesincorporados()
+        {
+            $becarios = Becario::query()->where('acepto_terminos', '=', true)->where('status', ['desincorporado'])->get();
+
+            return view('sisbeca.becarios.egresados.listarDesincorporados')->with('becarios',$becarios);
+        }
+
+    //añadir este metodo
+        public function estipendioBecario()
+        {
+            $costos= Costo::first();
+            if(is_null($costos))
+            {
+                $costos = null;
+                $id=0;
+                flash('Disculpe, no se han definido los costos, por favor defínalos.')->error()->important();
+            }
+            else
+            {
+                $id=$costos->id;
+            }
+            return view('sisbeca.costos.estipendio')->with('costo',$costos)->with('id',$id);
+        }
+        public function actualizarEstipendio(Request $request)
+        {
+            $costo = Costo::first();
+            $costoVal = $request->get('estipendio');
+            $costoAux = str_replace(".","",$request->get('estipendio'));
+            $costoAux= str_replace(",",".",$costoAux);
+            $costo->sueldo_becario=$costoAux;
+
+            $costo->save();
+            return response()->json(['success'=>'El Estipendio fue actualizado exitosamente.','costo'=>$costo->sueldo_becario,'costoval'=>$costoVal]);
+        }
+
 }

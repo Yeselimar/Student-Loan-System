@@ -18,7 +18,7 @@
                         <select class="sisbeca-input" id="titulo" name="titulo" required>
                             <option value="">Seleccione</option>
                             @if(Auth::user()->rol==='becario')
-                               @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
+                            @if(Auth::user()->becario->status==='activo' || Auth::user()->becario->status==='probatorio1' ||Auth::user()->becario->status==='probatorio2' )
                                     <option value='desincorporacion temporal'>Desincorporación Temporal</option>
 
                                 @endif
@@ -32,7 +32,7 @@
                             <option value="otros">Otros</option>
                         </select>
                     </div>
-           
+
                     <div class="col-lg-12 col-md-12 col-sm-6 rendered1">
                         <label class="control-label" for="datepicker1">Fecha de Inactividad</label>
                         <input type="text" class="sisbeca-input" id="datepicker1" name="fecha_inactividad" required>
@@ -51,12 +51,11 @@
                 </div>
             </div>
 
-            <hr>    
+            <hr>
 
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-12 text-right" >
-                        <a href="#" class="btn sisbeca-btn-default">Atrás</a>
                         <button type="submit" class="btn sisbeca-btn-primary">
                             Registrar solicitud
                         </button>

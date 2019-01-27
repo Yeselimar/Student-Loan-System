@@ -90,7 +90,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
-        
+
         //Editar datos del usuario y becario
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
         Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
@@ -167,8 +167,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
-       
-        
+
+
 
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
@@ -472,6 +472,11 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>'directivo'],function ()
     {
+        Route::get('estipendioBecario',[
+            'uses' => 'DirectivoController@estipendioBecario',
+            'as' => 'estipendioBecario'
+        ]);
+        Route::post('estipendio/actualizar', 'DirectivoController@actualizarEstipendio')->name('estipendio.actualizar');
         /*Route::post('agregarObservacion/{id}', [
             'uses' => 'DirectivoController@agregarObservacion',
             'as' => 'agregarObservacion'
@@ -694,9 +699,12 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
-    {   
-        
-       
+    {
+
+        Route::get('listar/becariosDesincorporados', [
+            'uses' => 'DirectivoController@listarBecariosDesincorporados',
+            'as' => 'listar.becariosDesincorporados'
+        ]);
 
         //documento en conjunto
         Route::get('/postulante/{id}/cargar-documento-conjunto/', 'EntrevistadorController@documentoconjunto')->name('entrevistador.documentoconjunto');

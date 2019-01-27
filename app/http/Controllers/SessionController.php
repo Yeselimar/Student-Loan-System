@@ -22,11 +22,11 @@ class SessionController extends Controller
 	public function enviarcorreo(Request $request)
 	{
 		$user = User::where('email','=',$request->correo)->first();
-		if(count($user)!=0)
+		if($user)
 		{
 			$token = $user->remember_token;
 			$body = view('emails.usuarios.recuperar-contrasena')->with(compact('user','token'));
-			
+
 			$mail = new PHPMailer();
 	        $mail->SMTPDebug = 0;
 	        $mail->isSMTP();
@@ -86,7 +86,7 @@ class SessionController extends Controller
 			else
 			{
 				$user = User::where('remember_token','=',$token)->first();
-				$user->edad = 99; 
+				$user->edad = 99;
 				$user->password = bcrypt($request->contrasena_nueva);
 				$user->remember_token = str_random(10);
 				$user->save();
@@ -113,6 +113,6 @@ class SessionController extends Controller
 				return redirect('/login');
 			}
 		}
-		
+
 	}
 }

@@ -3,15 +3,15 @@
 @section('content')
 <div class="col-lg-12">
     <div class="table-responsive">
-       
+
         <table class="table table-bordered table-hover" id="solicitudes" style="border: 1px solid #eee">
             <thead>
                 <tr>
                     <th class="text-center">Tipo</th>
-                    <th class="text-center">Status proceso</th>
-                    <th class="text-center">Solicitada Por</th>
-                    <th class="text-center">Usuario Respuesta</th>
-                    <th class="text-center">Fecha Solicitud</th>
+                    <th class="text-center">Status <br> proceso</th>
+                    <th class="text-center">Solicitada <br> Por</th>
+                    <th class="text-center">Usuario <br> Respuesta</th>
+                    <th class="text-center">Fecha <br> Solicitud</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -46,19 +46,19 @@
                         </td>
 
 
-                       @if(\avaa\User::find($solicitud->usuario_respuesta))
+                    @if(\avaa\User::find($solicitud->usuario_respuesta))
                         <td class="text-center">
-                            {{ \avaa\User::find($solicitud->usuario_respuesta)->name}} 
+                            {{ \avaa\User::find($solicitud->usuario_respuesta)->name}}
                             <br> ({{\avaa\User::find($solicitud->usuario_respuesta)->email}})
                         </td>
-                       @else
+                    @else
                             <td class="text-center">
-                                <span class="label label-warning">Información no encontrada</span>
+                                <span class="label label-warning">-</span>
                             </td>
                         @endif
 
                         <td class="text-center">
-                            {{ date("d/m/Y h:i:sA", strtotime($solicitud->updated_at)) }}
+                            {{ date("d/m/Y", strtotime($solicitud->updated_at)) }}
                         </td>
 
                         <td class="text-center">
@@ -73,7 +73,7 @@
                 @endif
             </tbody>
         </table>
-       
+
     </div>
 </div>
 @endsection

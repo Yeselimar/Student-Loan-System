@@ -10,8 +10,8 @@
         <thead>
             <tr>
             <th class="text-center">Tipo</th>
-            <th class="text-center">Estatus Actual</th>
-            <th class="text-center">Fecha Enviada</th>
+            <th class="text-center">Estatus <br/> actual</th>
+            <th class="text-center">Fecha <br/> enviada</th>
             <th class="text-center">Acciones</th>
             </tr>
         </thead>
@@ -23,21 +23,21 @@
 
                     @if($solicitud->status==='enviada')
                         <td class="text-center">
-                            <span class="label label-warning">{{ $solicitud->status }}</span>
+                            <span class="label label-info">Enviada</span>
                         </td>
                     @else
                         @if($solicitud->status==='aceptada')
                             <td class="text-center">
-                                <span class="label label-success">{{ $solicitud->status }}</span>
+                                <span class="label label-success">Aceptada</span>
                             </td>
                         @else
                             <td class="text-center">
-                                <span class="label label-danger">{{ $solicitud->status }}</span>
+                                <span class="label label-danger">Rechazada</span>
                             </td>
                         @endif
                     @endif
 
-                    <td class="text-center">{{ $solicitud->fechaActualizacion() }}</td>
+                    <td class="text-center">{{ date("d/m/Y", strtotime($solicitud->created_at)) }}</td>
 
                     <td class="text-center">
                         <a href="{{route('solicitud.edit',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Solicitud"><i class='fa fa-eye'></i>
@@ -60,7 +60,7 @@
 @section('personaljs')
 <script>
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 

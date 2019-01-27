@@ -239,14 +239,17 @@
                   Estatus: <span class="label label-success"> Aceptada</span>
                 </p>
                 @endif
-                <p><b>Datos de Solicitud:</b></p>
+                <p class="text-left"><b>Datos de Solicitud:</b></p>
                 <div class="d-flex flex-column">
-                <p><b>Fecha Solicitud: </b> {{date("d/m/Y", strtotime($solicitud->created_at))}}</p>
-                <p><b>Tipo: </b>{{$solicitud->titulo}}</p>
-                <p><b>Descripción: </b>{{$solicitud->descripcion}}</p>
+                <p class="text-left pl-5"><b>Fecha Solicitud: </b> {{date("d/m/Y", strtotime($solicitud->created_at))}}</p>
+                <p class="text-left pl-5"><b>Tipo: </b>{{strtoupper( $solicitud->titulo)}}</p>
+                <hr class="w-100">
+                <p class="text-left pl-5"><b>Descripción de Solicitud: </b>{{$solicitud->descripcion}}</p>
+
                 @if($solicitud->observacion)
-                <p>
-                  Observación: <span class="label label-info"> {{$solicitud->observacion}}</span>
+                <hr class="w-100"/>
+                <p class="text-left pl-5">
+                  <b>Observación de la Respueta:</b> {{$solicitud->observacion}}
                 </p>
                 @endif
                 </div>
@@ -320,7 +323,7 @@
                                             <strong>#Solicitud: </strong>
                                             00{{$solicitud->id}}
                                         </p>
-                                       
+
                                     </div>
 
                                 </div>
@@ -394,7 +397,8 @@
 </div>
 <!-- Modal para eliminar -->
 
-@endsection @if($solicitud->status==='enviada' &&
+@endsection
+@if($solicitud->status==='enviada' &&
 !is_null(avaa\Alerta::query()->where('solicitud','=',$solicitud->id)->where('leido','=',false)->first()))
 @section('personaljs')
 <script>
@@ -432,7 +436,7 @@
               $(".rendered1").show();
               $(".rendered2").hide();
               @if(!is_null($solicitud->fecha_inactividad))
-                 document.getElementById("datepicker1").value = "{{date('d/m/Y', strtotime($solicitud->fecha_inactividad))}}";
+                document.getElementById("datepicker1").value = "{{date('d/m/Y', strtotime($solicitud->fecha_inactividad))}}";
                       @endif
               document.getElementById("datepicker2").value = null;
               $("#datepicker2").removeAttr('required');
@@ -525,4 +529,5 @@
       maxDate: "+1M +0D",
   });
 </script>
-@endsection @endif
+@endsection
+@endif

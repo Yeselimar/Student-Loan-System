@@ -158,6 +158,7 @@
                         </ul>
                     </li>
                     <li class="nav-label">Gestionar</li>
+                    <li> <a class="has-arrow none-list" href="{{route('estipendioBecario')}}" aria-expanded="false"><i class="fa fa-usd"></i><span class="hide-menu">Estipendio</span></a>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nomina
                                 @if($numNominas>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numNominas}}</span>
@@ -256,7 +257,7 @@
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-eject"></i><span class="hide-menu">Egresados</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{route('listar.becariosGraduados')}}">Graduados</a></li>
-                                <li><a href="{{route('listar.becariosInactivos')}}">Inactivos</a></li>
+                                <li><a href="{{route('listar.becariosDesincorporados')}}">Desincorporados</a></li>
                             </ul>
                         </li>
                         @endif

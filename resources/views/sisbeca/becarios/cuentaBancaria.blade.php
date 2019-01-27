@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Cuentaa Bancaria')
+@section('title','Cuenta Bancaria')
 @section('subtitle','Cuenta Bancaria')
 @section('content')
 
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>    
+                        <hr>
 
                         <div class="form-group">
                             <div class="row">

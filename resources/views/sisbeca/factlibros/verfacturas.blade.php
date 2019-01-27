@@ -21,10 +21,10 @@
                         <th class="text-left">Curso</th>
                         <th class="text-center">Estatus</th>
 
-                        <th class="text-center">Fecha Registro</th>
+                        <th class="text-center">Fecha <br>Registro</th>
                         <th class="text-center">Revisar</th>
                         <th class="text-right">Costo</th>
-                        
+
                     </tr>
                 </thead>
                 @if($factlibros->count() > 0)
@@ -40,7 +40,7 @@
                             <td class="text-left"> {{ $facturas->curso }} </td>
                             <td class="text-center"> {{ ucwords($facturas->status) }} </td>
 
-                            <td class="text-center">{{ date("d/m/Y h:i:s A", strtotime($facturas->created_at)) }}</td>
+                            <td class="text-center">{{ date("d/m/Y", strtotime($facturas->created_at)) }}</td>
                             <td class="text-center">
                                 <a  href="{{asset($facturas->url)}}" target="_blank" title="Ver Factura" class='btn btn-xs sisbeca-btn-primary pull-center '>Factura</a>
                             </td>
@@ -63,8 +63,8 @@
                 <input class="btn btn-md sisbeca-btn-primary pull-right"  style="margin-left: 5px;" type="submit" value="Procesar Factura(s)">
             </div>
         </form>
-       
-   </div>
+
+</div>
 </div>
 @endsection
 

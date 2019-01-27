@@ -11,7 +11,7 @@
         <form class="form-horizontal" accept-charset="UTF-8" method="POST" action="{{route('costos.update',$id)}}">
 
             {{csrf_field()}}
-           
+
 
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12">
@@ -57,7 +57,6 @@
 
             <div class="form-group">
                 <div class="col-lg-12 text-right" >
-                    <a href="{{route('costos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
                     <input class="btn sisbeca-btn-primary" type="submit" value="Actualizar Costos">
                 </div>
             </div>
