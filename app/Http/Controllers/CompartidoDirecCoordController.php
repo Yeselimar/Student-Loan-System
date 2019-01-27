@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use avaa\BecarioEntrevistador;
 use avaa\Concurso;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class CompartidoDirecCoordController extends Controller
 {
@@ -241,6 +243,7 @@ class CompartidoDirecCoordController extends Controller
     public function gestionSolicitudUpdate(Request $request, $id)
     {
         $solicitud = Solicitud::find($id);
+        $becario = Becario::find($solicitud->user_id);
         if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
             $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactvo'])->get();
@@ -383,6 +386,25 @@ class CompartidoDirecCoordController extends Controller
             $solicitud->observacion = $request->get('observacion');
         }
         $solicitud->save();
+
+        //Enviar correo a la persona notificando
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.solicitudes.notificacion-estatus")->with(compact("solicitud","becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+
         event(new SolicitudesAlerts($solicitud));
         Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
 
