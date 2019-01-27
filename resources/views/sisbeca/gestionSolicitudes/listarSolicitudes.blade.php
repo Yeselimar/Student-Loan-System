@@ -57,8 +57,8 @@
                             </td>
                         @endif
 
-                        <td class="text-center">
-                            {{ date("d/m/Y", strtotime($solicitud->updated_at)) }}
+                        <td class="text-center" data-order="{{date('d/m/Y H:i:s', strtotime($solicitud->created_at))}}">
+                            {{ date("d/m/Y h:i a", strtotime($solicitud->created_at)) }}
                         </td>
 
                         <td class="text-center">
@@ -118,7 +118,8 @@ $(document).ready(function(){
                 "next": '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                 "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
             }
-        }
+        },
+        "order": [[ 4, 'desc' ]],
     });
 });
 </script>

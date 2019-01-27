@@ -201,9 +201,10 @@ class CompartidoDirecCoordController extends Controller
         {
             $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo','desincorporado','egresado'])->get();
             $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
-            if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
-            {
+            /* if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
+         {
                 $mentoresNuevos= Mentor::all();
+
                 $collection = collect();
                 foreach ($mentoresNuevos as $mentor)
                 {
@@ -212,6 +213,7 @@ class CompartidoDirecCoordController extends Controller
                         $collection->push($mentor);
                     }
                 }
+                dd($collection);
             }
             else
             {
@@ -223,8 +225,9 @@ class CompartidoDirecCoordController extends Controller
             }
             $listMentoresA = $collection->pluck('user_id')->toArray();
             $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
-            $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray();
-            $solicitudes = Solicitud::query()->whereIn('user_id',$listaBecariosA)->orWhereIn('user_id',$listaMentoresA)->get();
+            $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray(); */
+            $solicitudes = Solicitud::query()->get();
+           // dd($solicitudes);
             return view('sisbeca.gestionSolicitudes.listarSolicitudes')->with('solicitudes',$solicitudes);
         }
 
@@ -244,7 +247,7 @@ class CompartidoDirecCoordController extends Controller
         public function gestionSolicitudUpdate(Request $request, $id)
         {
             $solicitud = Solicitud::find($id);
-            $becario = Becario::find($solicitud->user_id);
+            $usuario= Auth::user();
             if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
             {
                 $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
@@ -403,9 +406,9 @@ class CompartidoDirecCoordController extends Controller
             $mail->Password = "scxxuchujshrgpao";
             $mail->setFrom("no-responder@avaa.org", "Sisbeca");
             $mail->Subject = "Notificación";
-            $body = view("emails.solicitudes.notificacion-estatus")->with(compact("solicitud","becario"));
+            $body = view("emails.solicitudes.notificacion-estatus")->with(compact("solicitud","usuario"));
             $mail->MsgHTML($body);
-            $mail->addAddress($becario->user->email);
+            $mail->addAddress($usuario->email);
             $mail->send();
 
             event(new SolicitudesAlerts($solicitud));
