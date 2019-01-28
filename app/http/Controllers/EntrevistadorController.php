@@ -196,6 +196,8 @@ class EntrevistadorController extends Controller
 			}
 		}
 
+		$becario = Becario::find($id);
+		
 		//Enviar correo a la persona notificando
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;

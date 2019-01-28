@@ -27,7 +27,7 @@
 				<td class="text-center">
 					<template v-if="postulante.entrevistadores">
 						<template v-for="entrevistador in postulante.entrevistadores">
-								<span class="label label-default">@{{ entrevistador.name}} @{{ entrevistador.last_name}}</span>&nbsp;
+								@{{ entrevistador.name}} @{{ entrevistador.last_name}};&nbsp;
 						</template>
 					</template>
 					<template v-if="postulante.entrevistadores.length==0">
@@ -50,6 +50,7 @@
 							<span class="label label-default">Sin Hora</span>
 						</template>
 						&nbsp;
+						<br>
 						<template v-if="postulante.lugar_entrevista!=null">
 							<span class="label label-inverse">@{{ postulante.lugar_entrevista }}</span>
 						</template>

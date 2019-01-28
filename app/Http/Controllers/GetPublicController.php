@@ -94,7 +94,7 @@ class GetPublicController extends Controller
         $anho = '2019';
         $mes = 1;
         $id=6;
-        $becario = Becario::find(92);
+        $becario = Becario::find(81);
         return $becario->entrevistadores;
         $periodos = DB::table('periodos')
             ->orderby('periodos.fecha_inicio','desc')

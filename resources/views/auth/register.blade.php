@@ -31,10 +31,10 @@
     <div class="header">
         @include('sisbeca.layouts.partials.navtop')
     </div>
-
+    <br>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-5">
+            <div class="col-lg-5" style="padding-left: 0px;padding-right: 0px;">
         
                 @include('flash::message')
 
@@ -205,7 +205,7 @@
        <div class="modal-dialog">
            <div class="modal-content-ment">
                 <div class="text-center"> 
-                    <img src="{{asset('images/postulacion-becario.png')}}">
+                    <img src="{{asset('images/postulacion-becario.png')}}" class="img-responsive">
                 </div>
            </div>
        </div>
