@@ -32,7 +32,7 @@ class UserController extends Controller
             'name' 				=> 'required|min:2,max:255',
             'last_name'			=> 'required|min:2,max:255',
             'cedula' 		 	=> 'required|integer|between:0,99000000',
-            'email' 			=> 'required|email',
+            'email' 			=> 'required|email'
         ]);
         $usuario->name = $request->nombres;
         $usuario->save();

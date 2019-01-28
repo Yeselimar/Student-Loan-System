@@ -167,8 +167,9 @@
             	toastr.success(response.data.success);
             }).catch( error =>
             {
+            	this.errores = error.response.data.errors;
                 toastr.error("Disculpe, verifique el formulario");
-                this.errores = error.response.data.errors;
+                
             });
     	}
 

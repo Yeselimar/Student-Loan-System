@@ -87,7 +87,7 @@
 				</td>
 			</tr>
 			<tr v-if="postulantes.length==0">
-				<td colspan="4" class="text-center">No hay <strong>postulantes a entrevistas</strong></td>
+				<td colspan="5" class="text-center">No hay <strong>postulantes a entrevistas</strong></td>
 			</tr>
 			</tbody>
 		</table>
