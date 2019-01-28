@@ -26,16 +26,14 @@ class UserController extends Controller
 
     public function actualizardatos(Request $request,$id)
     {
-    	$becario = Becario::find($id);
-    	$usuario = User::find($id);
         $request->validate([
-            'name' 				=> 'required|min:2,max:255',
-            'last_name'			=> 'required|min:2,max:255',
-            'cedula' 		 	=> 'required|integer|between:0,99000000',
-            'email' 			=> 'required|email'
+            'sexo' 			=> 'required'
         ]);
-        $usuario->name = $request->nombres;
+        $becario = Becario::find($id);
+        $usuario = User::find($id);
+        $usuario->sexo = $request->sexo;
         $usuario->save();
+
         return response()->json(['success'=>'Sus datos fueron actualizados']);
     }
 }

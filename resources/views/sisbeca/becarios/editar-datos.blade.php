@@ -27,22 +27,32 @@
 				<div class="row" >
 					<div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Nombres</label>
-                       	<input type="text" name="name" class="sisbeca-input" :value="name">
+                       	<input type="text" disabled="disabled" name="name" class="sisbeca-input sisbeca-disabled" v-model="name">
                        	<span v-if="errores.name" :class="['label label-danger']">@{{ errores.name[0] }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Apellidos</label>
-                       	<input type="text" name="last_name" class="sisbeca-input" :value="last_name">
+                       	<input type="text" disabled="disabled" name="last_name" class="sisbeca-input sisbeca-disabled" v-model="last_name">
                        	<span v-if="errores.last_name" :class="['label label-danger']">@{{ errores.last_name[0] }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">Cédula</label>
-                       	<input type="text" name="nombreyapellido" class="sisbeca-input" :value="cedula">
-                       	<span v-if="errores.cedula" :class="['label label-danger']">@{{ errores.cedula[0] }}</span>
+                        <label class="control-label">Correo Electrónico</label>
+                        <input type="text" disabled="disabled" name="email" class="sisbeca-input sisbeca-disabled" v-model="email">
+                        <span v-if="errores.email" :class="['label label-danger']">@{{ errores.email[0] }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
+                        <label class="control-label">Cédula</label>
+                       	<input type="text" disabled="disabled" name="nombreyapellido" class="sisbeca-input sisbeca-disabled" v-model="cedula">
+                       	<span v-if="errores.cedula" :class="['label label-danger']">@{{ errores.cedula[0] }}</span>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Sexo</label>
-                       	<input type="text" name="sexo" class="sisbeca-input" :value="sexo">
+                       	<select v-model="sexo" class="sisbeca-input">
+                          <option disabled value="">Please select one</option>
+                          <option>femenino</option>
+                          <option>masculino</option>
+                        </select>
                        	<span v-if="errores.sexo" :class="['label label-danger']">@{{ errores.sexo[0] }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -50,11 +60,7 @@
 	                    <date-picker class="sisbeca-input" name="fecha_nacimiento" v-model="fecha_nacimiento" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
 	                    <span v-if="errores.fecha_nacimiento" :class="['label label-danger']">@{{ errores.fecha_nacimiento[0] }}</span>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">Correo Electrónico</label>
-                       	<input type="text" name="email" class="sisbeca-input" :value="email">
-                       	<span v-if="errores.email" :class="['label label-danger']">@{{ errores.email[0] }}</span>
-                    </div>
+                    
 				</div>
 			</div>
 
@@ -144,33 +150,26 @@
     	guardar()
     	{
     		var id = '{{$becario->user_id}}';
-            var url = "{{ route('becarios.actualizar.datos',':id' ) }}";
-            url = url.replace(':id', id);
-    		let data = JSON.stringify({
-                name: this.name,
-                last_name: this.last_name,
-                cedula: this.cedula,
-                sexo: this.sexo,
-                fecha_nacimiento: this.fecha_nacimiento,
-                email: this.email,
+        var url = "{{ route('becarios.actualizar.datos',':id' ) }}";
+        url = url.replace(':id', id);
 
-            });
-            console.log(this.email);
-            axios.post(url,data,{
-            headers:
-            {
-                'Content-Type': 'application/json',
-            } 
-            }).then(response => 
-            {
-            	this.errores=[];
-            	toastr.success(response.data.success);
-            }).catch( error =>
-            {
-            	this.errores = error.response.data.errors;
-                toastr.error("Disculpe, verifique el formulario");
-                
-            });
+    		var dataform = new FormData();
+        dataform.append('sexo', this.sexo);
+        dataform.append('fecha_nacimiento', this.fecha_nacimiento);
+        console.log(url);
+        axios.post(url,dataform).then(response => 
+        {
+          //toastr.success(response.data.success);
+          console.log("aqui");
+        	this.errores=[];
+        	toastr.success(response.data.success);
+          
+        }).catch( error =>
+        {
+        	this.errores = error.response.data.errors;
+          toastr.error("Disculpe, verifique el formulario");
+            
+        });
     	}
 
     }

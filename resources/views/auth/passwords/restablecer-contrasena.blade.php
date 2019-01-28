@@ -30,11 +30,11 @@
     <div class="header">
         @include('sisbeca.layouts.partials.navtop')
     </div>
-
+    <br>
     <div class="unix-login">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-6 col-sm-7">
+                <div class="col-lg-5 col-md-6 col-sm-7" style="padding-left: 0px;padding-right: 0px;">
                     <div class="login-content panel panel-default">
                         <div class="panel-heading" align="center">
                             <h2 style="color: white"> Restablecer Contraseña</h2>
