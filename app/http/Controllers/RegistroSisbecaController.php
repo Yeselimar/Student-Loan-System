@@ -28,8 +28,6 @@ class RegistroSisbecaController extends Controller
         $cedula_existe = User::where('cedula','=',$request->cedula)->first();
         if(empty($email_existe) and empty($cedula_existe))
         {  
-            return "epale";
-
         	$user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -108,7 +106,6 @@ class RegistroSisbecaController extends Controller
         $cedula_existe = User::where('cedula','=',$request->cedula)->first();
         if(empty($email_existe) and empty($cedula_existe))
         {
-            return "epale";
         	$user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
