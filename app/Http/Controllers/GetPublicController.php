@@ -52,7 +52,7 @@ class GetPublicController extends Controller
             $mail->isSMTP();
             $mail->Timeout  = 60;
             $mail->CharSet = "utf-8";
-            $mail->SMTPAuth = true; 
+            $mail->SMTPAuth = true;
             $mail->SMTPSecure = "TLS";
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 587;
@@ -81,7 +81,7 @@ class GetPublicController extends Controller
             $error = "02";
             //return "enviado".$mail->ErrorInfo;
         }*/
-        
+
     }
 
     public function sendmail(Request $request)
@@ -90,12 +90,12 @@ class GetPublicController extends Controller
     }
 
     public function prueba()
-    {   
+    {
         $anho = '2019';
         $mes = 1;
         $id=6;
-        $becario = Becario::find(83);
-        return $becario->fechaEntrevista();
+        $becario = Becario::find(92);
+        return $becario->entrevistadores;
         $periodos = DB::table('periodos')
             ->orderby('periodos.fecha_inicio','desc')
             ->selectRaw('*,periodos.fecha_inicio as fecha,periodos.created_at as fecha_carga')
@@ -202,7 +202,7 @@ class GetPublicController extends Controller
             $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
             $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($actividades->fecha)));
             $desde = $fechainicial->diff($fechafinal);
-            
+
             if($desde->y==0)//año
             {
                 if($desde->m==0)//mes
@@ -252,16 +252,16 @@ class GetPublicController extends Controller
             ->whereYear('voluntariados.fecha', '=', $anho)
             //->whereMonth('voluntariados.fecha', '=', $mes)
             ->orderby('voluntariados.fecha','asc');
-            
+
         })->first();
 
         $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
             $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
         $todos = collect();
         $todos->push(array(
-                
+
                 'horas_voluntariados' => $horas_voluntariado,
-               
+
                    'id' => $becario->user->id,
                    'nombreyapellido' => $becario->user->nombreyapellido())
             );
@@ -278,7 +278,7 @@ class GetPublicController extends Controller
             ->whereYear('periodos.created_at', '=', $anho)
             //->whereMonth('periodos.created_at', '=', $mes)
             ->orderby('periodos.created_at','asc');
-            
+
         })->count();
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
         $todos = collect();
@@ -297,9 +297,9 @@ class GetPublicController extends Controller
                 ->whereYear('voluntariados.fecha', '=', $anho)
                 //->whereMonth('voluntariados.fecha', '=', $mes)
                 ->orderby('voluntariados.fecha','asc');
-                
+
             })->first();
-            
+
             $todos->push(array(
                 'nivel_carrera' => '0',
                 'horas_voluntariados' => ($voluntariados->horas_voluntariado==null) ? 0 : $voluntariados->horas_voluntariado,
@@ -327,7 +327,7 @@ class GetPublicController extends Controller
                 ->whereYear('voluntariados.fecha', '=', $anho)
                 //->whereMonth('voluntariados.fecha', '=', $mes)
                 ->orderby('voluntariados.fecha','asc');
-                
+
             })->first();
         //return response()->json($voluntariados);
         $cursos = DB::table('cursos')
@@ -343,7 +343,7 @@ class GetPublicController extends Controller
             ->whereYear('cursos.created_at', '=', $anho)
             //->whereMonth('cursos.created_at', '=', $mes)
             ;
-            
+
         })->first();
         $cursos2 = DB::table('cursos')
             ->where('aval.tipo','=','nota')
@@ -358,7 +358,7 @@ class GetPublicController extends Controller
             ->whereYear('cursos.created_at', '=', $anho)
             //->whereMonth('cursos.created_at', '=', $mes)
             ;
-            
+
         })->first();
         $periodo = DB::table('periodos')
             ->where('aval.tipo','=','constancia')
@@ -429,7 +429,7 @@ class GetPublicController extends Controller
             ->where('voluntariados.becario_id','=',$id)
             ->whereYear('voluntariados.fecha', '=', $anho)
             ->orderby('voluntariados.fecha','asc');
-            
+
         })->get();
         $cursos = DB::table('cursos')
             ->where('aval.tipo','=','nota')
@@ -443,7 +443,7 @@ class GetPublicController extends Controller
             ->where('cursos.becario_id','=',$id)
             ->whereYear('cursos.created_at', '=', $anho)
             ;
-            
+
         })->get();*/
         return $cursos;
         return $voluntariados;
@@ -559,7 +559,7 @@ class GetPublicController extends Controller
         $ab = ActividadBecario::paraAval(2)->first();
         $ab->estatus = "asistio";
         //$ab->save();
-        
+
         $actividad = $ab->actividad;
         $becario = $aval->becario;
 
@@ -591,7 +591,7 @@ class GetPublicController extends Controller
 
         return "bien";*/
         //$client = new Client();
-       
+
         //return response()->json(route('enviarcorreo'));
         /*$client = new \GuzzleHttp\Client();
         $request = $client->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
@@ -606,7 +606,7 @@ class GetPublicController extends Controller
                 'cuerpo' => view("emails.contacto.info")->with(compact("data")),
             ]
         ]);*/
-       
+
         /*Mail::send('emails.change_password', array(
             //'user_names'     => $enterprise_name,
             'email'     => $enterprise_email,
@@ -646,7 +646,7 @@ class GetPublicController extends Controller
         //$hora = date("h:i A", strtotime("3:22 PM"));
         //$fecha = "14/02/1993".' '.date("h:i a", strtotime("3:22 PM"));
         //$fechan = DateTime::createFromFormat('d/m/Y h:i A', $fecha )->format('Y-m-d H:i:s');
-        //return response()->json( date("h:i a", strtotime($hora)) ); 
+        //return response()->json( date("h:i a", strtotime($hora)) );
         /*$entrevistadores = User::entrevistadores()->get();
         return $entrevistadores;
         */
@@ -716,7 +716,7 @@ class GetPublicController extends Controller
         return "exitoo";
         */
 
-        
+
         /*try
         $mail = new PHPMailer(true);
         {*/
@@ -725,7 +725,7 @@ class GetPublicController extends Controller
             $mail->SMTPDebug = 0;
             //$mail->Timeout  = 60;
             $mail->CharSet = "utf-8";
-            $mail->SMTPAuth = true; 
+            $mail->SMTPAuth = true;
             $mail->SMTPSecure = "tls";
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 587;
@@ -760,7 +760,7 @@ class GetPublicController extends Controller
             //return "enviado".$mail->ErrorInfo;
         }
         die('success');*/
-        
+
         //relación de becarios a actividades
         /*
         $becario = Becario::find(8);
@@ -778,7 +778,7 @@ class GetPublicController extends Controller
           $join->on('cursos.aval_id','=','aval.id')
             ->where('cursos.becario_id','=',$id)
             ;
-            
+
         })->first();
         return $curso->modulo.' - '.$curso->modo;
         */

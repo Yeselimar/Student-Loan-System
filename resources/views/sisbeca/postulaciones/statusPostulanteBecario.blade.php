@@ -18,6 +18,7 @@
                                 <div class="alert  alert alert-info" role="alert">
                                         Su postulación ha sido revisada y usted ha sido seleccionado para ir a Entrevista
                                 </div>
+                               
                                     <p> <b>Estatus: </b> <span class="label label-warning">Aprobado para Entrevista</span></p>
                                     <p> <b>Datos para la Entrevista:</b></p>
                                     <p> <b>Fecha: </b> {{$postulante->fechaEntrevista()}}</p>
