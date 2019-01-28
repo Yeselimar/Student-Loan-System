@@ -4,7 +4,7 @@
 
 
 <div class="text-right col-12" align="right" >
-<a href="{{URL::previous()}}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+<a href="{{URL::previous()}}" class=" btn btn-sm sisbeca-btn-primary">Atrás.</a>
 </div>
 <div class="col-lg-12">
     <div class="card card-body bg-light border border-info p-2" >
@@ -550,10 +550,11 @@
                             <table class="table table-bordered">
                                 <tbody>
 
-                                @foreach( $postulante->entrevistadores as $entrevistador)
+                                @foreach($postulante->entrevistadores as $entrevistador)
                                 <tr>
                                         <td class="text-left"><strong> {{$entrevistador->nombreyapellido()}}</strong></td>
                                         <td class="text-left"> <a class="btn btn-xs sisbeca-btn-primary" href="{{asset($entrevistador->documento)}}">Ver Informe</a></td>
+                                        <!-- <td class="text-left"> {{$entrevistador->documento}}</td> -->
                                 </tr>
                                 @endforeach
                                 <tr>
