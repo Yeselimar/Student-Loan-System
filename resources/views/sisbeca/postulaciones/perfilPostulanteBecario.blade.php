@@ -550,16 +550,10 @@
                             <table class="table table-bordered">
                                 <tbody>
 
-                                @foreach( $entrevistadores as $entrevistador)
+                                @foreach( $postulante->entrevistadores as $entrevistador)
                                 <tr>
-                                        <td class="text-left"><strong> Informe de {{$entrevistador->user->nombreyapellido()}}</strong></td>
-                                        <td class="text-left">
-                                            @if(!is_null($entrevistador->documento))
-                                            <a target="_blank" href="{{asset($entrevistador->documento)}}" class="btn btn-xs sisbeca-btn-primary"> Ver Informe</a>
-                                            @else
-                                            <span class="label label-default"><strong>No ha cargado Documento</strong></span>
-                                            @endif
-                                        </td>
+                                        <td class="text-left"><strong> {{$entrevistador->nombreyapellido()}}</strong></td>
+                                        <td class="text-left"> <a class="btn btn-xs sisbeca-btn-primary" href="{{asset($entrevistador->documento)}}">Ver Informe</a></td>
                                 </tr>
                                 @endforeach
                                 <tr>

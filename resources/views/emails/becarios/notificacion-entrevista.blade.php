@@ -15,12 +15,12 @@
 	<li><strong>Hora:</strong> {{$becario->horaEntrevistaCorta()}}</li>
 	<li><strong>Lugar:</strong> {{$becario->lugar_entrevista}}</li>
 	<li><br></li>
-	@if(count($becario->entrevistadores)!=0)
+	<!-- @if(count($becario->entrevistadores)!=0) -->
 		<li><strong>Entrevistadores:</strong></li>
 		@foreach($becario->entrevistadores as $index=>$entrevistador)
 		<li><strong>{{$index+1}}.</strong> {{$entrevistador->nombreyapellido()}}</li>
 		@endforeach
-	@endif
+	<!-- @endif -->
 	<li><br></li>
 	<li>Cualquier cambio en su entrevista, se la notificaremos.</li>
 </ul>
