@@ -95,6 +95,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
         Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
         Route::post('/becario/{id}/actualizar-datos', 'UserController@actualizardatos')->name('becarios.actualizar.datos');
+        Route::post('/becario/{id}/actualizar-universidad', 'UserController@actualizaruniversidad')->name('becarios.actualizar.universidad');
 
         //resumen becario y reporte general
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');

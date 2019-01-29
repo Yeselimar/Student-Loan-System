@@ -78,7 +78,7 @@ class ActividadController extends Controller
         $justificativos = ActividadBecario::where('actividad_id','=',$id)->where('aval_id','!=','null')->orderby('created_at','desc')->with("user")->with("actividad")->with("aval")->get();
         return response()->json(['justificativos'=>$justificativos]);
     }
-
+    
     public function actulizarestatus(Request $request,$actividad_id,$becario_id)
     {
         $becario = Becario::find($becario_id);
