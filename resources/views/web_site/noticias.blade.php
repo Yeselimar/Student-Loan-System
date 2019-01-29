@@ -37,7 +37,7 @@
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"  style="margin-bottom: 10px;">
             <a href="{{route('showNoticia',$noticia->slug)}}">
             <div  style="border: 1px solid #021f3a;padding-right: 0px;padding-left: 0px;">
-              <img style="width: 100%;height: auto;" src="{{asset($noticia->url_imagen)}}">
+              <img style="width: 100%;height: auto;" src="{{asset($noticia->url_imagen)}}" alt="{{$noticia->titulo}}">
               <div style="padding:10px; ">
                 <p class="h4" style="color:#021f3a" data-mh="noticia-titulo">
                   <strong>{{ $noticia->titulo }}</strong>

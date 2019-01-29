@@ -38,13 +38,14 @@ class UserController extends Controller
             'lugar_trabajo' => 'min:0,max:255',
             'cargo_trabajo' => 'min:0,max:255',
             'lugar_trabajo' => 'min:0,max:255',
-            'horas_trabajo' => 'integer|between:0,250'
+            'horas_trabajo' => 'integer'
         ]);
         $becario = Becario::find($id);
         $usuario = User::find($id);
 
         $usuario->fecha_nacimiento = DateTime::createFromFormat('d/m/Y', $request->fecha_nacimiento )->format('Y-m-d');
         $usuario->sexo = $request->sexo;
+        $usuario->estatus = $request->estatus;
         $usuario->save();
         $becario->direccion_permanente = $request->direccion_permanente;
         $becario->direccion_temporal = $request->direccion_temporal;
@@ -66,7 +67,7 @@ class UserController extends Controller
         }
         $becario->save();
 
-        return response()->json(['success'=>'Los datos personales del cecario fueron actualizados.']);
+        return response()->json(['success'=>'Los datos personales del becario fueron actualizados.']);
     }
 
     public function actualizaruniversidad(Request $request, $id)
@@ -83,8 +84,20 @@ class UserController extends Controller
         $becario->nombre_universidad = $request->nombre_universidad;
         $becario->carrera_universidad = $request->carrera_universidad;
         $becario->promedio_universidad = $request->promedio_universidad;
+        $becario->regimen = $request->regimen;
         $becario->save();
 
-        return response()->json(['success'=>'Los estudios universitarios del decario fueron actualizados.']);
+        return response()->json(['success'=>'Los estudios universitarios del becario fueron actualizados.']);
     }
-}
+
+    public function actualizarestatusbecario(Request $request, $id)
+    {
+        $becario = Becario::find($id);
+        $usuario = User::find($id);
+        $usuario->estatus = $request->usuario_estatus;
+        $usuario->save();
+        $becario->status = $request->becario_estatus;
+        $becario->save();
+        return response()->json(['success'=>'El estatus del becario fue actualizado.']);
+    }
+}   

@@ -15,7 +15,7 @@
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 mix design print">
                         <div class="portfolio-item">
                             <div class="shot-item">
-                                <img src="{{asset($noticia->url_imagen)}}" alt="Noticia" />
+                                <img src="{{asset($noticia->url_imagen)}}" alt="{{$noticia->titulo}}" />
                                 <a class="overlay lightbox" href="{{asset($noticia->url_imagen)}}">
                                     <i class="lnr lnr-eye item-icon"></i>
                                 </a>
