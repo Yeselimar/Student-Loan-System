@@ -23,6 +23,7 @@
                     <tr>
                         <td>
                             {{$noticia->titulo}}
+                            <br>
                             @if($noticia->esDestacada())
                                 <span class="label label-success">Destacada</span>
                             @else
