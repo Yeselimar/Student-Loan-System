@@ -95,7 +95,10 @@ class GetPublicController extends Controller
         $mes = 1;
         $id=6;
         $becario = Becario::find(81);
-        return $becario->entrevistadores;
+        $usuario = User::find(6);
+        $usuario->fecha_nacimiento = DateTime::createFromFormat('d/m/Y', "14/03/1995" )->format('Y-m-d');
+        $usuario->save();
+        return $usuario;
         $periodos = DB::table('periodos')
             ->orderby('periodos.fecha_inicio','desc')
             ->selectRaw('*,periodos.fecha_inicio as fecha,periodos.created_at as fecha_carga')

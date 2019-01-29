@@ -68,7 +68,7 @@
 
 					<td class="text-center">
 							
-							<a href="{{route('becarios.actualizar.datos',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Editar Datos">
+							<a href="{{route('becarios.editar.datos',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Editar Datos del Becarios">
 								<i class='fa fa-pencil'></i>
 							</a>
 							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver Perfil">
