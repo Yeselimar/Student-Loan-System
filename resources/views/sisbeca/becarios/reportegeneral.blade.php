@@ -118,9 +118,9 @@
 				</template>
 
 				<template slot="actions" slot-scope="row">
-					<div class="circulo-rojo">
+					<!--<div class="circulo-rojo">
 						<p class="circulo-texto">1</p>
-					</div>
+					</div>-->
 				</template>
 				
 			</b-table>

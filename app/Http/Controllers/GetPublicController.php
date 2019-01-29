@@ -92,13 +92,15 @@ class GetPublicController extends Controller
     public function prueba()
     {
         $anho = '2019';
-        $mes = 1;
+        $mes = 2;
         $id=6;
         $becario = Becario::find(81);
+        $periodos = Periodo::paraBecario($id)->delAnho($anho)->delMes($mes)->ordenadoPorPeriodo('asc')->with('aval')->with('materias')->get();//corregido
+        //$periodos = Periodo::paraBecario($id)->delAnho($anho)->ordenadoPorPeriodo('asc')->with('aval')->with('materias')->get();//corregido
+        return $periodos;
         $usuario = User::find(6);
         $usuario->fecha_nacimiento = DateTime::createFromFormat('d/m/Y', "14/03/1995" )->format('Y-m-d');
         $usuario->save();
-        return $usuario;
         $periodos = DB::table('periodos')
             ->orderby('periodos.fecha_inicio','desc')
             ->selectRaw('*,periodos.fecha_inicio as fecha,periodos.created_at as fecha_carga')
