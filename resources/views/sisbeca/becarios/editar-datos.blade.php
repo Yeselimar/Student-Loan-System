@@ -49,7 +49,7 @@
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Sexo</label>
                        	<select v-model="sexo" class="sisbeca-input">
-                          <option disabled value="">Please select one</option>
+                          <option disabled value="">Sexo</option>
                           <option>femenino</option>
                           <option>masculino</option>
                         </select>
@@ -138,10 +138,7 @@
                	this.email = this.usuario.email;
                	var dia = new Date (this.usuario.fecha_nacimiento);
                 this.fecha_nacimiento = moment(dia).format('DD/MM/YYYY');
-                console.log(this.fecha_nacimiento);
-               	//var dia = new Date (this.usuario.fecha_nacimiento);
-               // this.fecha_nacimiento = moment(dia).format('DD/MM/YYYY');
-            	$("#preloader").hide();
+            	 $("#preloader").hide();
 			}).catch( error => {
 				console.log(error);
 				$("#preloader").hide();
@@ -152,15 +149,12 @@
     		var id = '{{$becario->user_id}}';
         var url = "{{ route('becarios.actualizar.datos',':id' ) }}";
         url = url.replace(':id', id);
-
     		var dataform = new FormData();
         dataform.append('sexo', this.sexo);
         dataform.append('fecha_nacimiento', this.fecha_nacimiento);
-        console.log(url);
+        console.log();
         axios.post(url,dataform).then(response => 
         {
-          //toastr.success(response.data.success);
-          console.log("aqui");
         	this.errores=[];
         	toastr.success(response.data.success);
           

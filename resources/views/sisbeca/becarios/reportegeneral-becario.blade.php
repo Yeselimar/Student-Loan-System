@@ -86,7 +86,7 @@
 	<div class="row">
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido">
+				<div data-mh="reporte-contenido" >
 					<p class="h1 text-center">@{{becario.horas_voluntariados}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -99,7 +99,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido">
+				<div data-mh="reporte-contenido" >
 					<p class="h1 text-center">@{{becario.asistio_t}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -112,7 +112,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido">
+				<div data-mh="reporte-contenido" >
 					<p class="h1 text-center">@{{becario.asistio_cc}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -125,7 +125,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido">
+				<div data-mh="reporte-contenido" >
 					<p class="h1 text-center">@{{becario.avg_cva}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -138,7 +138,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido">
+				<div data-mh="reporte-contenido" >
 					<p class="h1 text-center">0</p>
 				</div>
 				<hr class="reporte-linea">
@@ -151,7 +151,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja-gris">
-				<div data-mh="reporte-contenido">
+				<div data-mh="reporte-contenido" >
 					<p class="h1 text-center">@{{becario.avg_academico}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -164,7 +164,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja-gris">
-				<div data-mh="reporte-contenido" style="padding-top: 10px;">
+				<div data-mh="reporte-contenido"  style="padding-top: 10px;height: 100px;">
 					<p class="h5 text-center">@{{becario.nivel_cva}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -177,7 +177,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja-gris">
-				<div data-mh="reporte-contenido" style="padding-top: 10px;">
+				<div data-mh="reporte-contenido"  style="padding-top: 10px;height: 100px;">
 					<p class="h5 text-center">@{{becario.nivel_carrera}}</p>
 				</div>
 				<hr class="reporte-linea">

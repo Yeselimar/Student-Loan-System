@@ -67,7 +67,10 @@
 					@endif
 
 					<td class="text-center">
-						<span data-toggle="modal" data-placement="bottom" title="Ver Expediente">
+							
+							<a href="{{route('becarios.actualizar.datos',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Editar Datos">
+								<i class='fa fa-pencil'></i>
+							</a>
 							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver Perfil">
 								<i class='fa fa-eye'></i>
 							</a>
@@ -86,7 +89,6 @@
 							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Voluntariado">
 								<i class="fa fa-star"></i>
 							</a>
-						</span>
 					</td>
 				</tr>
 				@endforeach
