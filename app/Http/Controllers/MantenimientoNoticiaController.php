@@ -91,6 +91,7 @@ class MantenimientoNoticiaController extends Controller
         
         if($request->url_imagen)
         {
+            //return "hay algo";
             $es_archivo=is_file(public_path() .$noticia->url_imagen);
             if($es_archivo)
             {
