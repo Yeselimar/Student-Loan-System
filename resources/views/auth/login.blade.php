@@ -41,7 +41,8 @@
                     </div>
                     <div class="login-form panel-body" style="padding-top: 0px!important">
                       @include('flash::message')
-                      <form class="" method="POST" action="{{ route('login') }}" >
+                      <!-- Antes estaba la ruta 'login', Att. Rafael -->
+                      <form class="" method="POST" action="{{ route('post.login') }}" >
                         {{ csrf_field() }}
                           <!--<div class=" {{ $errors->has('email') ? ' has-error' : '' }}">-->
                              <label for="email" class="control-label">Correo Electrónico</label>

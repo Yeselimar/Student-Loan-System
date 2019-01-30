@@ -28,7 +28,7 @@ use Mail;
 use DateTime;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
+use Illuminate\Support\Facades\Auth;
 
 class GetPublicController extends Controller
 {
@@ -91,6 +91,15 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        if (Auth::attempt(['email' => 'rafael1delgado@hotmail.com', 'password' => '123456']))
+        {
+            return "logueado";
+            return redirect()->intended('sisbeca');
+        }
+        else
+        {
+            return "mal";   
+        }
         $anho = '2019';
         $mes = 2;
         $id=6;

@@ -7,7 +7,14 @@
 
 Auth::routes();
 
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
+
+Route::get('/login', 'Auth\LoginController@login')->name('login');
+Route::post('/post/login', 'Auth\LoginController@postlogin')->name('post.login');
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('/dale-paso', 'Auth\LoginController@dalepaso')->name('dalepaso');
+
 
 Route::get('/recuperar-contrasena', 'SessionController@recuperarcontrasena')->name('recuperar.contrasena' );
 
