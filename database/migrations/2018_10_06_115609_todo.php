@@ -139,6 +139,8 @@ class Todo extends Migration
             $table->datetime('fecha_entrevista')->nullable();
             $table->time('hora_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
+            $table->boolean('notificando_entrevista')->default(0);
+            $table->datetime('fecha_notificacion_entrevista')->nullable();
             $table->text('documento_final_entrevista')->nullable();
 
             //campos para la nómina

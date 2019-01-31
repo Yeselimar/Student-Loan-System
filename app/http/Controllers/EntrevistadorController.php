@@ -196,8 +196,15 @@ class EntrevistadorController extends Controller
 			}
 		}
 
+		return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
+	}
+
+	public function enviarcorreoinfoentrevista($id)
+	{
 		$becario = Becario::find($id);
-		
+		$becario->notificando_entrevista = 1;
+		$becario->fecha_notificacion_entrevista = date("Y-m-d H:i:s");
+		$becario->save();
 		//Enviar correo a la persona notificando
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
@@ -216,7 +223,7 @@ class EntrevistadorController extends Controller
         $mail->addAddress($becario->user->email);
         $mail->send();
 
-		return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
+        return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()."."]);
 	}
 
 	public function obtenerbecario($id)

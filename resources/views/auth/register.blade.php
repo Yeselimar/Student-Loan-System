@@ -14,7 +14,7 @@
 
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('info_sitio/img/favicon.png')}}" >
-    <title>Avaa - Registrarse</title>
+    <title>AVAA - Registrarse</title>
 
     @include('sisbeca.layouts.partials.filescss')
 </head>
