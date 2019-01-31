@@ -24,6 +24,7 @@
 			<tbody>
 
 				<tr v-for="postulante in postulantes" v-if="postulante.user.rol != 'becario'">
+					<template v-if="postulante.oculto!=1">
 					<td class="text-center" v-if="postulante.becario.status == 'rechazado'">
 						<span class="label label-danger">Rechazado</span>
 					</td>
@@ -102,6 +103,13 @@
 								<i class="fa fa-pencil"></i>
 							</a>
 						</template>
+
+						<template>
+							<button v-b-popover.hover="'Ocultar de mi lista'" class="btn btn-xs sisbeca-btn-primary" @click="ocultardemilista(postulante)">
+	                            <i class="fa fa-eye-slash" ></i>
+	                        </button>
+						</template>
+
 						<!-- <template v-if="postulante.becario.documento_final_entrevista==null">
 							<a title="Cargar Resumen Entrevista Grupal" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 								<i class="fa fa-upload"></i>
@@ -112,6 +120,8 @@
 								<i class="fa fa-pencil"></i>
 							</a>
 						</template> -->
+
+						</template><!-- Etiqueta de cierre del template de arriba-->
 					</td>
 				</tr>
 				<tr v-if="postulantes.length==0">
@@ -122,27 +132,38 @@
 		<hr>
 		<p class="text-right">@{{postulantes.length}} Postulante(s)</p>
 	</div>
+
 	<!-- Modal para Marcar como entrevistado -->
 	<form method="POST" @submit.prevent="marcarentrevistado(id)">
-			{{ csrf_field() }}
-			<div class="modal fade" id="modal-asignar">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title pull-left"><strong>Cambiar Estatus de la Entrevista</strong></h5>
-							<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
-						</div>
-						<div class="modal-body">
-						<h5>¿Esta Seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong></h5>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
-							<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Aceptar</button>
-						</div>
+		{{ csrf_field() }}
+		<div class="modal fade" id="modal-asignar">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title pull-left"><strong>Cambiar Estatus de la Entrevista</strong></h5>
+						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+					</div>
+					<div class="modal-body">
+					<h5>¿Esta Seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong></h5>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
+						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Aceptar</button>
 					</div>
 				</div>
 			</div>
+		</div>
 	</form>
+	<!-- Modal para Marcar como entrevistado -->
+
+	<!-- Cargando.. -->
+	<section class="loading" id="preloader">
+		<div>
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+	</section>
+	<!-- Cargando.. -->
 </div>
 
 
@@ -205,16 +226,19 @@ const app = new Vue({
 			var url = '{{route('lista.Entrevistas.Postulantes')}}';
 			axios.get(url).then(response =>
 			{
+				$("#preloader").hide();
 				this.postulantes = response.data.becarios;
 			});
 		},
 		marcarentrevistado:function(id)
 		{
 			var url = '{{route('fue.A.Entrevista')}}';
+			$("#preloader").show();
 			axios.post(url,{
 				id:this.id,
 				}).then(response=>{
 				$('#modal-asignar').modal('hide');
+				$("#preloader").hide();
 				this.obtenerentrevistados();
 				toastr.success(response.data.success);
 			});
@@ -226,6 +250,23 @@ const app = new Vue({
 			console.log(this.id);
 			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
 			$('#modal-asignar').modal('show');
+		},
+		ocultardemilista(postulante)
+		{
+			var e_id = '{{Auth::user()->id}}';
+			var url = '{{route('entrevistador.ocultar.de.lista',array('b_id'=>':b_id','e_id'=>':e_id'))}}';
+			url = url.replace(':b_id', postulante.user.id);
+			url = url.replace(':e_id', e_id);
+			$("#preloader").show();
+			axios.get(url).then(response =>
+			{
+				$("#preloader").hide();
+				this.obtenerentrevistados();
+				toastr.success(response.data.success);
+			}).catch( error => {
+				console.log(error);
+				$("#preloader").hide();
+			});
 		},
 		zfill: function(number, width)
 		{

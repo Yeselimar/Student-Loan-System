@@ -184,6 +184,8 @@ class Todo extends Migration
             $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->text('documento')->nullable();
+            
+            $table->boolean('oculto')->default(0);
 
             $table->timestamps();
         });

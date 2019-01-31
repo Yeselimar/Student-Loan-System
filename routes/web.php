@@ -817,6 +817,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>'entrevistador'],function ()
     {
         Route::get('/mis-entrevistados', 'EntrevistadorController@misentrevistados')->name('entrevistador.misentrevistados');
+        Route::get('/becario/{b_id}/entrevistador/{e_id}/ocular-de-lista', 'EntrevistadorController@ocultardelista')->name('entrevistador.ocultar.de.lista');
         //documento individual
         Route::get('/postulante/{id}/cargar-documento/', 'EntrevistadorController@cargardocumento')->name('entrevistador.cargardocumento');
         Route::post('/postulante/{id}/guardar-documento/', 'EntrevistadorController@guardardocumento')->name('entrevistador.guardardocumento');
@@ -832,7 +833,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/postulante/{id}/editar-documento-conjunto/', 'EntrevistadorController@editardocumentoconjunto')->name('entrevistador.editardocumentoconjunto');
         Route::post('/postulante/{id}/actualizar-documento-conjunto/', 'EntrevistadorController@actualizardocumentoconjunto')->name('entrevistador.actualizardocumentoconjunto');
- */
+    */
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
             'as' => 'lista.Entrevistas.Postulantes'
