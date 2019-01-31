@@ -11,7 +11,7 @@
 	    	<a class="nav-link" href="#universidad" role="tab" data-toggle="tab">Estudios Universitarios</a>
 	  	</li>
 	  	<li class="nav-item">
-	    	<a class="nav-link" href="#references" role="tab" data-toggle="tab">Información Adicional</a>
+	    	<a class="nav-link" href="#estatus" role="tab" data-toggle="tab">Estatus Becarios</a>
 	  	</li>
 	</ul>
 	
@@ -108,18 +108,19 @@
               <input type="text" name="lugar_trabajo" class="sisbeca-input" v-model="lugar_trabajo" placeholder="EJ: Google">
                 <span v-if="errores.lugar_trabajo" :class="['label label-danger']">@{{ errores.lugar_trabajo[0] }}</span>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="col-lg-3 col-md-3 col-sm-12">
               <label class="control-label">Cargo Trabajo</label>
               <input type="text" name="cargo_trabajo" class="sisbeca-input" v-model="cargo_trabajo" placeholder="EJ: Desarrollador Web">
                 <span v-if="errores.cargo_trabajo" :class="['label label-danger']">@{{ errores.cargo_trabajo[0] }}</span>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-12">
+            <div class="col-lg-3 col-md-3 col-sm-12">
               <label class="control-label">Horas Trabajo</label>
               <input type="text" name="horas_trabajo" class="sisbeca-input" v-model="horas_trabajo" placeholder="EJ: 2">
                 <span v-if="errores.horas_trabajo" :class="['label label-danger']">@{{ errores.horas_trabajo[0] }}</span>
             </div>
           </template>
         </div>
+        
 			</div>
 
 			<div class="form-group ">
@@ -153,6 +154,16 @@
               <span v-if="errores.carrera_universidad" :class="['label label-danger']">@{{ errores.carrera_universidad[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6">
+              <label class="control-label">Régimen</label>
+              <select v-model="regimen" class="sisbeca-input">
+                <option disabled value="">Régimen</option>
+                <option value="semestral">Semestral</option>
+                <option value="trimestral">Trimestral</option>
+                <option value="anual">Anual</option>
+              </select>
+              <span v-if="errores.regimen" :class="['label label-danger']">@{{ errores.regimen[0] }}</span>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6">
               <label class="control-label">Promedio Universidad</label>
               <input type="text" name="name" class="sisbeca-input" v-model="promedio_universidad">
               <span v-if="errores.promedio_universidad" :class="['label label-danger']">@{{ errores.promedio_universidad[0] }}</span>
@@ -170,9 +181,49 @@
 
   	</div>
 
-  	<div class="tab-pane container" id="references">
-  		
+  	<div class="tab-pane" id="estatus">
+  		<br>
+
+      <div class="form-group" style="border: 1px solid #eee; padding:10px; border-radius:5px">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <label class="control-label">Becario Estatus</label>
+              <select v-model="becario_estatus" class="sisbeca-input">
+                <option disabled value="">Estatus Becario</option>
+                <option value="activo">Activo</option>
+                <option value="probatorio1">Probatorio 1</option>
+                <option value="probatorio2">Probatorio 2</option>
+              </select>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <label class="control-label">Usuario Estatus</label>
+              <select v-model="usuario_estatus" class="sisbeca-input">
+                <option disabled value="">Estatus Usuario</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info alert-dismissible">
+        <strong>Becarios Estatus:</strong> Este estatus es para el becario. Los estatus permitidos: Activo, Probatorio 1 y Probatorio 2.
+      </div>
+      <div class="alert alert-info alert-dismissible">
+        <strong>Usuarios Estatus:</strong> Al actualizar el estatus del usuario, el usuario ya no tendrá acceso al sistema. Los estatus permitidos son: Activo e Inactivo.
+      </div>
+      <div class="alert alert-info alert-dismissible">
+        <strong>Ejemplo:</strong> Un becario puede estar Probatorio 1 y activo. Un becario puede estar probatorio 2 e inactivo.
+      </div>
+      <div class="form-group ">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <input class="btn sisbeca-btn-primary pull-right" type="button" value="Guardar" @click="guardarestatus()">
+          </div>
+        </div>
+      </div>
+
   	</div>
+
 	</div>
 
 	<!-- Cargando.. -->
@@ -194,6 +245,9 @@
     el: '#app',
     data:
     {
+      becario_estatus:'',
+      usuario_estatus:'',
+      regimen:'',
     	errores:[],
     	becario:'',
     	usuario:'',
@@ -236,6 +290,8 @@
             {
                	this.becario = response.data.becario;
                	this.usuario = response.data.usuario;
+                this.usuario_estatus = this.usuario.estatus;
+                this.becario_estatus = this.becario.status;
                	this.name = this.usuario.name;
                	this.last_name = this.usuario.last_name;
                	this.cedula = this.usuario.cedula;
@@ -247,13 +303,17 @@
                 this.telefono_habitacion = this.becario.telefono_habitacion;
                 this.telefono_pariente = this.becario.telefono_pariente;
                 this.trabaja = this.becario.trabaja;
+                if(this.trabaja==null)
+                {
+                  this.trabaja=0;
+                }
                 this.lugar_trabajo = this.becario.lugar_trabajo;
                 this.cargo_trabajo = this.becario.cargo_trabajo;
                 this.horas_trabajo = this.becario.horas_trabajo;
                 this.nombre_universidad = this.becario.nombre_universidad;
                 this.carrera_universidad = this.becario.carrera_universidad;
                 this.promedio_universidad = this.becario.promedio_universidad;
-                console.log(this.promedio_universidad);
+                this.regimen = this.becario.regimen;
                 var dia = new Date (this.becario.inicio_universidad);
                 this.inicio_universidad = moment(dia).format('DD/MM/YYYY');
                	var dia = new Date (this.usuario.fecha_nacimiento);
@@ -307,18 +367,38 @@
         dataform.append('nombre_universidad', this.nombre_universidad);
         dataform.append('carrera_universidad', this.carrera_universidad);
         dataform.append('promedio_universidad', this.promedio_universidad);
+        dataform.append('regimen', this.regimen);
         axios.post(url,dataform).then(response => 
         {
           $("#preloader").hide();
           this.errores=[];
           toastr.success(response.data.success);
-          
         }).catch( error =>
         {
           $("#preloader").hide();
           this.errores = error.response.data.errors;
           toastr.error("Disculpe, verifique el formulario");
-            
+        });
+      },
+      guardarestatus()
+      {
+        $("#preloader").show();
+        var id = '{{$becario->user_id}}';
+        var url = "{{ route('becarios.actualizar.estatusbecario',':id' ) }}";
+        url = url.replace(':id', id);
+        var dataform = new FormData();
+        dataform.append('becario_estatus', this.becario_estatus);
+        dataform.append('usuario_estatus.', this.usuario_estatus);
+        axios.post(url,dataform).then(response => 
+        {
+          $("#preloader").hide();
+          this.errores=[];
+          toastr.success(response.data.success);
+        }).catch( error =>
+        {
+          $("#preloader").hide();
+          this.errores = error.response.data.errors;
+          toastr.error("Disculpe, verifique el formulario");
         });
       }
     }

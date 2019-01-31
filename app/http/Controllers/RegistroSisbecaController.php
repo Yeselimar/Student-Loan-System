@@ -85,7 +85,7 @@ class RegistroSisbecaController extends Controller
             $mail->addAddress($user->email);
             $mail->send();
 
-            flash("Gracias registrarse. Ahora puede iniciar sesión para culminar su proceso de postulación.",'success');
+            flash("Gracias por registrarte. Ahora puedes iniciar sesión para culminar el proceso de postulación.",'success');
         }
         else
         {
@@ -155,7 +155,7 @@ class RegistroSisbecaController extends Controller
             $mail->addAddress($user->email);
             $mail->send();
 
-            flash("Gracias por Registrarse en Pro-excelencia. Ahora puede iniciar sesión para comenzar el proceso de Postulación.",'success');
+            flash("Gracias por registrarte en Pro-excelencia. Ahora puedes iniciar sesión para comenzar el proceso de postulación.",'success');
         }
         else
         {

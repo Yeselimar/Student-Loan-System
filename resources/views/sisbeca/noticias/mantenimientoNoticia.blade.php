@@ -23,6 +23,7 @@
                     <tr>
                         <td>
                             {{$noticia->titulo}}
+                            <br>
                             @if($noticia->esDestacada())
                                 <span class="label label-success">Destacada</span>
                             @else
@@ -30,7 +31,7 @@
                             @endif
 
                         </td>
-                        <td>{{$noticia->tipo}}</td>
+                        <td>{{strtoupper($noticia->tipo)}}</td>
                         <td>{{$noticia->editor->nombreyapellido()}}</td>
                         <td>{{$noticia->fechaActualizacion()}}</td>
                         <td>

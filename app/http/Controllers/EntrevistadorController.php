@@ -22,7 +22,7 @@ class EntrevistadorController extends Controller
 
 	public function listarpostulantesaentrevistar(Request $request)
 	{
-		$becarios = BecarioEntrevistador::where('entrevistador_id','=',Auth::user()->id)->with("user")->with("becario")->get();
+		$becarios = BecarioEntrevistador::where('oculto','=','0')->where('entrevistador_id','=',Auth::user()->id)->with("user")->with("becario")->get();
 		return response()->json(['becarios'=>$becarios]);
 	}
 
@@ -196,8 +196,15 @@ class EntrevistadorController extends Controller
 			}
 		}
 
+		return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
+	}
+
+	public function enviarcorreoinfoentrevista($id)
+	{
 		$becario = Becario::find($id);
-		
+		$becario->notificando_entrevista = 1;
+		$becario->fecha_notificacion_entrevista = date("Y-m-d H:i:s");
+		$becario->save();
 		//Enviar correo a la persona notificando
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
@@ -216,7 +223,16 @@ class EntrevistadorController extends Controller
         $mail->addAddress($becario->user->email);
         $mail->send();
 
-		return response()->json(['success'=>'Los datos de la entrevista fueron actualizados']);
+        return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()."."]);
+	}
+
+	public function ocultardelista($b_id,$e_id)
+	{
+		$becario = Becario::find($b_id); 
+		$be = BecarioEntrevistador::paraBecario($b_id)->ParaEntrevistador($e_id)->first();
+		$be->oculto = 1;
+		$be->save();
+		return response()->json(['success'=>'El prepostulante '.$becario->user->nombreyapellido().' se ocultó de su lista exitosamente.']);
 	}
 
 	public function obtenerbecario($id)

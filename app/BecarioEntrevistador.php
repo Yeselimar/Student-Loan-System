@@ -18,6 +18,16 @@ class BecarioEntrevistador extends Model
         return $this->belongsTo('avaa\Becario','becario_id');
     }
 
+    public function scopeParaBecario($query,$id)
+    {
+        return $query->where('becario_id','=',$id);
+    }
+
+    public function scopeParaEntrevistador($query,$id)
+    {
+        return $query->where('entrevistador_id','=',$id);
+    }
+
     public static function carpetaDocumento()
     {
         return 'documentos/entrevistados/';

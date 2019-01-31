@@ -14,7 +14,7 @@
 
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('info_sitio/img/favicon.png')}}" >
-    <title>Avaa - Restablecer Contraseña</title>
+    <title>AVAA - Restablecer Contraseña</title>
 
     @include('sisbeca.layouts.partials.filescss')
 </head>

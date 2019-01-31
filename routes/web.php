@@ -7,7 +7,14 @@
 
 Auth::routes();
 
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
+
+Route::get('/login', 'Auth\LoginController@login')->name('login');
+Route::post('/post/login', 'Auth\LoginController@postlogin')->name('post.login');
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('/dale-paso', 'Auth\LoginController@dalepaso')->name('dalepaso');
+
 
 Route::get('/recuperar-contrasena', 'SessionController@recuperarcontrasena')->name('recuperar.contrasena' );
 
@@ -96,6 +103,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
         Route::post('/becario/{id}/actualizar-datos', 'UserController@actualizardatos')->name('becarios.actualizar.datos');
         Route::post('/becario/{id}/actualizar-universidad', 'UserController@actualizaruniversidad')->name('becarios.actualizar.universidad');
+        Route::post('/becario/{id}/actualizar-estatus-becario', 'UserController@actualizarestatusbecario')->name('becarios.actualizar.estatusbecario');
 
         //resumen becario y reporte general
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
@@ -797,11 +805,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         //entrevistadores
         Route::get('/asignar-entrevistadores', 'EntrevistadorController@asignarentrevistadores')->name('entrevistador.asignar');
-
         Route::get('/entrevistadores', 'EntrevistadorController@obtenerentrevistadores')->name('entrevistador.obtener');
-
         Route::post('/becario/{id}/guardar-entrevistador-asignado', 'EntrevistadorController@guardarasignarentrevistadores')->name('entrevistador.asignar.guardar');
-
+        Route::get('becario/{id}/enviar-correo/info-entrevista', 'EntrevistadorController@enviarcorreoinfoentrevista')->name('entrevistador.enviarcorreo');
         // postulantes
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
 
@@ -811,6 +817,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>'entrevistador'],function ()
     {
         Route::get('/mis-entrevistados', 'EntrevistadorController@misentrevistados')->name('entrevistador.misentrevistados');
+        Route::get('/becario/{b_id}/entrevistador/{e_id}/ocular-de-lista', 'EntrevistadorController@ocultardelista')->name('entrevistador.ocultar.de.lista');
         //documento individual
         Route::get('/postulante/{id}/cargar-documento/', 'EntrevistadorController@cargardocumento')->name('entrevistador.cargardocumento');
         Route::post('/postulante/{id}/guardar-documento/', 'EntrevistadorController@guardardocumento')->name('entrevistador.guardardocumento');
@@ -826,13 +833,13 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/postulante/{id}/editar-documento-conjunto/', 'EntrevistadorController@editardocumentoconjunto')->name('entrevistador.editardocumentoconjunto');
         Route::post('/postulante/{id}/actualizar-documento-conjunto/', 'EntrevistadorController@actualizardocumentoconjunto')->name('entrevistador.actualizardocumentoconjunto');
- */
+    */
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
             'as' => 'lista.Entrevistas.Postulantes'
         ]);
     });
-
+    
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()
     {
 

@@ -139,6 +139,8 @@ class Todo extends Migration
             $table->datetime('fecha_entrevista')->nullable();
             $table->time('hora_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
+            $table->boolean('notificando_entrevista')->default(0);
+            $table->datetime('fecha_notificacion_entrevista')->nullable();
             $table->text('documento_final_entrevista')->nullable();
 
             //campos para la nómina
@@ -179,6 +181,9 @@ class Todo extends Migration
             $table->unsignedInteger('entrevistador_id');
             $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
             $table->text('documento')->nullable();
+            
+            $table->boolean('oculto')->default(0);
+
             $table->timestamps();
         });
 

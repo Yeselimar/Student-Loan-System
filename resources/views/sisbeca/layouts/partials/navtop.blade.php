@@ -17,7 +17,7 @@
     <div class="navbar-collapse">
         <ul class="navbar-nav mr-auto mt-md-0">
             <ul class="nav navbar-nav navbar-left">
-                <li><span style="color: white;font-weight: bold"> {{ 'Avaa - Sistema de Administración' }}</span></li>
+                <li><span style="color: white;font-weight: bold"> {{ 'AVAA - Sistema de Administración' }}</span></li>
 
             </ul>
         </ul>
@@ -79,7 +79,7 @@
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                Cerrar Sesion
+                                Cerrar Sesión
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -103,7 +103,7 @@
 
       <br>
 </div> -->
-<div class="container">
+<div class="col-12">
   <div class="card card-body bg-light border border-info p-2">
       <div class="col-xs-12 col-sm-8 col-md-8">
               <div class="row">
@@ -122,9 +122,9 @@
                   <div class="col-sm-6 col-md-8 p-4">
                       <h3>{{$postulanteMentor->user->name}} {{$postulanteMentor->user->last_name }}</h3>
                       <p>
-                          <i class="fa fa-envelope"> &nbsp;</i>Email: {{$postulanteMentor->user->email}}
+                          <i class="fa fa-envelope"> &nbsp;</i>Correo electrónico: {{$postulanteMentor->user->email}}
                           <br />
-                          <i class="fa fa-user"> &nbsp;</i>Cedula: {{$postulanteMentor->user->cedula}}
+                          <i class="fa fa-user"> &nbsp;</i>Cédula: {{$postulanteMentor->user->cedula}}
                           <br/>
                           <i class="fa fa-map-pin"> &nbsp;</i>Descripción: {{$postulanteMentor->user->descripcion}}
                           <br/>
@@ -140,7 +140,7 @@
   </div>
   @if(($postulanteMentor->status==='postulante')&&($postulanteMentor->user->rol==='postulante_mentor'))
   <div align="center">
-  <h3>¿Que acción desea tomar para la postulación de <b>{{$postulanteMentor->user->name.' '.$postulanteMentor->user->last_name}}</b>
+  <h3>Aceptar / Rechazar la postulación de <b>{{$postulanteMentor->user->name.' '.$postulanteMentor->user->last_name}}</b>
       <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
       <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
   </div>
@@ -167,7 +167,7 @@
                <input type="hidden" id='valor' name="valor" value="1">
            <div class="modal-footer">
                <button type="button" class="btn sisbeca-btn-default pull-left" data-dismiss="modal">No</button>
-               <button type="submit" class="btn sisbeca-btn-primary pull-left">Si</button>
+               <button type="submit" class="btn sisbeca-btn-primary pull-left">Sí</button>
            </div>
 
            </form>
@@ -202,7 +202,7 @@
 
                 <div class="modal-footer">
                   <button type="button" class="btn sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                  <button type="submit" class="btn sisbeca-btn-primary pull-right" >Si</button>
+                  <button type="submit" class="btn sisbeca-btn-primary pull-right" >Sí</button>
                 </div>
 
             </form>

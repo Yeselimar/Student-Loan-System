@@ -31,6 +31,7 @@ class SisbecaController extends Controller
         $actividades = Actividad::conEstatus('disponible')->ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
         return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
     }
+
     public function allNotificaciones()
     {
         if(Auth::user()->rol==='coordinador' or Auth::user()->rol==='directivo')

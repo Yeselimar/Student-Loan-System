@@ -57,6 +57,13 @@
 						<template v-else>
 							<span class="label label-default">Sin Lugar</span>
 						</template>
+						<br>
+						<template v-if="postulante.notificando_entrevista=='1'">
+							<p class="h6">Notificado el: @{{fechacompletaformatear(postulante.fecha_notificacion_entrevista)}}</p>
+						</template>
+						<template v-else>
+							<span class="label label-default">Sin notificar</span>
+						</template>
 					</div>
 				</td>
 				<td class="text-center">
@@ -85,6 +92,13 @@
 						</button>
 					</span>
 				</template>
+
+				<span v-b-popover.hover="'Este postulante ya fue entrevistado'">
+					<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="modalenviarcorreo(postulante)">
+						<i class="fa fa-envelope"></i>
+					</button>
+				</span>
+
 				</td>
 			</tr>
 			<tr v-if="postulantes.length==0">
@@ -163,6 +177,33 @@
 			</div>
 		</div>
 	</form>
+	<!-- Modal para añadir entrevistadores -->
+
+	<!-- Modal para confirmar al enviar correo-->
+	<div class="modal fade" id="enviarcorreo">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+			    </div>
+				<div class="modal-body">
+					<div class="col-lg-12">
+						<br>
+						<p class="h6 text-center">
+							¿Está seguro que desea enviar un correo a <strong>@{{nombre_becario_correo}}</strong> notificándole los datos de su entrevista?
+						</p>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+					<button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click="enviarcorreo(id_becario_correo)">Sí</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal para confirmar al enviar correo-->
 
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
@@ -198,10 +239,17 @@ const app = new Vue({
 		hora:'',
 		lugar:'',
 		fechaseleccionada:'',
+		id_becario_correo:'',
+		nombre_becario_correo:''
 	},
 
 	methods:
 	{
+		fechacompletaformatear: function (fecha)
+		{
+			var dia = new Date (fecha);
+			return moment(dia).format('DD/MM/YYYY hh:mm A');
+		},
 		fechaformartear: function (fecha)
 		{
 			var d = new Date(fecha);
@@ -216,44 +264,6 @@ const app = new Vue({
 			var cadena = "2018-11-11 "+hora;
 			var dia = new Date (cadena);
 			return moment(dia).format('hh:mm A');
-		},
-		mostrarModal: function(postulante,entrevistadores)
-		{
-			if(postulante.fecha_entrevista!=null)
-	        {
-				var d = new Date(postulante.fecha_entrevista);
-			}
-			else
-			{
-				var d = new Date("2018-01-01");
-			}
-	        var dia = d.getDate();
-	        var mes = d.getMonth() + 1;
-	        var anho = d.getFullYear();
-	        var fecha = dia + "/" + this.zfill(mes,2) + "/" + anho;
-	        if(postulante.hora_entrevista!=null)
-	        {
-	        	var cadena = "2018-11-11 "+postulante.hora_entrevista;
-	        }
-	        else
-	        {
-	        	var cadena = "2018-11-11 12:00:00";
-	        }
-			var diahora = new Date (cadena);
-			this.id = postulante.user_id;
-			this.fecha = fecha;
-			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
-			this.entrevistadores = entrevistadores;
-			this.seleccionados = [];
-	        this.hora = moment(diahora).format('hh:mm A');
-	        this.lugar = postulante.lugar_entrevista;
-	        $('#fecha').datepicker('setDate', new Date(anho, d.getMonth(), this.zfill(dia)));
-			$('#fecha').datepicker('update');
-			for (var i = 0; i < this.entrevistadores.length; i++)
-			{
-				this.seleccionados[i] = entrevistadores[i].id;
-			}
-			$('#asignarmodal').modal('show');
 		},
 		obtenerpostulantes: function()
 		{
@@ -276,16 +286,56 @@ const app = new Vue({
 			url = url.replace(':id', id);
 			return url;
 		},
+		mostrarModal: function(postulante,entrevistadores)
+		{
+			if(postulante.fecha_entrevista!=null)
+	        {
+				var d = new Date(postulante.fecha_entrevista);
+			}
+			else
+			{
+				var d = new Date();
+			}
+	        var dia = d.getDate();
+	        var mes = d.getMonth() + 1;
+	        var anho = d.getFullYear();
+	        var fecha = dia + "/" + this.zfill(mes,2) + "/" + anho;
+	        if(postulante.hora_entrevista!=null)
+	        {
+	        	var cadena = "2018-11-11 "+postulante.hora_entrevista;
+	        }
+	        else
+	        {
+	        	var cadena = "2018-11-11 12:00:00";
+	        }
+			var diahora = new Date (cadena);
+			this.id = postulante.user_id;
+			this.fecha = fecha;
+			this.nombreyapellido = postulante.user.name+' '+postulante.user.last_name;
+			this.entrevistadores = entrevistadores;
+			this.seleccionados = [];
+	        this.hora = moment(diahora).format('hh:mm A');
+	        this.lugar = postulante.lugar_entrevista;
+	        //$('#fecha').datepicker('setDate', new Date(anho, d.getMonth(), this.zfill(dia)));
+			//$('#fecha').datepicker('update');
+			for (var i = 0; i < this.entrevistadores.length; i++)
+			{
+				this.seleccionados[i] = entrevistadores[i].id;
+			}
+			$('#asignarmodal').modal('show');
+		},
 		asignarentrevistadores: function(id,seleccionados)
 		{
 			this.seleccionados = seleccionados;
+			if(this.lugar==null)
+			{
+				this.lugar="";
+			}
 			var dataform = new FormData();
-
-            	dataform.append('seleccionados', this.seleccionados);
-            	dataform.append('fecha', this.fecha);
-	            dataform.append('hora', this.hora);
-				dataform.append('lugar', this.lugar);
-
+        	dataform.append('seleccionados', this.seleccionados);
+        	dataform.append('fecha', this.fecha);
+            dataform.append('hora', this.hora);
+			dataform.append('lugar', this.lugar);
             var url = '{{route('entrevistador.asignar.guardar',':id')}}';
             url = url.replace(':id', id);
             $("#preloader").show();
@@ -295,6 +345,28 @@ const app = new Vue({
 				$("#preloader").hide();
 				this.obtenerpostulantes();
 				toastr.success(response.data.success);
+			});
+		},
+		modalenviarcorreo(postulante)
+		{
+			this.id_becario_correo=postulante.user.id;
+			this.nombre_becario_correo=postulante.user.name+' '+postulante.user.last_name;
+			$('#enviarcorreo').modal('show');
+		},
+		enviarcorreo: function(id)
+		{
+			var url = '{{route('entrevistador.enviarcorreo',':id')}}';
+			url = url.replace(':id', id);
+			$('#enviarcorreo').modal('hide');
+			$("#preloader").show();
+			axios.get(url).then(response =>
+			{
+				$("#preloader").hide();
+				this.obtenerpostulantes();
+				toastr.success(response.data.success);
+			}).catch( error => {
+				console.log(error);
+				$("#preloader").hide();
 			});
 		},
 		obtenerentrevistadores: function()
