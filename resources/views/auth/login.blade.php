@@ -68,7 +68,7 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <label class="pull-left">
-                              <a href="{{ route('recuperar.contrasena') }}" style="color:#424242" >¿Olvidaste tú contraseña?</a>
+                              <a href="{{ route('recuperar.contrasena') }}" style="color:#424242" >¿Olvidaste tu contraseña?</a>
                               </label>
                             </div>
                             

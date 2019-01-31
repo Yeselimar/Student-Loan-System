@@ -74,7 +74,7 @@
     @if($postulante->status==='postulante')
 
     <div align="center">
-    <h3>¿Desea seleccionar a {{$postulante->user->name.' '.$postulante->user->last_name}} para <b>Entrevista? </b>
+    <h3>Rechazar / Aprobar a {{$postulante->user->nombreyapellido()}} para la <b>Entrevista</b>
         <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
         <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
     </div>
@@ -351,7 +351,7 @@
                 <div class="panel-accordion" role="tab" id="heading">
                     <h5 class="panel-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#informacion-adicional" href="#informacionadicional" aria-expanded="false" aria-controls="informacionadicional">
-                Informacion Adicional
+                Información Adicional
                         </a>
                     </h5>
                 </div>

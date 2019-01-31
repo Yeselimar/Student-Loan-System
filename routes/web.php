@@ -839,7 +839,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'lista.Entrevistas.Postulantes'
         ]);
     });
-
+    
     Route::group(['middleware'=>'compartido_mentor_becario'],function ()
     {
 

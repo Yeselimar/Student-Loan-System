@@ -91,6 +91,27 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $estatus = "APROBADO";
+        $id = 81;
+        $usuario = User::find($id);
+
+        $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "IMPORTANTE";
+        $body = view("emails.postulanteMentor.notificar-estatus-postulacion")->with(compact("usuario","estatus"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($usuario->email);
+        $mail->send();
+        return "Correo enviado";
         if (Auth::attempt(['email' => 'rafael1delgado@hotmail.com', 'password' => '123456']))
         {
             return "logueado";

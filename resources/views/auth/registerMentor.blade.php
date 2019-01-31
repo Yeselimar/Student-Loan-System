@@ -46,7 +46,7 @@
                     <div class="login-form panel-body" style="padding: 0px 30px 20px">
 
                         <h6 class="text-left">
-                            <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón como Mentor</strong>
+                            <strong>Debes registrarte en el sistema para iniciar tu proceso de postulación como Mentor</strong>
                         </h6>
 
                         <!--<form role="form" class="f1 formMultiple" method="post" action="{{ route('registerMentor') }}" enctype="multipart/form-data" style="padding: 0px!important">-->
@@ -198,7 +198,7 @@
 
                                 <div class="f1-buttons">
                                     <button type="button" class="btn btn-previous sisbeca-btn-default">Anterior</button>
-                                    <button type="submit" class="btn sisbeca-btn-primary">Postularse</button>
+                                    <button type="submit" class="btn sisbeca-btn-primary">Registrar</button>
                                 </div>
                             </fieldset>
 

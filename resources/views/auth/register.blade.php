@@ -45,7 +45,7 @@
  
                     <div class="login-form panel-body" style="padding: 0px 30px 20px">
                         <h6 class="text-left">
-                            <strong>Debes registrarte en el sistema para inciar tu proceso de postulacón a ProExcelencia</strong>
+                            <strong>Debes registrarte en el sistema para iniciar tu proceso de postulación a ProExcelencia</strong>
                         </h6>
                         
                         <!-- form tenia una clase f1-->
@@ -188,7 +188,7 @@
                         
                                 <div class="f1-buttons">
                                     <button type="button" class="btn btn-previous sisbeca-btn-default">Anterior</button>
-                                    <button type="submit" class="btn sisbeca-btn-primary">Registrarse</button>
+                                    <button type="submit" class="btn sisbeca-btn-primary">Registrar</button>
                                 </div>
                             </fieldset>
                         </form>
