@@ -91,6 +91,8 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $becario = Becario::find(6);
+        return $becario->mentor->user->nombreyapellido();
         $estatus = "APROBADO";
         $id = 81;
         $usuario = User::find($id);
