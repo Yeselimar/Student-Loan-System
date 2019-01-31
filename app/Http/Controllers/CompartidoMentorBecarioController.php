@@ -87,7 +87,7 @@ class CompartidoMentorBecarioController extends Controller
         if($solicitud->save())
         {
             $usuario = Auth::user();
-          //  return($usuario);
+            //  return($usuario);
             event(new SolicitudesAlerts($solicitud));
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
@@ -104,7 +104,7 @@ class CompartidoMentorBecarioController extends Controller
             $body = view("emails.solicitudes.notificacion-recibida")->with(compact("usuario","solicitud"));
             $mail->MsgHTML($body);
             $mail->addAddress($usuario->email);
-            $mail->send();
+            //$mail->send();
             flash('Su solicitud fue enviada exitosamente','success')->important();
         }
         else

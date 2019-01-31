@@ -202,7 +202,7 @@ class CompartidoDirecCoordController extends Controller
             $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo','desincorporado','egresado'])->get();
             $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
             /* if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
-         {
+            {
                 $mentoresNuevos= Mentor::all();
 
                 $collection = collect();
@@ -227,7 +227,7 @@ class CompartidoDirecCoordController extends Controller
             $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
             $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray(); */
             $solicitudes = Solicitud::query()->get();
-           // dd($solicitudes);
+            // dd($solicitudes);
             return view('sisbeca.gestionSolicitudes.listarSolicitudes')->with('solicitudes',$solicitudes);
         }
 

@@ -37,7 +37,7 @@
                         @endif
                     @endif
 
-                    <td class="text-center">{{ date("d/m/Y", strtotime($solicitud->created_at)) }}</td>
+                    <td class="text-center">{{ date("d/m/Y H:i a", strtotime($solicitud->created_at)) }}</td>
 
                     <td class="text-center">
                         <a href="{{route('solicitud.edit',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Solicitud"><i class='fa fa-eye'></i>

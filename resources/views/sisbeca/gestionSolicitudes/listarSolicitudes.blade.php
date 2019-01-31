@@ -8,7 +8,7 @@
             <thead>
                 <tr>
                     <th class="text-center">Tipo</th>
-                    <th class="text-center">Status <br> proceso</th>
+                    <th class="text-center">Estatus <br> proceso</th>
                     <th class="text-center">Solicitada <br> Por</th>
                     <th class="text-center">Usuario <br> Respuesta</th>
                     <th class="text-center">Fecha <br> Solicitud</th>
