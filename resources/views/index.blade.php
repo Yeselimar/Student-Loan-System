@@ -53,14 +53,14 @@
       </div>
       -->
    </section>
-   <!-- Fin Principal --> 
+   <!-- Fin Principal -->
 
    <div class="linea-sobra"></div>
-  
+
    <div class="container-cabecera">
       <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="cabecera-imagen">
       <div class="cabecera-titulo">
-         <p class="h1"> -AVAA-<br> Asociación Venezolano Americana de Amistad</p>
+         <p class="h1"> AVAA-<br> Asociación Venezolano Americana de Amistad</p>
       </div>
    </div>
 
@@ -102,30 +102,30 @@
                      </div>
                    </div>
                    @endforeach
-               </div> 
+               </div>
             </section>
-         </div> 
-         
-         <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12" style="padding-top: 30px;border:1px solid #fff">
+         </div>
+
+         <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12" style="padding-top: 30px;border:1px solid #fff ">
             <a href="https://twitter.com/avaa_org" class="h4 btn-twitter"><strong>Seguir @Avaa_org</strong></a>
             <hr>
             <div style="border: 1px solid #E0E0E0;">
-            <!--
-            <a class="twitter-timeline" data-mh="iguales" data-theme="light" height="100" data-chrome="nofooter noheader" href="https://twitter.com/avaa_org" data-widget-id="369868188328017922" ></a>
+
+            <a class="twitter-timeline" data-mh="iguales" data-theme="light" height="200" data-chrome="nofooter noheader" href="https://twitter.com/avaa_org" data-widget-id="369868188328017922" ></a>
             <script>
                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
             </script>
-            -->
-            </div>   
+
+            </div>
 
          </div>
-      
+
       </div>
    </div>
    <!-- Fin Noticias -->
 
    <div class="linea-sobra" id="programasAVAA"></div>
-      
+
     <!-- Programas-->
    <section class="section">
       <div class="container">
@@ -147,7 +147,7 @@
                         <br>
                         <p class="h" align="justify">Propuesta educativa que promueve la formación integral de jóvenes venezolanos de medianos o bajos recursos económicos durante los cinco años de carrera universitaria.</p>
                      </div>
-                     
+
                   </div>
                   <hr>
                   <div class="xxxx-button">
@@ -161,7 +161,7 @@
                      <h2 class="title-miembros-institucionales" data-mh="programa-titulo">AVAA US</h2>
 
                      <img src="{{asset('info_sitio/img/testimonial/avaainc.jpg')}}" alt="Avaa Internacional" / style="min-width: 100%;height: auto">
-                     
+
                      <div class="col-lg-12">
                         <br>
                         <p class="h" align="justify">En AVAA buscamos promover y fomentar el intercambio educativo y cultural entre Venezuela, Estados Unidos y Canadá. Para ello, con la certificación y apoyo de las embajadas de estos países.</p>
@@ -177,12 +177,12 @@
                      <h2 class="title-miembros-institucionales" data-mh="programa-titulo">ASESORÍAS EDUCATIVAS</h2>
 
                      <img src="{{asset('info_sitio/img/testimonial/asesorias.jpg')}}" alt="Asesorias educativas" style="min-width: 100%;height: auto"  />
-                     
+
                      <div class="col-lg-12">
                         <br>
                         <p class="h" align="justify">El servicio de atención a interesados en cursar estudios en Estados Unidos o Canadá, prestado como centro oficial de asesorías de las embajadas de estos países.</p>
                      </div>
-                     
+
                   </div>
                   <hr>
                   <div class="plan-button">
@@ -276,7 +276,7 @@
                   <img class="img-fluid img-responsive"   src="{{url($banner->imagen)}}" alt="{{$banner->titulo}}" />
                   </a>
                </div>
-               
+
             </div>
           </div>
           @endforeach
