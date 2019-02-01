@@ -109,7 +109,7 @@
                         <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
                     </div>
                     <div class="modal-body text-center">
-                        <br>
+                    <br>
 
                     <div class="panel panel-default">
                         <div class="panel-heading"> @{{nombreyapellido}}</div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                     <template v-if="funcion==='Aprobar'">
-                    <div class="panel-footer"><h5>¿Esta Seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
+                    <div class="panel-footer"><h5>¿Está seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a <strong>@{{nombreyapellido}}</strong> como Becario de ProExcelencia?</h5>
                     </div>
                     </template>
                     <template v-else>
@@ -220,6 +220,16 @@
         </div>
     </form>
     <!-- Modal para fecha de Bienvenida Todos -->
+
+
+    <!-- Cargando.. -->
+    <section class="loading" id="preloader">
+        <div>
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+        </div>
+    </section>
+    <!-- Cargando.. -->
 </div>
 
 @endsection
@@ -263,21 +273,24 @@
             obtenerpostulantes:function()
             {
                 var url = '{{route('postulantes.entrevistados')}}';
+                $("#preloader").show();
                 axios.get(url).then(response =>
                 {
                     this.postulantes = response.data.postulantes;
+                    $("#preloader").hide();
                 });
             },
             veredictopostulantesbecarios:function(id)
             {
                 var url = '{{route('veredicto.postulantes.becarios')}}';
-               // console.log('ID:' , id);
+                $('#modal-asignar').modal('hide');
+                $("#preloader").show();
                 axios.post(url,{
                     id:this.id,
                     funcion:this.funcion
                     }).then(response=>{
-                    $('#modal-asignar').modal('hide');
                     this.obtenerpostulantes();
+                    $("#preloader").hide();
                     toastr.success(response.data.success);
                 });
 

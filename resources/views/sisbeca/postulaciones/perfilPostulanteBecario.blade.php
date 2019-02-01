@@ -560,7 +560,7 @@
                                     </td>
                                     <td class="text-left">
                                         @if($entrevistador->documento!=null)
-                                        <a class="btn btn-xs sisbeca-btn-primary" href="{{asset($entrevistador->documento)}}">Ver Informe</a>
+                                        <a class="btn btn-xs sisbeca-btn-primary" href="{{asset($entrevistador->documento)}}" target="_blak">Ver Informe</a>
                                         @else
                                         <span class="label label-default">
                                             <strong>No ha cargado Documento</strong>
@@ -575,7 +575,7 @@
                                     </td>
                                     <td class="text-left">
                                         @if(!is_null($postulante->documento_final_entrevista))
-                                        <a target="_blank" href="{{asset($postulante->documento_final_entrevista)}}" class="btn btn-xs sisbeca-btn-primary"> Ver Informe</a>
+                                        <a target="_blank" href="{{asset($postulante->documento_final_entrevista)}}" class="btn btn-xs sisbeca-btn-primary" target="_blak"> Ver Informe</a>
                                         @else
                                         <span class="label label-default">
                                             <strong>No ha cargado Documento</strong>

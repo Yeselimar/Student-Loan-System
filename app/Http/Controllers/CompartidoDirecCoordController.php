@@ -21,6 +21,7 @@ use avaa\BecarioEntrevistador;
 use avaa\Concurso;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use File;
 
 class CompartidoDirecCoordController extends Controller
 {
@@ -108,21 +109,104 @@ class CompartidoDirecCoordController extends Controller
         $postulanteBecario = Becario::find($request->id);
          if($request->funcion=='Aprobar')
         {
-           //$postulanteBecario->user->rol='becario';
-           //$postulanteBecario->user->save();
+            //$postulanteBecario->user->rol='becario';
+            //$postulanteBecario->user->save();
             $postulanteBecario->status='activo';
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->fecha_ingreso= date('Y-m-d H:i:s');
             $postulanteBecario->save();
+            $decision = "APROBADA";
+
+            //Enviar correo a la persona notificando que fue recibido su justificativo
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.postulantebecario.aprobado-proexcelencia")->with(compact("postulanteBecario","decision"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($postulanteBecario->user->email);
+            $mail->send();
+
             return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
         }
         else
         {
+            // $postulanteBecario->user->rol='rechazado';
             $postulanteBecario->status='rechazado';
-           // $postulanteBecario->user->rol='rechazado';
             $postulanteBecario->user->save();
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->save();
+            $decision = "RECHAZADA";
+
+            //Enviar correo a la persona notificando que fue recibido su justificativo
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.postulantebecario.rechazado-proexcelencia")->with(compact("postulanteBecario","decision"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($postulanteBecario->user->email);
+            $mail->send();
+
+            //borrar documentos
+            $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
+            $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
+            $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
+            $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
+            $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
+            $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
+            $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
+            $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
+            $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
+            $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
+            $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
+            $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
+            $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
+            
+            File::delete($fotografia->url);
+            File::delete($cedula->url);
+            File::delete($constancia_cnu->url);
+            File::delete($calificaciones_bachillerato->url);
+            File::delete($constancia_aceptacion->url);
+            File::delete($constancia_estudios->url);
+            File::delete($calificaciones_universidad->url);
+            File::delete($constancia_trabajo->url);
+            File::delete($declaracion_impuestos->url);
+            File::delete($recibo_pago->url);
+            File::delete($referencia_profesor1->url);
+            File::delete($referencia_profesor2->url);
+            File::delete($ensayo->url);
+            
+            $fotografia->delete();
+            $cedula->delete();
+            $constancia_cnu->delete();
+            $calificaciones_bachillerato->delete();
+            $constancia_aceptacion->delete();
+            $constancia_estudios->delete();
+            $calificaciones_universidad->delete();
+            $constancia_trabajo->delete();
+            $declaracion_impuestos->delete();
+            $recibo_pago->delete();
+            $referencia_profesor1->delete();
+            $referencia_profesor2->delete();
+            $ensayo->delete();
+            
             return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
        }
 
