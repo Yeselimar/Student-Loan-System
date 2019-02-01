@@ -264,7 +264,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-sm sisbeca-btn-primary">Si</button>
+                    <button type="submit" class="btn btn-sm sisbeca-btn-primary">Sí</button>
                 </div>
 
             </form>
@@ -303,7 +303,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-sm sisbeca-btn-primary" >Si</button>
+                    <button type="submit" class="btn btn-sm sisbeca-btn-primary" >Sí</button>
                 </div>
 
             </form>

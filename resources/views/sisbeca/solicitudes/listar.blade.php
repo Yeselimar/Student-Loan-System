@@ -37,11 +37,19 @@
                         @endif
                     @endif
 
-                    <td class="text-center">{{ date("d/m/Y H:i a", strtotime($solicitud->created_at)) }}</td>
+                    <td class="text-center" data-order="{{date('d/m/Y H:i:s', strtotime($solicitud->created_at))}}" >{{ date("d/m/Y h:i:s a", strtotime($solicitud->created_at)) }}</td>
 
                     <td class="text-center">
-                        <a href="{{route('solicitud.edit',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver Solicitud"><i class='fa fa-eye'></i>
+
+                        <a href="{{route('solicitud.edit',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" data-toggle="tooltip" data-placement="bottom" title="Ver solicitud">
+                            <i class='fa fa-eye'></i>
                         </a>
+                        @if(Auth::user()->esMentor() or Auth::user()->esBecario())
+                        <a href="{{route('solicitud.ocultar.usuario',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
+                            <i class="fa fa-eye-slash"></i>
+                        </a>
+                        @endif
+
                     </td>
                 </tr>
                 @endforeach
@@ -88,7 +96,8 @@ $(document).ready(function() {
                 "next": "Siguiente",
                 "previous": "Anterior"
             }
-        }
+        },
+        "order": [[ 2, 'desc' ]],
     });
 });
 </script>

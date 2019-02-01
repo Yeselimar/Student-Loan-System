@@ -198,233 +198,234 @@ class CompartidoDirecCoordController extends Controller
 
     // Controlador    CompartidoDirecCoordController modificar metodos
     public function listarSolicitudes()
+    {
+        $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo','desincorporado','egresado'])->get();
+        $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
+        /* if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
-            $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo','desincorporado','egresado'])->get();
-            $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
-            /* if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
-            {
-                $mentoresNuevos= Mentor::all();
+            $mentoresNuevos= Mentor::all();
 
-                $collection = collect();
-                foreach ($mentoresNuevos as $mentor)
+            $collection = collect();
+            foreach ($mentoresNuevos as $mentor)
+            {
+                if($mentor->becarios()->count()==0)
                 {
-                    if($mentor->becarios()->count()==0)
+                    $collection->push($mentor);
+                }
+            }
+            dd($collection);
+        }
+        else
+        {
+            $collection = collect();
+            foreach ($becariosAsignados as $beca)
+            {
+                $collection->push($beca->mentor);
+            }
+        }
+        $listMentoresA = $collection->pluck('user_id')->toArray();
+        $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
+        $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray(); */
+        $solicitudes = Solicitud::visibleAdmin()->get();
+        //return $solicitudes;
+        // dd($solicitudes);
+        return view('sisbeca.gestionSolicitudes.listarSolicitudes')->with('solicitudes',$solicitudes);
+    }
+
+    public function revisarSolicitud($id)
+    {
+        $solicitudes = Solicitud::find($id);
+
+        $alerta= Alerta::query()->select()->where('solicitud','=',$id)->first();
+        $alerta->leido=true;
+        $alerta->save();
+
+        $img_perfil_postulante=Imagen::query()->where('user_id','=',$solicitudes->user_id)->where('titulo','=','img_perfil')->get();
+
+        return view('sisbeca.gestionSolicitudes.procesarSolicitud')->with('solicitud',$solicitudes)->with('img_perfil_postulante',$img_perfil_postulante);
+    }
+
+    public function gestionSolicitudUpdate(Request $request, $id)
+    {
+        $solicitud = Solicitud::find($id);
+        
+        if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
+        {
+            $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
+            $listaBecariosA = $becariosAsignados->pluck('user_id')->toArray();
+            $clave = array_search($solicitud->user_id, $listaBecariosA); // me devuelve falso si  no encontro elemento
+            $mentoresNuevos= Mentor::all();
+            $collection = collect();
+            foreach ($mentoresNuevos as $mentor)
+            {
+                if($mentor->becarios()->count()==0)
+                {
+                    $collection->push($mentor);
+                }
+            }
+        }
+
+        $listMentoresA = $collection->pluck('user_id')->toArray();
+        $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
+        $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray();
+        $clave1 = array_search($solicitud->user_id, $listaMentoresA); // me devuelve falso si  no encontro elemento
+        /*if (is_bool($clave) && is_bool($clave1))
+        {
+            flash('Error el archivo solicitado no existe**', 'danger')->important();
+            return back();
+        } */
+
+        if($request->get('valor')==='1')
+        {
+            flash('La solicitud de '.$solicitud->user->name.' ha sido aprobada exitosamente','success')->important();
+
+            if($solicitud->user->rol==='becario')
+                $instancia= Becario::query()->select()->where('user_id','=',$solicitud->user_id)->first();
+            else
+            {
+                $instancia= Mentor::query()->select()->where('user_id','=',$solicitud->user_id)->first();
+            }
+
+            if($solicitud->titulo==='desincorporacion temporal')
+            {
+                $instancia->status='inactivo';
+                if($solicitud->user->rol==='becario')
+                {
+                    $instancia->fecha_inactivo= date('Y-m-d');
+                    $instancia->observacion_inactivo= 'Usuario Solicitud: '.$solicitud->descripcion.' Respuesta a Solicitud: '.$request->get('observacion');
+                }
+                else
+                {
+                    $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
+                    foreach ($becariosT as $becario)
                     {
-                        $collection->push($mentor);
+                        //$becario->mentor_id= Mentor::first()->user_id;
+                        $becario->save();
                     }
                 }
-                dd($collection);
+                flash($instancia->user->name.' Ha sido desincorporado temporalmente en el sistema','info')->important();
             }
             else
             {
-                $collection = collect();
-                foreach ($becariosAsignados as $beca)
+                if($solicitud->titulo==='desincorporacion definitiva')
                 {
-                    $collection->push($beca->mentor);
-                }
-            }
-            $listMentoresA = $collection->pluck('user_id')->toArray();
-            $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
-            $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray(); */
-            $solicitudes = Solicitud::query()->get();
-            // dd($solicitudes);
-            return view('sisbeca.gestionSolicitudes.listarSolicitudes')->with('solicitudes',$solicitudes);
-        }
-
-        public function revisarSolicitud($id)
-        {
-            $solicitudes = Solicitud::find($id);
-
-            $alerta= Alerta::query()->select()->where('solicitud','=',$id)->first();
-            $alerta->leido=true;
-            $alerta->save();
-
-            $img_perfil_postulante=Imagen::query()->where('user_id','=',$solicitudes->user_id)->where('titulo','=','img_perfil')->get();
-
-            return view('sisbeca.gestionSolicitudes.procesarSolicitud')->with('solicitud',$solicitudes)->with('img_perfil_postulante',$img_perfil_postulante);
-        }
-
-        public function gestionSolicitudUpdate(Request $request, $id)
-        {
-            $solicitud = Solicitud::find($id);
-            $usuario= Auth::user();
-            if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
-            {
-                $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
-                $listaBecariosA = $becariosAsignados->pluck('user_id')->toArray();
-                $clave = array_search($solicitud->user_id, $listaBecariosA); // me devuelve falso si  no encontro elemento
-                $mentoresNuevos= Mentor::all();
-                $collection = collect();
-                foreach ($mentoresNuevos as $mentor)
-                {
-                    if($mentor->becarios()->count()==0)
-                    {
-                        $collection->push($mentor);
-                    }
-                }
-            }
-
-            $listMentoresA = $collection->pluck('user_id')->toArray();
-            $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
-            $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray();
-            $clave1 = array_search($solicitud->user_id, $listaMentoresA); // me devuelve falso si  no encontro elemento
-            /*if (is_bool($clave) && is_bool($clave1))
-            {
-                flash('Error el archivo solicitado no existe**', 'danger')->important();
-                return back();
-            } */
-
-            if($request->get('valor')==='1')
-            {
-                flash('La solicitud de '.$solicitud->user->name.' ha sido aprobada exitosamente','success')->important();
-
-                if($solicitud->user->rol==='becario')
-                    $instancia= Becario::query()->select()->where('user_id','=',$solicitud->user_id)->first();
-                else
-                {
-                    $instancia= Mentor::query()->select()->where('user_id','=',$solicitud->user_id)->first();
-                }
-
-                if($solicitud->titulo==='desincorporacion temporal')
-                {
-                    $instancia->status='inactivo';
+                    $instancia->status='desincorporado';
                     if($solicitud->user->rol==='becario')
                     {
-                        $instancia->fecha_inactivo= date('Y-m-d');
-                        $instancia->observacion_inactivo= 'Usuario Solicitud: '.$solicitud->descripcion.' Respuesta a Solicitud: '.$request->get('observacion');
+                        $instancia->mentor_id = null;
+                        $instancia->fecha_desincorporado= date('Y-m-d');
+                        $instancia->observacion_desincorporado= 'Descripción Solicitud=> '.$solicitud->descripcion.' Respuesta a Solicitud=> '.$request->get('observacion');
                     }
                     else
                     {
                         $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
+
                         foreach ($becariosT as $becario)
                         {
-                            //$becario->mentor_id= Mentor::first()->user_id;
+                            $becario->mentor_id= null;
                             $becario->save();
                         }
                     }
-                    flash($instancia->user->name.' Ha sido desincorporado temporalmente en el sistema','info')->important();
-                }
-                else
-                {
-                    if($solicitud->titulo==='desincorporacion definitiva')
+                    $desincorporacion= new Desincorporacion();
+
+                    $desincorporacion->tipo='solicitud';
+                    $desincorporacion->observacion= 'El motivo de la gestion de desincorporacion radica en que el usuario: '.$instancia->user->name.' '.$instancia->user->last_name.' solicito dicha desincorporación la cual fue evaluada y aceptada por el consejo.';
+                    $desincorporacion->user_id= $instancia->user->id;
+                    $desincorporacion->datos_nombres= $instancia->user->name;
+                    $desincorporacion->datos_apellidos= $instancia->user->last_name;
+                    $desincorporacion->datos_email= $instancia->user->email;
+                    $desincorporacion->datos_cedula= $instancia->user->cedula;
+                    $desincorporacion->datos_rol= $instancia->user->rol;
+                    $desincorporacion->gestionada_por= Auth::user()->id;
+                    $desincorporacion->fecha_gestionada= date('Y-m-d');
+                    $desincorporacion->save();
+
+                    /*Enviar Alerta al directivo */
+
+                    //primero veo si la alerta existe
+                    /*
+                    $alerta= Alerta::query()->where('user_id','=', Coordinador::first()->user_id)->where('titulo','=','Desincorporacion(es) pendiente(s) por procesar')->where('status','=','enviada')->first();
+
+                    if(!is_null($alerta))
                     {
-                        $instancia->status='desincorporado';
-                        if($solicitud->user->rol==='becario')
-                        {
-                            $instancia->mentor_id = null;
-                            $instancia->fecha_desincorporado= date('Y-m-d');
-                            $instancia->observacion_desincorporado= 'Descripción Solicitud=> '.$solicitud->descripcion.' Respuesta a Solicitud=> '.$request->get('observacion');
-                        }
-                        else
-                        {
-                            $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
-
-                            foreach ($becariosT as $becario)
-                            {
-                                $becario->mentor_id= null;
-                                $becario->save();
-                            }
-                        }
-                        $desincorporacion= new Desincorporacion();
-
-                        $desincorporacion->tipo='solicitud';
-                        $desincorporacion->observacion= 'El motivo de la gestion de desincorporacion radica en que el usuario: '.$instancia->user->name.' '.$instancia->user->last_name.' solicito dicha desincorporación la cual fue evaluada y aceptada por el consejo.';
-                        $desincorporacion->user_id= $instancia->user->id;
-                        $desincorporacion->datos_nombres= $instancia->user->name;
-                        $desincorporacion->datos_apellidos= $instancia->user->last_name;
-                        $desincorporacion->datos_email= $instancia->user->email;
-                        $desincorporacion->datos_cedula= $instancia->user->cedula;
-                        $desincorporacion->datos_rol= $instancia->user->rol;
-                        $desincorporacion->gestionada_por= Auth::user()->id;
-                        $desincorporacion->fecha_gestionada= date('Y-m-d');
-                        $desincorporacion->save();
-
-                        /*Enviar Alerta al directivo */
-
-                        //primero veo si la alerta existe
-                        /*
-                        $alerta= Alerta::query()->where('user_id','=', Coordinador::first()->user_id)->where('titulo','=','Desincorporacion(es) pendiente(s) por procesar')->where('status','=','enviada')->first();
-
-                        if(!is_null($alerta))
-                        {
-                            $alerta->leido=false;
-                            $alerta->save();
-                        }
-                        else
-                        {
-                            $alerta = new  Alerta();
-
-                            $alerta->titulo= 'Desincorporacion(es) pendiente(s) por procesar';
-                            $alerta->Descripcion= 'Tiene Desincorporacion(es) pendiente(s) por procesar, se le aconseja procesar las desincorporaciones que tiene pendiente en el Menu de Desincorporaciones->Desincorporacion';
-                            $alerta->user_id= Coordinador::first()->user_id;
-                            $alerta->nivel='alto';
-                            $alerta->save();
-                        }
-                        flash($instancia->user->name.' Ha sido enviado para desincorporacion definitiva en el sistema','info')->important();
-                        */
-
+                        $alerta->leido=false;
+                        $alerta->save();
                     }
                     else
                     {
-                        if($solicitud->titulo==='reincorporacion')
-                        {
-                            $instancia->status='activo';
-                            flash($instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
+                        $alerta = new  Alerta();
 
-                        }
+                        $alerta->titulo= 'Desincorporacion(es) pendiente(s) por procesar';
+                        $alerta->Descripcion= 'Tiene Desincorporacion(es) pendiente(s) por procesar, se le aconseja procesar las desincorporaciones que tiene pendiente en el Menu de Desincorporaciones->Desincorporacion';
+                        $alerta->user_id= Coordinador::first()->user_id;
+                        $alerta->nivel='alto';
+                        $alerta->save();
                     }
+                    flash($instancia->user->name.' Ha sido enviado para desincorporacion definitiva en el sistema','info')->important();
+                    */
 
                 }
-                $solicitud->status='aceptada';
-                $instancia->save();
+                else
+                {
+                    if($solicitud->titulo==='reincorporacion')
+                    {
+                        $instancia->status='activo';
+                        flash($instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
+
+                    }
+                }
 
             }
-            else
-            {
-                $solicitud->status='rechazada';
-                flash('La solicitud de '.$solicitud->user->name.' ha sido rechazada','info')->important();
-            }
-
-
-            $solicitud->usuario_respuesta= Auth::user()->id;
-            if($request->get('observacion'))
-            {
-                $solicitud->observacion = $request->get('observacion');
-            }
-            $solicitud->save();
-
-            //Enviar correo a la persona notificando
-            $mail = new PHPMailer();
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->CharSet = "utf-8";
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = "TLS";
-            $mail->Host = "smtp.gmail.com";
-            $mail->Port = 587;
-            $mail->Username = "delgadorafael2011@gmail.com";
-            $mail->Password = "scxxuchujshrgpao";
-            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-            $mail->Subject = "Notificación";
-            $body = view("emails.solicitudes.notificacion-estatus")->with(compact("solicitud","usuario"));
-            $mail->MsgHTML($body);
-            $mail->addAddress($usuario->email);
-            $mail->send();
-
-            event(new SolicitudesAlerts($solicitud));
-            Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
-
-            return  redirect()->route('gestionSolicitudes.listar');
+            $solicitud->status='aceptada';
+            $instancia->save();
 
         }
+        else
+        {
+            $solicitud->status='rechazada';
+            flash('La solicitud de '.$solicitud->user->name.' ha sido rechazada','info')->important();
+        }
+
+
+        $solicitud->usuario_respuesta= Auth::user()->id;
+        if($request->get('observacion'))
+        {
+            $solicitud->observacion = $request->get('observacion');
+        }
+        $solicitud->save();
+
+        //Enviar correo a la persona notificando
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.solicitudes.notificacion-estatus")->with(compact("solicitud"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($solicitud->user->email);
+        $mail->send();
+
+        event(new SolicitudesAlerts($solicitud));
+        Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
+
+        return  redirect()->route('gestionSolicitudes.listar');
+
+    }
 
 
     public function perfilPostulanteBecario($id)
     {
         $usuario = User::find($id);
-       if(($usuario->rol==="becario")||($usuario->rol==="postulante_becario"))
-       {
-       // dd($id);
+        if(($usuario->rol==="becario")||($usuario->rol==="postulante_becario"))
+        {
+            // dd($id);
             $postulante = Becario::find($id);
             $documentos = Documento::query()->where('user_id','=',$id)->get();
             $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
@@ -505,7 +506,8 @@ class CompartidoDirecCoordController extends Controller
 
     }
 
-    public function pdfSolicitud($fechaDesde,$fechaHasta,$user_id){
+    public function pdfSolicitud($fechaDesde,$fechaHasta,$user_id)
+    {
         if($user_id==0)
         {
             $solicitudes = Solicitud::query()->whereDate('updated_at','>=',$fechaDesde)->whereDate('updated_at','<=',$fechaHasta)->get();
@@ -561,5 +563,14 @@ class CompartidoDirecCoordController extends Controller
         $pdf = PDF::loadView('sisbeca.solicitudes.reporteDeSolicitudes', compact('solicitudes','mes','fechaDesde','fechaHasta'));
 
         return $pdf->stream('reporteDeSolicitudes.pdf', 'PDF xasa');
+    }
+
+    public function ocultarsolicitud($id)
+    {
+        $solicitud = Solicitud::find($id);
+        $solicitud->oculto_admin = 1;
+        $solicitud->save();
+        flash('La solicitud se oculto exitosamente.',"success");
+        return redirect()->route('gestionSolicitudes.listar');
     }
 }

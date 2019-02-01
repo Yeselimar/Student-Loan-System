@@ -21,6 +21,7 @@ use avaa\Periodo;
 use avaa\Coordinador;
 use avaa\Mentor;
 use avaa\Aval;
+use avaa\Solicitud;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -91,6 +92,8 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $solicitud = Solicitud::find(1);
+        return $solicitud->user;
         $becario = Becario::find(6);
         return $becario->mentor->user->nombreyapellido();
         $estatus = "APROBADO";

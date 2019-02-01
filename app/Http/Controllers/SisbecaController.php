@@ -98,8 +98,10 @@ class SisbecaController extends Controller
     public function verMiPerfilMentor()
     {
         $postulante= User::find(Auth::user()->id);
+        //$postulante = Mentor::find(Auth::user()->id); //Esto puede solucionar el error. att Rafael
         $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->id)->where('titulo','=','img_perfil')->get();
         $documento = Documento::query()->where('user_id', '=', $postulante->id)->where('titulo', '=', 'hoja_vida')->first();
+        // return $postulante; //Esto puede solucionar el error. att Rafael
         return view('sisbeca.postulaciones.perfilPostulanteMentor')->with('postulanteMentor',$postulante)->with('documento', $documento)
             ->with('img_perfil_postulante',$img_perfil_postulante);
     }

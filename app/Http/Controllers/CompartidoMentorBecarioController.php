@@ -21,7 +21,7 @@ class CompartidoMentorBecarioController extends Controller
 
     public function listarsolicitudes()
     {
-        $solicitudes = Solicitud::query()->where('user_id','=',Auth::user()->id)->get();
+        $solicitudes = Solicitud::visibleUsuario()->where('user_id','=',Auth::user()->id)->get();
         return view('sisbeca.solicitudes.listar')->with(compact('solicitudes'));
     }
 
@@ -190,5 +190,14 @@ class CompartidoMentorBecarioController extends Controller
         }
 
         return  redirect()->route('solicitud.listar');
+    }
+
+    public function ocultarsolicitud($id)
+    {
+        $solicitud = Solicitud::find($id);
+        $solicitud->oculto_usuario = 1;
+        $solicitud->save();
+        flash('La solicitud se oculto exitosamente.',"success");
+        return redirect()->route('solicitud.listar');
     }
 }

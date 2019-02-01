@@ -179,8 +179,6 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
 
-
-
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
         Route::get('/becarios/obtener-estatus/api', 'SeguimientoController@obtenerestatusbecarios')->name('obtener.estatus.becarios');
@@ -767,6 +765,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CompartidoDirecCoordController@cambiostatusentrevistado',
             'as' => 'fue.A.Entrevista'
         ]);
+
+        //solicitudes
         Route::get('gestionSolicitud/listar', [
             'uses' => 'CompartidoDirecCoordController@listarSolicitudes',
             'as' => 'gestionSolicitudes.listar'
@@ -790,6 +790,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'gestionSolicitud.update'
         ]);
 
+        Route::get('/solicitud/{id}/ocultar/admin', 'CompartidoDirecCoordController@ocultarsolicitud')->name('solicitud.ocultar.admin');
+
+        //becarios
         Route::get('becarios/listar', [
             'uses' => 'CompartidoDirecCoordController@listarBecarios',
             'as' => 'becarios.listar'
@@ -850,7 +853,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         Route::get('/postulante/{id}/editar-documento-conjunto/', 'EntrevistadorController@editardocumentoconjunto')->name('entrevistador.editardocumentoconjunto');
         Route::post('/postulante/{id}/actualizar-documento-conjunto/', 'EntrevistadorController@actualizardocumentoconjunto')->name('entrevistador.actualizardocumentoconjunto');
-    */
+        */
         Route::get('listaDeEntrevistasDePostulantes', [
             'uses' => 'EntrevistadorController@listarpostulantesaentrevistar',
             'as' => 'lista.Entrevistas.Postulantes'
@@ -894,6 +897,8 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'uses' => 'CompartidoMentorBecarioController@solicitudDestroy',
             'as' => 'solicitud.destroy'
         ]);
+
+        Route::get('/solicitud/{id}/ocultar', 'CompartidoMentorBecarioController@ocultarsolicitud')->name('solicitud.ocultar.usuario');
     });
 
     Route::get('notificaciones/showAll', [
