@@ -164,7 +164,9 @@ class CompartidoDirecCoordController extends Controller
             $mail->addAddress($postulanteBecario->user->email);
             $mail->send();
 
+            $id = $postulanteBecario->user->id;
             //borrar documentos
+            
             $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
             $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
             $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
@@ -192,7 +194,7 @@ class CompartidoDirecCoordController extends Controller
             File::delete($referencia_profesor1->url);
             File::delete($referencia_profesor2->url);
             File::delete($ensayo->url);
-            
+
             $fotografia->delete();
             $cedula->delete();
             $constancia_cnu->delete();

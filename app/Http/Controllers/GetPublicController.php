@@ -22,10 +22,12 @@ use avaa\Coordinador;
 use avaa\Mentor;
 use avaa\Aval;
 use avaa\Solicitud;
+use avaa\Imagen;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
 use Mail;
+use File;
 use DateTime;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -92,6 +94,11 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $id = 81;
+        $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
+        //File::delete($fotografia->url);
+        //$fotografia->delete();
+        return "Eliminada la foto";
         $solicitud = Solicitud::find(1);
         return $solicitud->user;
         $becario = Becario::find(6);

@@ -60,7 +60,7 @@ class RegistroSisbecaController extends Controller
                 $file->move($path, $name);
                 $img_perfil = new Imagen();
                 $img_perfil->titulo = 'img_perfil';
-                $img_perfil->url = '/images/perfil/' . $name;
+                $img_perfil->url = 'images/perfil/' . $name;
                 $img_perfil->verificado = true;
                 $img_perfil->user_id = $user->id;
                 $img_perfil->save();
@@ -130,7 +130,7 @@ class RegistroSisbecaController extends Controller
                 $file->move($path, $name);
                 $img_perfil = new Imagen();
                 $img_perfil->titulo = 'img_perfil';
-                $img_perfil->url = '/images/perfil/' . $name;
+                $img_perfil->url = 'images/perfil/' . $name;
                 $img_perfil->verificado = true;
                 $img_perfil->user_id = $user->id;
                 $img_perfil->save();

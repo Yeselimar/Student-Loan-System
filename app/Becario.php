@@ -167,7 +167,7 @@ class Becario extends Model
 
     public static function getCarpetaImagenes()
     {
-        return '/images/becarios/';
+        return 'images/becarios/';
     }
     public function imagenes()//relacion becario-imagen
     {
@@ -176,7 +176,7 @@ class Becario extends Model
 
     public static function getCarpetaDocumentos()
     {
-        return '/documentos/becarios/';
+        return 'documentos/becarios/';
     }
 
     public function getTrabaja()
