@@ -93,7 +93,7 @@
 					</span>
 				</template>
 
-				<span v-b-popover.hover="'Este postulante ya fue entrevistado'">
+				<span v-b-popover.hover="'Notificar por correo día de la entrevista'">
 					<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="modalenviarcorreo(postulante)">
 						<i class="fa fa-envelope"></i>
 					</button>

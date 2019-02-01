@@ -430,11 +430,12 @@ class CompartidoDirecCoordController extends Controller
             $documentos = Documento::query()->where('user_id','=',$id)->get();
             $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
             $entrevistadores=BecarioEntrevistador::query()->where('becario_id','=',$id)->get();
-        // dd($entrevistadores);
-
+            // dd($entrevistadores);
+            // return $entrevistadores;
+            //return $entrevistadores;
             if(is_null($documentos))
             {
-            flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
+                flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
             }
             else
             {
