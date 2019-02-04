@@ -418,7 +418,7 @@
                 $("#preloader").show();
                 axios.get(url).then(response =>
                 {
-                    this.postulantes = response.data.postulantes;
+                    this.obtenerpostulantes()
                     $("#preloader").hide();
                     toastr.success(response.data.success);
                 });

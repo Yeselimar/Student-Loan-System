@@ -680,7 +680,6 @@ class CompartidoDirecCoordController extends Controller
             $img_perfil->delete();
         }
         
-
         //Eliminio el documeto final entrevista
         if($becario->documento_final_entrevista!=null)
         {
@@ -693,13 +692,14 @@ class CompartidoDirecCoordController extends Controller
         {
             if($entrevistador->documento!=null)
             {
-                File::delete(substr($entrevistador->documento,1));
+                File::delete($entrevistador->documento);
             }
+            $entrevistador->delete();
         }
         //Elimino el usuario  y el becario
         $becario->delete();
         $usuario->delete();
-        
+
         return response()->json(['success'=>'El postulante ha sido eliminado exitosamente.']);
     }
 }

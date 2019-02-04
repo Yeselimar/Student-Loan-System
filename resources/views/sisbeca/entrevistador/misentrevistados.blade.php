@@ -144,7 +144,9 @@
 						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 					</div>
 					<div class="modal-body">
-					<h5>¿Esta Seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong></h5>
+						<br>
+						<h5>¿Está seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong>
+						</h5>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>

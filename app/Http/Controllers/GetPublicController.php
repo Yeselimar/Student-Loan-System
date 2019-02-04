@@ -95,39 +95,16 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        $id = 82;
-        $usuario = User::find($id); 
-        $becario = Becario::find($id);
-        //Elimino la foto de perfil
-        $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
-        if($img_perfil)
-        {
-            if($img_perfil->url!=null)
-            {
-                File::delete(substr($img_perfil->url,1));
-            }
-            $img_perfil->delete();
-        }
-        
-
-        //Eliminio el documeto final entrevista
-        if($becario->documento_final_entrevista!=null)
-        {
-            File::delete($becario->documento_final_entrevista);
-        }
-
-        //Eliminado el documento que subió cada entrevistador
+        $id = 17;
         $entrevistadores = BecarioEntrevistador::paraBecario($id)->get();
         foreach ($entrevistadores as $entrevistador)
         {
             if($entrevistador->documento!=null)
             {
-                File::delete(substr($entrevistador->documento,1));
+                File::delete($entrevistador->documento);
             }
+            $entrevistador->delete();
         }
-        //Elimino el usuario  y el becario
-        $becario->delete();
-        $usuario->delete();
         return "exito eliminado";
         return "Eliminada la foto";
         $solicitud = Solicitud::find(1);
