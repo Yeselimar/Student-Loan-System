@@ -84,7 +84,7 @@
 						</div>
 					</td>
 					<td class="text-center">
-						<button v-b-popover.hover="'Marcar como Entrevistado'" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
+						<button v-b-popover.hover="'Cerrar proceso de entrevista'" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
                             <i class="fa fa-check" data-target="modal-asignar"></i>
                          </button>
 
@@ -145,12 +145,12 @@
 					</div>
 					<div class="modal-body">
 						<br>
-						<h5>¿Está seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong>
+						<h5>¿Está seguro que desea <strong>cerrar el proceso de entrevista</strong> para el postulante <strong>@{{nombreyapellido}}?</strong>
 						</h5>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
-						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Aceptar</button>
+						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >No</button>
+						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
 					</div>
 				</div>
 			</div>

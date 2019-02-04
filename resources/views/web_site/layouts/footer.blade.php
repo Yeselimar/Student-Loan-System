@@ -39,7 +39,7 @@
       </footer>
       <div class="container-fluid footer-creditos" >
          <div class="container text-center">
-            <p ><i class="fa fa-copyright"></i>&nbsp;&nbsp;Desarrollado por <a href="#" class="contacto-letra">UC</a></p>
+            <p ><i class="fa fa-copyright"></i>&nbsp;&nbsp;Desarrollado por <strong><a href="#" style="color:#fff">AFODI</a></strong></p>
          </div>
       </div>
       <!-- Footer Section End --> 

@@ -42,13 +42,32 @@ class CompartidoDirecCoordController extends Controller
             return response()->json(['success'=>'Entré Exitosamente']);
     }
     //Asignar fecha de bienvenida Individualmente
-    public function asignarfechabienvenida(Request $request){
-        $postulante = Becario::find($request->id);
-        $postulante->lugar_bienvenida = $request->lugar;
-        $postulante->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
-        $postulante->fecha_bienvenida = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
-        $postulante->save();
-        return response()->json(['success'=>'Entré Exitosamente']);
+    public function asignarfechabienvenida(Request $request)
+    {
+        $becario = Becario::find($request->id);
+        $becario->lugar_bienvenida = $request->lugar;
+        $becario->hora_bienvenida = DateTime::createFromFormat('H:i a', $request->hora )->format('H:i:s');
+        $becario->fecha_bienvenida = DateTime::createFromFormat('d/m/Y', $request->fecha )->format('Y-m-d');
+        $becario->save();
+
+        //Enviar correo a la persona notificando que fue recibido su justificativo
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.becarios.notificacion-fecha-bienvenida")->with(compact("becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return response()->json(['success'=>'La fecha bienvenida para el becario '.$becario->user->nombreyapellido()." fue asignada exitosamente."]);
     }
     //Agregar Observacion a un Becario
     public function agregarObservacion(Request $request, $id)

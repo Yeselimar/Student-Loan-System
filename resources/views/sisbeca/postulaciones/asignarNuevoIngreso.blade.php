@@ -120,7 +120,7 @@
                     <div class="col-lg-12">
                         <br>
                         <p class="h6 text-center">
-                            ¿Está seguro que desea eliminar al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanente? 
+                            ¿Está seguro que desea <strong>eliminar</strong> al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanente? 
                         </p>
                     </div>
                     
@@ -142,7 +142,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title pull-left"><strong>Decisión de la Postulación</strong></h5>
-                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
                     <div class="modal-body text-center">
                     <br>
@@ -154,9 +154,9 @@
                                 <img class="img-responsive w-50 m-b-20" :src="imagen_postulante">
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
-                                    <div>Edad:@{{edad}}</div>
-                                    <div><b>Promedio Universitario:</b>@{{promedio}}</div>
-                                    <div><b>Observación:</b>@{{observacion}}</div>
+                                    <div>Edad: @{{edad}}</div>
+                                    <div><b>Promedio Universitario:</b> @{{promedio}}</div>
+                                    <div><b>Observación:</b> @{{observacion}}</div>
 
                             </div>
                         </div>
@@ -177,6 +177,7 @@
             </div>
         </div>
     </form>
+    <!-- Modal para aprobar becario -->
 
     <!-- Modal para fecha de Bienvenida -->
     <form method="POST" @submit.prevent="fechadebienvenida(id)">
@@ -186,7 +187,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title pull-left"><strong>Datos de la Reunión de Bienvenida</strong></h5>
-                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -205,7 +206,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px">
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="border">
                             <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
                             <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Guardar</button>
                         </div>
@@ -224,7 +225,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title pull-left"><strong>Datos de la Reunión de Bienvenida</strong></h5>
-                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -364,6 +365,8 @@
             fechadebienvenida: function(id)
             {
                 var url ='{{route('asignar.fecha.bienvenida')}}';
+                $('#modal-fecha-bienvenida').modal('hide');
+                $("#preloader").show();
                 axios.post(url,{
                 id:this.id,
                 fecha:this.fecha,
@@ -371,7 +374,8 @@
                 hora:this.hora,
                 }).then(response =>
                 {
-                    $('#modal-fecha-bienvenida').modal('hide');
+                    //$('#modal-fecha-bienvenida').modal('hide');
+                    $("#preloader").hide();
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });

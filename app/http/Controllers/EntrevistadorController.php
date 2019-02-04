@@ -52,7 +52,7 @@ class EntrevistadorController extends Controller
         $be->documento = BecarioEntrevistador::carpetaDocumento().$nombre;
         $be->save();
 
-        flash("El documento al becario ".$becario->user->nombreyapellido()." fue cargado exitosamente.",'success');
+        flash("El informe de la entrevista del postulante ".$becario->user->nombreyapellido()." fue cargado exitosamente.",'success');
         return redirect()->route('entrevistador.misentrevistados');
 	}
 
@@ -88,7 +88,7 @@ class EntrevistadorController extends Controller
 	        $be->save();
         }
 
-        flash("El documento al becario ".$becario->user->nombreyapellido()." fue actualizado exitosamente.",'success');
+        flash("El informe de la entrevista del postulante ".$becario->user->nombreyapellido()." fue actualizado exitosamente.",'success');
         return redirect()->route('entrevistador.misentrevistados');
 	}
 
@@ -117,7 +117,7 @@ class EntrevistadorController extends Controller
         $becario->documento_final_entrevista = BecarioEntrevistador::carpetaDocumentoConjunto().$nombre;
         $becario->save();
 
-        flash("El documento conjunto del becario ".$becario->user->nombreyapellido()." fue cargado exitosamente.",'success');
+        flash("El resumen final de la entrevista del postulante ".$becario->user->nombreyapellido()." fue cargado exitosamente.",'success');
         return redirect()->route('entrevistador.asignar');
 	}
 
@@ -149,7 +149,7 @@ class EntrevistadorController extends Controller
 	        $becario->documento_final_entrevista = BecarioEntrevistador::carpetaDocumentoConjunto().$nombre;
 	        $becario->save();
 	    }
-        flash("El documento conjunto del becario ".$becario->user->nombreyapellido()." fue actualizado exitosamente.",'success');
+        flash("El resumen final de la entrevista del postulante ".$becario->user->nombreyapellido()." fue actualizado exitosamente.",'success');
         return redirect()->route('entrevistador.asignar');
 	}
 
@@ -232,7 +232,7 @@ class EntrevistadorController extends Controller
 		$be = BecarioEntrevistador::paraBecario($b_id)->ParaEntrevistador($e_id)->first();
 		$be->oculto = 1;
 		$be->save();
-		return response()->json(['success'=>'El prepostulante '.$becario->user->nombreyapellido().' se ocultó de su lista exitosamente.']);
+		return response()->json(['success'=>'El postulate '.$becario->user->nombreyapellido().' se ocultó de su lista exitosamente.']);
 	}
 
 	public function obtenerbecario($id)

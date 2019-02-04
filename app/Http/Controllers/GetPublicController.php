@@ -96,16 +96,25 @@ class GetPublicController extends Controller
     public function prueba()
     {
         $id = 17;
-        $entrevistadores = BecarioEntrevistador::paraBecario($id)->get();
-        foreach ($entrevistadores as $entrevistador)
-        {
-            if($entrevistador->documento!=null)
-            {
-                File::delete($entrevistador->documento);
-            }
-            $entrevistador->delete();
-        }
-        return "exito eliminado";
+        $becario = Becario::find($id);
+        //Enviar correo a la persona notificando que fue recibido su justificativo
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.becarios.notificacion-fecha-bienvenida")->with(compact("becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return "mensaje enviado";
         return "Eliminada la foto";
         $solicitud = Solicitud::find(1);
         return $solicitud->user;

@@ -16,6 +16,16 @@ class Becario extends Model
 
     public $guarded = ['created_at', 'updated_at'];
 
+    public function horaBienvenida()
+    {
+       return date("h:i a", strtotime($this->hora_bienvenida));
+    }
+
+    public function fechaBienvenida()
+    {
+       return date("d/m/Y", strtotime($this->fecha_bienvenida));
+    }
+
     public function fechaEntrevista()
     {
        return date("d/m/Y", strtotime($this->fecha_entrevista));
@@ -355,16 +365,20 @@ class Becario extends Model
         $bienvenida = new DateTime($this->fecha_bienvenida);
         $hoy = new DateTime();
         // Muestra los terminos y condiciones si la fecha de bienvenida es mayor o igual a la actual
-        if($this->fecha_bienvenida != null){
+        if($this->fecha_bienvenida != null)
+        {
             $diff = $hoy->diff($bienvenida);
-            if(($diff->invert == 1)){
+            if(($diff->invert == 1))
+            {
                 return 'true';
             }
-            else{
+            else
+            {
                 return 'false';
             }
         }
-        else{
+        else
+        {
             return 'false';
         }
     }

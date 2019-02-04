@@ -93,11 +93,20 @@
 					</span>
 				</template>
 
-				<span v-b-popover.hover="'Notificar por correo día de la entrevista'">
-					<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="modalenviarcorreo(postulante)">
-						<i class="fa fa-envelope"></i>
-					</button>
-				</span>
+				<template v-if="postulante.status=='entrevista'">
+					<span v-b-popover.hover="'Notificar por correo día de la entrevista'">
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" @click="modalenviarcorreo(postulante)">
+							<i class="fa fa-envelope"></i>
+						</button>
+					</span>
+				</template>
+				<template v-else>
+					<span v-b-popover.hover="'Notificar por correo día de la entrevista'">
+						<button type="button" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+							<i class="fa fa-envelope"></i>
+						</button>
+					</span>
+				</template>
 
 				</td>
 			</tr>
