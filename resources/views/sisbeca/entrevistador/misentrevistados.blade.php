@@ -235,11 +235,11 @@ const app = new Vue({
 		marcarentrevistado:function(id)
 		{
 			var url = '{{route('fue.A.Entrevista')}}';
+			$('#modal-asignar').modal('hide');
 			$("#preloader").show();
 			axios.post(url,{
 				id:this.id,
 				}).then(response=>{
-				$('#modal-asignar').modal('hide');
 				$("#preloader").hide();
 				this.obtenerentrevistados();
 				toastr.success(response.data.success);

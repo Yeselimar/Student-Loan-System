@@ -127,7 +127,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click="eliminarPostulante(eliminar_id)">Si</button>
+                    <button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click="eliminarPostulante(eliminar_id)">Sí</button>
                 </div>
             </div>
         </div>
