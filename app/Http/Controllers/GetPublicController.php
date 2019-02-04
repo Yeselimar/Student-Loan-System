@@ -5,6 +5,7 @@ namespace avaa\Http\Controllers;
 use avaa\Costo;
 use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
+use avaa\BecarioEntrevistador;
 use avaa\Noticia;
 use avaa\User;
 use avaa\Becario;
@@ -94,10 +95,40 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        $id = 81;
-        $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
-        //File::delete($fotografia->url);
-        //$fotografia->delete();
+        $id = 82;
+        $usuario = User::find($id); 
+        $becario = Becario::find($id);
+        //Elimino la foto de perfil
+        $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
+        if($img_perfil)
+        {
+            if($img_perfil->url!=null)
+            {
+                File::delete(substr($img_perfil->url,1));
+            }
+            $img_perfil->delete();
+        }
+        
+
+        //Eliminio el documeto final entrevista
+        if($becario->documento_final_entrevista!=null)
+        {
+            File::delete($becario->documento_final_entrevista);
+        }
+
+        //Eliminado el documento que subió cada entrevistador
+        $entrevistadores = BecarioEntrevistador::paraBecario($id)->get();
+        foreach ($entrevistadores as $entrevistador)
+        {
+            if($entrevistador->documento!=null)
+            {
+                File::delete(substr($entrevistador->documento,1));
+            }
+        }
+        //Elimino el usuario  y el becario
+        $becario->delete();
+        $usuario->delete();
+        return "exito eliminado";
         return "Eliminada la foto";
         $solicitud = Solicitud::find(1);
         return $solicitud->user;

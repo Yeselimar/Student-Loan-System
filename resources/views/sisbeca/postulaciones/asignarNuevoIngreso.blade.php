@@ -120,7 +120,7 @@
                     <div class="col-lg-12">
                         <br>
                         <p class="h6 text-center">
-                            ¿Está seguro que desea eliminar al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanentemente? @{{eliminar_id}}
+                            ¿Está seguro que desea eliminar al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanente? 
                         </p>
                     </div>
                     
@@ -415,13 +415,13 @@
                 url = url.replace(':id', eliminar_id);
                 $('#eliminarpostulante').modal('hide');
                 console.log(url);
-                //$("#preloader").show();
-                /*axios.get(url).then(response =>
+                $("#preloader").show();
+                axios.get(url).then(response =>
                 {
                     this.postulantes = response.data.postulantes;
                     $("#preloader").hide();
                     toastr.success(response.data.success);
-                });*/
+                });
             },
             zfill: function(number, width)
             {
