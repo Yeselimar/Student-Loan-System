@@ -53,6 +53,7 @@
             </a>
           </div>
           @endforeach
+          
           <div class="col-lg-12">
             <p style="color:#424242" class="text-right">{{ count($noticias) }}  noticia(s)</p>
           </div>
