@@ -87,6 +87,16 @@
                     <template>
                         <a :href="getRutaVerPerfil(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary"> <i class="fa fa-eye"></i></a>
                     </template>
+                    <template v-if="postulante.status=='rechazado'">
+                        <button  v-b-popover.hover="'Eliminar postulante'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminarPostulante(postulante)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </template>
+                    <template v-else>
+                        <button  v-b-popover.hover="'Eliminar postulante'" class="btn btn-xs sisbeca-btn-default" disabled="disabled" @click="modalEliminarPostulante(postulante)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </template>
                     </td>
                 </tr>
                 <tr v-if="postulantes.length==0">
@@ -97,6 +107,32 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Modal para eliminar al postulante becario -->
+    <div class="modal fade" id="eliminarpostulante">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title pull-left"><strong>Eliminar Postulante</strong></h5>
+                    <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12">
+                        <br>
+                        <p class="h6 text-center">
+                            ¿Está seguro que desea eliminar al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanentemente? @{{eliminar_id}}
+                        </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click="eliminarPostulante(eliminar_id)">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para eliminar al postulante becario -->
 
     <!-- Modal para aprobar becario -->
     <form method="POST" @submit.prevent="veredictopostulantesbecarios(id)">
@@ -246,6 +282,8 @@
         },
         data:
         {
+            eliminar_postulante:'',
+            eliminar_id:0,
             postulante:'',
             imagenes:[],
             imagen_postulante:'',
@@ -262,7 +300,8 @@
             contador:0,
 
         },
-        methods:{
+        methods:
+        {
             getRutaVerPerfil: function(id)
             {
                 //var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
@@ -293,7 +332,6 @@
                     $("#preloader").hide();
                     toastr.success(response.data.success);
                 });
-
             },
             mostrarModal:function(postulante,imagenes,funcion)
 		    {
@@ -320,7 +358,7 @@
             mostrarModalBienvenida:function(postulante)
             {
                 this.id = postulante.user_id;
-               // console.log('ID:' , postulante.user_id);
+                // console.log('ID:' , postulante.user_id);
                 $('#modal-fecha-bienvenida').modal('show');
             },
             fechadebienvenida: function(id)
@@ -344,7 +382,7 @@
             },
             fechadebienvenidaparatodos: function()
             {
-               /* this.hora = $('#hora').val();
+                /* this.hora = $('#hora').val();
                 this.fecha = $('#fecha').val();*/
                 var url = '{{route('asignar.fecha.bienvenida.todos')}}';
                 let data = JSON.stringify({
@@ -364,6 +402,26 @@
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });
+            },
+            modalEliminarPostulante(postulante)
+            {
+                this.eliminar_postulante=postulante.user.name+' '+postulante.user.last_name;
+                this.eliminar_id = postulante.user.id;
+                $('#eliminarpostulante').modal('show');
+            },
+            eliminarPostulante(eliminar_id)
+            {
+                var url = '{{route('postulante.eliminar',':id')}}';
+                url = url.replace(':id', eliminar_id);
+                $('#eliminarpostulante').modal('hide');
+                console.log(url);
+                //$("#preloader").show();
+                /*axios.get(url).then(response =>
+                {
+                    this.postulantes = response.data.postulantes;
+                    $("#preloader").hide();
+                    toastr.success(response.data.success);
+                });*/
             },
             zfill: function(number, width)
             {

@@ -107,7 +107,7 @@ class CompartidoDirecCoordController extends Controller
     public function veredictoPostulantesBecarios(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
-         if($request->funcion=='Aprobar')
+        if($request->funcion=='Aprobar')
         {
             //$postulanteBecario->user->rol='becario';
             //$postulanteBecario->user->save();
@@ -139,6 +139,7 @@ class CompartidoDirecCoordController extends Controller
         }
         else
         {
+            
             // $postulanteBecario->user->rol='rechazado';
             $postulanteBecario->status='rechazado';
             $postulanteBecario->user->save();
@@ -163,7 +164,7 @@ class CompartidoDirecCoordController extends Controller
             $mail->MsgHTML($body);
             $mail->addAddress($postulanteBecario->user->email);
             $mail->send();
-
+            
             $id = $postulanteBecario->user->id;
             //borrar documentos
             
@@ -181,19 +182,19 @@ class CompartidoDirecCoordController extends Controller
             $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
             $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
             
-            File::delete($fotografia->url);
-            File::delete($cedula->url);
-            File::delete($constancia_cnu->url);
-            File::delete($calificaciones_bachillerato->url);
-            File::delete($constancia_aceptacion->url);
-            File::delete($constancia_estudios->url);
-            File::delete($calificaciones_universidad->url);
-            File::delete($constancia_trabajo->url);
-            File::delete($declaracion_impuestos->url);
-            File::delete($recibo_pago->url);
-            File::delete($referencia_profesor1->url);
-            File::delete($referencia_profesor2->url);
-            File::delete($ensayo->url);
+            File::delete(substr($fotografia->url,1));
+            File::delete(substr($cedula->url,1));
+            File::delete(substr($constancia_cnu->url,1));
+            File::delete(substr($calificaciones_bachillerato->url,1));
+            File::delete(substr($constancia_aceptacion->url,1));
+            File::delete(substr($constancia_estudios->url,1));
+            File::delete(substr($calificaciones_universidad->url,1));
+            File::delete(substr($constancia_trabajo->url,1));
+            File::delete(substr($declaracion_impuestos->url,1));
+            File::delete(substr($recibo_pago->url,1));
+            File::delete(substr($referencia_profesor1->url,1));
+            File::delete(substr($referencia_profesor2->url,1));
+            File::delete(substr($ensayo->url,1));
 
             $fotografia->delete();
             $cedula->delete();
@@ -659,5 +660,16 @@ class CompartidoDirecCoordController extends Controller
         $solicitud->save();
         flash('La solicitud se oculto exitosamente.',"success");
         return redirect()->route('gestionSolicitudes.listar');
+    }
+
+    public function eliminarpostulante($id)
+    {
+        $usuario = User::find($id); 
+        $becario = Becario::find($id);
+
+        $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
+
+        File::delete(substr($img_perfil->url,1));
+        return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
     }
 }

@@ -178,7 +178,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
-
+        //Elimnar a postulantne
+        Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
+        //Segimiento 
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
         Route::get('/becarios/obtener-estatus/api', 'SeguimientoController@obtenerestatusbecarios')->name('obtener.estatus.becarios');
