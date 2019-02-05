@@ -120,20 +120,6 @@
                     <li> <a class="has-arrow " href="{{route('banner.index')}}" aria-expanded="false"><i class="fa fa-picture-o">
                         </i><span class="hide-menu">Banner</span></a>
                     </li>
-
-                    <li class="nav-label">Gestion de Cronogramas</li>
-                  {{--  <li> <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Talleres y Voluntareados</span></a>
-                        <ul aria-expanded="false" class="collapse">
-                            <li><a href="#">Talleres</a></li>
-                            <li><a href="#">Voluntareados</a></li>
-                        </ul>
-                    </li>
-                    <li> <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Cursos y ChatClubs</span></a>
-                        <ul aria-expanded="false" class="collapse">
-                            <li><a href="#">CVA</a></li>
-                            <li><a href="#">ChatClubs</a></li>
-                        </ul>
-                    </li> --}}
                 @endif
                 {{--Fin de Vistas del Coordinador Educativo es decir el Editor--}}
 
@@ -190,16 +176,6 @@
                 {{--Inicio de Vistas del Coordinador--}}
                 @if(Auth::user()->rol==='coordinador')
                     <li class="nav-label">Inicio</li>
-                    <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-street-view"></i><span class="hide-menu">Seguimientos</span></a>
-                      {{--  <ul aria-expanded="false" class="collapse">
-                            <li><a href="#">CVA</a></li>
-                            <li><a href="#">Universidad</a></li>
-                            <li><a href="#">Voluntareados</a></li>
-                            <li><a href="#">Cursos y Talleres</a></li>
-                            <li><a href="#">ChatClubs</a></li>
-
-                        </ul> --}}
-                    </li>
                     <li class="nav-label">Gestionar </li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Postulaciones
                                 @if($numT>0)

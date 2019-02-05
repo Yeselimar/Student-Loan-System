@@ -60,11 +60,11 @@
                     <span class="errors" style="color:red">{{ $errors->first('url_imagen') }}</span>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 destacar">
                     <label for="destacada" class="control-label">Destacada</label>
                     <div class="col-lg-12" style="border-radius: 5px;border:1px solid #021f3a;height: 40px;">
                         <div class="checkbox text-center" >
-                            <input type="checkbox" value="1" name='destacada'>
+                            <input type="checkbox" value="1" id="destacada" name='destacada'>
                             ¿Destacado en carrousel?
                         </div>
                     </div>
@@ -103,14 +103,16 @@
         $("#tipo").change(function () {
             mivalor = $("#tipo").val();
             if (mivalor == 'miembroins') {
-
+                document.getElementById("destacada").checked = 0
                 $(".rendered").show();
+                $(".destacar").hide();
                 $("#url_articulo").attr("required", "required")
-
 
             }
             else {
                 $("#url_articulo").removeAttr('required');
+                $(".destacar").show();
+                document.getElementById("destacada").checked = 0
                 document.getElementById("url_articulo").value = null;
                 document.getElementById("email_contacto").value = null;
                 document.getElementById("telefono_contacto").value = null;
@@ -122,11 +124,15 @@
 
 
         if (mivalor == 'miembroins') {
+            document.getElementById("destacada").checked = 0
             $(".rendered").show();
+            $(".destacar").hide();
             $("#url_articulo").attr("required", "required");
         }
         else {
             $("#url_articulo").removeAttr('required');
+            $(".destacar").show();
+            document.getElementById("destacada").checked = 0
             document.getElementById("url_articulo").value = null;
             document.getElementById("email_contacto").value = null;
             document.getElementById("telefono_contacto").value = null;

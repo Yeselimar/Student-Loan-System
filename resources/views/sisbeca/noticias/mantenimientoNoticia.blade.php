@@ -11,10 +11,10 @@
             <thead>
                 <tr>
                     <th>Título</th>
-                    <th>Tipo</th>
+                    <th class="text-center">Tipo</th>
                     <th>Creado por</th>
                     <th>Actualizado el</th>
-                    <th>Acciones</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,18 +23,21 @@
                     <tr>
                         <td>
                             {{$noticia->titulo}}
-                            <br>
-                            @if($noticia->esDestacada())
-                                <span class="label label-success">Destacada</span>
-                            @else
-                                <span class="label label-danger">No destacada</span>
-                            @endif
 
                         </td>
-                        <td>{{strtoupper($noticia->tipo)}}</td>
+                        <td class="text-center">{{strtoupper($noticia->tipo)}}
+                            @if($noticia->tipo !=="miembroins")
+                                <br>
+                                @if($noticia->esDestacada())
+                                    <span class="label label-success">Destacada</span>
+                                @else
+                                    <span class="label label-danger">No destacada</span>
+                                @endif    
+                            @endif
+                        </td>
                         <td>{{$noticia->editor->nombreyapellido()}}</td>
                         <td>{{$noticia->fechaActualizacion()}}</td>
-                        <td>
+                        <td class="text-center">
                             <a href="{{route('showNoticia',$noticia->slug)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Publicación">
                                 <i class="fa fa-eye"></i>
                             </a>
