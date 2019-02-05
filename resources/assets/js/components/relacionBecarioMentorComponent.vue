@@ -11,11 +11,6 @@
 </style>
 <template>
     <div>
-    <DatePicker language="es" id="expirationPassport" name="expirationPassport" ref="expirationPassport"
-                                        v-model="datedarwin"
-                                         format="dd-MM-yyyy"
-                                        :full-month-name="true">
-      </DatePicker>
       <div  class="col-lg-12">
       <div class="table-responsive">
 				<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -38,26 +33,6 @@
                 </div>
               </div>
             </div>
-           <!--
-            <b-row>
-               <b-col md="3" class="my-1 text-right">
-                <b-form-group horizontal label="Mostrar" class="mb-0 text-right">
-                  <b-form-select :options="pageOptions" v-model="perPage" /> Entradas
-                </b-form-group>
-              </b-col>
-               <b-col md="6" class="my-1"> </b-col>
-              <b-col md="3" class="my-1">
-                  <b-input-group>
-                    Buscar
-                    <b-form-input v-model="filter" />
-                    <b-input-group-append>
-                      <b-btn :disabled="!filter" @click="filter = ''">Limpiar</b-btn>
-                    </b-input-group-append>
-                  </b-input-group>
-              </b-col>
-
-
-            </b-row> -->
 
          <b-table
                     show-empty

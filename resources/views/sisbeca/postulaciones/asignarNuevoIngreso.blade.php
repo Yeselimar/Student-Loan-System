@@ -87,6 +87,16 @@
                     <template>
                         <a :href="getRutaVerPerfil(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary"> <i class="fa fa-eye"></i></a>
                     </template>
+                    <template v-if="postulante.status=='rechazado'">
+                        <button  v-b-popover.hover="'Eliminar postulante'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminarPostulante(postulante)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </template>
+                    <template v-else>
+                        <button  v-b-popover.hover="'Eliminar postulante'" class="btn btn-xs sisbeca-btn-default" disabled="disabled" @click="modalEliminarPostulante(postulante)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </template>
                     </td>
                 </tr>
                 <tr v-if="postulantes.length==0">
@@ -98,6 +108,32 @@
         </table>
     </div>
 
+    <!-- Modal para eliminar al postulante becario -->
+    <div class="modal fade" id="eliminarpostulante">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title pull-left"><strong>Eliminar Postulante</strong></h5>
+                    <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12">
+                        <br>
+                        <p class="h6 text-center">
+                            ¿Está seguro que desea <strong>eliminar</strong> al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanente? 
+                        </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-sm sisbeca-btn-primary pull-right" @click="eliminarPostulante(eliminar_id)">Sí</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para eliminar al postulante becario -->
+
     <!-- Modal para aprobar becario -->
     <form method="POST" @submit.prevent="veredictopostulantesbecarios(id)">
         {{ csrf_field() }}
@@ -106,10 +142,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title pull-left"><strong>Decisión de la Postulación</strong></h5>
-                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
                     <div class="modal-body text-center">
-                        <br>
+                    <br>
 
                     <div class="panel panel-default">
                         <div class="panel-heading"> @{{nombreyapellido}}</div>
@@ -118,15 +154,15 @@
                                 <img class="img-responsive w-50 m-b-20" :src="imagen_postulante">
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
-                                    <div>Edad:@{{edad}}</div>
-                                    <div><b>Promedio Universitario:</b>@{{promedio}}</div>
-                                    <div><b>Observación:</b>@{{observacion}}</div>
+                                    <div>Edad: @{{edad}}</div>
+                                    <div><b>Promedio Universitario:</b> @{{promedio}}</div>
+                                    <div><b>Observación:</b> @{{observacion}}</div>
 
                             </div>
                         </div>
                     </div>
                     <template v-if="funcion==='Aprobar'">
-                    <div class="panel-footer"><h5>¿Esta Seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a @{{nombreyapellido}} como Becario de ProExcelencia?</h5>
+                    <div class="panel-footer"><h5>¿Está seguro que desea <strong class="letras-verdes">@{{funcion}}</strong> a <strong>@{{nombreyapellido}}</strong> como Becario de ProExcelencia?</h5>
                     </div>
                     </template>
                     <template v-else>
@@ -141,6 +177,7 @@
             </div>
         </div>
     </form>
+    <!-- Modal para aprobar becario -->
 
     <!-- Modal para fecha de Bienvenida -->
     <form method="POST" @submit.prevent="fechadebienvenida(id)">
@@ -150,7 +187,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title pull-left"><strong>Datos de la Reunión de Bienvenida</strong></h5>
-                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -169,7 +206,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px">
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="border">
                             <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
                             <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Guardar</button>
                         </div>
@@ -188,7 +225,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title pull-left"><strong>Datos de la Reunión de Bienvenida</strong></h5>
-                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" >X</a>
+                        <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -220,6 +257,16 @@
         </div>
     </form>
     <!-- Modal para fecha de Bienvenida Todos -->
+
+
+    <!-- Cargando.. -->
+    <section class="loading" id="preloader">
+        <div>
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+        </div>
+    </section>
+    <!-- Cargando.. -->
 </div>
 
 @endsection
@@ -236,6 +283,8 @@
         },
         data:
         {
+            eliminar_postulante:'',
+            eliminar_id:0,
             postulante:'',
             imagenes:[],
             imagen_postulante:'',
@@ -252,7 +301,8 @@
             contador:0,
 
         },
-        methods:{
+        methods:
+        {
             getRutaVerPerfil: function(id)
             {
                 //var url = "{{route('entrevistador.documentoconjunto',array('id'=>':id'))}}";
@@ -263,24 +313,26 @@
             obtenerpostulantes:function()
             {
                 var url = '{{route('postulantes.entrevistados')}}';
+                $("#preloader").show();
                 axios.get(url).then(response =>
                 {
                     this.postulantes = response.data.postulantes;
+                    $("#preloader").hide();
                 });
             },
             veredictopostulantesbecarios:function(id)
             {
                 var url = '{{route('veredicto.postulantes.becarios')}}';
-               // console.log('ID:' , id);
+                $('#modal-asignar').modal('hide');
+                $("#preloader").show();
                 axios.post(url,{
                     id:this.id,
                     funcion:this.funcion
                     }).then(response=>{
-                    $('#modal-asignar').modal('hide');
                     this.obtenerpostulantes();
+                    $("#preloader").hide();
                     toastr.success(response.data.success);
                 });
-
             },
             mostrarModal:function(postulante,imagenes,funcion)
 		    {
@@ -307,12 +359,14 @@
             mostrarModalBienvenida:function(postulante)
             {
                 this.id = postulante.user_id;
-               // console.log('ID:' , postulante.user_id);
+                // console.log('ID:' , postulante.user_id);
                 $('#modal-fecha-bienvenida').modal('show');
             },
             fechadebienvenida: function(id)
             {
                 var url ='{{route('asignar.fecha.bienvenida')}}';
+                $('#modal-fecha-bienvenida').modal('hide');
+                $("#preloader").show();
                 axios.post(url,{
                 id:this.id,
                 fecha:this.fecha,
@@ -320,7 +374,8 @@
                 hora:this.hora,
                 }).then(response =>
                 {
-                    $('#modal-fecha-bienvenida').modal('hide');
+                    //$('#modal-fecha-bienvenida').modal('hide');
+                    $("#preloader").hide();
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });
@@ -331,7 +386,7 @@
             },
             fechadebienvenidaparatodos: function()
             {
-               /* this.hora = $('#hora').val();
+                /* this.hora = $('#hora').val();
                 this.fecha = $('#fecha').val();*/
                 var url = '{{route('asignar.fecha.bienvenida.todos')}}';
                 let data = JSON.stringify({
@@ -349,6 +404,26 @@
                 {
                     $('#modal-fecha-bienvenida-todos').modal('hide');
                     this.obtenerpostulantes();
+                    toastr.success(response.data.success);
+                });
+            },
+            modalEliminarPostulante(postulante)
+            {
+                this.eliminar_postulante=postulante.user.name+' '+postulante.user.last_name;
+                this.eliminar_id = postulante.user.id;
+                $('#eliminarpostulante').modal('show');
+            },
+            eliminarPostulante(eliminar_id)
+            {
+                var url = '{{route('postulante.eliminar',':id')}}';
+                url = url.replace(':id', eliminar_id);
+                $('#eliminarpostulante').modal('hide');
+                console.log(url);
+                $("#preloader").show();
+                axios.get(url).then(response =>
+                {
+                    this.obtenerpostulantes()
+                    $("#preloader").hide();
                     toastr.success(response.data.success);
                 });
             },

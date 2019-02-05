@@ -159,7 +159,7 @@
                     </li>
                     <li class="nav-label">Gestionar</li>
                     <li> <a class="has-arrow none-list" href="{{route('estipendioBecario')}}" aria-expanded="false"><i class="fa fa-usd"></i><span class="hide-menu">Estipendio</span></a>
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nomina
+                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nómina
                                 @if($numNominas>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numNominas}}</span>
                                 @endif

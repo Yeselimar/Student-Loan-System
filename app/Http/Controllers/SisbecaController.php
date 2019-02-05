@@ -64,7 +64,12 @@ class SisbecaController extends Controller
     }
     public function perfil($id)
     {
-        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or (Auth::user()->esBecario() and Auth::user()->id==$id) or (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or (Auth::user()->esMentor() and Auth::user()->id==$id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        $becario = Becario::find($id);
+        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or 
+            (Auth::user()->esBecario() and Auth::user()->id==$id) or 
+            (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or
+            (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id) or
+            Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
             $user= User::find($id);
             $becario = Becario::find($id);
@@ -92,11 +97,15 @@ class SisbecaController extends Controller
     }
     public function verMiPerfilMentor()
     {
-        $postulante= User::find(Auth::user()->id);
-        $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->id)->where('titulo','=','img_perfil')->get();
-        $documento = Documento::query()->where('user_id', '=', $postulante->id)->where('titulo', '=', 'hoja_vida')->first();
-        return view('sisbeca.postulaciones.perfilPostulanteMentor')->with('postulanteMentor',$postulante)->with('documento', $documento)
-            ->with('img_perfil_postulante',$img_perfil_postulante);
+        $mentor= Mentor::find(Auth::user()->id);
+        if($mentor){
+            $img_perfil=Imagen::query()->where('user_id','=',$mentor->user_id)->where('titulo','=','img_perfil')->get();
+            $documento = Documento::query()->where('user_id', '=', $mentor->user_id)->where('titulo', '=', 'hoja_vida')->first();
+            return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
+        } else
+        {
+            return view('sisbeca.error.404');
+        }
     }
     public function statusPostulanteMentor()
     {

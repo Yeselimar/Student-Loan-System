@@ -1,6 +1,18 @@
 @extends('web_site.layouts.main')
 @section('title', $noticia->titulo)
 @section('content')
+    <!-- Principal -->
+    <section id="x" class="x" data-stellar-background-ratio="0.2">
+        <br/><br/><br/>
+        <div class="container">
+         
+         
+        </div>
+    </section>
+    <!-- Fin Principal -->
+
+    <div style="height: 50px" id="noticias" style="border: 1px solid red"></div>
+
     <section class="section-princip-noticia" data-stellar-background-ratio="0.2">
 
         <!--Inicio de Sesion de Miembros institucionales -->
@@ -36,7 +48,7 @@
                 <div class="container">
                     <div class="row">
                         <div style=" text-align: justify;">
-                            <p >{!! $noticia->contenido !!}</p>
+                            <p class="h5">{!! $noticia->contenido !!}</p>
                         </div>
                     
                         @if($noticia->tipo=='miembroins')
@@ -78,8 +90,6 @@
 
             </div>
         </section>
-
-
 
     </section>
 

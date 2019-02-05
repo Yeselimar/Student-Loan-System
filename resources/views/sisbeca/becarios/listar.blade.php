@@ -67,28 +67,37 @@
 					@endif
 
 					<td class="text-center">
-							
-							<a href="{{route('becarios.editar.datos',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Editar Datos del Becarios">
-								<i class='fa fa-pencil'></i>
-							</a>
-							<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver Perfil">
-								<i class='fa fa-eye'></i>
-							</a>
-							<a href="{{route('seguimiento.becarioreportegeneral',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Reporte General">
-								<i class='fa fa-bar-chart'></i>
-							</a>
-							<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Resumen Becario">
-								<i class="fa fa-user"></i>
-							</a>
-							<a href="{{route('periodos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Nota">
-								<i class="fa fa-sticky-note-o"></i>
-							</a>
-							<a href="{{route('cursos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar CVA">
-								<i class="fa fa-book"></i>
-							</a>
-							<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Voluntariado">
-								<i class="fa fa-star"></i>
-							</a>
+						
+						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+						<a href="{{route('becarios.editar.datos',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Editar Datos del Becarios">
+							<i class='fa fa-pencil'></i>
+						</a>
+						@endif
+
+						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador() or Auth::user()->esMentor())
+						<a href="{{route('postulanteObecario.perfil',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Ver Perfil">
+							<i class='fa fa-eye'></i>
+						</a>
+						<a href="{{route('seguimiento.becarioreportegeneral',$becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="top" title="Reporte General">
+							<i class='fa fa-bar-chart'></i>
+						</a>
+						<a href="{{route('seguimiento.resumen',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Resumen Becario">
+							<i class="fa fa-user"></i>
+						</a>
+						@endif
+
+						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+						<a href="{{route('periodos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Nota">
+							<i class="fa fa-sticky-note-o"></i>
+						</a>
+						<a href="{{route('cursos.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar CVA">
+							<i class="fa fa-book"></i>
+						</a>
+						<a href="{{route('voluntariados.crear',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Voluntariado">
+							<i class="fa fa-star"></i>
+						</a>
+						@endif
+						
 					</td>
 				</tr>
 				@endforeach

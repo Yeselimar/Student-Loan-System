@@ -84,7 +84,7 @@
 						</div>
 					</td>
 					<td class="text-center">
-						<button v-b-popover.hover="'Marcar como Entrevistado'" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
+						<button v-b-popover.hover="'Cerrar proceso de entrevista'" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante)">
                             <i class="fa fa-check" data-target="modal-asignar"></i>
                          </button>
 
@@ -144,11 +144,13 @@
 						<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 					</div>
 					<div class="modal-body">
-					<h5>¿Esta Seguro que desea marcar como Entrevistado a <strong>@{{nombreyapellido}}?</strong></h5>
+						<br>
+						<h5>¿Está seguro que desea <strong>cerrar el proceso de entrevista</strong> para el postulante <strong>@{{nombreyapellido}}?</strong>
+						</h5>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
-						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Aceptar</button>
+						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >No</button>
+						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
 					</div>
 				</div>
 			</div>
@@ -233,11 +235,11 @@ const app = new Vue({
 		marcarentrevistado:function(id)
 		{
 			var url = '{{route('fue.A.Entrevista')}}';
+			$('#modal-asignar').modal('hide');
 			$("#preloader").show();
 			axios.post(url,{
 				id:this.id,
 				}).then(response=>{
-				$('#modal-asignar').modal('hide');
 				$("#preloader").hide();
 				this.obtenerentrevistados();
 				toastr.success(response.data.success);

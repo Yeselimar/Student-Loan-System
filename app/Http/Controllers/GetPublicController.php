@@ -5,6 +5,7 @@ namespace avaa\Http\Controllers;
 use avaa\Costo;
 use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
+use avaa\BecarioEntrevistador;
 use avaa\Noticia;
 use avaa\User;
 use avaa\Becario;
@@ -21,10 +22,13 @@ use avaa\Periodo;
 use avaa\Coordinador;
 use avaa\Mentor;
 use avaa\Aval;
+use avaa\Solicitud;
+use avaa\Imagen;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
 use Mail;
+use File;
 use DateTime;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -91,6 +95,29 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $id = 17;
+        $becario = Becario::find($id);
+        //Enviar correo a la persona notificando que fue recibido su justificativo
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.becarios.notificacion-fecha-bienvenida")->with(compact("becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return "mensaje enviado";
+        return "Eliminada la foto";
+        $solicitud = Solicitud::find(1);
+        return $solicitud->user;
         $becario = Becario::find(6);
         return $becario->mentor->user->nombreyapellido();
         $estatus = "APROBADO";

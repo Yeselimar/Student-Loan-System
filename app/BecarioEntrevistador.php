@@ -18,6 +18,11 @@ class BecarioEntrevistador extends Model
         return $this->belongsTo('avaa\Becario','becario_id');
     }
 
+    public function entrevistador()// probar: La relacion que faltaba
+    {
+        return $this->belongsTo('avaa\User','entrevistador_id');
+    }
+
     public function scopeParaBecario($query,$id)
     {
         return $query->where('becario_id','=',$id);

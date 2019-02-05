@@ -4,7 +4,7 @@
          <div class="container">
             <div class="row">
                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 contacto-enlaces" data-mh="footer">
-                  <ul>
+                  <ul class="contacto-lista-footer">
                      <li class="contacto-letra h6"><strong>AVAA</strong></li>
                      <li><a href="{{asset('nosotros')}}" class="contacto-letra">Nosotros</a></li>
                      <li><a href="{{asset('programas')}}" class="contacto-letra">Programas</a></li>
@@ -39,7 +39,7 @@
       </footer>
       <div class="container-fluid footer-creditos" >
          <div class="container text-center">
-            <p ><i class="fa fa-copyright"></i>&nbsp;&nbsp;Desarrollado por <a href="#" class="contacto-letra">UC</a></p>
+            <p ><i class="fa fa-copyright"></i>&nbsp;&nbsp;Desarrollado por <strong><a href="#" style="color:#fff">AFODI</a></strong></p>
          </div>
       </div>
       <!-- Footer Section End --> 

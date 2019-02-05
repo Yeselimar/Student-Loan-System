@@ -110,9 +110,9 @@
                      </li>
                      <li class="nivel1 nav-item">
                      @if($route=="contactenos")
-                        <a class="nav-link page-scroll active" target="_self" href="#hero-area">Contáctenos</a>
+                        <a class="nav-link page-scroll active" target="_self" href="#hero-area">Contáctanos</a>
                         @else
-                        <a class="nav-link " target="_self" href="{{asset('contactenos')}}">Contáctenos</a>
+                        <a class="nav-link " target="_self" href="{{asset('contactenos')}}">Contáctanos</a>
                      @endif
                      </li>
                      <li class="nivel1 nav-item">
@@ -224,9 +224,9 @@
                </li>
                <li>
                @if($route=="contactenos")
-                  <a class="page-scroll active" target="_self" href="#hero-area">Contáctenos</a>
+                  <a class="page-scroll active" target="_self" href="#hero-area">Contáctanos</a>
                   @else
-                  <a  target="_self" href="{{asset('contactenos')}}">Contáctenos</a>
+                  <a  target="_self" href="{{asset('contactenos')}}">Contáctanos</a>
                   @endif
                </li>
                <li>

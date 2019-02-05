@@ -29,6 +29,10 @@ class Todo extends Migration
             $table->text('cargo_actual')->nullable();
             $table->text('areas_de_interes')->nullable();
             $table->datetime('fecha_ingreso_empresa')->nullable();
+            $table->datetime('fecha_inactivo')->nullable();
+            $table->datetime('fecha_desincorporado')->nullable();
+            $table->text('observacion_inactivo')->nullable();
+            $table->text('observacion_desincorporado')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')->on('users')
@@ -213,7 +217,8 @@ class Todo extends Migration
             $table->unsignedInteger('usuario_respuesta')->nullable();
             $table->datetime('fecha_desincorporacion')->nullable();
             $table->datetime('fecha_inactividad')->nullable();
-
+            $table->boolean('oculto_admin')->default(0);
+            $table->boolean('oculto_usuario')->default(0);
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); //si se borra el registro de user se borra toda la relacion de la tabla alertas
 

@@ -130,9 +130,9 @@
          </div>
          <br/><br/>
          <section class="welcome-section section-padding section-dark">
-            <div class="container">
+            <div class="">
                <div class="row letrasResponsive">
-                  <div class="col-md-12 col-lg-12 col-xs-12">
+                  <div class="col-lg-12">
                      <div class="Material-tab">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs justify-content-left" id="myTab" role="tablist">

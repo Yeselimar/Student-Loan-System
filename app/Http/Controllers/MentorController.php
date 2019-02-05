@@ -23,7 +23,7 @@ class MentorController extends Controller
         $becarios=$mentor->becarios;
         if($becarios->count()==0)
         {
-            flash('Aun no tiene Becarios Asignados!','warning');
+            flash('No tiene becarios asignados.','warning');
         }
         else
         {
