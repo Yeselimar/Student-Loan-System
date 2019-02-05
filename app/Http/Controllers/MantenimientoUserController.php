@@ -87,7 +87,7 @@ class MantenimientoUserController extends Controller
         }*/
 
         $usuario = $user;
-        //Enviar correo a la persona notificando que fue recibido su justificativo
+        //Enviar correo a la persona notificando que el usuario fue creado
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
@@ -100,10 +100,12 @@ class MantenimientoUserController extends Controller
         $mail->Password = "scxxuchujshrgpao";
         $mail->setFrom("no-responder@avaa.org", "Sisbeca");
         $mail->Subject = "Notificación";
-        $body = view("emails.usuarios.mensaje-usuario-creado")->with(compact("data"));
+        $body = view("emails.usuarios.mensaje-usuario-creado")->with(compact("usuario"));
         $mail->MsgHTML($body);
-        $mail->addAddress($becario->user->email);
+        $mail->addAddress($usuario->email);
         $mail->send();
+
+        flash('El usuario fue creado exitosamente.','success')->important();
 
         return redirect()->route('mantenimientoUser.index');
     }

@@ -8,7 +8,9 @@
 	<li>
 		Bienvenido <strong>{{$usuario->nombreyapellido()}}</strong> al Sistema de Gestión de Becarios AVAA.
 	</li>
-	<li><strong>Importante:</strong> Pónganse en contacto con el administrador del sistema para conocer su contraseña.</li>
+	<li><br></li>
+	<li>Lo hemos registrado en nuestro sistema con el rol <strong>{{strtoupper($usuario->rol)}}</strong>.</li>
+	<li><strong>Importante:</strong> Pónganse en contacto con el administrador del sistema para conocer su contraseña y poder ingresar al sistema.</li>
 </ul>
 
 @stop
