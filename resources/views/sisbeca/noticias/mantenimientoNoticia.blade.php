@@ -6,7 +6,7 @@
     <div class="text-right">
         <a href="{{ route('noticia.create') }}" class="btn btn-sm sisbeca-btn-primary">Crear publicación</a>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive" style="border:1px solid #eee">
         <table class="table table-bordered table-hover" id="noticias">
             <thead>
                 <tr>

@@ -14,7 +14,7 @@
 	@endif
 
 	<div class="table-responsive">
-		@if($becarios->count() > 0)
+		
 		<table id="becarios" class="table table-bordered table-hover">
 			<thead>
 				<tr>
@@ -27,6 +27,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				@if($becarios->count() > 0)
 				@foreach($becarios as $becario)
 				<tr>
 					<td class="text-center">
@@ -101,9 +102,15 @@
 					</td>
 				</tr>
 				@endforeach
+				@else
+				<tr>
+					<td class="text-center" colspan="4">No hay <strong>becarios</strong></td>
+				</tr>
+				@endif
 			</tbody>
 		</table>
-		@endif
+		
+
 	</div>
 
 </div>
