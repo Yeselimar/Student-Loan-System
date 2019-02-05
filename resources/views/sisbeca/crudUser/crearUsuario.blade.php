@@ -16,6 +16,7 @@
                         <label for="name" class="control-label">Nombre</label>
                         <input class="sisbeca-input" placeholder="John" value="{{old('name')}}"
                             required name="name" type="text" id="name">
+                        <span class="errors" style="color:#red">{{ $errors->first('name') }}</span>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -26,8 +27,9 @@
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label for="cedula" class="control-label">Cédula</label>
-                        <input class="sisbeca-input" placeholder=" Ingrese Cedula..." value="{{old('cedula')}}"
+                        <input class="sisbeca-input" placeholder="24888999" value="{{old('cedula')}}"
                                 name="cedula" type="text" id="cedula">
+                        <span class="errors" style="color:#red">{{ $errors->first('cedula') }}</span>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -42,15 +44,17 @@
                     </div>
                 
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label for="cedula" class="control-label">Correo Electrónico</label>
+                        <label for="email" class="control-label">Correo Electrónico</label>
                         <input class="sisbeca-input" placeholder="jonhdoe@dominio.com" value="{{old('email')}}"
                                 name="email" type="email" id="email" required>
+                        <span class="errors" style="color:#red">{{ $errors->first('email') }}</span>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label for="password" class="control-label">Contraseña</label>
                         <input class="sisbeca-input" placeholder="******" name="password"
                                 type="password" id="password" required>
+                        <span class="errors" style="color:#red">{{ $errors->first('password') }}</span>
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-6">

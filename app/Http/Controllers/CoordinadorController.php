@@ -11,6 +11,8 @@ use Auth;
 use avaa\Solicitud;
 use avaa\Becario;
 use avaa\Events\SolicitudesAlerts;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class CoordinadorController extends Controller
 {
@@ -109,38 +111,118 @@ class CoordinadorController extends Controller
     {
         $becario= $request->get('becarioId');
         $beco= Becario::where("user_id","=",$becario)->first();
+        $becario = $beco;
         if( $request->get('mentorId') !== null && $request->get('mentorId') !== "null")
         {
+            //Asignación de mentor 
             $mentor = $request->get('mentorId');
             $userMentor= User::find($mentor);
             $beco->mentor_id= $mentor;
             $beco->save();
+
             Alerta::where('status', '=', 'generada')->where('solicitud','=',null)->where('user_id', '=',  $beco->user_id)->delete();
             $alerta = new Alerta();
             $alerta->titulo = 'Nuevo Mentor Asignado';
             $alerta->status='generada';
-            $alerta->descripcion = $beco->user->name.' '.$beco->user->last_name.' Se le ha asignado a '.$userMentor->name.' '.$userMentor->last_name.' como Mentor';
+            $alerta->descripcion = $beco->user->name.' '.$beco->user->last_name.' Se le ha asignado a '.$userMentor->name.' '.$userMentor->last_name.' como Mentor.';
             $alerta->user_id= $beco->user_id;
             $alerta->save();
+
             Alerta::where('status', '=', 'generada')->where('solicitud','=',null)->where('user_id', '=', $mentor)->delete();
             $alerta = new Alerta();
             $alerta->titulo = 'Nuevo(s) Becario(s) Asignado(s)';
             $alerta->status='generada';
-            $alerta->descripcion ='Se le ha asignado nuevo(s) becario(s) ';
+            $alerta->descripcion ='Se le ha asignado a un nuevo becario.';
             $alerta->user_id= $mentor;
             $alerta->save();
-            return response()->json(['success'=>'Mentor asignado a becario(s) exitosamente!!']);
-        } else{
-            $beco->mentor_id = null;//quito la relacion becario mentor
-            $beco->save();// guardo
+            
+            //Notificar al Becario
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.becarios.notificacion-nuevo-mentor")->with(compact("becario"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+            //Notificar al Mentor
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.mentor.notificacion-nuevo-becario")->with(compact("becario"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->mentor->user->email);
+            $mail->send();
+            return response()->json(['success'=>'El mentor fue asignado al becario exitosamente.']);
+        }
+        else
+        {
+            //Quito la relación becario mentor
+            $mentor = Mentor::find($beco->mentor_id);//guardo el mentor viejo
+
+            $beco->mentor_id = null;
+            $beco->save();
+
             Alerta::where('status', '=', 'generada')->where('solicitud','=',null)->where('user_id', '=',  $beco->user_id)->delete();
             $alerta = new Alerta();
             $alerta->titulo = 'Sin Mentor Asignado';
             $alerta->status='generada';
-            $alerta->descripcion = 'Se le ha quitado la Relación Becario-Mentor Temporalmente, pronto se le asignara un nuevo mentor';
+            $alerta->descripcion = 'Su mentor fue removido, pronto se le asignara un nuevo mentor.';
             $alerta->user_id= $beco->user_id;
             $alerta->save();
-            return response()->json(['success'=>'Quitada la Relación Becario-Mentor.']);
+
+            //Notificar al Becario
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.becarios.notificacion-eliminacion-mentor")->with(compact("becario","mentor"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+            //Notificar al Mentor
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.mentor.notificacion-eliminacion-becario")->with(compact("becario","mentor"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($mentor->user->email);
+            $mail->send();
+            return response()->json(['success'=>'El mentor fue removido exitosamente.']);
         }
 
     }

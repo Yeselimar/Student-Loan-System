@@ -15,6 +15,9 @@ use DateTime;
 use avaa\Costo;
 use avaa\Concurso;
 use Timestamp;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class DirectivoController extends Controller
 {
 
@@ -185,18 +188,36 @@ class DirectivoController extends Controller
                 $postulante->user->save();
                 $postulante->status = 'activo';
                 $postulante->save();
-                flash($postulante->user->name . ' ha sido registrado como mentor exitosamente', 'success')->important();
-                //FALTA: AQUI SE ENVIA UN CORREO AL NUEVO MENTOR
+                flash($postulante->user->nombreyapellido(). ' ha sido registrado como mentor exitosamente.', 'success')->important();
+                $estatus = "APROBADA";
             }
             else
             {
-
-                // $postulante->delete();
                 //falta borrar su hoja de vida si es rechazado
                 $postulante->status='rechazado';
-                flash('!' . $postulante->user->name . ' ha sido rechazado como mentor.', 'danger')->important();
+                flash($postulante->user->nombreyapellido(). ' ha sido rechazado como mentor.', 'danger')->important();
                 $postulante->save();
+                $estatus = "RECHAZADA";
             }
+
+            $usuario = User::find($id);
+
+            $mail = new PHPMailer(true);
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "IMPORTANTE";
+            $body = view("emails.postulanteMentor.notificar-estatus-postulacion")->with(compact("usuario","estatus"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($usuario->email);
+            $mail->send();
         }
         return  redirect()->route('listarPostulantesMentores');
     }
@@ -222,10 +243,10 @@ class DirectivoController extends Controller
         $postulante = Mentor::find($id);
         $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->user->id)->where('titulo','=','img_perfil')->get();
         $documento = Documento::query()->where('user_id', '=', $id)->where('titulo', '=', 'hoja_vida')->first();
-      //  dd($img_perfil_postulante);
+        //  dd($img_perfil_postulante);
         // $postulante = User::find($id);
 
-       /*  if(!is_null($postulante) &&$postulante->rol==='postulante_mentor'||$postulante->rol==='rechazado')
+        /*  if(!is_null($postulante) &&$postulante->rol==='postulante_mentor'||$postulante->rol==='rechazado')
         {
             if (is_null($postulante)) {
                 flash('Disculpe, el archivo solicitado no fue encontrado', 'danger')->important();

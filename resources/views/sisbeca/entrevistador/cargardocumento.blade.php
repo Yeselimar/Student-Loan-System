@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title',($model=="crear") ? "Cargar documento postulante":'Editar documento postulante')
+@section('title',($model=="crear") ? "Cargar resumen entrevista del postulante: ".$becario->user->nombreyapellido():'Editar resumen entrevista del postulante: '.$becario->user->nombreyapellido())
 @section('content').
 	<div class="col-lg-12">
         <div class="text-right">

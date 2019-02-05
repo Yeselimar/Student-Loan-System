@@ -8,7 +8,7 @@
             <thead>
                 <tr>
                     <th class="text-center">Tipo</th>
-                    <th class="text-center">Status <br> proceso</th>
+                    <th class="text-center">Estatus <br> proceso</th>
                     <th class="text-center">Solicitada <br> Por</th>
                     <th class="text-center">Usuario <br> Respuesta</th>
                     <th class="text-center">Fecha <br> Solicitud</th>
@@ -41,14 +41,14 @@
                         <td class="text-center">
                             {{ $solicitud->user->name.' '.$solicitud->user->last_name}}<br/> Rol: {{ucwords($solicitud->user->rol)}}
                             <br/>
-                            Cedula: {{$solicitud->user->cedula}}
-                            <br/>Email:({{ $solicitud->user->email}})
+                            Cédula: {{$solicitud->user->cedula}}
+                            
                         </td>
 
 
                     @if(\avaa\User::find($solicitud->usuario_respuesta))
                         <td class="text-center">
-                            {{ \avaa\User::find($solicitud->usuario_respuesta)->name}}
+                            {{ \avaa\User::find($solicitud->usuario_respuesta)->nombreyapellido()}}
                             <br> ({{\avaa\User::find($solicitud->usuario_respuesta)->email}})
                         </td>
                     @else
@@ -62,7 +62,15 @@
                         </td>
 
                         <td class="text-center">
-                            <a href="{{route('solicitud.revisar',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary'><i class='fa fa-eye'></i></a>
+                            <a href="{{route('solicitud.revisar',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" title="Ver solicitud">
+                                <i class='fa fa-eye'></i>
+                            </a>
+
+                            @if(Auth::user()->esDirectivo())
+                            <a href="{{route('solicitud.ocultar.admin',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
+                                <i class="fa fa-eye-slash"></i>
+                            </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -121,6 +129,12 @@ $(document).ready(function(){
         },
         "order": [[ 4, 'desc' ]],
     });
+});
+</script>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
 });
 </script>
 @endsection

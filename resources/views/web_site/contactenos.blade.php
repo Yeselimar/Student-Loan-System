@@ -18,7 +18,7 @@
    <div class="container-cabecera">
       <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - Contáctecnos" class="cabecera-imagen">
       <div class="cabecera-titulo">
-         <p class="h1">Contáctenos</p>
+         <p class="h1">Contáctanos</p>
       </div>
    </div>
 
@@ -28,7 +28,7 @@
    <section id="contactenos" class="section">
       <div class="container">
          <div class="section-header">
-            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Contactos</h2>
+            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Contáctanos</h2>
             <hr class="lines wow zoomIn" data-wow-delay="0.3s">
             <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">En esta seccion puede escribirnos a nuestros correo ademas se muestran nuestras redes sociales. </p>
          </div>
@@ -42,7 +42,7 @@
                         <div class="contact-us">
                            
 
-                           <strong>Llámanos:</strong>
+                           <h6><strong>Llámanos</strong></h6>
                            <div>
                               <ul class="contacto-lista">
                                  <li>
@@ -50,14 +50,14 @@
                                        <i class="lnr lnr-phone"></i>
                                     </span>
                                     &nbsp;&nbsp;
-                                    (+58) 0212-235.78.21
+                                    <a href="tel:+582122357821">(+58) 0212-235.78.21</a>
                                  </li>
                               </ul>
                            </div>
 
                            <br>
 
-                           <strong>Escríbenos:</strong>
+                           <h6><strong>Escríbenos</strong></h6>
                            <div>
                               <ul class="contacto-lista">
                                  <li>
@@ -81,7 +81,7 @@
                               </ul>
                            </div>
                            <br>
-                           <strong>Síguenos en las redes sociales</strong>
+                           <h6><strong>Síguenos en las redes sociales</strong></h6>
                            <div>
                               <ul class="contacto-lista">
                                  <li class="contacto-facebook">
@@ -124,6 +124,7 @@
                            </div>
                         </div>
                      </div>
+
                      <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
                         <div class="" id="app">
                            <h3>Escríbenos</h3>
@@ -142,7 +143,7 @@
                                  </div>
                                  <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
-                                       <input type="text" placeholder="Telefono" class="form-control contacto-formulario" name="telefono" v-model="telefono">
+                                       <input type="text" placeholder="Teléfono" class="form-control contacto-formulario" name="telefono" v-model="telefono">
                                     </div>
                                  </div>
                                  <div class="col-lg-12 col-md-12 col-sm-12">
@@ -154,7 +155,10 @@
                                     <div class="form-group">
                                        <textarea class="form-control contacto-formulario" placeholder="Ingrese su mensaje" rows="8" v-model="mensaje"></textarea>
                                     </div>
-                                    <div class="submit-button text-right">
+                                    
+                                 </div>
+                                 <div class="col-lg-12">
+                                    <div class=" text-right">
                                        <button class="btn btn-common btn-contactenos" type="submit">Enviar Mensaje</button>
                                        <div class="clearfix"></div>
                                        <!--<span v-if="aviso" :class="['label label-danger']">@{{ aviso }}</span>-->

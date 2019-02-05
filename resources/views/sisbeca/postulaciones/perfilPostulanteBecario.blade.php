@@ -521,6 +521,7 @@
                         </div>
                     </div>
 
+                <div id="informacionadicional" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
                     <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">
                             {{csrf_field()}}
         

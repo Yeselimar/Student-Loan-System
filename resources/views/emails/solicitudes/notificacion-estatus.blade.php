@@ -6,7 +6,7 @@
 	<li><strong><h1>Notificación</h1></strong></li>
 	<li></li>
 	<li>
-		Hola <strong>{{$usuario->nombreyapellido()}}</strong>, tú Solicitud/Reclamo del tipo <strong>{{strtoupper($solicitud->titulo)}}</strong> fue <strong>{{strtoupper($solicitud->status)}}</strong>  el día <strong>{{$solicitud->fechaCreacion()}}</strong>.
+		Hola <strong>{{$solicitud->user->nombreyapellido()}}</strong>, tú Solicitud/Reclamo del tipo <strong>{{strtoupper($solicitud->titulo)}}</strong> realizada el día <strong><strong>{{$solicitud->fechaCreacion()}}</strong> fue <strong>{{strtoupper($solicitud->status)}}</strong>.
 	</li>
 </ul>
 

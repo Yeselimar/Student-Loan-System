@@ -68,7 +68,7 @@
          <section class="welcome-section section-padding section-dark">
             <div class="container">
                <div class="row letrasResponsive">
-                  <div class="col-md-12 col-lg-12 col-xs-12">
+                  <div class="">
                      <div class="Material-tab">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs justify-content-left" id="myTab" role="tablist">
@@ -185,7 +185,7 @@
          <section class="Material-accordion-section section-padding">
             <div class="container">
                <div class="row letrasResponsive">
-                  <div class="col-md-12 wow animated fadeInUp animated" align="justify" data-wow-delay=".2s" style="visibility: visible;-webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s;">
+                  <div class="wow animated fadeInUp animated" align="justify" data-wow-delay=".2s" style="visibility: visible;-webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s;">
                      <ul class="list-group">
                         <li class="list-group-item">
                            <p>
@@ -215,7 +215,7 @@
                            <div class="panel-heading" role="tab" id="headingTwo">
                               <h4 class="panel-title">
                                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#Material-accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                 2.  Asesoría Inicial Grupal: Bs. {{number_format($costos->costo_ases_intermedia, 2, ',', '.')}}  por estudiante.
+                                 2.  Asesoría Inicial Grupal: Bs. {{number_format($costos->costo_ases_intermedia, 2, ',', '.')}}  por estudiante
                                  </a>
                               </h4>
                            </div>
@@ -229,7 +229,7 @@
                            <div class="panel-heading" role="tab" id="headingThree">
                               <h4 class="panel-title">
                                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#Material-accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                 3. Acompañamiento posterior: Bs. {{number_format($costos->costo_ases_completa, 2, ',', '.')}}  (seguimiento durante 1 año).
+                                 3. Acompañamiento posterior: Bs. {{number_format($costos->costo_ases_completa, 2, ',', '.')}}  (seguimiento durante 1 año)
                                  </a>
                               </h4>
                            </div>
@@ -271,7 +271,7 @@
                                 </div>
                                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" style="">
                                    <div class="contenidoDeList panel-body" align="justify">
-                                      <p>Incluye la certificaciòn de documentos educativos por pàgina.</p>
+                                      <p>Incluye la certificaciòn de documentos educativos por pàgina</p>
                                    </div>
                                 </div>
                              </div>
@@ -285,7 +285,7 @@
          <section class="Material-accordion-section section-padding">
             <div class="container">
                <div class="row letrasResponsive">
-                  <div class="col-md-12 wow animated fadeInUp animated" data-wow-delay=".2s" style="visibility: visible;-webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s;">
+                  <div class="wow animated fadeInUp animated" data-wow-delay=".2s" style="visibility: visible;-webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s;">
                      <ul class="list-group">
                         <li class="list-group-item">
                            <p>

@@ -1118,7 +1118,7 @@ class SeguimientoController extends Controller
     public function resumenanhomes($id,$anho,$mes) // Actualizado el 25/01/2019
     {
         $becario = Becario::find($id);
-        if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo() or (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id))
         {
             if($mes!='00')
             {
@@ -1419,7 +1419,7 @@ class SeguimientoController extends Controller
     public function resumenanhomespdf($id,$anho,$mes)
     {
         $becario = Becario::find($id);
-        if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo() or (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id))
         {
             if($mes!='00')
             {
@@ -1763,7 +1763,7 @@ class SeguimientoController extends Controller
     public function becarioreportegeneral($id)
     {
         $becario = Becario::find($id);
-        if( (Auth::user()->id==$id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        if( (Auth::user()->id==$id) or Auth::user()->esCoordinador() or Auth::user()->esDirectivo() or (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id))
         {
             return view('sisbeca.becarios.reportegeneral-becario')->with(compact('becario'));
         }
@@ -1972,7 +1972,8 @@ class SeguimientoController extends Controller
    	public function resumen($id)
    	{
    		$anho = date('Y');
-   		if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
+        $becario = Becario::find($id);
+   		if(Auth::user()->id==$id or Auth::user()->esCoordinador() or Auth::user()->esDirectivo() or (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id))
    		{
    			$becario = Becario::find($id);
 	   		$periodos = Periodo::paraBecario($id)->seleccionAnho($anho)->ordenadoPorPeriodo('asc')->get();

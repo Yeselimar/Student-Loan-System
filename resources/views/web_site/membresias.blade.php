@@ -68,9 +68,9 @@
             <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">En esta sección se describen las membresías Coorporativas que existen actualmente en el programa AVAA .</p>
          </div>
          <section class="Material-accordion-section section-padding">
-            <div class="container">
+            <div class="">
                <div class="row letrasResponsive">
-                  <div class="col-md-12 wow animated fadeInUp animated" data-wow-delay=".2s" style="visibility: visible;-webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s;">
+                  <div class="col-md-12 wow animated fadeInUp animated" data-wow-delay=".2s" style="visibility: visible;-webkit-animation-delay: .2s; -moz-animation-delay: .2s; animation-delay: .2s;" style="border: 1px solid red"> 
                      <ul align="justify">
                         <li class="list-group-item">
                            <p >

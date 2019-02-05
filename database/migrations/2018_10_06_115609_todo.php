@@ -143,6 +143,8 @@ class Todo extends Migration
             $table->datetime('fecha_entrevista')->nullable();
             $table->time('hora_entrevista')->nullable();
             $table->text('lugar_entrevista')->nullable();
+            $table->boolean('notificando_entrevista')->default(0);
+            $table->datetime('fecha_notificacion_entrevista')->nullable();
             $table->text('documento_final_entrevista')->nullable();
 
             //campos para la nómina
@@ -186,6 +188,8 @@ class Todo extends Migration
             $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->text('documento')->nullable();
+            
+            $table->boolean('oculto')->default(0);
 
             $table->timestamps();
         });
@@ -216,7 +220,8 @@ class Todo extends Migration
             $table->unsignedInteger('usuario_respuesta')->nullable();
             $table->datetime('fecha_desincorporacion')->nullable();
             $table->datetime('fecha_inactividad')->nullable();
-
+            $table->boolean('oculto_admin')->default(0);
+            $table->boolean('oculto_usuario')->default(0);
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); //si se borra el registro de user se borra toda la relacion de la tabla alertas
 

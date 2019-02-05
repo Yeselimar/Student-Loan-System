@@ -21,8 +21,19 @@ class Solicitud extends Model
     {
     	return date("d/m/Y h:i:s a", strtotime($this->updated_at));
     }
+
     public function fechaCreacion()
     {
     	return date("d/m/Y h:i:s a", strtotime($this->created_at));
+    }
+
+    public function scopeVisibleAdmin($query)
+    {
+        return $query->where('oculto_admin','=',0);
+    }
+
+    public function scopeVisibleUsuario($query)
+    {
+        return $query->where('oculto_usuario','=',0);
     }
 }

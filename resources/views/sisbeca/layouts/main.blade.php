@@ -12,7 +12,7 @@
     
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('info_sitio/img/favicon.png')}}" >
-    <title>Avaa - Panel de Administración</title>
+    <title>AVAA - Panel de Administración</title>
 
     @include('sisbeca.layouts.partials.filescss')
 
@@ -78,7 +78,7 @@
 
         </div>
         <!-- footer -->
-        <footer class="footer"> © {{ date('Y') }} Todos los derechos reservados. Diseñado por programadores UC-Facyt</footer>
+        <footer class="footer"> © {{ date('Y') }} Todos los derechos reservados. Desarrollado por  <strong><a href="#" style="color:#003865">AFODI</a></strong></footer>
         <!-- End footer -->
         <!-- End Page wrapper  -->
     </div>

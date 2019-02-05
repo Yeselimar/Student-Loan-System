@@ -64,7 +64,12 @@ class SisbecaController extends Controller
     }
     public function perfil($id)
     {
-        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or (Auth::user()->esBecario() and Auth::user()->id==$id) or (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or (Auth::user()->esMentor() and Auth::user()->id==$id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        $becario = Becario::find($id);
+        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or 
+            (Auth::user()->esBecario() and Auth::user()->id==$id) or 
+            (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or
+            (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id) or
+            Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
             $user= User::find($id);
             $becario = Becario::find($id);
@@ -101,7 +106,6 @@ class SisbecaController extends Controller
         {
             return view('sisbeca.error.404');
         }
-
     }
     public function statusPostulanteMentor()
     {

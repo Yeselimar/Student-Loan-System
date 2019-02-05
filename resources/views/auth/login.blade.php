@@ -14,7 +14,7 @@
 
 
    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('info_sitio/img/favicon.png')}}" >
-   <title>Avaa - Iniciar Sesión</title>
+   <title>AVAA - Iniciar Sesión</title>
 
    @include('sisbeca.layouts.partials.filescss')
 </head>
@@ -68,7 +68,7 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <label class="pull-left">
-                              <a href="{{ route('recuperar.contrasena') }}" style="color:#424242" >¿Olvidaste tú contraseña?</a>
+                              <a href="{{ route('recuperar.contrasena') }}" style="color:#424242" >¿Olvidaste tu contraseña?</a>
                               </label>
                             </div>
                             

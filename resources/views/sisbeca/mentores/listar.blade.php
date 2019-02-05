@@ -4,7 +4,7 @@
 
 <div class="col-lg-12">
     <div class="table-responsive">
-        <table class="table table-bordered table-hover" id="mentores">
+        <table class="table table-bordered table-hover" id="mentores" style="border:1px solid #eee">
             <thead>
                 <tr>
                     <th class="text-center">Nombre y Apellido</th>
@@ -43,7 +43,9 @@
                     @endforeach
                 @else
                 <tr>
-                    <td colspan="5" class="text-center">No hay <strong>mentores</strong></td>
+                    <td class="text-center" colspan="6">
+                        No hay <strong>mentores</strong>.
+                    </td>
                 </tr>
                 @endif
             </tbody>
@@ -75,7 +77,7 @@ $(document).ready(function(){
         "paginate":
             {
                 "first": "Primero",
-                "last": "Ultimo",
+                "last": "Último",
                 "next": '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                 "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
             }
