@@ -95,8 +95,9 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        $id = 17;
-        $becario = Becario::find($id);
+        $id = 81;
+        $usuario = User::find($id);
+        return encrypt($usuario->password);
         //Enviar correo a la persona notificando que fue recibido su justificativo
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
