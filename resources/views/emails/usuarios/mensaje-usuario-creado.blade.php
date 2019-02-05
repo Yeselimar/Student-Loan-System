@@ -6,7 +6,7 @@
 	<li><strong><h1>Bienvenido</h1></strong></li>
 	<li></li>
 	<li>
-		Bienvenido <strong>{{$usuario->nombreyapellido()}}</strong> al Sistema de Gestión de Becarios AVAA.
+		Bienvenido <strong>{{$usuario->nombreyapellido()}}</strong> al Sistema de Becarios AVAA.
 	</li>
 	<li><br></li>
 	<li>Lo hemos registrado en nuestro sistema con el rol <strong>{{strtoupper($usuario->rol)}}</strong>.</li>
