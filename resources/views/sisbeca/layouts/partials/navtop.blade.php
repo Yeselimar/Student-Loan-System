@@ -1,17 +1,17 @@
 ﻿<nav class="navbar top-navbar navbar-expand-md navbar-light">
-    
+
     <!-- Logo -->
 
     <div class="navbar-header">
 
         <a class="navbar-brand" href="{{asset(route('sisbeca'))}}">
-            
+
             <b><img src="{{asset('public_sisbeca/images/logo.png')}}" alt="homepage" class="dark-logo" /></b>
             <span><img src="{{asset('public_sisbeca/images/logo-text.png')}}" alt="homepage" class="dark-logo" /></span>
         </a>
-    
+
     </div>
-    
+
     @guest
 
     <div class="navbar-collapse">
@@ -24,9 +24,9 @@
     </div>
     @else
     <div class="navbar-collapse">
-        
+
         <ul class="navbar-nav mr-auto mt-md-0">
-           
+
             <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted  " href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
             <li class="nav-item m-l-10"> <a class="nav-link sidebartoggler hidden-sm-down text-muted  " href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
 
@@ -45,7 +45,7 @@
                         <img src="{{asset($image_perfil[0]->url)}}" alt="user" class="profile-pic" />
                     </a>
                 @else
-                    
+
                     @if(Auth::user()->sexo==='femenino')
                         <a class="nav-link dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{asset('images/perfil/femenino.png')}}" alt="user" class="profile-pic" />

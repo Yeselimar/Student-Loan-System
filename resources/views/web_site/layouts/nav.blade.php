@@ -13,9 +13,8 @@
                      @if($route=='home')
                         <a class="nav-link page-scroll active" href="#hero-area">Inicio</a>
                      @else
-                      <a class="nav-link" href="{{asset('/')}}">Inicio</a>
+                     <a class="nav-link" href="{{asset('/')}}">Inicio</a>
                      @endif
-
                      </li>
                      <li class="nav-item dropdown nivel1">
                      @if($route=="nosotros")
@@ -31,7 +30,7 @@
                            </li>
                         </ul>
                      @else
-                         <a class="nav-link dropdown-toggle nivel1 " target="_self" href="{{asset('nosotros')}}" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle nivel1 " target="_self" href="{{asset('nosotros')}}" aria-haspopup="true" aria-expanded="false">
                         Nosotros
                         </a>
                         <ul class="dropdown-menu nivel2">
@@ -42,13 +41,9 @@
                               <a class="dropdown-item " href="{{asset('nosotros')}}#estructura-organizativa">Estructura Organizativa</a>
                            </li>
                         </ul>
-
                         @endif
-
-
                      </li>
                      <li class="nav-item dropdown nivel1">
-
                      @if($route=="programas")
                         <a class="nav-link dropdown-toggle nivel1 page-scroll active" target="_self" href="#hero-area" aria-haspopup="true" aria-expanded="false">
                         Programas
@@ -61,9 +56,7 @@
                               <a class="dropdown-item page-scroll" href="#asesoria-educativa">Asesorías Educativas</a>
                            </li>
                         </ul>
-
                      @else
-
                      <a class="nav-link dropdown-toggle nivel1" target="_self" href="{{asset('programas')}}" aria-haspopup="true" aria-expanded="false">
                         Programas
                         </a>
@@ -75,14 +68,9 @@
                               <a class="dropdown-item" href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
                            </li>
                         </ul>
-
-                        @endif
-
-
-
+                     @endif
                      </li>
                      <li class="nav-item dropdown nivel1">
-
                      @if($route=="membresias")
                         <a class="nav-link dropdown-toggle nivel1 page-scroll active" target="_self" href="#hero-area" aria-haspopup="true" aria-expanded="false">
                         Membresías
@@ -95,9 +83,7 @@
                               <a class="dropdown-item page-scroll" href="#membresia-institucional">Membresía Institucional</a>
                            </li>
                         </ul>
-
                         @else
-
                         <a class="nav-link dropdown-toggle nivel1 " target="_self" href="{{asset('membresias')}}" aria-haspopup="true" aria-expanded="false">
                         Membresías
                         </a>
@@ -109,21 +95,18 @@
                               <a class="dropdown-item " href="{{asset('membresias')}}#membresia-institucional">Membresía Institucional</a>
                            </li>
                         </ul>
-
                         @endif
                      </li>
                      <li class="nivel1 nav-item">
                      @if($route=="noticias")
                         <a class="nav-link page-scroll active" target="_self" href="{{asset('noticias')}}" style="border:1px solid #fff;background-color: #003865;color:#fff!important;border-radius: 50px">Noticias</a>
                         @else
-                             @if($route=="articulos")
+                           @if($route=="articulos")
                                  <a class="nav-link page-scroll active" target="_self" href="{{asset('noticias')}}">Noticias</a>
-                             @else
-                                  <a class="nav-link" target="_self" href="{{asset('noticias')}}">Noticias</a>
-                             @endif
+                           @else
+                                 <a class="nav-link" target="_self" href="{{asset('noticias')}}">Noticias</a>
+                           @endif
                      @endif
-
-
                      </li>
                      <li class="nivel1 nav-item">
                      @if($route=="contactenos")
@@ -133,9 +116,7 @@
                      @endif
                      </li>
                      <li class="nivel1 nav-item">
-
-                       <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
-
+                        <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
                      </li>
                   </ul>
                </div>
@@ -143,7 +124,7 @@
             <!-- Mobile Menu Start -->
             <ul class="mobile-menu">
                <li>
-                 @if($route=="home")
+                  @if($route=="home")
                   <a class="page-scroll active" href="#hero-area">Inicio</a>
                   @else
                   <a href="{{asset('/')}}">Inicio</a>
@@ -175,7 +156,6 @@
                      </li>
                   </ul>
                   @endif
-
                </li>
                <li class="dropdown">
                @if($route=="programas")
@@ -202,13 +182,9 @@
                         <a  href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
                      </li>
                   </ul>
-
                   @endif
-
-
                </li>
                <li class="dropdown">
-
                   @if($route=="membresia")
                   <a class="nav-link dropdown-toggle page-scroll active" target="_self" href="#hero-area" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Membresías
@@ -222,7 +198,6 @@
                      </li>
                   </ul>
                   @else
-
                   <a class="nav-link dropdown-toggle" target="_self" href="{{asset('membresias')}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Membresías
                   </a>
@@ -234,20 +209,18 @@
                         <a  href="{{asset('membresias')}}#membresia-institucional">Membresía Institucional</a>
                      </li>
                   </ul>
-
                   @endif
                </li>
                <li>
                @if($route=="noticias")
                   <a class="page-scroll active" target="_self" href="#hero-area">Noticias</a>
                   @else
-                       @if($route=="articulos")
+                     @if($route=="articulos")
                            <a  class="active" target="_self" href="{{asset('noticias')}}">Noticias</a>
-                       @else
-                              <a  target="_self" href="{{asset('noticias')}}">Noticias</a>
-                       @endif
+                     @else
+                           <a  target="_self" href="{{asset('noticias')}}">Noticias</a>
+                     @endif
                   @endif
-
                </li>
                <li>
                @if($route=="contactenos")
@@ -257,12 +230,26 @@
                   @endif
                </li>
                <li>
-               
                   <a target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
-                  
                </li>
-
             </ul>
             <!-- Mobile Menu End -->
          </nav>
-         <!-- Navbar End -->   
+         <!-- Navbar End -->
+<!-- The social media icon bar -->
+
+   <div class="icon-bar .hidden-xs .hidden-md">
+   <a href="#" class="facebook "><i class="fa fa-facebook"></i></a>
+   <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+   <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+   <a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a>
+   </div>
+
+<div class="social-container .hidden-lg .hidden-xl">
+   <div class="fixed-bottom  s-container">
+   <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+   <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+   <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+   <a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a>
+   </div>
+</div>

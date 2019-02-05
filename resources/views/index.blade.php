@@ -4,59 +4,9 @@
    <!-- Principal -->
    <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
-      <!--
-      <div class="container">
-         <div class="section-header">
-            <h2 class="section-title">AVAA</h2>
-            <hr class="lines">
-            <p class="section-subtitle">La Asociación Venezolano Americana de Amistad es una organización no gubernamental fundada en 1942. Desde su fundación ha promovido actividades orientadas a reforzar los lazos de muchos años de amistad entre los pueblos de Venezuela, Canadá y Estados Unidos.</p>
-            <p class="section-subtitle">
-               El Programa Excelencia AVAA promueve la educación y formación integral de jóvenes venezolanos de medianos o bajos recursos económicos.
-            </p>
-         </div>
-
-         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div id="contenedor-principal" class="row">
-               <div class="col-lg-4 col-sm-4 col-xs-4 box-item" >
-                  <a class="page-scroll" href="#noticias">
-                     <span class="icon">
-                     <i class="fa fa-newspaper-o icon-contenedor"></i>
-                     </span>
-                     <div class="text">
-                        <p class="titulo-contenedor text-center h1">NOTICIAS</p>
-                     </div>
-                  </a>
-               </div>
-               <div class="col-lg-4 col-sm-4 col-xs-4 box-item" >
-                  <a class="page-scroll" href="#programasAVAA">
-                     <span class="icon">
-                      <i class="fa fa-check icon-contenedor"></i>
-                     </span>
-                     <div class="text">
-                        <p class="titulo-contenedor text-center h1">PROGRAMAS</p>
-                     </div>
-                  </a>
-               </div>
-               <div class="col-lg-4 col-sm-4 col-xs-4 box-item" >
-                  <a class="page-scroll" href="#miembros-institucionales">
-                     <span class="icon">
-                      <i class="fa fa-users icon-contenedor"></i>
-                     </span>
-                     <div class="text">
-                        <p class="titulo-contenedor text-center h1">MIEMBROS</p>
-                     </div>
-                  </a>
-               </div>
-            </div>
-         </div>
-
-      </div>
-      -->
    </section>
-   <!-- Fin Principal -->
 
    <div class="linea-sobra"></div>
-
    <div class="container-cabecera">
       <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="cabecera-imagen">
       <div class="cabecera-titulo">
@@ -65,7 +15,6 @@
    </div>
 
    <div style="height: 50px" id="noticias"></div>
-
    <!-- Noticias -->
    <div class="container">
     	<div class="row">
