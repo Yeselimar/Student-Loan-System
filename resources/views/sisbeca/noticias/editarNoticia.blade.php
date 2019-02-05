@@ -92,8 +92,6 @@
 
             <hr>
             <div class="form-group text-right">
-                <a href="{{route('noticia.index')}}" class="btn sisbeca-btn-default">Cancelar</a>&nbsp;&nbsp;
-
                 <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
             </div>
 
