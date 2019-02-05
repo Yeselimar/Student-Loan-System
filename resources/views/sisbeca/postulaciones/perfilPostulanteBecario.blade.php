@@ -27,7 +27,7 @@
 						</span>
 					<br/>
 					</div>
-					<div class="offset-md-5 offset-lg-0 col-md-12 col-lg-8 p-4">
+					<div class="offset-md-5 offset-lg-0 col-md-12 col-lg-8 pr-4 pl-4 pb-2">
 						<strong>Datos Básicos:</strong>
 						<br/>
 						<h4> {{$postulante->user->name}} {{$postulante->user->last_name }}</h4>
@@ -40,13 +40,9 @@
 							<br/>
 							<i class="fa fa-birthday-cake">&nbsp; </i><strong>Fecha de nacimiento: </strong>{{ date("d/m/Y", strtotime($postulante->user->fecha_nacimiento)) }}
                             <br/>
-                            <i class="fa fa-phone">&nbsp; </i>Teléfono: {{$postulante->celular}}
+                            <i class="fa fa-phone">&nbsp; </i> <strong>Teléfono:</strong> {{$postulante->celular}}
                             <br/>
-                            <i class="fa fa-graduation-cap">&nbsp; </i>Promedio Universitario: {{$postulante->promedio_universidad}}
-                            <br/>
-                            <i class="fa fa-map-pin">&nbsp; </i>Dirección: {{$postulante->direccion_permanente}}
-                            <br/>
-							<strong>Condición:</strong>
+							<strong>Status:</strong>
                             @if($postulante->status==='postulante')
                             <span class="label label-default">Sin Revisar</span>
                             @else
@@ -80,13 +76,13 @@
 					</div>
 
 				</div>
-                <hr/>
                 @if($postulante->status==='postulante')
+                <hr/>
 
                 <div align="center">
-                <h3>¿Desea seleccionar a {{$postulante->user->name.' '.$postulante->user->last_name}} para <b>Entrevista? </b>
-                    <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
-                    <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
+                <h3>Rechazar / Aprobar a {{$postulante->user->nombreyapellido()}} para la <b>Entrevista</b>
+                      <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
+                      <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
                 </div>
                 @endif
 		</div>
@@ -101,7 +97,7 @@
                             <!-- Nav tabs -->
                             <ul class="justify-content-between nav nav-tabs profile-tab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#datospersonales" role="tab">Datos Personales</a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#estudiossecuandarios" role="tab">Estudios Secundarios</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#estudiossecundarios" role="tab">Estudios Secundarios</a> </li>
 								<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#estudiosuniversitarios" role="tab">Estudios Universitarios</a> </li>
 								<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#informacionadicional" role="tab">Información Adicional</a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#documentos" role="tab">Documentos</a> </li>
@@ -521,12 +517,11 @@
                         </div>
                     </div>
 
-                <div id="informacionadicional" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
                     <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">
                             {{csrf_field()}}
         
                     <div class="form-group">
-                        <div class="col">
+                        <div class="col container-fluid">
                             <label for="exampleFormControlTextarea1">Observaciones: </label>
                             <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
         
@@ -633,6 +628,7 @@
         
                 </form>
                 </div>
+
             </div>
         
             </div>
@@ -649,4 +645,4 @@
             </script>
         
         @endsection
-        
+ 

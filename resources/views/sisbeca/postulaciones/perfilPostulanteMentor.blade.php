@@ -1,6 +1,6 @@
 @extends('sisbeca.layouts.main')
 @if(Auth::user()->rol==='directivo')
-  @section('title','Postulante Mentor: '.$postulanteMentor->name.' '.$postulanteMentor->last_name)
+  @section('title','Postulante Mentor: '.$postulanteMentor->user->name.' '.$postulanteMentor->user->last_name)
 @else
   @section('title','Perfil Mentor '.$postulanteMentor->name.' '.$postulanteMentor->last_name)
 @endif
@@ -218,6 +218,7 @@
             </div>
 
         </form>
+
 
     </div>
     </div>
