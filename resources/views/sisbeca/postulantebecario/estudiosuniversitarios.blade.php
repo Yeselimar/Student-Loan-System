@@ -34,7 +34,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="nombre_universidad">*Nombre de la Universidad:</label>
+						<label class="control-label text-right label-xs" for="nombre_universidad">*Nombre de la Universidad:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('nombre_universidad', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: Universidad de Carabobo.'])}}

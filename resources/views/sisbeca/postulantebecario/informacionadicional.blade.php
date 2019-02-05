@@ -33,7 +33,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="otro_medio_proexcelencia">*¿Especifique el otro medio?:</label>
+						<label class="control-label text-right label-xs" for="otro_medio_proexcelencia">*¿Especifique el otro medio?:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('otro_medio_proexcelencia', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Periódico'])}}
@@ -45,7 +45,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="motivo_beca">*¿Por qué solicita la beca?:</label>
+						<label class="control-label text-right label-xs" for="motivo_beca">*¿Por qué solicita la beca?:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('motivo_beca', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Solicito la beca porque...'])}}

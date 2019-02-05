@@ -18,7 +18,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="fotografia">*Fotografía (.jpg o .png):</label>
+						<label class="control-label text-right label-xs" for="fotografia">*Fotografía (.jpg o .png):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::file('fotografia',['class' => 'form-control filestyle', 'accept'=>'image/*' ] ) }}
@@ -45,7 +45,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="cedula">*Copia de Cédula (.jpg o .png):</label>
+						<label class="control-label text-right label-xs" for="cedula">*Copia de Cédula (.jpg o .png):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::file('cedula',['class' => 'form-control filestyle', 'accept'=>'image/*' ] ) }}
@@ -116,7 +116,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="constancia_aceptacion">*Constancia de Aceptacion (.pdf):</label>
+						<label class="control-label text-right label-xs" for="constancia_aceptacion">*Constancia de Aceptacion (.pdf):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::file('constancia_aceptacion',['class' => 'form-control filestyle', 'accept'=>'application/pdf' ] ) }}
@@ -139,7 +139,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="constancia_estudios">*Constancia de Estudios (.pdf):</label>
+						<label class="control-label text-right label-xs" for="constancia_estudios">*Constancia de Estudios (.pdf):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::file('constancia_estudios',['class' => 'form-control filestyle', 'accept'=>'application/pdf' ] ) }}
@@ -185,7 +185,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="constancia_trabajo">*Constancia de Trabajo (.pdf):</label>
+						<label class="control-label text-right label-xs" for="constancia_trabajo">*Constancia de Trabajo (.pdf):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::file('constancia_trabajo',['class' => 'form-control filestyle', 'accept'=>'application/pdf' ] ) }}
