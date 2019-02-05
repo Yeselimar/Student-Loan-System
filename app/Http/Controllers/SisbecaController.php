@@ -92,11 +92,16 @@ class SisbecaController extends Controller
     }
     public function verMiPerfilMentor()
     {
-        $postulante= User::find(Auth::user()->id);
-        $img_perfil_postulante=Imagen::query()->where('user_id','=',$postulante->id)->where('titulo','=','img_perfil')->get();
-        $documento = Documento::query()->where('user_id', '=', $postulante->id)->where('titulo', '=', 'hoja_vida')->first();
-        return view('sisbeca.postulaciones.perfilPostulanteMentor')->with('postulanteMentor',$postulante)->with('documento', $documento)
-            ->with('img_perfil_postulante',$img_perfil_postulante);
+        $mentor= Mentor::find(Auth::user()->id);
+        if($mentor){
+            $img_perfil=Imagen::query()->where('user_id','=',$mentor->user_id)->where('titulo','=','img_perfil')->get();
+            $documento = Documento::query()->where('user_id', '=', $mentor->user_id)->where('titulo', '=', 'hoja_vida')->first();
+            return view('sisbeca.mentores.perfilMentor')->with('mentor',$mentor)->with('img_perfil',$img_perfil)->with('documento',$documento);
+        } else
+        {
+            return view('sisbeca.error.404');
+        }
+
     }
     public function statusPostulanteMentor()
     {

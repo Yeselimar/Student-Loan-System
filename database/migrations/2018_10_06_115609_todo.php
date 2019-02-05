@@ -29,6 +29,10 @@ class Todo extends Migration
             $table->text('cargo_actual')->nullable();
             $table->text('areas_de_interes')->nullable();
             $table->datetime('fecha_ingreso_empresa')->nullable();
+            $table->datetime('fecha_inactivo')->nullable();
+            $table->datetime('fecha_desincorporado')->nullable();
+            $table->text('observacion_inactivo')->nullable();
+            $table->text('observacion_desincorporado')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')->on('users')
