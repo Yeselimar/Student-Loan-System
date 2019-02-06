@@ -28,24 +28,23 @@
                         <label class="control-label">Becario</label>
                         {{ Form::text('becario', $becario->user->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                     </div>
+                    {{ Form::hidden('tipocurso_id', 1) }}
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Tipo Curso</label>
-                        {{Form::select('tipocurso_id', $tipocurso, ($model=='crear') ? '1' : $curso->tipocurso->id, ['class' => 'sisbeca-input'])}}
+                        <label class="control-label">*Tipo</label>
+                        {{ Form::select('tipocurso_id', $tipocurso,1,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled']) }}
                         <span class="errors" style="color:#red">{{ $errors->first('tipocurso_id') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Modo</label>
                         {{ Form::select('modo', array('sabatino'=>'sabatino','interdiario'=>'interdiario','diario'=>'diario','intensivo'=>'intensivo'),($model=='crear') ? 'sabatino' : $curso->modo,['class' =>'sisbeca-input']) }}
-                        <span class="errors" style="color:#red">{{ $errors->first('modo') }}</span>
                     </div>
-                    <!--
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Nivel</label>
                         {{ Form::select('nivel', array('basico'=>'basico','intermedio'=>'intermedio','avanzado'=>'avanzado'),($model=='crear') ? 'basico' : $curso->nivel,['class' =>'sisbeca-input']) }}
-                    </div>-->
+                    </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Módulo </label>
-                        {{ Form::select('modulo', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19','20'=>'20'),($model=='crear') ? 1 : $curso->modulo,['class' =>'sisbeca-input']) }}
+                        <label class="control-label">*Módulo</label>
+                        {{ Form::select('modulo', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18'),($model=='crear') ? 1 : $curso->modulo,['class' =>'sisbeca-input']) }}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Nota</label>

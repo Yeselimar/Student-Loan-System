@@ -52,7 +52,7 @@
 						</td>
 						
 						<td>
-							<a href="{{url($voluntariado->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Nota">
+							<a href="{{url($voluntariado->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Comprobante">
 								@if( $voluntariado->aval->esImagen() )
 	                        		<i class="fa fa-photo"></i>
 	                        	@else
@@ -60,13 +60,13 @@
 	                        	@endif
 							</a>
 
-							<a href="{{route('voluntariados.editar',$voluntariado->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar">
+							<a href="{{route('voluntariados.editar',$voluntariado->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar Voluntariado">
 	                        	<i class="fa fa-pencil"></i>
 							</a>
 
 							@if($voluntariado->aval->estatus!='aceptada')
 								<span data-toggle="modal" data-target="#eliminarvoluntariado{{$voluntariado->id}}">
-									<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar"  >
+									<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar Voluntariado"  >
 										<i class="fa fa-trash"></i>
 									</button>
 								</span>

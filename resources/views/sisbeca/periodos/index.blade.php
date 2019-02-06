@@ -58,17 +58,17 @@
 		                        	@endif
 								</a>
 
-								<a href="{{route('materias.mostrar',$periodo->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Materias">
-									<i class="fa fa-search"></i>
+								<a href="{{route('materias.mostrar',$periodo->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Agregar Materias">
+									<i class="fa fa-plus"></i>
 								</a>
 
-								<a href="{{route('periodos.editar',$periodo->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar">
+								<a href="{{route('periodos.editar',$periodo->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar Periodo">
 									<i class="fa fa-pencil"></i>
 								</a>
 
 								@if($periodo->aval->estatus!='aceptada')
 									<span data-toggle="modal" data-target="#eliminarperiodo{{$periodo->id}}">
-										<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar"  >
+										<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar Periodo"  >
 											<i class="fa fa-trash"></i>
 										</button>
 									</span>
