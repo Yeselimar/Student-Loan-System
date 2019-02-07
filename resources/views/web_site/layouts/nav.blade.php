@@ -215,7 +215,7 @@
                   </ul>
                   @endif
                </li>
-              
+
                <li>
                @if($route=="noticias")
                   <a class="page-scroll active" target="_self" href="#hero-area">Noticias</a>

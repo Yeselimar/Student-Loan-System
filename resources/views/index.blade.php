@@ -182,17 +182,17 @@
                @foreach($miembros as $miembro)
                   <div class="col-lg-12" >
                      <a class="miembro-enlace" href="{{route('showNoticia',$miembro->slug)}}">
-                        <img data-mh="mi" class="img-fluid img-responsive"   src="{{asset($miembro->url_imagen)}}" alt="{{$miembro->titulo}}" style="border:1px solid #eee "/>
+                        <img  class="img-fluid img-miembros" src="{{asset($miembro->url_imagen)}}" alt="{{$miembro->titulo}}" style="border:1px solid #eee "/>
                         <p class="title-miembros-institucionales pt-2">{{$miembro->titulo}}</p>
                      </a>
                   </div>
                @endforeach
 
             </div>
-            <div class="text-center">
+            <!-- <div class="text-center">
             <a class="anterior" ><i class="fa fa-angle-left fa-2x" style="color:#021f3a"></i></a>
             &nbsp;&nbsp;&nbsp;<a class="siguiente"><i class="fa fa-angle-right fa-2x" style="color:#021f3a"></i></a>
-            </div>
+            </div> -->
          </div>
          @endif
       </div>
@@ -220,17 +220,17 @@
                   @foreach($miembros as $miembro)
                      <div class="col-lg-12" >
                         <a class="miembro-enlace" href="{{route('showNoticia',$miembro->slug)}}">
-                           <img data-mh="mi" class="img-fluid img-responsive"   src="{{asset($miembro->url_imagen)}}" alt="{{$miembro->titulo}}" style="border:1px solid #eee "/>
+                           <img class="img-fluid img-miembros"   src="{{asset($miembro->url_imagen)}}" alt="{{$miembro->titulo}}" style="border:1px solid #eee "/>
                            <p class="title-miembros-institucionales pt-2">{{$miembro->titulo}}</p>
                         </a>
                      </div>
                   @endforeach
 
                </div>
-               <div class="text-center">
+               <!-- <div class="text-center">
                <a class="anterior" ><i class="fa fa-angle-left fa-2x" style="color:#021f3a"></i></a>
                &nbsp;&nbsp;&nbsp;<a class="siguiente"><i class="fa fa-angle-right fa-2x" style="color:#021f3a"></i></a>
-               </div>
+               </div> -->
             </div>
             @endif
          </div>
@@ -269,30 +269,32 @@
       loop: true,
       margin: 10,
       autoplay: true,
+      nav:false,
+
+
       responsive:
       {
          0:
          {
             items:1,
             nav:false,
-            dots:true,
+            dotsEach: true,
          },
          600:
          {
             items:3,
             nav:false,
-            dots:true,
          },
          1000:
          {
             items:3,
             nav:false,
-            dots:true,
          }
       },
-      autoplayTimeout: 9000,
+      autoplayTimeout:4000,
       autoplayHoverPause: true,
       });
+
       $('.carousel-organizaciones').owlCarousel({
       loop: true,
       margin: 10,
@@ -304,6 +306,7 @@
             items:1,
             nav:false,
             dots:true,
+            dotsEach: true,
          },
          600:
          {
@@ -318,7 +321,7 @@
             dots:true,
          }
       },
-      autoplayTimeout: 9000,
+      autoplayTimeout: 4000,
       autoplayHoverPause: true,
       });
       var owl = $('.owl-carousel');

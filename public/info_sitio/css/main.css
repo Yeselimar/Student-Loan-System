@@ -2351,6 +2351,8 @@ p.email span.icon a:hover
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+  width: auto;
+  max-width: 400px;
 }
 .title-programas
 {
@@ -2375,6 +2377,12 @@ p.email span.icon a:hover
   width: auto;
   max-width: 1150px;
   max-height: 300px;
+}
+.img-miembros{
+
+  height: 200px;
+  width: auto;
+  max-width: 400px;
 }
 
 
@@ -2618,21 +2626,16 @@ table#tablaUnica
 
 .cabecera-titulo
 {
-
-
     color: #fff;
-    padding: 4px 0 2px 0;
-    font-family: Arial, Helvetica, sans-serif;
-    /* background: #003865; */
-    background-image: linear-gradient(to bottom right, #003865, #041727); /*
-    line-height: 0em !important;
-   /*  background-color:hsla(193, 99%, 12%, 0.61); */
+    background-image: linear-gradient(to bottom right, #003865, #041727);
     text-shadow: 1px 2px 2px #000;
 }
 
 .cabecera-titulo  p
 {
   width: 100%;
+  padding: 4px 15px 4px 15px !important;
+  font-size: 32px;
   text-align: center !important;
 }
 .cabecera-imagen
