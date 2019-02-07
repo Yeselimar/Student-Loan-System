@@ -35,17 +35,17 @@
                </div>
             </div>
          </div>
-        
+
       </footer>
       <div class="container-fluid footer-creditos" >
          <div class="container text-center">
             <p ><i class="fa fa-copyright"></i>&nbsp;&nbsp;Desarrollado por <strong><a href="#" style="color:#fff">AFODI</a></strong></p>
          </div>
       </div>
-      <!-- Footer Section End --> 
+      <!-- Footer Section End -->
 
       <!-- Go To Top Link -->
-      <a href="#" class="back-to-top">
+      <a href="#" class="back-to-top fixed-bottom">
       <i class="lnr lnr-arrow-up"></i>
       </a>
        <div id="loader">
@@ -53,4 +53,4 @@
             <div class="double-bounce1"></div>
             <div class="double-bounce2"></div>
          </div>
-      </div> 
+      </div>

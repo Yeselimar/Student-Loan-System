@@ -50,7 +50,7 @@
                         </a>
                         <ul class="dropdown-menu nivel2">
                            <li class="nav-item">
-                              <a class="dropdown-item page-scroll" href="#proexcelencia">ProExelencia AVAA</a>
+                              <a class="dropdown-item page-scroll" href="#proexcelencia">ProExcelencia AVAA</a>
                            </li>
                            <li class="nav-item">
                               <a class="dropdown-item page-scroll" href="#asesoria-educativa">Asesorías Educativas</a>
@@ -62,7 +62,7 @@
                         </a>
                         <ul class="dropdown-menu nivel2">
                            <li class="nav-item">
-                              <a class="dropdown-item" href="{{asset('programas')}}#proexcelencia">ProExelencia AVAA</a>
+                              <a class="dropdown-item" href="{{asset('programas')}}#proexcelencia">ProExcelencia AVAA</a>
                            </li>
                            <li class="nav-item">
                               <a class="dropdown-item" href="{{asset('programas')}}#asesoria-educativa">Asesorías Educativas</a>
@@ -116,7 +116,7 @@
                      @endif
                      </li>
                      <li class="nivel1 nav-item">
-                        <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
+                        <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SEB</a>
                      </li>
                   </ul>
                </div>
@@ -239,17 +239,19 @@
 <!-- The social media icon bar -->
 
    <div class="icon-bar .hidden-xs .hidden-md">
-   <a href="#" class="facebook "><i class="fa fa-facebook"></i></a>
-   <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-   <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-   <a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a>
+   <a target="_blank" href="https://www.facebook.com/avaa.org/" class="facebookb "><i class="fa fa-facebook"></i></a>
+   <a target="_blank" href="https://twitter.com/Avaa_org?lang=es" class="twitterb"><i class="fa fa-twitter"></i></a>
+   <a target="_blank" href="https://www.instagram.com/avaa_org/?hl=es-la" class="instagramb"><i class="fa fa-instagram"></i></a>
+   <a target="_blank" href="https://www.linkedin.com/company/avaa/?viewAsMember=true" class="linkedinb"><i class="fa fa-linkedin"></i></a>
+   <a target="_blank" href=" https://www.youtube.com/channel/UCf6ZTtj7ZXSUVqnOBj-k-wA " class="youtubeb"><i class="fa fa-youtube-play"></i></a>
    </div>
 
 <div class="social-container .hidden-lg .hidden-xl">
    <div class="fixed-bottom  s-container">
-   <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-   <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-   <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-   <a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a>
+   <a target="_blank" href="https://www.facebook.com/avaa.org/" class="facebookb"><i class="fa fa-facebook"></i></a>
+   <a target="_blank" href="https://twitter.com/Avaa_org?lang=es" class="twitterb"><i class="fa fa-twitter"></i></a>
+   <a target="_blank" href="https://www.instagram.com/avaa_org/?hl=es-la" class="instagramb"><i class="fa fa-instagram"></i></a>
+   <a target="_blank" href="https://www.linkedin.com/company/avaa/?viewAsMember=true" class="linkedinb"><i class="fa fa-linkedin"></i></a>
+   <a target="_blank" href="https://www.youtube.com/channel/UCf6ZTtj7ZXSUVqnOBj-k-wA " class="youtubeb"><i class="fa fa-youtube-play"></i></a>
    </div>
 </div>
