@@ -97,25 +97,9 @@ class GetPublicController extends Controller
     {
         $id = 81;
         $usuario = User::find($id);
-        return encrypt($usuario->password);
-        //Enviar correo a la persona notificando que fue recibido su justificativo
-        $mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->CharSet = "utf-8";
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = "TLS";
-        $mail->Host = "smtp.gmail.com";
-        $mail->Port = 587;
-        $mail->Username = "delgadorafael2011@gmail.com";
-        $mail->Password = "scxxuchujshrgpao";
-        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-        $mail->Subject = "Notificación";
-        $body = view("emails.becarios.notificacion-fecha-bienvenida")->with(compact("becario"));
-        $mail->MsgHTML($body);
-        $mail->addAddress($becario->user->email);
-        $mail->send();
-        return "mensaje enviado";
+        $ab = ActividadBecario::paraActividad(1)->get();
+        return $ab[1];
+        return "mensaje enviado :D :D :D :D";
         return "Eliminada la foto";
         $solicitud = Solicitud::find(1);
         return $solicitud->user;

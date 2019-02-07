@@ -130,7 +130,22 @@
 						<strong>Nivel</strong>
 					</td>
 					<td class="text-left">
-						@{{ actividad.nivel }}
+						<template v-if="actividad.nivel=='basico'">
+							Básico
+						</template>
+						<template v-else>
+							<template v-if="actividad.nivel=='intermedio'">
+								Intermedio
+							</template>
+							<template v-else>
+								<template v-if="actividad.nivel=='avanzado'">
+									Avanzado
+								</template>
+								<template v-else>
+									Cualquier nivel
+								</template>
+							</template>
+						</template>
 					</td>
 				</tr>
 				<tr>
@@ -150,7 +165,9 @@
 							@{{ actividad.status }}</span>
 						<span v-if="actividad.status=='suspendido'" class="label label-danger">
 							@{{ actividad.status }}</span>
-						<span v-if="actividad.status=='bloqueado'" class="label label-warning">
+						<span v-if="actividad.status=='oculto'" class="label label-warning">
+							@{{ actividad.status }}</span>
+						<span v-if="actividad.status=='cerrado'" class="label label-danger">
 							@{{ actividad.status }}</span>
 
 						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
@@ -163,9 +180,14 @@
 							<i class="fa fa-remove"></i>
 						</button>
 
-						<button v-b-popover.hover.bottom="'Colocar en Bloqueado'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarBloqueado()">
-							<i class="fa fa-lock"></i>
+						<button v-b-popover.hover.bottom="'Colocar en Cerrado'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarCerrado()">
+							<i class="fa fa-ban"></i>
 						</button>
+
+						<button v-b-popover.hover.bottom="'Colocar en Oculto'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarOculto()">
+							<i class="fa fa-eye-slash"></i>
+						</button>
+
 						@endif
 					</td>
 				</tr>
@@ -380,7 +402,7 @@
 					@endif
 				</tr>
 				<tr v-if="becarios && becarios.length==0">
-					<td class="text-center" @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() ) colspan="4" @else colspan="2" @endif>
+					<td class="text-center" @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() ) colspan="4" @else colspan="3" @endif>
 						No hay <strong>becarios</strong> para este <strong>@{{ actividad.tipo }}</strong>
 					</td>
 				</tr>
@@ -409,7 +431,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
+						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
 					</div>
 				</div>
 			</div>
@@ -434,7 +456,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-					<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Si</a>
+					<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</a>
 				</div>
 			</div>
 		</div>
@@ -486,34 +508,53 @@ const app = new Vue({
     {	
     	colocarDisponible()
     	{
+    		$("#preloader").show();
     		var id = "{{$actividad->id}}";
     		var url = "{{route('actividad.disponible',':id')}}";
     		url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     	},
-    	colocarBloqueado()
+    	colocarCerrado()
     	{
+    		$("#preloader").show();
     		var id = "{{$actividad->id}}";
-    		var url = "{{route('actividad.bloqueado',':id')}}";
+    		var url = "{{route('actividad.cerrado',':id')}}";
     		url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
+				toastr.success(response.data.success);
+            });
+    	},
+    	colocarOculto()
+    	{
+    		$("#preloader").show();
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.oculto',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     	},
     	colocarSuspendido()
     	{
+    		$("#preloader").show();
     		var id = "{{$actividad->id}}";
     		var url = "{{route('actividad.suspendido',':id')}}";
     		url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     	},
@@ -579,6 +620,7 @@ const app = new Vue({
     	},
     	desinscribirme: function()
     	{
+    		$("#preloader").show();
     		var actividad_id = '{{$actividad->id}}';
     		var becario_id = '{{Auth::user()->id}}';
     		var url = '{{route('actividad.desinscribir',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
@@ -587,6 +629,7 @@ const app = new Vue({
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
             	console.log(response);
             	if(response.data.tipo=='danger')
             	{
@@ -606,6 +649,8 @@ const app = new Vue({
     	},
     	desinscribir: function(id)
     	{
+    		$('#desinscribirModal').modal('hide');
+    		$("#preloader").show();
     		var actividad_id = '{{$actividad->id}}';
     		var becario_id = id;
     		var url = '{{route('actividad.desinscribir',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
@@ -613,7 +658,7 @@ const app = new Vue({
     		url = url.replace(':b_id', becario_id);
             axios.get(url).then(response => 
             {
-            	$('#desinscribirModal').modal('hide');
+            	$("#preloader").hide();
             	this.obtenerdetallesactividad();
             	if(response.data.tipo=='danger')
             	{
@@ -627,6 +672,7 @@ const app = new Vue({
     	},
     	actividadinscribirme: function()
     	{
+    		$("#preloader").show();
     		var actividad_id = '{{$actividad->id}}';
     		var becario_id = '{{Auth::user()->id}}';
     		var url = '{{route('actividad.inscribirme',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
@@ -647,6 +693,7 @@ const app = new Vue({
 	            });*/
 
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
             	if(response.data.tipo=='danger')
             	{
             		toastr.error(response.data.mensaje);
@@ -656,8 +703,6 @@ const app = new Vue({
                 	toastr.success(response.data.mensaje);
                 }
             });
-
-
     	},
     	obtenerdetallesactividad()
     	{
