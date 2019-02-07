@@ -46,7 +46,7 @@
                         {{ csrf_field() }}
                           <!--<div class=" {{ $errors->has('email') ? ' has-error' : '' }}">-->
                              <label for="email" class="control-label">Correo Electrónico</label>
-                                <input id="email" type="email" class="sisbeca-input" name="email" value="{{ old('email') }}" >
+                                <input id="email" type="email" class="sisbeca-input" required name="email" value="{{ old('email') }}" >
 
                                 @if ($errors->has('email'))
                                   <span class="help-block">
@@ -56,7 +56,7 @@
                           <!--</div>-->
                           <!--<div class="{{ $errors->has('password') ? ' has-error' : '' }}">-->
                               <label for="password" class="control-label">Contraseña</label>
-                              <input id="password" type="password" class="sisbeca-input" name="password">
+                              <input id="password" required type="password" class="sisbeca-input" name="password">
 
                                 @if ($errors->has('password'))
                                   <span class="help-block">

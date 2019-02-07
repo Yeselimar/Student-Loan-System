@@ -57,7 +57,7 @@ class CursoController extends Controller
     public function crear($id)
     {
     	$model = 'crear';
-        $tipocurso = TipoCurso::pluck('descripcion', 'id');
+        $tipocurso = TipoCurso::pluck('nombre', 'id');
         $becario = Becario::find($id);
         if( (Auth::user()->esBecario() and $id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
@@ -97,9 +97,9 @@ class CursoController extends Controller
 
 		$curso = new Curso;
 		$curso->modo = $request->get('modo');
-		$curso->modulo = $request->get('modulo');
-		$curso->nota = $request->get('nota');
-		$curso->status = 'reprobado';
+        $curso->nivel = $request->get('nivel');
+        $curso->modulo = $request->get('modulo');
+        $curso->nota = $request->get('nota');
 		$curso->tipocurso_id = $request->get('tipocurso_id');
 		$curso->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
 		$curso->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
@@ -123,9 +123,10 @@ class CursoController extends Controller
     	$curso = Curso::find($id);
     	$model = "editar";
         $becario = $curso->becario;
+        $tipocurso = TipoCurso::pluck('nombre', 'id');
         if( (Auth::user()->esBecario() and $curso->becario_id==Auth::user()->id) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
-            return view('sisbeca.cursos.model')->with(compact('curso','model','becario'));
+            return view('sisbeca.cursos.model')->with(compact('curso','model','becario','tipocurso'));
         }
         else
         {
@@ -158,7 +159,8 @@ class CursoController extends Controller
 			$aval->save();
         }
         $curso->modo = $request->get('modo');
-		$curso->modulo = $request->get('modulo');
+        $curso->nivel = $request->get('nivel');
+        $curso->modulo = $request->get('modulo');
 		$curso->nota = $request->get('nota');
 		$curso->tipocurso_id = $request->get('tipocurso_id');
 		$curso->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');

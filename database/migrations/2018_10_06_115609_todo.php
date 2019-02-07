@@ -271,6 +271,15 @@ class Todo extends Migration
             $table->timestamps();
         });
 
+        Schema::create('galeria', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('imagen');
+
+            $table->unsignedInteger('noticia_id');
+            $table->foreign('noticia_id')->references('id')->on('noticias')->onDelete('cascade');
+        });
+
         Schema::create('costos', function (Blueprint $table)
         {
             $table->increments('id');
@@ -340,6 +349,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->integer('numero_periodo');//1er semestre: según el regimen del becario
+            $table->integer('regimen_periodo');//por si se cambia de regimen
             $table->string('anho_lectivo');//2-2018
             $table->datetime('fecha_inicio');
             $table->datetime('fecha_fin');
@@ -444,8 +454,8 @@ class Todo extends Migration
         Schema::create('tiposcursos', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->enum('tipo',['cva','otros'])->default('cva');
-            $table->text('descripcion');
+            
+            $table->text('nombre');
 
             $table->timestamps();
         });
@@ -453,7 +463,10 @@ class Todo extends Migration
         Schema::create('cursos',function(Blueprint $table)
         {
             $table->increments('id');
-            $table->unsignedInteger('modulo');//modulo de cva (1...15)
+            $table->enum('instituto',['Centro Venezolano Americano']);// disabled
+
+            $table->enum('nivel',['basico','intermedio','avanzado'])->default('basico');
+            $table->unsignedInteger('modulo');//modulo de cva (1...18)
             $table->enum('modo',['sabatino','interdiario','diario','intensivo'])->default('sabatino');//modo cva
             $table->datetime('fecha_inicio');//fecha inicio del cva
             $table->datetime('fecha_fin');//fecha fin del cva
@@ -612,6 +625,27 @@ class Todo extends Migration
             $table->increments('id');
             $table->string('anho');
             $table->string('imagen');
+            $table->timestamps();
+        });
+
+        Schema::create('tickets', function (Blueprint $table)
+        {
+            $table->increments('id');
+
+            $table->enum('estatus',['enviado','en revision','cerrado'])->default('enviado');
+            $table->enum('prioridad',['baja','media','alta'])->default('baja');
+            $table->enum('tipo',['soporte','ayuda'])->default('soporte');
+            $table->string('asunto');
+            $table->text('descripcion');
+            $table->text('imagen')->nullable();
+            $table->text('url')->nullable();
+
+            $table->unsignedInteger('usuario_genero_id');
+            $table->foreign('usuario_genero_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unsignedInteger('usuario_respuesta_id')->nullable();
+            $table->foreign('usuario_respuesta_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

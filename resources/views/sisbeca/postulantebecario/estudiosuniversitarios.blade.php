@@ -16,8 +16,8 @@
 
 			<div class="form-group">
 				<div class="row" >
-					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label text-right label-xs" for="inicio_universidad">*Fecha de inicio de la Universidad:</label>
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="text-right label-xs" for="inicio_universidad">*Fecha de inicio de la Universidad:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						@if($becario->inicio_universidad==NULL)
@@ -33,8 +33,8 @@
 
 			<div class="form-group">
 				<div class="row" >
-					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="nombre_universidad">*Nombre de la Universidad:</label>
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="text-right label-xs" for="nombre_universidad">*Nombre de la Universidad:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('nombre_universidad', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: Universidad de Carabobo.'])}}
@@ -45,8 +45,8 @@
 
 			<div class="form-group">
 				<div class="row" >
-					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="carrera_universidad">*Carrera:</label>
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="pull-right label-xs" for="carrera_universidad">*Carrera:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('carrera_universidad', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: Lic. Computación'])}}
@@ -57,8 +57,8 @@
 
 			<div class="form-group">
 				<div class="row" >
-					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label text-right label-xs" for="costo_matricula">Costo de la matrícula académica:</label>
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="text-right label-xs" for="costo_matricula">Costo de la matrícula académica:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('costo_matricula', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: 2500.00'])}}
@@ -69,8 +69,8 @@
 
 			<div class="form-group">
 				<div class="row" >
-					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label text-right label-xs" for="promedio_universidad">*Promedio Universidad (en puntos):</label>
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="text-right label-xs" for="promedio_universidad">*Promedio Universidad (en puntos):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('promedio_universidad', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: 17.5'])}}
@@ -81,8 +81,8 @@
 
 			<div class="form-group">
 				<div class="row" >
-					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
-						<label class="control-label pull-right label-xs" for="periodo_academico">Periódo Académico:</label>
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="pull-right label-xs" for="periodo_academico">Periódo Académico:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('periodo_academico', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: 2-2017'])}}

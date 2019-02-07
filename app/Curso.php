@@ -78,6 +78,26 @@ class Curso extends Model
         return number_format($this->nota, 2, '.', ',');
     }
 
+    public function getNivel()
+    {
+        if($this->nivel=='basico')
+        {
+            $nivel = "Básico";
+        }
+        else
+        {
+            if($this->nivel=='intermedio')
+            {
+                $nivel = "Intermedio";
+            }
+            else
+            {
+                $nivel = "Avanzado";
+            }
+        }
+        return $nivel;
+    }
+
     public function getModulo()
     {
         return $this->modulo." Nivel";

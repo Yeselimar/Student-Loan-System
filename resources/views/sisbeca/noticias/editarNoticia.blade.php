@@ -66,15 +66,15 @@
                         <i class="fa fa-photo"></i> Ver
                     </button>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 destacada">
                     <label for="destacada" class="control-label">Destacada</label>
                     <div class="col-lg-12" style="border-radius: 5px;border:1px solid #021f3a;height: 40px;">
                         <div class="checkbox text-center" >
                             @if($noticia->esDestacada())
-                            <input type="checkbox" value="1" name='destacada' checked="checked">
+                            <input type="checkbox" value="1" name='destacada' id="destacada" checked="checked">
                             ¿Destacado en carrousel?
                             @else
-                            <input type="checkbox" value="1" name='destacada'>
+                            <input type="checkbox" value="1" name='destacada' id="destacada">
                             ¿Destacado en carrousel?
                             @endif
                         </div>
@@ -138,12 +138,16 @@
             if (mivalor == 'miembroins') {
 
                 $(".rendered").show();
+                $(".destacada").hide();
+                document.getElementById("destacada").checked = 0
                 $("#url_articulo").attr("required", "required")
 
 
             }
             else {
                 $("#url_articulo").removeAttr('required');
+                $(".destacada").show();
+                document.getElementById("destacada").checked = 0
                 document.getElementById("url_articulo").value = null;
                 document.getElementById("email_contacto").value = null;
                 document.getElementById("telefono_contacto").value = null;
@@ -156,10 +160,14 @@
 
         if (mivalor == 'miembroins') {
             $(".rendered").show();
+            $(".destacada").hide();
+            document.getElementById("destacada").checked = 0
             $("#url_articulo").attr("required", "required")
         }
         else {
             $("#url_articulo").removeAttr('required');
+            $(".destacada").show();
+            document.getElementById("destacada").checked = 0
             document.getElementById("url_articulo").value = null;
             document.getElementById("email_contacto").value = null;
             document.getElementById("telefono_contacto").value = null;

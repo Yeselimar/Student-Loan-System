@@ -18,7 +18,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="nombre_institucion">*Nombre de la Institución:</label>
+						<label class="pull-right label-xs" for="nombre_institucion">*Nombre de la Institución:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('nombre_institucion', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: U.E. José Austria'])}}
@@ -30,7 +30,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="direccion_institucion">Dirección de la Institución:</label>
+						<label class="pull-right label-xs" for="direccion_institucion">Dirección de la Institución:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('direccion_institucion', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: La Isabelica, Valencia.'])}}
@@ -42,7 +42,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label text-right label-xs" for="director_institucion">Nombre del Director de la Institución:</label>
+						<label class="pull-right label-xs" for="director_institucion">Nombre del Director de la Institución:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('director_institucion', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: Pedro Pérez'])}}
@@ -54,7 +54,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="bachiller_en">*Bachiller en:</label>
+						<label class="pull-right label-xs" for="bachiller_en">*Bachiller en:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('bachiller_en', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: Ciencias'])}}
@@ -66,7 +66,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label text-right label-xs" for="promedio_bachillerato">*Promedio Bachillerato (en puntos):</label>
+						<label class="pull-right label-xs" for="promedio_bachillerato">*Promedio Bachillerato (en puntos):</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('promedio_bachillerato', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: 17.5'])}}
@@ -78,7 +78,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="actividades_extracurriculares">Actividades extracurriculares:</label>
+						<label class="pull-right label-xs" for="actividades_extracurriculares">Actividades extracurriculares:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('actividades_extracurriculares', null, ['class' => 'sisbeca-input','placeholder'=>'EJ: Deporte, Danza, etc.'])}}
@@ -90,7 +90,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label text-right label-xs" for="lugar_labor_social">*Lugar dónde realizó labor social:</label>
+						<label class="pull-right label-xs" for="lugar_labor_social">*Lugar dónde realizó labor social:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('lugar_labor_social', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Cancha El Remanso'])}}
@@ -102,7 +102,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="direccion_labor_social">*Dirección Labor Social:</label>
+						<label class="pull-right label-xs" for="direccion_labor_social">*Dirección Labor Social:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('direccion_labor_social', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: San Diego, Edo. Carabobo.'])}}
@@ -114,7 +114,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="supervisor_labor_social">Supervisor de la Labor Social:</label>
+						<label class="pull-right label-xs" for="supervisor_labor_social">Supervisor de la Labor Social:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('supervisor_labor_social', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Josefina Pérez'])}}
@@ -126,7 +126,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="aprendio_labor_social">*¿Qué aprendió en la labor social?:</label>
+						<label class="pull-right label-xs" for="aprendio_labor_social">*¿Qué aprendió en la labor social?:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						{{ Form::text('aprendio_labor_social', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Aprendí a...'])}}
@@ -138,7 +138,7 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-						<label class="control-label pull-right label-xs" for="habla_otro_idioma">*¿Habla otro idioma?:</label>
+						<label class="pull-right label-xs" for="habla_otro_idioma">*¿Habla otro idioma?:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 						<select class="sisbeca-input" name="habla_otro_idioma" id="hablaidioma">
@@ -159,7 +159,7 @@
 				<div class="form-group">
 					<div class="row" >
 						<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-							<label class="control-label pull-right label-xs" for="habla_idioma">*¿Cual idioma habla?:</label>
+							<label class="pull-right label-xs" for="habla_idioma">*¿Cual idioma habla?:</label>
 						</div>
 						<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 							{{ Form::text('habla_idioma', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Inglés','id'=>'h1'])}}
@@ -171,7 +171,7 @@
 				<div class="form-group">
 					<div class="row" >
 						<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
-							<label class="control-label pull-right label-xs" for="nivel_idioma">¿Nivel de Conocimiento del idioma?:</label>
+							<label class="pull-right label-xs" for="nivel_idioma">¿Nivel de Conocimiento del idioma?:</label>
 						</div>
 						<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
 							<select class="sisbeca-input" name="nivel_idioma" id="h2">

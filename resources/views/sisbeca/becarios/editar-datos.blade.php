@@ -13,6 +13,12 @@
 	  	<li class="nav-item">
 	    	<a class="nav-link" href="#estatus" role="tab" data-toggle="tab">Estatus Becarios</a>
 	  	</li>
+      <li class="nav-item">
+        <a class="nav-link" href="#foto-perfil" role="tab" data-toggle="tab">Foto Perfil</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#contrasena" role="tab" data-toggle="tab">Contraseña</a>
+      </li>
 	</ul>
 	
 	<div class="tab-content">
@@ -224,6 +230,53 @@
 
   	</div>
 
+    <div class="tab-pane" id="foto-perfil">
+      <br>
+      <div class="row">
+        <div class="col-lg-6">
+          <img src="#" alt="">
+        </div>
+        <div class="col-lg-6">
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="contrasena">
+      <br>
+
+      <div class="form-group" style="border: 1px solid #eee; padding: 10px; border-radius: 5px;">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6">
+              <label class="control-label">Contraseña Actual</label>
+              <input type="password" name="contrasena_actual" class="sisbeca-input" v-model="contrasena_actual">
+              <span v-if="errores.contrasena_actual" :class="['label label-danger']">@{{ errores.contrasena_actual[0] }}</span>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6">
+              <label class="control-label">Contraseña Nueva</label>
+              <input type="password" name="contrasena_nueva" class="sisbeca-input" v-model="contrasena_nueva">
+              <span v-if="errores.contrasena_nueva" :class="['label label-danger']">@{{ errores.contrasena_nueva[0] }}</span>
+          </div>
+
+          <div class="col-lg-4 col-md-4 col-sm-6">
+              <label class="control-label">Contraseña Repite</label>
+              <input type="password" name="contrasena_repite" class="sisbeca-input" v-model="contrasena_repite">
+              <span v-if="errores.contrasena_repite" :class="['label label-danger']">@{{ errores.contrasena_repite[0] }}</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <input class="btn sisbeca-btn-primary pull-right" type="button" value="Guardar" @click="guardarContrasena()">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
 	</div>
 
 	<!-- Cargando.. -->
@@ -269,7 +322,10 @@
       inicio_universidad:'',
       nombre_universidad:'',
       carrera_universidad:'',
-      promedio_universidad:''
+      promedio_universidad:'',
+      contrasena_actual:'',
+      contrasena_nueva:'',
+      contrasena_repite:''
     },
     beforeCreate:function()
 	{
@@ -400,7 +456,31 @@
           this.errores = error.response.data.errors;
           toastr.error("Disculpe, verifique el formulario");
         });
-      }
+      },
+      guardarContrasena()
+      {
+        $("#preloader").show();
+        var id = '{{$becario->user_id}}';
+        var url = "{{ route('becarios.actualizar.contrasena',':id' ) }}";
+        url = url.replace(':id', id);
+        var dataform = new FormData();
+        dataform.append('contrasena_actual', this.contrasena_actual);
+        dataform.append('contrasena_nueva', this.contrasena_nueva);
+        dataform.append('contrase_repite', this.contrase_repite);
+        axios.post(url,dataform).then(response => 
+        {
+          $("#preloader").hide();
+          this.errores=[];
+          console.log(response.data);
+          //toastr.success(response.data.success);
+        }).catch( error =>
+        {
+          $("#preloader").hide();
+          console.log(error);
+          //this.errores = error.response.data.errors;
+          //toastr.error("Disculpe, verifique el formulario");
+        });
+      },
     }
 
 	});

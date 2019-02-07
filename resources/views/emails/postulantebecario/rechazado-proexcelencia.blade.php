@@ -6,7 +6,7 @@
 	<li><strong><h1>Decisión de la Postulación</h1></strong></li>
 	<li></li>
 	<li>
-		Hola <strong>{{$postulanteBecario->user->nombreyapellido()}}</strong>, tú postulación a becario <strong>Pro-Excelencia</strong> fue <strong>{{$decision}}</strong>.
+		Hola <strong>{{$postulanteBecario->user->nombreyapellido()}}</strong>, tú postulación a becario <strong>ProExcelencia</strong> fue <strong>{{$decision}}</strong>.
 	</li>
 </ul>
 

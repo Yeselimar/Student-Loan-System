@@ -108,7 +108,7 @@
                                 </div>
 
                                 <div class="f1-buttons">
-                                    <a class="btn btn-next sisbeca-btn-default" href="/login">Iniciar Sesión</a>
+                                    <a class="btn btn-next sisbeca-btn-default" href="/login">Atrás</a>
                                     <button type="button" class="btn btn-next sisbeca-btn-primary">Siguiente</button>
                                 </div>
                             </fieldset>
