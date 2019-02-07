@@ -97,6 +97,7 @@
                         </ul>
                         @endif
                      </li>
+
                      <li class="nivel1 nav-item">
                      @if($route=="noticias")
                         <a class="nav-link page-scroll active" target="_self" href="{{asset('noticias')}}" style="border:1px solid #fff;background-color: #003865;color:#fff!important;border-radius: 50px">Noticias</a>
@@ -114,6 +115,9 @@
                         @else
                         <a class="nav-link " target="_self" href="{{asset('contactenos')}}">Contáctanos</a>
                      @endif
+                     </li>
+                     <li class="nivel1 nav-item">
+                        <a class="nav-link" target="_blank" alt="Visita AVAA USA" href="https://avaaus.org/">AVAA US</a>
                      </li>
                      <li class="nivel1 nav-item">
                         <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SEB</a>
@@ -211,6 +215,7 @@
                   </ul>
                   @endif
                </li>
+              
                <li>
                @if($route=="noticias")
                   <a class="page-scroll active" target="_self" href="#hero-area">Noticias</a>
@@ -230,7 +235,10 @@
                   @endif
                </li>
                <li>
-                  <a target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
+                  <a target="_blank" alt="Visita AVAA USA" href="https://avaaus.org/">AVAA US</a>
+               </li>
+               <li>
+                  <a target="_blank" href="{{asset(route('sisbeca'))}}">SEB</a>
                </li>
             </ul>
             <!-- Mobile Menu End -->
