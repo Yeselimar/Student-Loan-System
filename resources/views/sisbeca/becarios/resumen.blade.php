@@ -45,6 +45,7 @@
 			  	<option>2019</option>
 			  	<option>2018</option>
 			  	<option>2017</option>
+			  	<option>2016</option>
 			</select>
 			<!--<span>Año: @{{ anho }}</span>-->
 		</div>
@@ -226,84 +227,68 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
-					<th colspan="4" class="cabecera-sisbeca">TALLER Y CHAT CLUB (@{{obtenermescompleto(mes)}}-@{{anho}})</th>
+					<th colspan="3" class="cabecera-sisbeca">TALLER (@{{obtenermescompleto(mes)}}-@{{anho}})</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!--@{{total_taller=$a_t_p->total_actividades+$a_t_v->total_actividades}}
-				@{{$total_chat=$a_c_p->total_actividades+$a_c_v->total_actividades}}
-				@{{$total_presencial=$a_t_p->total_actividades+$a_c_p->total_actividades}}
-				@{{$total_virtual=$a_t_v->total_actividades+$a_c_v->total_actividades}}-->
 				<tr>
-					<td><strong>ASISTIO</strong></td>
-					<td><strong>Presencial</strong></td>
-					<td><strong>Virtual</strong></td>
-					<td><strong>Total</strong></td>
+					<td class="text-left">Modalidad</td>
+					<td class="text-left"><strong>Asistencias</strong></td>
+					<td class="text-left"><strong>Inasistencias</strong></td>
 				</tr>
 				<tr>
-					<td><strong>Taller</strong></td>
-					<td>@{{asistio.a_t_p}}</td>
-					<td>@{{asistio.a_t_v}}</td>
-					<td>@{{asistio.a_t_p+asistio.a_t_v}}</td>
+					<td class="text-left"><strong>Presenciales</strong></td>
+					<td class="text-left">@{{asistio.a_t_p}}</td>
+					<td class="text-left">@{{noasistio.na_t_p}}</td>
+					
 				</tr>
 				<tr>
-					<td><strong>Chat Club</strong></td>
-					<td>@{{asistio.a_c_p}} </td>
-					<td>@{{asistio.a_c_v}} </td>
-					<td>@{{asistio.a_c_p+asistio.a_c_v}}</td>
+					<td class="text-left"><strong>Virtuales</strong></td>
+					<td class="text-left">@{{asistio.a_t_v}}</td>
+					<td class="text-left">@{{noasistio.na_t_v}}</td>
 				</tr>
-				<tr>
-					<td><strong>Total</strong></td>
-					<td>@{{asistio.a_t_p+asistio.a_c_p}}</td>
-					<td>@{{asistio.a_t_v+asistio.a_c_v}}</td>
-					<td>
-						<strong>
-						@{{asistio.a_t_p+asistio.a_t_v
-						+asistio.a_c_p+asistio.a_c_v}}
-						</strong>
-					</td>
+				<tr style="background-color: #eee">
+					<td class="text-left">Totales de talleres</td>
+					<td class="text-left">@{{asistio.a_t_p+asistio.a_t_v}}</td>
+					<td class="text-left">@{{noasistio.na_t_p+noasistio.na_t_v}}</td>
 				</tr>
-				
-				
-				<!--@{{$total_n_taller=$na_t_p->total_actividades+$na_t_v->total_actividades}}
-				@{{$total_n_chat=$na_c_p->total_actividades+$na_c_v->total_actividades}}
-				@{{$total_n_presencial=$na_t_p->total_actividades+$na_c_p->total_actividades}}
-				@{{$total_n_virtual=$na_t_v->total_actividades+$na_c_v->total_actividades}}-->
-				<tr>
-					<td><strong>NO ASISTIO</strong></td>
-					<td><strong>Presencial</strong></td>
-					<td><strong>Virtual</strong></td>
-					<td><strong>Total</strong></td>
-				</tr>
-				<tr>
-					<td><strong>Taller</strong></td>
-					<td>@{{noasistio.na_t_p}}</td>
-					<td>@{{noasistio.na_t_v}}</td>
-					<td>@{{noasistio.na_t_p+noasistio.na_t_v}}</td>
-				</tr>
-
-				<tr>
-					<td><strong>Chat Club</strong></td>
-					<td>@{{noasistio.na_c_p}} </td>
-					<td>@{{noasistio.na_c_v}} </td>
-					<td>@{{noasistio.na_c_p+noasistio.na_c_v}}</td>
-				</tr>
-				
-				<tr>
-					<td><strong>Total</strong></td>
-					<td>@{{noasistio.na_t_p+noasistio.na_c_p}}</td>
-					<td>@{{noasistio.na_t_v+noasistio.na_c_v}}</td>
-					<td>
-						<strong>
-						@{{noasistio.na_t_p+noasistio.na_t_v
-						+noasistio.na_c_p+noasistio.na_c_v}}
-						</strong>
-					</td>
-				</tr>
-				
 			</tbody>
 		</table>
 	</div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th colspan="3" class="cabecera-sisbeca">CHAT CLUB (@{{obtenermescompleto(mes)}}-@{{anho}})</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left">Modalidad</td>
+					<td class="text-left"><strong>Asistencias</strong></td>
+					<td class="text-left"><strong>Inasistencias</strong></td>
+				</tr>
+				<tr>
+					<td class="text-left"><strong>Presenciales</strong></td>
+					<td class="text-left">@{{asistio.a_c_p}}</td>
+					<td class="text-left">@{{noasistio.na_c_p}}</td>
+					
+				</tr>
+				<tr>
+					<td class="text-left"><strong>Virtuales</strong></td>
+					<td class="text-left">@{{asistio.a_c_v}}</td>
+					<td class="text-left">@{{noasistio.na_c_v}}</td>
+				</tr>
+				<tr style="background-color: #eee">
+					<td class="text-left">Totales de chat club</td>
+					<td class="text-left">@{{asistio.a_c_p+asistio.a_c_v}}</td>
+					<td class="text-left">@{{noasistio.na_c_p+noasistio.na_c_v}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
 	<!--
 	<p>No borrar este código, aún funciona. Pero está hecho en PHP</p>
 	<br>

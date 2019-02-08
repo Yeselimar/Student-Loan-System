@@ -184,7 +184,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
-        //Elimnar a postulantne
+        //Eliminar a postulantne
         Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
         //Segimiento 
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
@@ -387,6 +387,22 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         //link para inscribirme y salirme.  justificar
 
 
+        //Reportes de Seguimiento 
+        //resumen becario y reporte general (Ojo estan rutas estan en el middleware: admin_mentor)
+        Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+        Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
+
+        Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
+
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
+
+        //reporte "tiempo" (Ojo estan rutas estan en el middleware: admin_mentor)
+        Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
+        Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
+        Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
+
 
     });
 
@@ -515,6 +531,20 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         'as' => 'postulanteObecario.perfil'
     ]);
 
+    //resumen becario y reporte general (Ojo estan rutas estan en el middleware: admin_mentor)
+    Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+    Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
+    Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
+
+    Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
+    Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
+
+    Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
+
+    //reporte "tiempo" (Ojo estan rutas estan en el middleware: admin_mentor)
+    Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
+    Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
+    Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
 
     Route::group(['middleware'=>'directivo'],function ()
     {
@@ -854,20 +884,7 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
 
         //Otros  reportes de Seguimiento
-         //resumen becario y reporte general
-        Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
-        Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
-        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
 
-        Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
-        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
-
-        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
-
-        //reporte "tiempo"
-        Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
-        Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
-        Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
     });
 
     Route::group(['middleware'=>'entrevistador'],function ()

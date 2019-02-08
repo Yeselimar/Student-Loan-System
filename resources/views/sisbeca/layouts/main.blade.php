@@ -78,7 +78,7 @@
 
         </div>
         <!-- footer -->
-        <footer class="footer"> © {{ date('Y') }} Todos los derechos reservados. Desarrollado por  <strong><a href="#" style="color:#003865">AFODI</a></strong></footer>
+        <footer class="footer"> © {{ date('Y') }} Todos los Derechos Reservados. Desarrollado por  <strong><a href="#" style="color:#003865">AFODI</a></strong></footer>
         <!-- End footer -->
         <!-- End Page wrapper  -->
     </div>

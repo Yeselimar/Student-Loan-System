@@ -595,6 +595,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -871,369 +896,391 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "col-lg-12" }, [
-      _c("div", { staticClass: "table-responsive" }, [
-        _c(
-          "div",
-          {
-            staticClass: "dataTables_wrapper dt-bootstrap4 no-footer",
-            attrs: { id: "becarios_wrapper" }
+  return _c(
+    "div",
+    [
+      _c("DatePicker", {
+        ref: "expirationPassport",
+        attrs: {
+          language: "es",
+          id: "expirationPassport",
+          name: "expirationPassport",
+          format: "dd-MM-yyyy",
+          "full-month-name": true
+        },
+        model: {
+          value: _vm.datedarwin,
+          callback: function($$v) {
+            _vm.datedarwin = $$v
           },
-          [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-sm-12 col-md-6" }, [
-                _c("div", { staticClass: "dataTables_length" }, [
-                  _c("label", [
-                    _vm._v("Mostrar \n            "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.perPage,
-                            expression: "perPage"
+          expression: "datedarwin"
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-12" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c(
+            "div",
+            {
+              staticClass: "dataTables_wrapper dt-bootstrap4 no-footer",
+              attrs: { id: "becarios_wrapper" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-sm-12 col-md-6" }, [
+                  _c("div", { staticClass: "dataTables_length" }, [
+                    _c("label", [
+                      _vm._v("Mostrar \n            "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.perPage,
+                              expression: "perPage"
+                            }
+                          ],
+                          staticClass:
+                            "custom-select custom-select-sm form-control form-control-sm",
+                          attrs: { "aria-controls": "becarios" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.perPage = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
                           }
-                        ],
-                        staticClass:
-                          "custom-select custom-select-sm form-control form-control-sm",
-                        attrs: { "aria-controls": "becarios" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.perPage = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
-                      },
-                      _vm._l(_vm.pageOptions, function(value, key) {
-                        return _c("option", { key: key }, [
-                          _vm._v(
-                            "\n                " +
-                              _vm._s(value) +
-                              "\n              "
-                          )
-                        ])
-                      })
-                    ),
-                    _vm._v(" Entradas")
+                        },
+                        _vm._l(_vm.pageOptions, function(value, key) {
+                          return _c("option", { key: key }, [
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(value) +
+                                "\n              "
+                            )
+                          ])
+                        })
+                      ),
+                      _vm._v(" Entradas")
+                    ])
                   ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-sm-12 col-md-6" }, [
+                  _c(
+                    "div",
+                    { staticClass: "dataTables_filter pull-right" },
+                    [
+                      _c("b-input-group-append", [
+                        _c(
+                          "label",
+                          [
+                            _vm._v("Buscar:"),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filter,
+                                  expression: "filter"
+                                }
+                              ],
+                              staticClass: "form-control form-control-sm",
+                              attrs: { type: "search", placeholder: "" },
+                              domProps: { value: _vm.filter },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.filter = $event.target.value
+                                }
+                              }
+                            }),
+                            _c(
+                              "b-btn",
+                              {
+                                attrs: { disabled: !_vm.filter },
+                                on: {
+                                  click: function($event) {
+                                    _vm.filter = ""
+                                  }
+                                }
+                              },
+                              [_vm._v("Limpiar")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ],
+                    1
+                  )
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-sm-12 col-md-6" }, [
-                _c(
-                  "div",
-                  { staticClass: "dataTables_filter pull-right" },
-                  [
-                    _c("b-input-group-append", [
-                      _c(
-                        "label",
-                        [
-                          _vm._v("Buscar:"),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.filter,
-                                expression: "filter"
-                              }
-                            ],
-                            staticClass: "form-control form-control-sm",
-                            attrs: { type: "search", placeholder: "" },
-                            domProps: { value: _vm.filter },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+              _c("b-table", {
+                staticClass:
+                  "table table-bordered table-hover dataTable no-footer",
+                attrs: {
+                  "show-empty": "",
+                  "empty-text": "No hay registros para mostrar",
+                  "empty-filtered-text":
+                    "\n                    No hay registros que coincidan con su busqueda",
+                  stacked: "md",
+                  becarios: _vm.becarios,
+                  items: _vm.items,
+                  fields: _vm.fields,
+                  "current-page": _vm.currentPage,
+                  "per-page": _vm.perPage,
+                  filter: _vm.filter,
+                  "sort-by": _vm.sortBy,
+                  "sort-desc": _vm.sortDesc,
+                  "sort-direction": _vm.sortDirection
+                },
+                on: {
+                  "update:sortBy": function($event) {
+                    _vm.sortBy = $event
+                  },
+                  "update:sortDesc": function($event) {
+                    _vm.sortDesc = $event
+                  },
+                  filtered: _vm.onFiltered
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "becario",
+                    fn: function(row) {
+                      return [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(row.value.name) +
+                            "\n              "
+                        )
+                      ]
+                    }
+                  },
+                  {
+                    key: "mentor",
+                    fn: function(row) {
+                      return [
+                        _vm.idShow == _vm.vShow(row)
+                          ? [
+                              _c("v-select", {
+                                attrs: { options: _vm.mentores, label: "name" },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "option",
+                                    fn: function(option) {
+                                      return [
+                                        _vm._v(
+                                          "\n                          " +
+                                            _vm._s(option.name) +
+                                            "\n                      "
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ]),
+                                model: {
+                                  value: _vm.selected,
+                                  callback: function($$v) {
+                                    _vm.selected = $$v
+                                  },
+                                  expression: "selected"
                                 }
-                                _vm.filter = $event.target.value
-                              }
-                            }
-                          }),
+                              })
+                            ]
+                          : [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(
+                                    row.value.id != null
+                                      ? row.value.name
+                                      : "Sin Mentor"
+                                  ) +
+                                  "\n              "
+                              )
+                            ]
+                      ]
+                    }
+                  },
+                  {
+                    key: "actions",
+                    fn: function(row) {
+                      return [
+                        _vm.idShow == _vm.vShow(row)
+                          ? _c("div", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-sm sisbeca-btn-primary",
+                                  attrs: {
+                                    "data-toggle": "tooltip",
+                                    "data-placement": "bottom",
+                                    title: "Guardar"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      _vm.save(row.index, row)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fa fa-check" })]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-sm sisbeca-btn-default",
+                                  attrs: {
+                                    "data-toggle": "tooltip",
+                                    "data-placement": "bottom",
+                                    title: "Cancelar"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      _vm.cancel(row.index, row)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fa fa-times" })]
+                              )
+                            ])
+                          : _c("div", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-sm sisbeca-btn-primary",
+                                  attrs: {
+                                    "data-toggle": "tooltip",
+                                    "data-placement": "bottom",
+                                    title: "Asignar Relación"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      _vm.edit(row.index, row, $event)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fa fa-pencil" })]
+                              )
+                            ])
+                      ]
+                    }
+                  },
+                  {
+                    key: "row-details",
+                    fn: function(row) {
+                      return [
+                        _c("b-card", [
                           _c(
-                            "b-btn",
-                            {
-                              attrs: { disabled: !_vm.filter },
-                              on: {
-                                click: function($event) {
-                                  _vm.filter = ""
-                                }
-                              }
-                            },
-                            [_vm._v("Limpiar")]
+                            "ul",
+                            _vm._l(row.item, function(value, key) {
+                              return _c("li", { key: key }, [
+                                _vm._v(_vm._s(key) + ": " + _vm._s(value))
+                              ])
+                            })
                           )
-                        ],
-                        1
-                      )
-                    ])
-                  ],
-                  1
-                )
+                        ])
+                      ]
+                    }
+                  }
+                ])
+              }),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-col",
+                    { attrs: { md: "12" } },
+                    [
+                      _c("b-pagination", {
+                        staticClass: "my-0  text-right pull-right",
+                        attrs: {
+                          "total-rows": _vm.totalRows,
+                          "per-page": _vm.perPage
+                        },
+                        model: {
+                          value: _vm.currentPage,
+                          callback: function($$v) {
+                            _vm.currentPage = $$v
+                          },
+                          expression: "currentPage"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "loading", attrs: { id: "preloader" } }, [
+        _c("div", [
+          _c(
+            "svg",
+            { staticClass: "circular", attrs: { viewBox: "25 25 50 50" } },
+            [
+              _c("circle", {
+                staticClass: "path",
+                attrs: {
+                  cx: "50",
+                  cy: "50",
+                  r: "20",
+                  fill: "none",
+                  "stroke-width": "2",
+                  "stroke-miterlimit": "10"
+                }
+              })
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "modal fade", attrs: { id: "msgModal" } }, [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c("h5", { staticClass: "modal-title" }, [
+                _c("strong", [_vm._v(_vm._s(_vm.msgTitle))])
               ])
             ]),
             _vm._v(" "),
-            _c("b-table", {
-              staticClass:
-                "table table-bordered table-hover dataTable no-footer",
-              attrs: {
-                "show-empty": "",
-                "empty-text": "No hay registros para mostrar",
-                "empty-filtered-text":
-                  "\n                    No hay registros que coincidan con su busqueda",
-                stacked: "md",
-                becarios: _vm.becarios,
-                items: _vm.items,
-                fields: _vm.fields,
-                "current-page": _vm.currentPage,
-                "per-page": _vm.perPage,
-                filter: _vm.filter,
-                "sort-by": _vm.sortBy,
-                "sort-desc": _vm.sortDesc,
-                "sort-direction": _vm.sortDirection
-              },
-              on: {
-                "update:sortBy": function($event) {
-                  _vm.sortBy = $event
-                },
-                "update:sortDesc": function($event) {
-                  _vm.sortDesc = $event
-                },
-                filtered: _vm.onFiltered
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "becario",
-                  fn: function(row) {
-                    return [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(row.value.name) +
-                          "\n              "
-                      )
-                    ]
-                  }
-                },
-                {
-                  key: "mentor",
-                  fn: function(row) {
-                    return [
-                      _vm.idShow == _vm.vShow(row)
-                        ? [
-                            _c("v-select", {
-                              attrs: { options: _vm.mentores, label: "name" },
-                              scopedSlots: _vm._u([
-                                {
-                                  key: "option",
-                                  fn: function(option) {
-                                    return [
-                                      _vm._v(
-                                        "\n                          " +
-                                          _vm._s(option.name) +
-                                          "\n                      "
-                                      )
-                                    ]
-                                  }
-                                }
-                              ]),
-                              model: {
-                                value: _vm.selected,
-                                callback: function($$v) {
-                                  _vm.selected = $$v
-                                },
-                                expression: "selected"
-                              }
-                            })
-                          ]
-                        : [
-                            _vm._v(
-                              "\n              " +
-                                _vm._s(
-                                  row.value.id != null
-                                    ? row.value.name
-                                    : "Sin Mentor"
-                                ) +
-                                "\n              "
-                            )
-                          ]
-                    ]
-                  }
-                },
-                {
-                  key: "actions",
-                  fn: function(row) {
-                    return [
-                      _vm.idShow == _vm.vShow(row)
-                        ? _c("div", [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-sm sisbeca-btn-primary",
-                                attrs: {
-                                  "data-toggle": "tooltip",
-                                  "data-placement": "bottom",
-                                  title: "Guardar"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.stopPropagation()
-                                    _vm.save(row.index, row)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-check" })]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-sm sisbeca-btn-default",
-                                attrs: {
-                                  "data-toggle": "tooltip",
-                                  "data-placement": "bottom",
-                                  title: "Cancelar"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.stopPropagation()
-                                    _vm.cancel(row.index, row)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-times" })]
-                            )
-                          ])
-                        : _c("div", [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-sm sisbeca-btn-primary",
-                                attrs: {
-                                  "data-toggle": "tooltip",
-                                  "data-placement": "bottom",
-                                  title: "Asignar Relación"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.stopPropagation()
-                                    _vm.edit(row.index, row, $event)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-pencil" })]
-                            )
-                          ])
-                    ]
-                  }
-                },
-                {
-                  key: "row-details",
-                  fn: function(row) {
-                    return [
-                      _c("b-card", [
-                        _c(
-                          "ul",
-                          _vm._l(row.item, function(value, key) {
-                            return _c("li", { key: key }, [
-                              _vm._v(_vm._s(key) + ": " + _vm._s(value))
-                            ])
-                          })
-                        )
-                      ])
-                    ]
-                  }
-                }
-              ])
-            }),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c(
-              "b-row",
-              [
-                _c(
-                  "b-col",
-                  { attrs: { md: "12" } },
-                  [
-                    _c("b-pagination", {
-                      staticClass: "my-0  text-right pull-right",
-                      attrs: {
-                        "total-rows": _vm.totalRows,
-                        "per-page": _vm.perPage
-                      },
-                      model: {
-                        value: _vm.currentPage,
-                        callback: function($$v) {
-                          _vm.currentPage = $$v
-                        },
-                        expression: "currentPage"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("section", { staticClass: "loading", attrs: { id: "preloader" } }, [
-      _c("div", [
-        _c(
-          "svg",
-          { staticClass: "circular", attrs: { viewBox: "25 25 50 50" } },
-          [
-            _c("circle", {
-              staticClass: "path",
-              attrs: {
-                cx: "50",
-                cy: "50",
-                r: "20",
-                fill: "none",
-                "stroke-width": "2",
-                "stroke-miterlimit": "10"
-              }
-            })
-          ]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "modal fade", attrs: { id: "msgModal" } }, [
-      _c("div", { staticClass: "modal-dialog" }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _c("h5", { staticClass: "modal-title" }, [
-              _c("strong", [_vm._v(_vm._s(_vm.msgTitle))])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("p", { staticClass: "h6 text-center" }, [
-                _vm._v(_vm._s(_vm.msgBody))
+            _c("div", { staticClass: "modal-body" }, [
+              _c("div", { staticClass: "col-lg-12" }, [
+                _c("p", { staticClass: "h6 text-center" }, [
+                  _vm._v(_vm._s(_vm.msgBody))
+                ])
               ])
             ])
           ])
         ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
