@@ -139,9 +139,13 @@
             <div class="col-md-5 col-sm-5 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
-                     <h2 class="title-programas" data-mh="programa-titulo">ASESORÍAS EDUCATIVAS</h2>
+                     <h2 class="title-programas" data-mh="programa-titulo">
+                     <img class="img-fluid" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height: 50px"  />
+                     ASESORÍAS EDUCATIVAS
+                     <img class="img-fluid" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  />
+                  </h2>
 
-                     <img src="{{asset('info_sitio/img/testimonial/asesorias.jpg')}}" alt="Asesorias educativas" style="min-width: 100%;height: auto"  />
+                     <img src="{{asset('info_sitio/img/testimonial/asesorias.jpg')}}" alt="Asesorias educativas" style="width: 100%;height: auto"  />
 
                      <div class="col-lg-12">
                         <br>
