@@ -72,6 +72,7 @@
                                 @{{ justificativo.aval.estatus }}
                             </span>
                         </template>
+
                         <!-- 
 						<span v-if="justificativo.aval.estatus=='pendiente'" class="label label-warning">
 							@{{ justificativo.aval.estatus }}</span>
@@ -111,7 +112,14 @@
 		<p class="text-right h6">@{{ justificativos.length}} justificativo(s)</p>
 	</div>
 
-	
+	<!-- Cargando.. -->
+    <section class="loading" id="preloader">
+        <div>
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+        </div>
+    </section>
+    <!-- Cargando.. -->
 </div>
 
 @endsection
@@ -137,42 +145,47 @@ const app = new Vue({
     {
     	getJustificativo(link)
         {
+
             var url = '{{url(':link')}}';
             url = url.replace(':link', link);
             return url;
         },
         aprobarJustificativo(id)
         {
+            $("#preloader").show();
             var url = '{{route('aval.aceptar',':id')}}';
             url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
-                //console.log("aprobar");
+                this.obtenerjustificativos();
+                $("#preloader").hide();
                 toastr.success(response.data.success);
             });
-            this.obtenerjustificativos();
         },
         negarJustificativo(id)
         {
+            $("#preloader").show();
             var url = '{{route('aval.negar',':id')}}';
             url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
-                //console.log("negar");
+                this.obtenerjustificativos();
+                $("#preloader").hide();
                 toastr.success(response.data.success);
             });
-            this.obtenerjustificativos();
         },
         devolverJustificativo(id)
         {
+            $("#preloader").show();
             var url = '{{route('aval.devolver',':id')}}';
             url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
-                //console.log("devolver");
+                this.obtenerjustificativos();
+                $("#preloader").hide();
                 toastr.success(response.data.success);
             });
-            this.obtenerjustificativos();
+            
         },
     	getRutaVerJustificativo: function(url_justificativo)
     	{
@@ -182,10 +195,12 @@ const app = new Vue({
     	},
     	obtenerjustificativos: function()
     	{
+            $("#preloader").show();
     		var url = '{{route('actividad.justificativos.servicio',$actividad->id)}}';
             axios.get(url).then(response => 
             {
             	this.justificativos = response.data.justificativos;
+                $("#preloader").hide();
             });
     	},
     	fechaformartear: function (fecha)

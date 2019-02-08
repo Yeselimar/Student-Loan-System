@@ -89,7 +89,20 @@
 					        @endif
 					        {{$actividad->getModalidad()}}
 						</div>
-						{{ucwords($actividad->tipo)}}: {{$actividad->nombre}}
+						{{ucwords($actividad->tipo)}}: {{$actividad->nombre}} 
+						@if($actividad->status=='disponible')
+						<span class="label label-success">
+							Disponible</span>
+						@elseif($actividad->status=='suspendido')
+						<span class="label label-danger">
+							Suspendido</span>
+						@elseif($actividad->status=='oculto')
+						<span class="label label-warning">
+							Oculto</span>
+						@elseif($actividad->status=='cerrado')
+						<span class="label label-danger">
+							Cerrado</span>
+						@endif
 					</div>
 			        <a href="{{route('actividad.detalles',$actividad->id)}}" class="btn btn-xs btn-block sisbeca-btn-primary">
 			        	<i class="fa fa-info"> </i> Detalles

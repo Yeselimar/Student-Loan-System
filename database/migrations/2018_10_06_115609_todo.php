@@ -117,7 +117,8 @@ class Todo extends Migration
             $table->boolean('estudios_universitarios')->default(false);
             $table->boolean('informacion_adicional')->default(false);
             $table->boolean('documentos')->default(false);
-
+            $table->text('link_video')->nullable();
+            
             //
             $table->enum('tipo',['nuevo','viejo'])->default('nuevo');
             $table->enum('regimen',['anual','semestral','trimestral'])->default('anual');
@@ -300,7 +301,7 @@ class Todo extends Migration
             $table->string('nombre');
             $table->string('anho_academico')->nullable();
             $table->enum('tipo',['taller','chat club'])->default('taller');
-            $table->enum('nivel',['inicio','intermedio','avanzado','cualquier nivel'])->default('inicio');
+            $table->enum('nivel',['basico','intermedio','avanzado','cualquier nivel'])->default('basico');
             $table->enum('modalidad',['presencial','virtual'])->default('presencial');
             $table->text('descripcion');
             $table->unsignedInteger('limite_participantes');
@@ -308,7 +309,7 @@ class Todo extends Migration
             $table->datetime('fecha')->nullable();
             $table->time('hora_inicio')->nullable();
             $table->time('hora_fin')->nullable();
-            $table->enum('status',['suspendido','bloqueado','disponible'])->default('disponible');
+            $table->enum('status',['suspendido','oculto','disponible','cerrado'])->default('disponible');
 
 
 
@@ -434,7 +435,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->string('nombre');//se puede obviar y dejar solo instituto
-            $table->string('instituto');
+            $table->string('institucion');
             $table->string('responsable'); // tambien llamado persona de contacto
             $table->text('observacion')->nullable();
             $table->datetime('fecha');

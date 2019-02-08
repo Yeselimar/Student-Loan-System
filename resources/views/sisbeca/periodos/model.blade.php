@@ -7,11 +7,14 @@
         @if($model=="editar")
         <a href="{{ route('materias.mostrar',$periodo->id)}}" class="btn btn-sm sisbeca-btn-primary">Ver Materias</a>
         @endif
+        <!--
         @if(Auth::user()->esBecario())
             <a href="{{route('periodos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         @else
             <a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         @endif
+        -->
+        <a href="{{ URL::previous() }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
     </div>
 	<br>
 	<div class="col sisbeca-container-formulario">

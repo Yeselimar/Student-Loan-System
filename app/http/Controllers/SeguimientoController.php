@@ -297,6 +297,7 @@ class SeguimientoController extends Controller
         if(!empty($becario))
         {
             $id = $becario->user->id;
+            //para actividades
             $actividades = DB::table('actividades')
                 ->join('actividades_becarios', function ($join) use($id)
             {
@@ -340,14 +341,27 @@ class SeguimientoController extends Controller
                 ->where('aval.estatus','=','aceptada')
                 ;
             })->first();
+            //para actividades  facilitadas
+            $af = DB::table('actividades')
+                ->selectRaw('*')
+                ->join('actividades_facilitadores', function ($join) use($id)
+            {
+            $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                ->where('actividades.status', '!=', 'suspendido')
+                ->where('actividades_facilitadores.becario_id', '=', $id)
+                ;
+            })->orderby('fecha', 'desc')->first();
+
             $tiempo_actividades = "Nunca";
             $tiempo_cva = "Nunca";
             $tiempo_voluntariados = "Nunca";
             $tiempo_periodos = "Nunca";
+            $tiempo_actividad_facilitada = "Nunca";
             $color_actividad = "#FFEBEE";
             $color_cva = "#FFEBEE";
             $color_voluntariado = "#FFEBEE";
             $color_periodo = "#FFEBEE";
+            $tiempo_actividad_facilitada = "#FFEBEE";
             $puntos = 0;
             if(!empty($actividades))
             {
@@ -570,16 +584,71 @@ class SeguimientoController extends Controller
                     $puntos += 10;
                 }
             }
-
+            if(!empty($af))
+            {
+                $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($af->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+                if($desde->y==0)//año
+                {
+                    if($desde->m==0)//mes
+                    {
+                        if($desde->d==0)//días
+                        {
+                            if($desde->h==0)//horas
+                            {
+                                if($desde->i==0)//minutos
+                                {
+                                    $tiempo_actividad_facilitada = "Hace un momento";
+                                    $color_actividad_facilitada =   "#E8F5E9";
+                                    $puntos += 1;
+                                }
+                                else
+                                {
+                                    $tiempo_actividad_facilitada = ($desde->i==1)?"Hace 1 minuto":"Hace ".$desde->i." minutos";
+                                    $color_actividad_facilitada =   "#E8F5E9";
+                                    $puntos += 0;
+                                }
+                            }
+                            else
+                            {
+                                $tiempo_actividad_facilitada = ($desde->h==1)?"Hace 1 hora":"Hace ".$desde->h." horas";
+                                $color_actividad_facilitada =   "#E8F5E9";
+                                $puntos += 1;
+                            }
+                        }
+                        else
+                        {
+                            $tiempo_actividad_facilitada = ($desde->d==1)?"Hace 1 día":"Hace ".$desde->d." días";
+                            $color_actividad_facilitada =   "#E8F5E9";
+                            $puntos += 2;
+                        }
+                    }
+                    else
+                    {
+                        $tiempo_actividad_facilitada = ($desde->m==1)?"Hace 1 mes":"Hace ".$desde->m." meses";
+                        $color_actividad_facilitada = "#FFFDE7";
+                        $puntos += 5;
+                    }
+                }
+                else
+                {
+                    $tiempo_actividad_facilitada = ($desde->y==1)?"Hace 1 año":"Hace ".$desde->y." años";
+                    $color_actividad_facilitada = "#FFEBEE";
+                    $puntos += 10;
+                }
+            }
             $becario = array(
                 'tiempo_actividades' => $tiempo_actividades,
                 'tiempo_cva' => $tiempo_cva,
                 'tiempo_voluntariado' => $tiempo_voluntariados,
                 'tiempo_periodos' => $tiempo_periodos,
+                'tiempo_actividad_facilitada' => $tiempo_actividad_facilitada,
                 'color_actividad' => $color_actividad,
                 'color_cva' => $color_cva,
                 'color_voluntariado'=> $color_voluntariado,
                 'color_periodo' => $color_periodo,
+                'color_actividad_facilitada' => $color_actividad_facilitada,
                 'puntos'  => $puntos,
                 "becario" => array(
                    'id' => $becario->user->id,
@@ -637,12 +706,19 @@ class SeguimientoController extends Controller
                     
                 })->first();
 
-                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->paraMes($mes)->get();
-                $total_horas_facilitador = 0;
-                foreach ($actividades_facilitadas as $ab)
+                $af = DB::table('actividades')
+                ->selectRaw('*,SUM(horas) as total_horas')
+                    ->join('actividades_facilitadores', function ($join) use($id,$anho,$mes)
                 {
-                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
-                }
+                $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                    ->where('actividades.status', '!=', 'suspendido')
+                    ->where('actividades_facilitadores.becario_id', '=', $id)
+                    ->whereYear('actividades.fecha', '=', $anho)
+                    ->whereMonth('actividades.fecha', '=', $mes);
+                })->first();
+
+                $total_horas_facilitador = ($af->total_horas==null) ? 0 : $af->total_horas;
+                
                 $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
                 $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
 
@@ -720,12 +796,18 @@ class SeguimientoController extends Controller
                     
                 })->first();
 
-                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
-                $total_horas_facilitador = 0;
-                foreach ($actividades_facilitadas as $ab)
+                $af = DB::table('actividades')
+                ->selectRaw('*,SUM(horas) as total_horas')
+                    ->join('actividades_facilitadores', function ($join) use($id,$anho)
                 {
-                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
-                }
+                $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                    ->where('actividades.status', '!=', 'suspendido')
+                    ->where('actividades_facilitadores.becario_id', '=', $id)
+                    ->whereYear('actividades.fecha', '=', $anho);
+                })->first();
+
+                $total_horas_facilitador = ($af->total_horas==null) ? 0 : $af->total_horas;
+
                 $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
                 $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
 
@@ -841,12 +923,19 @@ class SeguimientoController extends Controller
                     
                 })->first();
 
-                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->paraMes($mes)->get();
-                $total_horas_facilitador = 0;
-                foreach ($actividades_facilitadas as $ab)
+                $af = DB::table('actividades')
+                ->selectRaw('*,SUM(horas) as total_horas')
+                    ->join('actividades_facilitadores', function ($join) use($id,$anho,$mes)
                 {
-                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
-                }
+                $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                    ->where('actividades.status', '!=', 'suspendido')
+                    ->where('actividades_facilitadores.becario_id', '=', $id)
+                    ->whereYear('actividades.fecha', '=', $anho)
+                    ->whereMonth('actividades.fecha', '=', $mes);
+                })->first();
+
+                $total_horas_facilitador = ($af->total_horas==null) ? 0 : $af->total_horas;
+
                 $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
                 $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
 
@@ -924,12 +1013,18 @@ class SeguimientoController extends Controller
                     
                 })->first();
 
-                $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
-                $total_horas_facilitador = 0;
-                foreach ($actividades_facilitadas as $ab)
+                $af = DB::table('actividades')
+                ->selectRaw('*,SUM(horas) as total_horas')
+                    ->join('actividades_facilitadores', function ($join) use($id,$anho)
                 {
-                    $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
-                }
+                $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                    ->where('actividades.status', '!=', 'suspendido')
+                    ->where('actividades_facilitadores.becario_id', '=', $id)
+                    ->whereYear('actividades.fecha', '=', $anho);
+                })->first();
+
+                $total_horas_facilitador = ($af->total_horas==null) ? 0 : $af->total_horas;
+
                 $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
                 $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
 
@@ -1157,6 +1252,7 @@ class SeguimientoController extends Controller
                 {
                     $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
                         ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->where('actividades.status', '!=', 'suspendido')
                         ->whereYear('actividades_facilitadores.created_at', '=', $anho)
                         ->whereMonth('actividades_facilitadores.created_at', '=', $mes)
                         ;
@@ -1300,6 +1396,7 @@ class SeguimientoController extends Controller
                 {
                     $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
                         ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->where('actividades.status', '!=', 'suspendido')
                         ->whereYear('actividades_facilitadores.created_at', '=', $anho);
                 })->get();
                 // asistio talleres presenciales
@@ -1458,6 +1555,7 @@ class SeguimientoController extends Controller
                 {
                     $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
                         ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->where('actividades.status', '!=', 'suspendido')
                         ->whereYear('actividades_facilitadores.created_at', '=', $anho)
                         ->whereMonth('actividades_facilitadores.created_at', '=', $mes)
                         ;
@@ -1601,6 +1699,7 @@ class SeguimientoController extends Controller
                 {
                     $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
                         ->where('actividades_facilitadores.becario_id', '=', $id)
+                        ->where('actividades.status', '!=', 'suspendido')
                         ->whereYear('actividades_facilitadores.created_at', '=', $anho);
                 })->get();
                 // asistio talleres presenciales
@@ -1803,12 +1902,19 @@ class SeguimientoController extends Controller
                 
             })->first();
 
-            $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->paraMes($mes)->get();
-            $total_horas_facilitador = 0;
-            foreach ($actividades_facilitadas as $ab)
+            $af = DB::table('actividades')
+            ->selectRaw('*,SUM(horas) as total_horas')
+                ->join('actividades_facilitadores', function ($join) use($id,$anho,$mes)
             {
-                $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
-            }
+            $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                ->where('actividades.status', '!=', 'suspendido')
+                ->where('actividades_facilitadores.becario_id', '=', $id)
+                ->whereYear('actividades.fecha', '=', $anho)
+                ->whereMonth('actividades.fecha', '=', $mes);
+            })->first();
+
+            $total_horas_facilitador = ($af->total_horas==null) ? 0 : $af->total_horas;
+
             $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
             $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
 
@@ -1886,12 +1992,18 @@ class SeguimientoController extends Controller
                 
             })->first();
 
-            $actividades_facilitadas = ActividadFacilitador::paraBecario($id)->paraAnho($anho)->get();
-            $total_horas_facilitador = 0;
-            foreach ($actividades_facilitadas as $ab)
+            $af = DB::table('actividades')
+            ->selectRaw('*,SUM(horas) as total_horas')
+                ->join('actividades_facilitadores', function ($join) use($id,$anho)
             {
-                $total_horas_facilitador = $total_horas_facilitador + $ab->horas;
-            }
+            $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+                ->where('actividades.status', '!=', 'suspendido')
+                ->where('actividades_facilitadores.becario_id', '=', $id)
+                ->whereYear('actividades.fecha', '=', $anho);
+            })->first();
+
+            $total_horas_facilitador = ($af->total_horas==null) ? 0 : $af->total_horas;
+
             $tmp_voluntariado = ($voluntariado->horas_voluntariado==null) ? 0 : $voluntariado->horas_voluntariado;
             $horas_voluntariado = $tmp_voluntariado + $total_horas_facilitador;
 
@@ -2045,6 +2157,7 @@ class SeguimientoController extends Controller
             {
                 $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
                     ->where('actividades_facilitadores.becario_id', '=', $id)
+                    ->where('actividades.status', '!=', 'suspendido')
                     ->whereYear('actividades_facilitadores.created_at', '=', $anho);
 
             })->get();
@@ -2201,12 +2314,13 @@ class SeguimientoController extends Controller
             ;
             
         })->get();
-         $actividades_facilitadas = DB::table('actividades')
+        $actividades_facilitadas = DB::table('actividades')
                 ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
                 ->join('actividades_facilitadores', function ($join) use($id,$anho)
         {
             $join->on('actividades_facilitadores.actividad_id', '=','actividades.id')
                 ->where('actividades_facilitadores.becario_id', '=', $id)
+                ->where('actividades.status', '!=', 'suspendido')
                 ->whereYear('actividades_facilitadores.created_at', '=', $anho);
 
         })->get();

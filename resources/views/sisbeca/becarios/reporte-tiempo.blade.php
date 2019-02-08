@@ -34,6 +34,11 @@
 @endsection
 @section('content')
 <div class="col-lg-12" id="app">
+	<div class="text-right">
+		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+	</div>
+	<br>
+
 	<div class="table-responsive">
 		<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
 			<div class="row">

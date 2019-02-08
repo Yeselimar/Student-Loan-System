@@ -46,6 +46,11 @@ class Actividad extends Model
         return $query->orderby('fecha',$orden);
     }
 
+    public function scopeMenosConEstatus($query,$estatus)
+    {
+        return $query->where('status','!=',$estatus);
+    }
+
     public function totalbecarios()
     {
         return $this->becarios->count();
@@ -232,9 +237,14 @@ class Actividad extends Model
         return $this->status=='suspendido';
     }
 
-    public function estaBloqueado()
+    public function estaOculto()
     {
-        return $this->status=='bloqueado';
+        return $this->status=='oculto';
+    }
+
+    public function estaCerrado()
+    {
+        return $this->status=='cerrado';
     }
 
 }

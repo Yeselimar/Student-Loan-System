@@ -92,7 +92,7 @@ class VoluntariadoController extends Controller
 
 		$voluntariado = new Voluntariado;
 		$voluntariado->nombre = $request->get('nombre');
-		$voluntariado->instituto = $request->get('instituto');
+		$voluntariado->institucion = $request->get('institucion');
         $voluntariado->responsable = $request->get('responsable');
         $voluntariado->observacion = $request->get('observacion');
 		$voluntariado->fecha = DateTime::createFromFormat('d/m/Y', $request->get('fecha'))->format('Y-m-d');
@@ -152,7 +152,7 @@ class VoluntariadoController extends Controller
             $aval->save();
         }
         $voluntariado->nombre = $request->get('nombre');
-        $voluntariado->instituto = $request->get('instituto');
+        $voluntariado->institucion = $request->get('institucion');
         $voluntariado->responsable = $request->get('responsable');
         $voluntariado->observacion = $request->get('observacion');
         $voluntariado->fecha = DateTime::createFromFormat('d/m/Y', $request->get('fecha'))->format('Y-m-d');

@@ -95,27 +95,25 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        $id = 81;
+        $id = 6;
         $usuario = User::find($id);
-        return encrypt($usuario->password);
-        //Enviar correo a la persona notificando que fue recibido su justificativo
-        $mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->CharSet = "utf-8";
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = "TLS";
-        $mail->Host = "smtp.gmail.com";
-        $mail->Port = 587;
-        $mail->Username = "delgadorafael2011@gmail.com";
-        $mail->Password = "scxxuchujshrgpao";
-        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
-        $mail->Subject = "Notificación";
-        $body = view("emails.becarios.notificacion-fecha-bienvenida")->with(compact("becario"));
-        $mail->MsgHTML($body);
-        $mail->addAddress($becario->user->email);
-        $mail->send();
-        return "mensaje enviado";
+        $anho = '2019';
+        $ab = ActividadBecario::paraActividad(1)->get();
+        $af = DB::table('actividades')
+            
+            ->selectRaw('*')
+            ->join('actividades_facilitadores', function ($join) use($id,$anho)
+        {
+        $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+            ->where('actividades.status', '!=', 'suspendido')
+            ->where('actividades_facilitadores.becario_id', '=', $id)
+            ->whereYear('actividades.fecha', '=', $anho);
+        })->orderby('fecha', 'desc')->first();
+            $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($af->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+        return response()->json($desde);
+        return "mensaje enviado :D :D :D :D";
         return "Eliminada la foto";
         $solicitud = Solicitud::find(1);
         return $solicitud->user;

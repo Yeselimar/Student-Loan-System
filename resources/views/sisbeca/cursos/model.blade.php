@@ -3,11 +3,14 @@
 @section('content')
 	<div class="col-lg-12">
         <div class="text-right">
+            <!--
             @if(Auth::user()->esBecario())
                 <a href="{{route('cursos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
             @else
                 <a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
             @endif
+            -->
+            <a href="{{ URL::previous() }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         </div>
 		<br>
 		<div class="col sisbeca-container-formulario">

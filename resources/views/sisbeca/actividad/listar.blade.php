@@ -89,6 +89,24 @@
       {
         info = "(SUSPENDIDO)";
       }
+      else
+      {
+        if(estatus=='oculto')
+        {
+          info = "(OCULTO)";
+        }
+        else
+        {
+          if(estatus=='disponible')
+          {
+            info = "(DISPONIBLE)";
+          }
+          else
+          {
+            info = "(CERRADO)";
+          }
+        }
+      }
       eventos.push({
         title: '{{$actividad->tipo}}'.toUpperCase()+': '+'{{$actividad->nombre}}'+' '+icono+' '+info,
         start: new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(),horainicio.getHours(),horainicio.getMinutes()),
