@@ -94,10 +94,15 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
     Route::get('/',['uses'=> 'SisbecaController@index','as' =>'sisbeca']);
 
 
+    Route::get('/tickets/todos',['uses'=> 'TicketsController@index','as' =>'tickest.index']);
+    Route::get('/tickets/crear',['uses'=> 'TicketsController@crear','as' =>'tickest.crear']);
+    Route::post('/tickets/guardar',['uses'=> 'TicketsController@guardar','as' =>'tickest.guardar']);
+    Route::get('/tickets/{id}/editar',['uses'=> 'TicketsController@editar','as' =>'tickest.editar']);
+    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'tickest.actualizar']);
+
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
-
         //Editar datos del usuario y becario
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
         Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
@@ -227,16 +232,25 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
+        Route::get('/periodo/{id}/detalles-periodo', 'PeriodosController@detalles')->name('periodos.detalles');
+        Route::get('/periodo/{id}/detalles-servicio', 'PeriodosController@detallesservicio')->name('periodos.detalles.servicio');
+        Route::post('/periodo/{id}/actualizar-periodo/servicio', 'PeriodosController@actualizarperiodo')->name('periodo.actualizar.servicio');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
-         Route::get('/periodos/obtener-todos/api', 'PeriodosController@obtenertodosapi')->name('periodos.obtenertodos.api');
+        Route::get('/periodos/obtener-todos/api', 'PeriodosController@obtenertodosapi')->name('periodos.obtenertodos.api');
 
         //cursos ó cva
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
+        Route::get('/curso/{id}/detalles-curso', 'CursoController@detalles')->name('cursos.detalles');
+        Route::get('/curso/{id}/detalles-servicio', 'CursoController@detallesservicio')->name('cursos.detalles.servicio');
+        Route::post('/curso/{id}/actualizar-curso/servicio', 'CursoController@actualizarcva')->name('curso.actualizar.servicio');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
         Route::get('/cursos/obtener-todos/api', 'CursoController@obtenertodosapi')->name('cursos.obtenertodos.api');
 
         //voluntariados
         Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
+        Route::get('/voluntariado/{id}/detalles-voluntariado', 'VoluntariadoController@detalles')->name('voluntariados.detalles');
+        Route::get('/voluntariado/{id}/detalles-servicio', 'VoluntariadoController@detallesservicio')->name('voluntariado.detalles.servicio');
+        Route::post('/voluntariado/{id}/actualizar-voluntariado/servicio', 'VoluntariadoController@actualizarvoluntariado')->name('voluntariado.actualizar.servicio');
         Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
         Route::get('/voluntariados/obtener-todos/api', 'VoluntariadoController@obtenertodosapi')->name('voluntariados.obtenertodos.api');
 

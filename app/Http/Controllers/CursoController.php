@@ -30,6 +30,7 @@ class CursoController extends Controller
                 'id' => $c->id,
                 'modulo' => $c->modulo,
                 'modo' => $c->modo,
+                'nivel' => $c->nivel,
                 'fecha_inicio' => $c->fecha_inicio,
                 'nota' => $c->nota,
                 "aval" => array('id' => $c->aval->id,
@@ -212,5 +213,28 @@ class CursoController extends Controller
         File::delete($aval->url);
         $aval->delete();
         return response()->json(['success'=>'El CVA fue eliminado exitosamente.']);
+    }
+
+    public function detalles($id)
+    {
+        $curso = Curso::find($id);
+        $becario = $curso->becario;
+        $tipocurso = TipoCurso::pluck('nombre', 'id');
+        return view('sisbeca.cursos.detalles')->with(compact('curso','becario','tipocurso'));
+    }
+
+    public function detallesservicio($id)
+    {
+        $cva = Curso::where('id','=',$id)->with('aval')->first();
+        return response()->json(['cva'=>$cva]);
+    }
+
+    public function actualizarcva(Request $request,$id)
+    {
+        $cva = Curso::find($id);
+        $cva->aval->estatus = $request->estatus;
+        $cva->aval->observacion = $request->observacion;
+        $cva->aval->save();
+        return response()->json(['success'=>'El CVA fue actualizado exitosamente.']);
     }
 }

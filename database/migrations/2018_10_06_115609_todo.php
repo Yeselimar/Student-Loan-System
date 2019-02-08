@@ -341,6 +341,7 @@ class Todo extends Migration
             //constancia para periodos, justificacion para actividades, comprobante para voluntariados, nota para cursos.
             $table->enum('extension',['pdf','imagen'])->default('imagen');
             $table->unsignedInteger('becario_id');
+            $table->text('observacion');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->timestamps();

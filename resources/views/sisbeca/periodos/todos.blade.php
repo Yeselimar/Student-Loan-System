@@ -2,9 +2,6 @@
 @section('title','Todos los Periodos')
 @section('content')
 <div class="col-lg-12" id="app">
-	<div class="text-right">
-		<a href="{{route('becarios.listar')}}" class="btn btn-sm sisbeca-btn-primary">Listar Becarios</a>
-	</div>
 	<br>
 	<div class="table-responsive">
 		<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -63,9 +60,10 @@
 				</template>
 
 				<template slot="actions" slot-scope="row">
-					<a v-b-popover.hover.bottom="'Editar Periodo'" :href="urlEditarPeriodo(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
-						<i class="fa fa-pencil"></i>
+					<a v-b-popover.hover.bottom="'Detalles Periodo'" :href="urlDetallesPeriodo(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
+						<i class="fa fa-eye"></i>
 					</a>
+					
 					<a v-b-popover.hover.bottom="'Ver Constancia'" :href="urlVerConstancia(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
 						<template v-if="row.item.aval.extension=='imagen'">
 							<i class="fa fa-photo"></i>
@@ -75,7 +73,17 @@
 						</template>
 						
 					</a>
-					
+					<template v-if="row.item.aval.estatus!='aceptada'">
+						<a v-b-popover.hover.bottom="'Editar Periodo'" :href="urlEditarPeriodo(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
+							<i class="fa fa-pencil"></i>
+						</a>
+					</template>
+					<template v-else>
+						<a v-b-popover.hover.bottom="'Editar Periodo'" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+							<i class="fa fa-pencil"></i>
+						</a>
+					</template>
+
 					<template v-if="row.item.aval.estatus!='aceptada'">
 						<button v-b-popover.hover.bottom="'Eliminar Periodo'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminar(row.item,row.item.becario)">
 							<i class="fa fa-trash"></i>
@@ -86,10 +94,11 @@
 							<i class="fa fa-trash"></i>
 						</button>
 					</template>
-					
+					<!--
 					<select v-model="row.item.aval.estatus" @change="actualizarestatus(row.item.aval.estatus,row.item.aval.id)" class="sisbeca-input input-sm sisbeca-select">
 						<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
 					</select>
+					-->
 				</template>
 
 			</b-table>
@@ -270,6 +279,12 @@ $(document).ready(function(){
 		urlEditarPeriodo(id)
 		{
 			var url = '{{route('periodos.editar',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		urlDetallesPeriodo(id)
+		{
+			var url = '{{route('periodos.detalles',':id')}}';
 			url = url.replace(':id', id);
 			return url;
 		},

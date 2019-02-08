@@ -206,4 +206,26 @@ class VoluntariadoController extends Controller
         $aval->delete();
         return response()->json(['success'=>'El voluntariado fue eliminado exitosamente.']);
     }
+
+    public function detalles($id)
+    {
+        $voluntariado = Voluntariado::find($id);
+        $becario = $voluntariado->becario;
+        return view('sisbeca.voluntariados.detalles')->with(compact('voluntariado','becario'));
+    }
+
+    public function detallesservicio($id)
+    {
+        $voluntariado = Voluntariado::where('id','=',$id)->with('aval')->first();
+        return response()->json(['voluntariado'=>$voluntariado]);
+    }
+
+    public function actualizarvoluntariado(Request $request,$id)
+    {
+        $voluntariado = Voluntariado::find($id);
+        $voluntariado->aval->estatus = $request->estatus;
+        $voluntariado->aval->observacion = $request->observacion;
+        $voluntariado->aval->save();
+        return response()->json(['success'=>'El voluntariado fue actualizado exitosamente.']);
+    }
 }
