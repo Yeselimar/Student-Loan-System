@@ -15,7 +15,7 @@ class VoluntariadoRequest extends FormRequest
     {
         return [
             'nombre'       => 'required',
-            'instituto'    => 'required',
+            'institucion'    => 'required',
             'responsable'  => 'required',
             'observacion'  => 'required',
             'fecha'        => 'required',
@@ -29,7 +29,7 @@ class VoluntariadoRequest extends FormRequest
     {
         return [
             'nombre'       => 'required',
-            'instituto'    => 'required',
+            'institucion'    => 'required',
             'responsable'  => 'required',
             'observacion'  => 'required',
             'lugar'        => 'required',

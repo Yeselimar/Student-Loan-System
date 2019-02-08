@@ -47,7 +47,6 @@ class ActividadController extends Controller
             }
         }
         return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como SUSPENDIDO.']);
-
     }
 
     public function actualizaroculto($id)
@@ -369,7 +368,7 @@ class ActividadController extends Controller
                     $ab->estatus = "asistira";
                     $ab->save();
 
-                    $estatus = "ASISTIRA";//Variable que se usa para enviar el correo
+                    $estatus = "ASISTIRÁ";//Variable que se usa para enviar el correo
                     $data = array(
                         "email" => $becario->user->email,
                         "becario" => $becario->user->nombreyapellido(),

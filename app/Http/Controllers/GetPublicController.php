@@ -95,10 +95,24 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
-        $id = 81;
+        $id = 6;
         $usuario = User::find($id);
+        $anho = '2019';
         $ab = ActividadBecario::paraActividad(1)->get();
-        return $ab[1];
+        $af = DB::table('actividades')
+            
+            ->selectRaw('*')
+            ->join('actividades_facilitadores', function ($join) use($id,$anho)
+        {
+        $join->on('actividades.id', '=', 'actividades_facilitadores.actividad_id')
+            ->where('actividades.status', '!=', 'suspendido')
+            ->where('actividades_facilitadores.becario_id', '=', $id)
+            ->whereYear('actividades.fecha', '=', $anho);
+        })->orderby('fecha', 'desc')->first();
+            $fechafinal = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime(date('Y-m-d H:i:s'))));
+                $fechainicial = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s", strtotime($af->fecha)));
+                $desde = $fechainicial->diff($fechafinal);
+        return response()->json($desde);
         return "mensaje enviado :D :D :D :D";
         return "Eliminada la foto";
         $solicitud = Solicitud::find(1);

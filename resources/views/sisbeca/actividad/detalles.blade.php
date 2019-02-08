@@ -41,7 +41,7 @@
 						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar justificativo</a>
 					</template>
 					<template v-if="estatus_aval=='pendiente' || estatus_aval=='aceptada' || estatus_aval=='negada'">
-						<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Editar Justificativo</a>
+						<a href="" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Editar Justificativo</a>
 					</template>
 				</template>
 			</template>
@@ -56,9 +56,16 @@
 				<i class="fa fa-file-pdf-o"></i>
 			</a>
 			
-			<a href="{{route('actividad.editar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
-				<i class="fa fa-pencil"></i>
-			</a>
+			<template v-if="actividad.status!='cerrado' && actividad.status!='suspendido'">
+				<a :href="obtenerRutaEditarActividad()" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
+					<i class="fa fa-pencil"></i>
+				</a>
+			</template>
+			<template v-else>
+				<a href="" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom" disabled="disabled">
+					<i class="fa fa-pencil"></i>
+				</a>
+			</template>
 
 			<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
 				<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
@@ -300,14 +307,14 @@
 					</td>
 					<td class="text-center">
 						<span v-if="becario.estatus=='asistira'" class="label label-success">
-							@{{ becario.estatus }}
+							asistirá
 						</span>
 						<span v-if="becario.estatus=='lista de espera'" class="label label-warning">
-							@{{ becario.estatus }}
+							lista de espera
 						</span>
 						<template v-if="becario.estatus=='asistio'">
 							<span class="label label-success">
-								@{{ becario.estatus }}
+								asistió
 							</span>
 							 
 							<template v-if="becario.aval_id!=null">
@@ -324,7 +331,7 @@
 						
 						<template v-if="becario.estatus=='no asistio'">
 							<span class="label label-danger">
-								@{{ becario.estatus }}
+								no asistió
 							</span>
 							 
 							<template v-if="becario.aval_id!=null">
@@ -374,26 +381,43 @@
 					<td>
 						<template v-if="becario.aval_id==null">
 							<template v-if="becario.estatus=='no asistio' || becario.estatus=='asistira' || becario.estatus=='lista de espera'">
-								<button v-b-popover.hover.bottom="'Colocar como Asistio'" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" >
+								<button v-b-popover.hover.bottom="'Colocar como Asistió'" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" >
 									<i class="fa fa-check"></i>
 								</button>
 							</template>
 								
 							<template v-if="becario.estatus=='asistio' || becario.estatus=='asistira' ||  becario.estatus=='lista de espera'">
-								<button v-b-popover.hover.bottom="'Colocar como No Asistio'" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)">
+								<button v-b-popover.hover.bottom="'Colocar como No Asistió'" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)">
 									<i class="fa fa-remove"></i>
 								</button>
 							</template>
 						</template>
 						<template v-if="becario.aval_id==null">
-							<a v-b-popover.hover.bottom="'Subir Justificativo'" :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload" aria-hidden="true"></i>
-							</a>
+							<template v-if="becario.estatus!='asistio' && becario.estatus!='no asistio' && actividad.status!='cerrado' && actividad.status!='suspendido'">
+								<a v-b-popover.hover.bottom="'Subir Justificativo'" :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
+									<i class="fa fa-upload" aria-hidden="true"></i>
+								</a>
+							</template>
+							<template v-else> 
+								<a v-b-popover.hover.bottom="'Subir Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+									<i class="fa fa-upload" aria-hidden="true"></i>
+								</a>
+							</template>
 						</template>
 						<template v-else>
-							<a v-b-popover.hover.bottom="'Editar Justificativo'" :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-edit"></i>
-							</a>
+
+							<template v-if="becario.estatus!='asistio' && becario.estatus!='no asistio' && actividad.status!='cerrado' && actividad.status!='suspendido'">
+								<a v-b-popover.hover.bottom="'Editar Justificativo'" :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary" >
+									<i class="fa fa-edit"></i>
+								</a>
+								 @{{becario.estatus}}
+							</template>
+							<template v-else>
+								<a v-b-popover.hover.bottom="'Editar Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+									<i class="fa fa-edit"></i>
+								</a>
+							</template>
+
 						</template>
 						<button v-b-popover.hover.bottom="'Eliminar Inscripción'" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
 							<i class="fa fa-trash" ></i>
@@ -720,6 +744,13 @@ const app = new Vue({
                 this.estatus_aval = response.data.estatus_aval;
                 $("#preloader").hide();
             });
+    	},
+    	obtenerRutaEditarActividad: function()
+    	{
+    		var a_id = {{$actividad->id}};
+    		var url = "{{ route('actividad.editar',':a_id') }}";
+            url = url.replace(':a_id', a_id);
+            return url;
     	},
     	eliminarActividad: function()
     	{

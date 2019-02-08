@@ -2,6 +2,11 @@
 @section('title','Reporte General: '.$becario->user->nombreyapellido())
 @section('personalcss')
 <style>
+    .repote-contenido
+    {
+    	padding-top:15px; 
+    	height: 55px;
+    }
 	.reporte-contenedor
 	{
 		margin-bottom: 10px;
@@ -49,6 +54,10 @@
 @endsection
 @section('content')
 <div class="col-lg-12" id="app">
+	<div class="text-right">
+		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+	</div>
+	<br>
 	<div class="row" style="border:1px solid #fff">
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<select class="form-control sisbeca-input" v-model="mes">
@@ -86,20 +95,20 @@
 	<div class="row">
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido" >
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h1 text-center">@{{becario.horas_voluntariados}}</p>
 				</div>
 				<hr class="reporte-linea">
 				<div class="caja-subtitulo" data-mh="reporte-titulo">
 					<p class="h6 text-center reporte-subtitulo">
-					<strong>Horas Voluntariados</strong>
+					<strong>Hora Voluntariado</strong>
 					</p>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido" >
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h1 text-center">@{{becario.asistio_t}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -112,7 +121,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido" >
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h1 text-center">@{{becario.asistio_cc}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -125,7 +134,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido" >
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h1 text-center">@{{becario.avg_cva}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -138,7 +147,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja">
-				<div data-mh="reporte-contenido" >
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h1 text-center">0</p>
 				</div>
 				<hr class="reporte-linea">
@@ -151,7 +160,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja-gris">
-				<div data-mh="reporte-contenido" >
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h1 text-center">@{{becario.avg_academico}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -164,7 +173,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja-gris">
-				<div data-mh="reporte-contenido"  style="padding-top: 10px;height: 100px;">
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h5 text-center">@{{becario.nivel_cva}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -177,7 +186,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 			<div class="col-lg-12 reporte-caja-gris">
-				<div data-mh="reporte-contenido"  style="padding-top: 10px;height: 100px;">
+				<div data-mh="reporte-contenido" class="repote-contenido">
 					<p class="h5 text-center">@{{becario.nivel_carrera}}</p>
 				</div>
 				<hr class="reporte-linea">
@@ -191,22 +200,25 @@
 	</div>
 	<br>
 	<div style="border:1px solid #003865;border-radius: 5px;padding:10px;text-align: center;">
-		<strong>Tú ultima participación en las actividades becarias</strong>
+		<strong>Tu última participación en las actividades becarias</strong>
 	</div>
 	<br>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
-				<i class="fa fa-commenting-o"></i> Tú última participación a un <strong>Taller / Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividades}}</strong>
+				<i class="fa fa-commenting-o"></i> Tu última participación a un <strong>Taller / Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividades}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_cva }">
-				<i class="fa fa-book"></i> Tú última participación a un <strong>CVA</strong> fue <strong>@{{tiempo.tiempo_cva}}</strong>
+				<i class="fa fa-book"></i> Tu última vez que cargaste <strong>CVA</strong> fue <strong>@{{tiempo.tiempo_cva}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_voluntariado }">
-				<i class="fa fa-star-o"></i> Tú última participación a un <strong>Voluntariado</strong> fue <strong>@{{tiempo.tiempo_voluntariado}}</strong>
+				<i class="fa fa-star"></i> Tu última vez que hiciste un <strong>Voluntariado</strong> fue <strong>@{{tiempo.tiempo_voluntariado}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_periodo }">
-				<i class="fa fa-graduation-cap"></i> Tú última vez que cargaste <strong>Notas Académicas</strong> fue <strong>@{{tiempo.tiempo_periodos}}</strong>
+				<i class="fa fa-graduation-cap"></i> Tu última vez que cargaste <strong>Notas Académicas</strong> fue <strong>@{{tiempo.tiempo_periodos}}</strong>
+			</div>
+			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad_facilitada }">
+				<i class="fa fa-user"></i> Tu última vez que fuiste <strong>Facilitador de un Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividad_facilitada}}</strong>
 			</div>
 		</div>
 	</div>
@@ -263,6 +275,7 @@
 			axios.get(url).then(response => 
 			{
 				this.tiempo = response.data.becario;
+				console.log(this.tiempo);
 			}).catch( error => {
 				console.log(error);
 			});

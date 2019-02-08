@@ -313,7 +313,23 @@
                     {{ $becario->user->cedula}}
                 </td>
                 <td class="text-center">
-                    {{ $becario->estatus}}
+                    @if($becario->estatus=='asistira')
+                        ASISTIRÁ
+                    @else
+                        @if($becario->estatus=='asistio')
+                            ASISTIÓ
+                        @else
+                            @if($becario->estatus=='no asistio')
+                                NO ASISTIÓ
+                            @else
+                                @if($becario->estatus=='lista de espera')
+                                    LISTA DE ESPERA
+                                @else
+                                    JUSTIFICACIÓN CARGADA
+                                @endif
+                            @endif
+                        @endif
+                    @endif
                 </td>
                 <td></td>
             </tr>
