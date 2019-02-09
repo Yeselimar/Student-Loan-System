@@ -81,12 +81,12 @@ class DirectivoController extends Controller
             $concursos->status='finalizado';
             $concursos->save();
             flash('El proceso de postulaciones a mentor ha finalizado satisfactoriamente', 'success')->important();
-                 return redirect()->route('sisbeca');
+                 return redirect()->route('seb');
         }
         else
         {
             flash('El proceso de postulaciones a mentor se encuentra finalizado')->important();
-             return redirect()->route('sisbeca');
+             return redirect()->route('seb');
         }
     }
 //viejo

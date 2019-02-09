@@ -9,7 +9,7 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<strong>Ingresar Información Adicional</strong>
+			<strong>Ingresar Documentos</strong>
 			<hr>
 
 			{{ Form::model($becario, ['route' => ['postulantebecario.documentosguardar'], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}

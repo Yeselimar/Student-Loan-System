@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/sisbeca';
+    protected $redirectTo = '/seb';
 
     /**
      * Create a new controller instance.
@@ -58,6 +58,7 @@ class LoginController extends Controller
 
     public function postlogin(Request $request)
     {
+
         $user = User::where('email','=',$request->email)->first();
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password,'estatus'=> 1]))
         {

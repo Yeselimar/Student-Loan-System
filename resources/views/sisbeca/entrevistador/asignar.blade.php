@@ -79,7 +79,7 @@
 					</a>
 				</template>
 				<template v-if="postulante.status == 'entrevista'">
-					<span v-b-popover.hover="'Asignar Entrevistadores'">
+					<span v-b-popover.hover="'Gestionar datos entrevista'">
 						<button type="button" class="btn btn-xs sisbeca-btn-primary"  @click.prevent="mostrarModal(postulante,postulante.entrevistadores)">
 							<i class="fa fa-user"></i>
 						</button>

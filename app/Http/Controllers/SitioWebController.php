@@ -25,6 +25,23 @@ class SitioWebController extends Controller
         return view('web_site.noticias')->with('route','noticias')->with(compact('noticias'));
     }
 
+    public function noticiaApi(){
+        $noticias = Noticia::where('tipo','=','noticia')->orderBy('created_at','desc')->get();
+        $todas = collect();
+        foreach ($noticias as $n)
+        {
+        	$todas->push(array(
+        		'id' => $n->id,
+                'titulo' => $n->titulo,
+                'informacion_contacto' => $n->informacion_contacto,
+                'fecha_actualizacion' => $n->fechaActualizacion(),
+                'slug' => $n->slug,
+                'url_image' => $n->url_imagen,
+            ));
+        }
+        return response()->json(['noticias'=>$todas]);
+    }
+
     
     public function showNoticia($slug)
     {

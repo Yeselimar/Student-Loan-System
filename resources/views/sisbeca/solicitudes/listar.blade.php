@@ -31,9 +31,16 @@
                                 <span class="label label-success">Aceptada</span>
                             </td>
                         @else
+                            @if($solicitud->status==='cancelada')
                             <td class="text-center">
-                                <span class="label label-danger">Rechazada</span>
-                            </td>
+                                    <span class="label label-warning">Cancelada</span>
+                                </td>
+                            @else
+                            <td class="text-center">
+                                    <span class="label label-danger">Rechazada</span>
+                                </td>
+                            @endif
+
                         @endif
                     @endif
 
@@ -41,13 +48,18 @@
 
                     <td class="text-center">
 
-                        <a href="{{route('solicitud.edit',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" data-toggle="tooltip" data-placement="bottom" title="Ver solicitud">
+                        <a href="{{route('solicitud.show',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" data-toggle="tooltip" data-placement="bottom" title="Ver solicitud">
                             <i class='fa fa-eye'></i>
                         </a>
                         @if(Auth::user()->esMentor() or Auth::user()->esBecario())
                         <a href="{{route('solicitud.ocultar.usuario',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
                             <i class="fa fa-eye-slash"></i>
                         </a>
+                            @if($solicitud->status==='enviada')
+                            <a href="{{route('solicitud.cancelar',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Cancelar solicitud">
+                                <i class="fa fa-cancel"></i>
+                            </a>
+                            @endif
                         @endif
 
                     </td>

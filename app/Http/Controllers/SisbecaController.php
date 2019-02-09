@@ -44,7 +44,7 @@ class SisbecaController extends Controller
     {
         if(Auth::user()->rol==='coordinador' or Auth::user()->rol==='directivo')
         {
-            $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
+           /*************  $becariosAsignados= Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
             $listaBecariosA=$becariosAsignados->pluck('user_id')->toArray();
 
             $collection = collect();
@@ -58,10 +58,10 @@ class SisbecaController extends Controller
             $mentoresAsignados= Mentor::query()->whereIn('user_id',$listMentoresA)->get();
 
             $listaMentoresA= $mentoresAsignados->pluck('user_id')->toArray();
+            */
 
-
-            $alertas = Alerta::query()->where('status','=','enviada')->whereIn('user_id',[$listaBecariosA,$listaMentoresA])->get();
-            Alerta::where('status','=','enviada')->whereIn('user_id',[$listaBecariosA,$listaMentoresA])->update(array('leido' => true));
+            $alertas = Alerta::query()->where('status','=','enviada')->get();
+            Alerta::where('status','=','enviada')->update(array('leido' => true));
         }
         else
         {

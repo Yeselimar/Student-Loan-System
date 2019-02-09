@@ -73,26 +73,26 @@
                      <li class="nav-item dropdown nivel1">
                      @if($route=="membresias")
                         <a class="nav-link dropdown-toggle nivel1 page-scroll active" target="_self" href="#hero-area" aria-haspopup="true" aria-expanded="false">
-                        Membresías
+                        Donaciones
                         </a>
                         <ul class="dropdown-menu nivel2">
                            <li class="nav-item">
-                              <a class="dropdown-item page-scroll" href="#membresias-corporativas">Membresía Corporativa</a>
+                              <a class="dropdown-item page-scroll" href="#membresias-corporativas">Donantes Coorporativos</a>
                            </li>
                            <li class="nav-item">
-                              <a class="dropdown-item page-scroll" href="#membresia-institucional">Membresía Institucional</a>
+                              <a class="dropdown-item page-scroll" href="#membresia-institucional">Donantes Individuales</a>
                            </li>
                         </ul>
                         @else
                         <a class="nav-link dropdown-toggle nivel1 " target="_self" href="{{asset('membresias')}}" aria-haspopup="true" aria-expanded="false">
-                        Membresías
+                        Donaciones
                         </a>
                         <ul class="dropdown-menu nivel2">
                            <li class="nav-item">
-                              <a class="dropdown-item " href="{{asset('membresias')}}#membresias-corporativas">Membresía Corporativa</a>
+                              <a class="dropdown-item " href="{{asset('membresias')}}#membresias-corporativas">Donantes Coorporativos</a>
                            </li>
                            <li class="nav-item">
-                              <a class="dropdown-item " href="{{asset('membresias')}}#membresia-institucional">Membresía Institucional</a>
+                              <a class="dropdown-item " href="{{asset('membresias')}}#membresia-institucional">Donantes Individuales</a>
                            </li>
                         </ul>
                         @endif
@@ -117,10 +117,10 @@
                      @endif
                      </li>
                      <li class="nivel1 nav-item">
-                        <a class="nav-link" target="_blank" alt="Visita AVAA USA" href="https://avaaus.org/">AVAA US</a>
-                     </li>
+                        <a class="nav-link" target="_blank" href="https://www.avaaus.org">AVAA USA</a>
+                      </li>
                      <li class="nivel1 nav-item">
-                        <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SEB</a>
+                       <a class="nav-link" target="_blank" href="{{asset(route('seb'))}}">SEB</a>
                      </li>
                   </ul>
                </div>
@@ -191,26 +191,26 @@
                <li class="dropdown">
                   @if($route=="membresia")
                   <a class="nav-link dropdown-toggle page-scroll active" target="_self" href="#hero-area" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Membresías
+                  Donaciones
                   </a>
                   <ul class="dropdown-menu">
                      <li class="dropdown-item">
-                        <a class="page-scroll" href="#membresias-corporativas">Membresía Corporativa</a>
+                        <a class="page-scroll" href="#membresias-corporativas">Donantes Corporativos</a>
                      </li>
                      <li class="dropdown-item">
-                        <a class="page-scroll" href="#membresia-institucional">Membresía Institucional</a>
+                        <a class="page-scroll" href="#membresia-institucional">Donantes Individuales</a>
                      </li>
                   </ul>
                   @else
                   <a class="nav-link dropdown-toggle" target="_self" href="{{asset('membresias')}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Membresías
+                  Donaciones
                   </a>
                   <ul class="dropdown-menu">
                      <li class="dropdown-item">
-                        <a href="{{asset('membresias')}}#membresias-corporativas">Membresía Corporativa</a>
+                        <a href="{{asset('membresias')}}#membresias-corporativas">Donantes Corporativos</a>
                      </li>
                      <li class="dropdown-item">
-                        <a  href="{{asset('membresias')}}#membresia-institucional">Membresía Institucional</a>
+                        <a  href="{{asset('membresias')}}#membresia-institucional">Donantes Individuales</a>
                      </li>
                   </ul>
                   @endif
@@ -235,10 +235,10 @@
                   @endif
                </li>
                <li>
-                  <a target="_blank" alt="Visita AVAA USA" href="https://avaaus.org/">AVAA US</a>
+                  <a target="_blank" href="https://www.avaaus.org">AVAA USA</a>
                </li>
                <li>
-                  <a target="_blank" href="{{asset(route('sisbeca'))}}">SEB</a>
+                  <a target="_blank" href="{{asset(route('seb'))}}">SEB</a>
                </li>
             </ul>
             <!-- Mobile Menu End -->

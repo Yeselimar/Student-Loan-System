@@ -139,7 +139,7 @@
             <div class="col-md-5 col-sm-5 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
-                     <h2 class="title-programas" data-mh="programa-titulo">
+                     <h2 class="title-programas align-items-center d-flex justify-content-around " data-mh="programa-titulo">
                      <img class="img-fluid" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height: 50px"  />
                      ASESORÍAS EDUCATIVAS
                      <img class="img-fluid" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  />

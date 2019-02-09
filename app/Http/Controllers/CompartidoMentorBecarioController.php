@@ -115,10 +115,10 @@ class CompartidoMentorBecarioController extends Controller
 
     }
 
-    public function solicitudEdit($id)
+    public function solicitudShow($id)
     {
         $solicitud = Solicitud::find($id);
-
+        
         if(is_null($solicitud)|| ($solicitud->user_id!=Auth::user()->id))
         {
             flash('El archivo solicitado no ha sido encontrado','danger')->important();
@@ -133,11 +133,12 @@ class CompartidoMentorBecarioController extends Controller
 
             $alerta->save();
         }
-        return view('sisbeca.solicitudes.solicitudEdit')->with('solicitud',$solicitud);
+        return view('sisbeca.solicitudes.showSolicitud')->with('solicitud',$solicitud);
     }
 
     public function SolicitudUpdate(Request $request, $id)
     {
+        /*
         $solicitud = Solicitud::find($id);
 
         $solicitud->fill($request->all());
@@ -167,10 +168,11 @@ class CompartidoMentorBecarioController extends Controller
         }
 
         return  redirect()->route('solicitud.listar');
+        */
 
     }
 
-    public function solicitudDestroy($id)
+    public function solicitudCancelar($id)
     {
         $solicitud = Solicitud::find($id);
         if(is_null($solicitud))
@@ -179,14 +181,16 @@ class CompartidoMentorBecarioController extends Controller
             return back();
         }
 
-        if(($solicitud->user_id==Auth::user()->id) &&($solicitud->status==='enviada') && $solicitud->delete())
+        if(($solicitud->user_id==Auth::user()->id) &&($solicitud->status==='enviada'))
         {
-            Alerta::where('solicitud', $id)->delete();
-            flash('Su solicitud ha sido eliminada exitosamente.','success')->important();
+            //Alerta::where('solicitud', $id)->delete();
+            $solicitud->status='cancelada';
+            $solicitud->save();
+            flash('Su solicitud ha sido cancelada exitosamente.','success')->important();
         }
         else
         {
-            flash('Ha ocurrido un error al eliminar solicitud.')->error()->important();
+            flash('Ha ocurrido un error al cancelar esta solicitud.')->error()->important();
         }
 
         return  redirect()->route('solicitud.listar');
@@ -195,9 +199,17 @@ class CompartidoMentorBecarioController extends Controller
     public function ocultarsolicitud($id)
     {
         $solicitud = Solicitud::find($id);
-        $solicitud->oculto_usuario = 1;
-        $solicitud->save();
-        flash('La solicitud se oculto exitosamente.',"success");
+
+        if($solicitud->status !== 'enviada')
+        {
+            $solicitud->oculto_usuario = 1;
+            $solicitud->save();
+            flash('La solicitud se oculto exitosamente.',"success");
+        }
+        else {
+            flash('Error al ocultar Su solicitud no se encuentra respondida, puede cancelar solicitud y volver a intentarlo')->error()->important();
+        }
+
         return redirect()->route('solicitud.listar');
     }
 }

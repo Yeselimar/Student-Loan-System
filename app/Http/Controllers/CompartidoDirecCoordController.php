@@ -566,7 +566,7 @@ class CompartidoDirecCoordController extends Controller
         }
         else{
             flash('Usuario Inválido','danger')->important();
-            return redirect()->route('sisbeca');
+            return redirect()->route('seb');
         }
     }
     public function verPerfilMentor($id)
@@ -678,9 +678,16 @@ class CompartidoDirecCoordController extends Controller
     public function ocultarsolicitud($id)
     {
         $solicitud = Solicitud::find($id);
-        $solicitud->oculto_admin = 1;
-        $solicitud->save();
-        flash('La solicitud se oculto exitosamente.',"success");
+        if($solicitud->status !== 'enviada' || $solicitud->status !== 'cancelada')
+        {
+            $solicitud->oculto_admin = 1;
+            $solicitud->save();
+            flash('La solicitud se oculto exitosamente.',"success");
+        } else {
+            flash('La solicitud no ha sido respondida.',"danger");
+
+        }
+
         return redirect()->route('gestionSolicitudes.listar');
     }
 

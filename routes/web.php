@@ -46,6 +46,7 @@ Route::get('/prueba','GetPublicController@prueba')->name('prueba');
 
 Route::get('/generarBD','GetPublicController@generarBD')->name('generarBD');
 
+Route::get('/noticias/obtener-todas/api', 'SitioWebController@noticiaApi')->name('noticias.obtenertodas.api');
 
 Route::get('/','SitioWebController@index')->name('home');
 
@@ -89,9 +90,9 @@ Route::post('/enviar-correo', 'GetPublicController@enviarcorreo')->name('enviarc
 Route::get('datatable/getNoticia/{tip?}', 'GetPublicController@getNoticias')->name('datatable/getNoticia');
 
 //Rutas del Sistema de Administracion
-Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
+Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 {
-    Route::get('/',['uses'=> 'SisbecaController@index','as' =>'sisbeca']);
+    Route::get('/',['uses'=> 'SisbecaController@index','as' =>'seb']);
 
     //sistema de tickets
      Route::get('/tickets/estatus',['uses'=> 'TicketsController@ticketsestatus','as' =>'ticket.estatus']);
@@ -942,9 +943,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'solicitud.store'
         ]);
 
-        Route::get('solicitud/{id}/edit', [
-            'uses' => 'CompartidoMentorBecarioController@solicitudEdit',
-            'as' => 'solicitud.edit'
+        Route::get('solicitud/{id}/show', [
+            'uses' => 'CompartidoMentorBecarioController@solicitudShow',
+            'as' => 'solicitud.show'
         ]);
 
         Route::put('solicitud/{id}', [
@@ -952,9 +953,9 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
             'as' => 'solicitud.update'
         ]);
 
-        Route::get('solicitud/{id}/destroy', [
-            'uses' => 'CompartidoMentorBecarioController@solicitudDestroy',
-            'as' => 'solicitud.destroy'
+        Route::get('solicitud/{id}/cancelar', [
+            'uses' => 'CompartidoMentorBecarioController@solicitudCancelar',
+            'as' => 'solicitud.cancelar'
         ]);
 
         Route::get('/solicitud/{id}/ocultar', 'CompartidoMentorBecarioController@ocultarsolicitud')->name('solicitud.ocultar.usuario');
