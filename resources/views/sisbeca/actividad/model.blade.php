@@ -121,7 +121,7 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Nivel</label>
-                    {{ Form::select('nivel', array('inicio'=>'Inicio','intermedio'=>'Intermedio','avanzado'=>'Avanzado','cualquier nivel'=>'Cualquier nivel'),null,['class' =>'sisbeca-input','v-model'=>'nivel']) }}
+                    {{ Form::select('nivel', array('basico'=>'Básico','intermedio'=>'Intermedio','avanzado'=>'Avanzado','cualquier nivel'=>'Cualquier nivel'),null,['class' =>'sisbeca-input','v-model'=>'nivel']) }}
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
@@ -154,7 +154,7 @@
                     <span v-if="errores.limite" :class="['label label-danger']">@{{ errores.limite[0] }}</span>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <label class="control-label">Descripción</label>
+                    <label class="control-label">*Descripción</label>
                     {{ Form::text('descripcion', ($model=='crear') ? null : $actividad->descripcion , ['class' => 'sisbeca-input', 'placeholder'=>'Ingrese descripción','v-model'=>'descripcion'])}}
                     <span v-if="errores.descripcion" :class="['label label-danger']">@{{ errores.descripcion[0] }}</span>
                 </div>
@@ -180,6 +180,15 @@
 
 		{{ Form::close() }}
 	</div>
+
+    <!-- Cargando.. -->
+    <section class="loading" id="preloader">
+        <div>
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+        </div>
+    </section>
+    <!-- Cargando.. -->
 </div>
 @endsection
 
@@ -198,7 +207,7 @@ const app = new Vue({
         nombre:'',
         tipo:'chat club',
         modalidad:'presencial',
-        nivel:'inicio',
+        nivel:'basico',
         anho_academico:'',
         limite_participantes:'',
         horas_voluntariados:'',
@@ -250,6 +259,7 @@ const app = new Vue({
         },
         obtenerbecarios: function()
         {
+            $("#preloader").show();
             this.model = '{{$model}}';
             if(this.model==='editar')
             {
@@ -307,6 +317,7 @@ const app = new Vue({
             var url = '{{route('actividad.obtenerbecarios')}}';
             axios.get(url).then(response => 
             {
+                $("#preloader").hide();
                 this.becarios = response.data.becarios;
             });
         },
@@ -328,7 +339,7 @@ const app = new Vue({
         },
         guardaractividad()
         {
-            //console.log(this.inputs);
+            $("#preloader").show();
             //------------------Guardar actividad
             var dia = new Date ("2030-11-11 "+this.hora_inicio);
             this.hora_inicio = moment(dia).format('hh:mm A');
@@ -366,9 +377,11 @@ const app = new Vue({
                     "id": '',
                     "horas":''
                 });
+                $("#preloader").hide();
                 toastr.success(response.data.success);
             }).catch( error =>
             {
+                $("#preloader").hide();
                 toastr.error("Disculpe, verifique el formulario");
                 this.errores = error.response.data.errors;
             });

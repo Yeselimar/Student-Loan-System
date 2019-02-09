@@ -34,6 +34,10 @@
 @endsection
 @section('content')
 <div class="col-lg-12" id="app">
+	<div class="text-right">
+		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+	</div>
+	<br>
 	<div class="row" style="border:1px solid #fff">
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 			<select class="form-control sisbeca-input" v-model="mes">

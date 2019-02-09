@@ -49,6 +49,7 @@ class MantenimientoUserController extends Controller
         //para guardar esos datos del formulario de creacion
         $rol=$request->rol;
         $user = new User($request->all());
+        $user->remember_token = str_random(10);
         $user->password = bcrypt($request->password);
         $user->save();
 

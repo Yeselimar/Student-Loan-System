@@ -117,7 +117,8 @@ class Todo extends Migration
             $table->boolean('estudios_universitarios')->default(false);
             $table->boolean('informacion_adicional')->default(false);
             $table->boolean('documentos')->default(false);
-
+            $table->text('link_video')->nullable();
+            
             //
             $table->enum('tipo',['nuevo','viejo'])->default('nuevo');
             $table->enum('regimen',['anual','semestral','trimestral'])->default('anual');
@@ -180,13 +181,10 @@ class Todo extends Migration
         Schema::create('becarios_entrevistadores', function (Blueprint $table)
         {
             $table->increments('id');
-
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
-
             $table->unsignedInteger('entrevistador_id');
             $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
-
             $table->text('documento')->nullable();
             
             $table->boolean('oculto')->default(0);
@@ -275,6 +273,15 @@ class Todo extends Migration
             $table->timestamps();
         });
 
+        Schema::create('galeria', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('imagen');
+
+            $table->unsignedInteger('noticia_id');
+            $table->foreign('noticia_id')->references('id')->on('noticias')->onDelete('cascade');
+        });
+
         Schema::create('costos', function (Blueprint $table)
         {
             $table->increments('id');
@@ -295,7 +302,7 @@ class Todo extends Migration
             $table->string('nombre');
             $table->string('anho_academico')->nullable();
             $table->enum('tipo',['taller','chat club'])->default('taller');
-            $table->enum('nivel',['inicio','intermedio','avanzado','cualquier nivel'])->default('inicio');
+            $table->enum('nivel',['basico','intermedio','avanzado','cualquier nivel'])->default('basico');
             $table->enum('modalidad',['presencial','virtual'])->default('presencial');
             $table->text('descripcion');
             $table->unsignedInteger('limite_participantes');
@@ -303,7 +310,7 @@ class Todo extends Migration
             $table->datetime('fecha')->nullable();
             $table->time('hora_inicio')->nullable();
             $table->time('hora_fin')->nullable();
-            $table->enum('status',['suspendido','bloqueado','disponible'])->default('disponible');
+            $table->enum('status',['suspendido','oculto','disponible','cerrado'])->default('disponible');
 
 
 
@@ -335,6 +342,7 @@ class Todo extends Migration
             //constancia para periodos, justificacion para actividades, comprobante para voluntariados, nota para cursos.
             $table->enum('extension',['pdf','imagen'])->default('imagen');
             $table->unsignedInteger('becario_id');
+            $table->text('observacion');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');
 
             $table->timestamps();
@@ -344,6 +352,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->integer('numero_periodo');//1er semestre: según el regimen del becario
+            $table->integer('regimen_periodo');//por si se cambia de regimen
             $table->string('anho_lectivo');//2-2018
             $table->datetime('fecha_inicio');
             $table->datetime('fecha_fin');
@@ -392,10 +401,8 @@ class Todo extends Migration
             $table->string('titulo');
             $table->string('url');
             $table->boolean('verificado');
-
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
             $table->timestamps();
         });
 
@@ -430,7 +437,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->string('nombre');//se puede obviar y dejar solo instituto
-            $table->string('instituto');
+            $table->string('institucion');
             $table->string('responsable'); // tambien llamado persona de contacto
             $table->text('observacion')->nullable();
             $table->datetime('fecha');
@@ -450,8 +457,8 @@ class Todo extends Migration
         Schema::create('tiposcursos', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->enum('tipo',['cva','otros'])->default('cva');
-            $table->text('descripcion');
+            
+            $table->text('nombre');
 
             $table->timestamps();
         });
@@ -459,7 +466,10 @@ class Todo extends Migration
         Schema::create('cursos',function(Blueprint $table)
         {
             $table->increments('id');
-            $table->unsignedInteger('modulo');//modulo de cva (1...15)
+            $table->enum('instituto',['Centro Venezolano Americano']);// disabled
+
+            $table->enum('nivel',['basico','intermedio','avanzado'])->default('basico');
+            $table->unsignedInteger('modulo');//modulo de cva (1...18)
             $table->enum('modo',['sabatino','interdiario','diario','intensivo'])->default('sabatino');//modo cva
             $table->datetime('fecha_inicio');//fecha inicio del cva
             $table->datetime('fecha_fin');//fecha fin del cva
@@ -618,6 +628,28 @@ class Todo extends Migration
             $table->increments('id');
             $table->string('anho');
             $table->string('imagen');
+            $table->timestamps();
+        });
+
+        Schema::create('tickets', function (Blueprint $table)
+        {
+            $table->increments('id');
+
+            $table->enum('estatus',['enviado','en revision','cerrado'])->default('enviado');
+            $table->enum('prioridad',['baja','media','alta'])->default('baja');
+            $table->enum('tipo',['soporte','ayuda'])->default('soporte');
+            $table->string('asunto');
+            $table->text('descripcion');
+            $table->text('imagen')->nullable();
+            $table->text('url')->nullable();
+            $table->text('respuesta');
+
+            $table->unsignedInteger('usuario_genero_id');
+            $table->foreign('usuario_genero_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unsignedInteger('usuario_respuesta_id')->nullable();
+            $table->foreign('usuario_respuesta_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

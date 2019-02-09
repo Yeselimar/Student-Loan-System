@@ -46,18 +46,6 @@ class MantenimientoNoticiaController extends Controller
         $noticia->al_carrousel = ($request->destacada=='1') ? 1 : 0;
         $tipo= ( 'noticia' === $noticia->tipo ) ? 'Noticia' : 'Miembro Institucional';
         
-
-        //Solo a noticias hago esto
-
-        //$image = $request->file('url_imagen');
-        /*$route = '/images/noticias/';
-        $filename = str_random(40);
-        $extension = '.'.$request->file('url_imagen')->getClientOriginalExtension();
-
-        Image::make($request->file('url_imagen'))->fit(150,150)->save($name);
-        $img = Image::make($file->getRealPath())
-        ->resize(320, 240)
-        ->save('public/uploads/', $file->getClientOriginalName());*/
         if($noticia->save())
         {
             flash('La publicación tipo: '.$tipo.' fue registrada exitosamente.','success')->important();

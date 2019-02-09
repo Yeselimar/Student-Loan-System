@@ -42,14 +42,12 @@
                     <div class="panel-heading"  align="center">
                         <h2 style="color: white">Postalarse como Mentor</h2>
                     </div>
-                    
+
                     <div class="login-form panel-body" style="padding: 0px 30px 20px">
 
                         <h6 class="text-left">
                             <strong>Debes registrarte en el sistema para iniciar tu proceso de postulación como Mentor</strong>
                         </h6>
-
-                        <!--<form role="form" class="f1 formMultiple" method="post" action="{{ route('registerMentor') }}" enctype="multipart/form-data" style="padding: 0px!important">-->
                         <form role="form" class="f1 formMultiple" method="post" action="{{ route('guardar.postulante.mentor') }}" enctype="multipart/form-data" style="padding: 0px!important">
                             {{ csrf_field() }}
 
@@ -117,7 +115,7 @@
 
                             <!-- Datos Personales -->
                             <fieldset>
-                                
+
                                 <!--<h4>Complete sus Datos Personales:</h4>-->
                                 <div class=" {{ $errors->has('name') ? ' has-error' : '' }}">
                                     <label for="name">Nombre</label>
@@ -184,7 +182,7 @@
                                         </span>
                                         @endif
                                     </div>
-                                    
+
                                     <!-- <div class="col-lg-12">
                                         <label for="url_pdf">Cargue su Hoja de Vida</label>
                                         <input name="url_pdf" accept="application/pdf" type="file" id="url_pdf" class="sisbeca-input" required>
@@ -204,7 +202,7 @@
 
                         </form>
                     </div>
-                
+
                 </div>
             </div>
         </div>

@@ -41,7 +41,7 @@
 						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar justificativo</a>
 					</template>
 					<template v-if="estatus_aval=='pendiente' || estatus_aval=='aceptada' || estatus_aval=='negada'">
-						<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Editar Justificativo</a>
+						<a href="" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Editar Justificativo</a>
 					</template>
 				</template>
 			</template>
@@ -56,9 +56,16 @@
 				<i class="fa fa-file-pdf-o"></i>
 			</a>
 			
-			<a href="{{route('actividad.editar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
-				<i class="fa fa-pencil"></i>
-			</a>
+			<template v-if="actividad.status!='cerrado' && actividad.status!='suspendido'">
+				<a :href="obtenerRutaEditarActividad()" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom">
+					<i class="fa fa-pencil"></i>
+				</a>
+			</template>
+			<template v-else>
+				<a href="" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom" disabled="disabled">
+					<i class="fa fa-pencil"></i>
+				</a>
+			</template>
 
 			<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
 				<a href="{{route('actividad.justificativos.todos',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary">Justificativos de este @{{ actividad.tipo }}</a>
@@ -130,7 +137,22 @@
 						<strong>Nivel</strong>
 					</td>
 					<td class="text-left">
-						@{{ actividad.nivel }}
+						<template v-if="actividad.nivel=='basico'">
+							Básico
+						</template>
+						<template v-else>
+							<template v-if="actividad.nivel=='intermedio'">
+								Intermedio
+							</template>
+							<template v-else>
+								<template v-if="actividad.nivel=='avanzado'">
+									Avanzado
+								</template>
+								<template v-else>
+									Cualquier nivel
+								</template>
+							</template>
+						</template>
 					</td>
 				</tr>
 				<tr>
@@ -150,7 +172,9 @@
 							@{{ actividad.status }}</span>
 						<span v-if="actividad.status=='suspendido'" class="label label-danger">
 							@{{ actividad.status }}</span>
-						<span v-if="actividad.status=='bloqueado'" class="label label-warning">
+						<span v-if="actividad.status=='oculto'" class="label label-warning">
+							@{{ actividad.status }}</span>
+						<span v-if="actividad.status=='cerrado'" class="label label-danger">
 							@{{ actividad.status }}</span>
 
 						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
@@ -163,9 +187,14 @@
 							<i class="fa fa-remove"></i>
 						</button>
 
-						<button v-b-popover.hover.bottom="'Colocar en Bloqueado'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarBloqueado()">
-							<i class="fa fa-lock"></i>
+						<button v-b-popover.hover.bottom="'Colocar en Cerrado'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarCerrado()">
+							<i class="fa fa-ban"></i>
 						</button>
+
+						<button v-b-popover.hover.bottom="'Colocar en Oculto'" class="btn btn-xs sisbeca-btn-primary mb-3" @click="colocarOculto()">
+							<i class="fa fa-eye-slash"></i>
+						</button>
+
 						@endif
 					</td>
 				</tr>
@@ -278,14 +307,14 @@
 					</td>
 					<td class="text-center">
 						<span v-if="becario.estatus=='asistira'" class="label label-success">
-							@{{ becario.estatus }}
+							asistirá
 						</span>
 						<span v-if="becario.estatus=='lista de espera'" class="label label-warning">
-							@{{ becario.estatus }}
+							lista de espera
 						</span>
 						<template v-if="becario.estatus=='asistio'">
 							<span class="label label-success">
-								@{{ becario.estatus }}
+								asistió
 							</span>
 							 
 							<template v-if="becario.aval_id!=null">
@@ -302,7 +331,7 @@
 						
 						<template v-if="becario.estatus=='no asistio'">
 							<span class="label label-danger">
-								@{{ becario.estatus }}
+								no asistió
 							</span>
 							 
 							<template v-if="becario.aval_id!=null">
@@ -352,26 +381,43 @@
 					<td>
 						<template v-if="becario.aval_id==null">
 							<template v-if="becario.estatus=='no asistio' || becario.estatus=='asistira' || becario.estatus=='lista de espera'">
-								<button v-b-popover.hover.bottom="'Colocar como Asistio'" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" >
+								<button v-b-popover.hover.bottom="'Colocar como Asistió'" class="btn btn-xs sisbeca-btn-primary" @click="colocarAsistio(becario.user.id)" >
 									<i class="fa fa-check"></i>
 								</button>
 							</template>
 								
 							<template v-if="becario.estatus=='asistio' || becario.estatus=='asistira' ||  becario.estatus=='lista de espera'">
-								<button v-b-popover.hover.bottom="'Colocar como No Asistio'" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)">
+								<button v-b-popover.hover.bottom="'Colocar como No Asistió'" class="btn btn-xs sisbeca-btn-primary" @click="colocarNoAsistio(becario.user.id)">
 									<i class="fa fa-remove"></i>
 								</button>
 							</template>
 						</template>
 						<template v-if="becario.aval_id==null">
-							<a v-b-popover.hover.bottom="'Subir Justificativo'" :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-upload" aria-hidden="true"></i>
-							</a>
+							<template v-if="becario.estatus!='asistio' && becario.estatus!='no asistio' && actividad.status!='cerrado' && actividad.status!='suspendido'">
+								<a v-b-popover.hover.bottom="'Subir Justificativo'" :href="obtenerRutaJustificacion(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
+									<i class="fa fa-upload" aria-hidden="true"></i>
+								</a>
+							</template>
+							<template v-else> 
+								<a v-b-popover.hover.bottom="'Subir Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+									<i class="fa fa-upload" aria-hidden="true"></i>
+								</a>
+							</template>
 						</template>
 						<template v-else>
-							<a v-b-popover.hover.bottom="'Editar Justificativo'" :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary">
-								<i class="fa fa-edit"></i>
-							</a>
+
+							<template v-if="becario.estatus!='asistio' && becario.estatus!='no asistio' && actividad.status!='cerrado' && actividad.status!='suspendido'">
+								<a v-b-popover.hover.bottom="'Editar Justificativo'" :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary" >
+									<i class="fa fa-edit"></i>
+								</a>
+								 @{{becario.estatus}}
+							</template>
+							<template v-else>
+								<a v-b-popover.hover.bottom="'Editar Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+									<i class="fa fa-edit"></i>
+								</a>
+							</template>
+
 						</template>
 						<button v-b-popover.hover.bottom="'Eliminar Inscripción'" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
 							<i class="fa fa-trash" ></i>
@@ -380,7 +426,7 @@
 					@endif
 				</tr>
 				<tr v-if="becarios && becarios.length==0">
-					<td class="text-center" @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() ) colspan="4" @else colspan="2" @endif>
+					<td class="text-center" @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() ) colspan="4" @else colspan="3" @endif>
 						No hay <strong>becarios</strong> para este <strong>@{{ actividad.tipo }}</strong>
 					</td>
 				</tr>
@@ -409,7 +455,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
+						<button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
 					</div>
 				</div>
 			</div>
@@ -434,7 +480,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-					<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Si</a>
+					<a href="{{route('actividad.eliminar',$actividad->id)}}" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</a>
 				</div>
 			</div>
 		</div>
@@ -486,34 +532,53 @@ const app = new Vue({
     {	
     	colocarDisponible()
     	{
+    		$("#preloader").show();
     		var id = "{{$actividad->id}}";
     		var url = "{{route('actividad.disponible',':id')}}";
     		url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     	},
-    	colocarBloqueado()
+    	colocarCerrado()
     	{
+    		$("#preloader").show();
     		var id = "{{$actividad->id}}";
-    		var url = "{{route('actividad.bloqueado',':id')}}";
+    		var url = "{{route('actividad.cerrado',':id')}}";
     		url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
+				toastr.success(response.data.success);
+            });
+    	},
+    	colocarOculto()
+    	{
+    		$("#preloader").show();
+    		var id = "{{$actividad->id}}";
+    		var url = "{{route('actividad.oculto',':id')}}";
+    		url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     	},
     	colocarSuspendido()
     	{
+    		$("#preloader").show();
     		var id = "{{$actividad->id}}";
     		var url = "{{route('actividad.suspendido',':id')}}";
     		url = url.replace(':id', id);
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
 				toastr.success(response.data.success);
             });
     	},
@@ -579,6 +644,7 @@ const app = new Vue({
     	},
     	desinscribirme: function()
     	{
+    		$("#preloader").show();
     		var actividad_id = '{{$actividad->id}}';
     		var becario_id = '{{Auth::user()->id}}';
     		var url = '{{route('actividad.desinscribir',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
@@ -587,6 +653,7 @@ const app = new Vue({
             axios.get(url).then(response => 
             {
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
             	console.log(response);
             	if(response.data.tipo=='danger')
             	{
@@ -606,6 +673,8 @@ const app = new Vue({
     	},
     	desinscribir: function(id)
     	{
+    		$('#desinscribirModal').modal('hide');
+    		$("#preloader").show();
     		var actividad_id = '{{$actividad->id}}';
     		var becario_id = id;
     		var url = '{{route('actividad.desinscribir',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
@@ -613,7 +682,7 @@ const app = new Vue({
     		url = url.replace(':b_id', becario_id);
             axios.get(url).then(response => 
             {
-            	$('#desinscribirModal').modal('hide');
+            	$("#preloader").hide();
             	this.obtenerdetallesactividad();
             	if(response.data.tipo=='danger')
             	{
@@ -627,6 +696,7 @@ const app = new Vue({
     	},
     	actividadinscribirme: function()
     	{
+    		$("#preloader").show();
     		var actividad_id = '{{$actividad->id}}';
     		var becario_id = '{{Auth::user()->id}}';
     		var url = '{{route('actividad.inscribirme',array('actividad_id'=>':a_id','becario_id'=>':b_id'))}}';
@@ -647,6 +717,7 @@ const app = new Vue({
 	            });*/
 
             	this.obtenerdetallesactividad();
+            	$("#preloader").hide();
             	if(response.data.tipo=='danger')
             	{
             		toastr.error(response.data.mensaje);
@@ -656,8 +727,6 @@ const app = new Vue({
                 	toastr.success(response.data.mensaje);
                 }
             });
-
-
     	},
     	obtenerdetallesactividad()
     	{
@@ -675,6 +744,13 @@ const app = new Vue({
                 this.estatus_aval = response.data.estatus_aval;
                 $("#preloader").hide();
             });
+    	},
+    	obtenerRutaEditarActividad: function()
+    	{
+    		var a_id = {{$actividad->id}};
+    		var url = "{{ route('actividad.editar',':a_id') }}";
+            url = url.replace(':a_id', a_id);
+            return url;
     	},
     	eliminarActividad: function()
     	{

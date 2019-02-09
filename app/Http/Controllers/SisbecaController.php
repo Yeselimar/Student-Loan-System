@@ -28,7 +28,15 @@ class SisbecaController extends Controller
     {
         $usuario =  Auth::user();
         $becario = Becario::where('user_id','=',$usuario->id)->first();
-        $actividades = Actividad::conEstatus('disponible')->ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
+        if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        {
+            $actividades = Actividad::ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
+        }
+        else
+        {
+            $actividades = Actividad::menosConEstatus('oculto')->ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
+        }
+       
         return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
     }
 

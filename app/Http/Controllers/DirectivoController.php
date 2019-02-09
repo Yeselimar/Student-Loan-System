@@ -214,7 +214,7 @@ class DirectivoController extends Controller
             $mail->Password = "scxxuchujshrgpao";
             $mail->setFrom("no-responder@avaa.org", "Sisbeca");
             $mail->Subject = "IMPORTANTE";
-            $body = view("emails.postulanteMentor.notificar-estatus-postulacion")->with(compact("usuario","estatus"));
+            $body = view("emails.postulantementor.notificar-estatus-postulacion")->with(compact("usuario","estatus"));
             $mail->MsgHTML($body);
             $mail->addAddress($usuario->email);
             $mail->send();

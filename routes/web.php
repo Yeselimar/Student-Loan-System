@@ -94,20 +94,32 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 {
     Route::get('/',['uses'=> 'SisbecaController@index','as' =>'seb']);
 
+    //sistema de tickets
+     Route::get('/tickets/estatus',['uses'=> 'TicketsController@ticketsestatus','as' =>'ticket.estatus']);
+    Route::get('/todos/tickets',['uses'=> 'TicketsController@todos','as' =>'ticket.todos']);
+    Route::get('/todos/tickets/servicio',['uses'=> 'TicketsController@todosservicio','as' =>'ticket.todos.servicio']);
+    Route::get('/usuario/{id}/mis-tickets',['uses'=> 'TicketsController@index','as' =>'ticket.index']);
+    Route::get('/usuario/{id}/mis-tickets/servicio',['uses'=> 'TicketsController@mistickets','as' =>'mis.tickets']);
+    Route::get('/tickets/crear',['uses'=> 'TicketsController@crear','as' =>'ticket.crear']);
+    Route::post('/tickets/guardar',['uses'=> 'TicketsController@guardar','as' =>'ticket.guardar']);
+    Route::get('/tickets/{id}/editar',['uses'=> 'TicketsController@editar','as' =>'ticket.editar']);
+    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);
+    Route::get('/ticket/{id}/detalles',['uses'=> 'TicketsController@detalles','as' =>'ticket.detalles']);
+    Route::get('/ticket/{id}/detalles/servicio',['uses'=> 'TicketsController@detallesservicio','as' =>'ticket.detalles.servicio']);
 
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
-
         //Editar datos del usuario y becario
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
         Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
         Route::post('/becario/{id}/actualizar-datos', 'UserController@actualizardatos')->name('becarios.actualizar.datos');
         Route::post('/becario/{id}/actualizar-universidad', 'UserController@actualizaruniversidad')->name('becarios.actualizar.universidad');
         Route::post('/becario/{id}/actualizar-estatus-becario', 'UserController@actualizarestatusbecario')->name('becarios.actualizar.estatusbecario');
+        Route::post('/becario/{id}/actualizar-contrasena', 'UserController@actualizarcontrasena')->name('becarios.actualizar.contrasena');
 
         //resumen becario y reporte general
-        Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen')->middleware('rol:mentor');
+        Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
         Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
 
@@ -179,7 +191,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
-        //Elimnar a postulantne
+        //Eliminar a postulantne
         Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
         //Segimiento 
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
@@ -190,6 +202,10 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/becarios/reporte-general', 'SeguimientoController@becariosreportegeneral')->name('becarios.reporte.general');
          Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becariosreportegeneralapi')->name('becarios.reporte.general.api');
         Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/pdf', 'SeguimientoController@becariosreportegeneralpdf')->name('becarios.reporte.general.pdf');
+ 
+
+
+
         //actividades
         Route::get('/actividades/crear', 'ActividadController@crear')->name('actividad.crear');
         Route::post('/actividades/guardar', 'ActividadController@guardar')->name('actividad.guardar');
@@ -218,20 +234,30 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
         Route::get('/actividad/{id}/actualizar-disponible/', 'ActividadController@actualizardisponible')->name('actividad.disponible');
         Route::get('/actividad/{id}/actualizar-suspendido', 'ActividadController@actualizarsuspendido')->name('actividad.suspendido');
-        Route::get('/actividad/{id}/actualizar-bloqueado', 'ActividadController@actualizarbloqueado')->name('actividad.bloqueado');
+        Route::get('/actividad/{id}/actualizar-cerrado', 'ActividadController@actualizarcerrado')->name('actividad.cerrado');
+        Route::get('/actividad/{id}/actualizar-oculto', 'ActividadController@actualizaroculto')->name('actividad.oculto');
 
         //periodos
         Route::get('/periodos/todos', 'PeriodosController@todosperiodos')->name('periodos.todos');
+        Route::get('/periodo/{id}/detalles-periodo', 'PeriodosController@detalles')->name('periodos.detalles');
+        Route::get('/periodo/{id}/detalles-servicio', 'PeriodosController@detallesservicio')->name('periodos.detalles.servicio');
+        Route::post('/periodo/{id}/actualizar-periodo/servicio', 'PeriodosController@actualizarperiodo')->name('periodo.actualizar.servicio');
         Route::get('/periodos/obtener-todos', 'PeriodosController@obtenertodos')->name('periodos.obtenertodos');
-         Route::get('/periodos/obtener-todos/api', 'PeriodosController@obtenertodosapi')->name('periodos.obtenertodos.api');
+        Route::get('/periodos/obtener-todos/api', 'PeriodosController@obtenertodosapi')->name('periodos.obtenertodos.api');
 
         //cursos ó cva
         Route::get('/cursos/todos', 'CursoController@todoscursos')->name('cursos.todos');
+        Route::get('/curso/{id}/detalles-curso', 'CursoController@detalles')->name('cursos.detalles');
+        Route::get('/curso/{id}/detalles-servicio', 'CursoController@detallesservicio')->name('cursos.detalles.servicio');
+        Route::post('/curso/{id}/actualizar-curso/servicio', 'CursoController@actualizarcva')->name('curso.actualizar.servicio');
         Route::get('/cursos/obtener-todos', 'CursoController@obtenertodos')->name('cursos.obtenertodos');
         Route::get('/cursos/obtener-todos/api', 'CursoController@obtenertodosapi')->name('cursos.obtenertodos.api');
 
         //voluntariados
         Route::get('/voluntariados/todos', 'VoluntariadoController@todosvoluntariados')->name('voluntariados.todos');
+        Route::get('/voluntariado/{id}/detalles-voluntariado', 'VoluntariadoController@detalles')->name('voluntariados.detalles');
+        Route::get('/voluntariado/{id}/detalles-servicio', 'VoluntariadoController@detallesservicio')->name('voluntariado.detalles.servicio');
+        Route::post('/voluntariado/{id}/actualizar-voluntariado/servicio', 'VoluntariadoController@actualizarvoluntariado')->name('voluntariado.actualizar.servicio');
         Route::get('/voluntariados/obtener-todos', 'VoluntariadoController@obtenertodos')->name('voluntariados.obtenertodos');
         Route::get('/voluntariados/obtener-todos/api', 'VoluntariadoController@obtenertodosapi')->name('voluntariados.obtenertodos.api');
 
@@ -368,6 +394,22 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         //link para inscribirme y salirme.  justificar
 
 
+        //Reportes de Seguimiento 
+        //resumen becario y reporte general (Ojo estan rutas estan en el middleware: admin_mentor)
+        Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+        Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
+
+        Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
+
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
+
+        //reporte "tiempo" (Ojo estan rutas estan en el middleware: admin_mentor)
+        Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
+        Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
+        Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
+
 
     });
 
@@ -496,6 +538,20 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         'as' => 'postulanteObecario.perfil'
     ]);
 
+    //resumen becario y reporte general (Ojo estan rutas estan en el middleware: admin_mentor)
+    Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
+    Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');
+    Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
+
+    Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
+    Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
+
+    Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
+
+    //reporte "tiempo" (Ojo estan rutas estan en el middleware: admin_mentor)
+    Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
+    Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
+    Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
 
     Route::group(['middleware'=>'directivo'],function ()
     {
@@ -834,7 +890,8 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         // postulantes
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
 
-        //obtener becario para entrevista
+        //Otros  reportes de Seguimiento
+
     });
 
     Route::group(['middleware'=>'entrevistador'],function ()

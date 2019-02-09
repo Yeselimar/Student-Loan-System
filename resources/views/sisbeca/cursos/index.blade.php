@@ -10,10 +10,9 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
-					<th>Tipo</th>
-					<th>Modo</th>
-					<th>Nivel</th>
+					<th class="text-center">Nivel</th>
 					<th class="text-center">Módulo</th>
+					<th class="text-center">Modo</th>
 					<th class="text-center">Nota</th>
 					<th class="text-center">Estatus</th>
 					<th class="text-right">Acciones</th>
@@ -25,12 +24,9 @@
 				@else
 					@foreach($cursos as $curso)
 					<tr>
-						<td>
-							{{$curso->tipocurso->tipo}}
-						</td>
-						<td>{{$curso->modo}}</td>
-						<td>{{$curso->nivel}}</td>
+						<td class="text-center">{{$curso->getNivel()}}</td>
 						<td class="text-center">{{$curso->modulo}}</td>
+						<td class="text-center">{{ucwords($curso->modo)}}</td>
 						<td class="text-center">{{$curso->getNota()}}</td>
 						<td class="text-center">
 							@switch($curso->aval->estatus)
@@ -49,7 +45,7 @@
 						</td>
 						
 						<td>
-							<a href="{{url($curso->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Nota">
+							<a href="{{url($curso->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Nota CVA">
 								@if( $curso->aval->esImagen() )
 	                        		<i class="fa fa-photo"></i>
 	                        	@else
@@ -57,13 +53,13 @@
 	                        	@endif
 							</a>
 
-							<a href="{{route('cursos.editar',$curso->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar">
+							<a href="{{route('cursos.editar',$curso->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar CVA">
 	                        	<i class="fa fa-pencil"></i>
 							</a>
 
 							@if($curso->aval->estatus!='aceptada')
 								<span data-toggle="modal" data-target="#eliminarcurso{{$curso->id}}">
-									<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar"  >
+									<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar CVA"  >
 										<i class="fa fa-trash"></i>
 									</button>
 								</span>

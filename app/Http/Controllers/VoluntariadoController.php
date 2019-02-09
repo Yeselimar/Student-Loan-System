@@ -92,7 +92,7 @@ class VoluntariadoController extends Controller
 
 		$voluntariado = new Voluntariado;
 		$voluntariado->nombre = $request->get('nombre');
-		$voluntariado->instituto = $request->get('instituto');
+		$voluntariado->institucion = $request->get('institucion');
         $voluntariado->responsable = $request->get('responsable');
         $voluntariado->observacion = $request->get('observacion');
 		$voluntariado->fecha = DateTime::createFromFormat('d/m/Y', $request->get('fecha'))->format('Y-m-d');
@@ -152,7 +152,7 @@ class VoluntariadoController extends Controller
             $aval->save();
         }
         $voluntariado->nombre = $request->get('nombre');
-        $voluntariado->instituto = $request->get('instituto');
+        $voluntariado->institucion = $request->get('institucion');
         $voluntariado->responsable = $request->get('responsable');
         $voluntariado->observacion = $request->get('observacion');
         $voluntariado->fecha = DateTime::createFromFormat('d/m/Y', $request->get('fecha'))->format('Y-m-d');
@@ -205,5 +205,27 @@ class VoluntariadoController extends Controller
         File::delete($aval->url);
         $aval->delete();
         return response()->json(['success'=>'El voluntariado fue eliminado exitosamente.']);
+    }
+
+    public function detalles($id)
+    {
+        $voluntariado = Voluntariado::find($id);
+        $becario = $voluntariado->becario;
+        return view('sisbeca.voluntariados.detalles')->with(compact('voluntariado','becario'));
+    }
+
+    public function detallesservicio($id)
+    {
+        $voluntariado = Voluntariado::where('id','=',$id)->with('aval')->first();
+        return response()->json(['voluntariado'=>$voluntariado]);
+    }
+
+    public function actualizarvoluntariado(Request $request,$id)
+    {
+        $voluntariado = Voluntariado::find($id);
+        $voluntariado->aval->estatus = $request->estatus;
+        $voluntariado->aval->observacion = $request->observacion;
+        $voluntariado->aval->save();
+        return response()->json(['success'=>'El voluntariado fue actualizado exitosamente.']);
     }
 }

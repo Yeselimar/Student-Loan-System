@@ -42,4 +42,5 @@ class BecarioEntrevistador extends Model
     {
         return 'documentos/entrevistados/conjunto/';
     }
+
 }

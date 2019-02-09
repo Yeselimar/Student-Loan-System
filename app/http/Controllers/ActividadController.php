@@ -33,20 +33,48 @@ class ActividadController extends Controller
         $actividad = Actividad::find($id);
         $actividad->status = "suspendido";
         $actividad->save();
+
+        //colocar a becarios como no asistio y los justificativos en rechazado
+        $ab = ActividadBecario::paraActividad($id)->get();
+        foreach ($ab as $item)
+        {
+            $item->estatus = "no asistio";
+            $item->save();
+            if($item->aval_id!=null)
+            {
+                $item->aval->estatus = "negada";
+                $item->aval->save();
+            }
+        }
         return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como SUSPENDIDO.']);
     }
 
-    public function actualizarbloqueado($id)
+    public function actualizaroculto($id)
     {
         $actividad = Actividad::find($id);
-        $actividad->status = "bloqueado";
+        $actividad->status = "oculto";
         $actividad->save();
-        return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como BLOQUEADO.']);
+        return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como OCULTO.']);
+    }
+
+    public function actualizarcerrado($id)
+    {
+        $actividad = Actividad::find($id);
+        $actividad->status = "cerrado";
+        $actividad->save();
+        return response()->json(['success'=>'El '.ucwords($actividad->tipo).' fue actualizado como CERRADO.']);
     }
 
 	public function listar()
 	{
-        $actividades = Actividad::orderby('fecha','asc')->get();
+        if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo() )
+        {
+            $actividades = Actividad::orderby('fecha','asc')->get();
+        }
+        else
+        {
+            $actividades = Actividad::menosConEstatus('oculto')->orderby('fecha','asc')->get();
+        }
         return view('sisbeca.actividad.listar')->with(compact('actividades'));
 	}
 
@@ -241,7 +269,7 @@ class ActividadController extends Controller
     public function detalles($id)
     {
         $actividad = Actividad::find($id);
-        if((Auth::user()->esBecario() and !$actividad->estaBloqueado()) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+        if((Auth::user()->esBecario() and !$actividad->estaOculto()) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
         {
             return view('sisbeca.actividad.detalles')->with(compact('actividad'));
         }
@@ -340,7 +368,7 @@ class ActividadController extends Controller
                     $ab->estatus = "asistira";
                     $ab->save();
 
-                    $estatus = "ASISTIRA";//Variable que se usa para enviar el correo
+                    $estatus = "ASISTIRÁ";//Variable que se usa para enviar el correo
                     $data = array(
                         "email" => $becario->user->email,
                         "becario" => $becario->user->nombreyapellido(),
@@ -387,7 +415,7 @@ class ActividadController extends Controller
     {
         //colorcarlo en lista de espera en caso de que este llena la actividad.
         $actividad = Actividad::find($id);
-        $becarios = Becario::activos()->terminosAceptados()->probatorio1()->get();
+        $becarios = Becario::activos()->terminosAceptados()->probatorio1()->probatorio2()->get();
         $model = "crear";
         //if( $actividad->inscribionabierta() )
         //{
@@ -478,7 +506,24 @@ class ActividadController extends Controller
             $beneficiado = $listadeespera[0];
             $beneficiado->estatus = "asistira";
             $beneficiado->save();
+            $usuario = $beneficiado->user;
             //notificar al becario que fue pasado de "lista de espera" a "asistira"
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.actividades.notificacion-paso-a-asistio")->with(compact("usuario","actividad"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($usuario->email);
+            $mail->send();
         }
         //if( $actividad->inscribionabierta() )
         //{
@@ -523,7 +568,7 @@ class ActividadController extends Controller
             $mail->Subject = "Notificación";
             $body = view("emails.actividades.notificacion-eliminar-inscripcion")->with(compact("data"));
             $mail->MsgHTML($body);
-            $mail->addAddress("delgadorafael2011@gmail.com");
+            $mail->addAddress($becario->user->email);
             $mail->send();
             return response()->json(['tipo'=>'success','mensaje'=>'El becario '.$becario->user->nombreyapellido().' fue eliminado del '.$actividad->tipo.'.']);
         //}
@@ -552,7 +597,7 @@ class ActividadController extends Controller
             'fecha'					=> 'required|date_format:d/m/Y',
             'hora_inicio'			=> 'required|date_format:h:i A',
             'hora_fin'				=> 'required|date_format:h:i A',
-            'descripcion'			=> 'min:0,max:10000',
+            'descripcion'			=> 'required|min:0,max:10000',
         ]);
     	
     	$actividad = new Actividad;
@@ -753,7 +798,7 @@ class ActividadController extends Controller
         $mail->Subject = "Notificación";
         $body = view("emails.actividades.notificacion-asistio")->with(compact("data"));
         $mail->MsgHTML($body);
-        $mail->addAddress("delgadorafael2011@gmail.com");
+        $mail->addAddress($becario->user->email);
         $mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como ASISTIÓ.']);
     }
@@ -795,7 +840,7 @@ class ActividadController extends Controller
         $mail->Subject = "Notificación";
         $body = view("emails.actividades.notificacion-no-asistio")->with(compact("data"));
         $mail->MsgHTML($body);
-        $mail->addAddress("delgadorafael2011@gmail.com");
+        $mail->addAddress($becario->user->email);
         $mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como NO ASISTIÓ.']);
     }

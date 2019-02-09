@@ -18,15 +18,15 @@
                                 <div class="alert  alert alert-info" role="alert">
                                         Su postulación ha sido revisada y usted ha sido seleccionado para ir a Entrevista
                                 </div>
-                               
+
                                     <p> <b>Estatus: </b> <span class="label label-warning">Aprobado para Entrevista</span></p>
                                     <p> <b>Datos para la Entrevista:</b></p>
                                     <p> <b>Fecha: </b> {{$postulante->fechaEntrevista()}}</p>
                                     <p> <b>Hora: </b>{{$postulante->horaEntrevista()}}</p>
                                     <p> <b>Lugar: </b>{{$postulante->lugar_entrevista}}</p>
                                     <p> <b>Entrevistadores:</b></p>
-                                    @foreach($entrevistadores as $entrevistador)
-                                    <p>{{$entrevistador->name}} {{$entrevistador->last_name}}</p>
+                                    @foreach($postulante->entrevistadores as $entrevistador)
+                                    <p>{{$entrevistador->name}} {{$entrevistador->last_name}} <br>Documento:{{$entrevistador->documento}}</p>
                                     @endforeach
                                 @elseif($postulante->status==='entrevistado')
                                 <p> <b>Estatus: </b> <span class="label label-inverse">Entrevistado</span></p>

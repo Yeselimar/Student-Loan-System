@@ -100,4 +100,13 @@ class UserController extends Controller
         $becario->save();
         return response()->json(['success'=>'El estatus del becario fue actualizado.']);
     }
+
+    public function actualizarcontrasena(Request $request, $id)
+    {
+        if(Hash::check($request->contrasena_actual, Auth::user()->password))
+        {
+            return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+        }
+        return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+    }
 }   
