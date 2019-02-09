@@ -76,6 +76,12 @@
                         {{--  <li><a href="#"><i class="ti-settings"></i> Ajustes</a></li>--}}
                         {{--<li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li> --}}
                         <li>
+                            <a>{{Auth::user()->nombreyapellido()}}</a>
+                        </li>
+                        <li>
+                            <a>Rol: {{strtoupper(Auth::user()->rol)}}</a>
+                        </li>
+                        <li>
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">

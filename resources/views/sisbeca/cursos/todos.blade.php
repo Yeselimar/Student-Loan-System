@@ -46,21 +46,22 @@
 					@{{ mesanho(row.item.fecha_inicio)}}
 				</template>
 				<template slot="modulo" slot-scope="row">
-					@{{ row.item.modulo}} nivel - @{{ row.item.modo}}
+					@{{ row.item.modo}} - @{{ row.item.nivel}} - @{{ row.item.modulo}}
 				</template>
 				<template slot="nota" slot-scope="row">
 					@{{ formatearnota(row.item.nota)}}
 				</template>
+				
 				<template slot="aval" slot-scope="row">
 					<span v-if="row.value.estatus=='pendiente'" class="label label-warning">pendiente</span>
 					<span v-else-if="row.value.estatus=='aceptada'" class="label label-success">aceptada</span>
 					<span v-else-if="row.value.estatus=='negada'" class="label label-danger">negada</span>
 					<span v-else-if="row.value.estatus=='devuelto'" class="label label-danger">devuelto</span>
 				</template>
-
+				
 				<template slot="actions" slot-scope="row">
-					<a v-b-popover.hover.bottom="'Editar CVA'" :href="urlEditarCurso(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
-						<i class="fa fa-pencil"></i>
+					<a v-b-popover.hover.bottom="'Detalles CVA'" :href="urlDetallesCurso(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
+						<i class="fa fa-eye"></i>
 					</a>
 
 					<a v-b-popover.hover.bottom="'Ver Nota'" :href="urlVerNota(row.item.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
@@ -74,6 +75,17 @@
 					</a>
 					
 					<template v-if="row.item.aval.estatus!='aceptada'">
+						<a v-b-popover.hover.bottom="'Editar CVA'" :href="urlEditarCurso(row.item.id)" class="btn btn-xs sisbeca-btn-primary">
+							<i class="fa fa-pencil"></i>
+						</a>
+					</template>
+					<template v-else>
+						<a v-b-popover.hover.bottom="'Editar CVA'" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+							<i class="fa fa-pencil"></i>
+						</a>
+					</template>
+					
+					<template v-if="row.item.aval.estatus!='aceptada'">
 						<button v-b-popover.hover.bottom="'Eliminar CVA'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminar(row.item,row.item.becario)">
 							<i class="fa fa-trash"></i>
 						</button>
@@ -84,9 +96,10 @@
 						</button>
 					</template>
 					
+					<!--
 					<select v-model="row.item.aval.estatus" @change="actualizarestatus(row.item.aval.estatus,row.item.aval.id)" class="sisbeca-input input-sm sisbeca-select">
 						<option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
-					</select>
+					</select>-->
 				</template>
 
 			</b-table>
@@ -164,6 +177,7 @@ $(document).ready(function(){
 			"id": null,
 			"modulo": "",
 			"modo": "",
+			"nivel":"",
 			"fecha_inicio": "",
 			"nota": "",
 			"aval": {
@@ -247,6 +261,12 @@ $(document).ready(function(){
 		urlEditarCurso(id)
 		{
 			var url = '{{route('cursos.editar',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		urlDetallesCurso(id)
+		{
+			var url = '{{route('cursos.detalles',':id')}}';
 			url = url.replace(':id', id);
 			return url;
 		},

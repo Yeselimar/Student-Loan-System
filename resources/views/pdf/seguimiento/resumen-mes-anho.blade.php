@@ -367,6 +367,68 @@
     <table class="table-sisbeca">
         <thead>
             <tr>
+                <th colspan="3" style="background-color: #eee">TALLER ({{$mes_completo}}-{{$anho}})</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-left">Modalidad</td>
+                <td class="text-left"><strong>Asistencias</strong></td>
+                <td class="text-left"><strong>Inasistencias</strong></td>
+            </tr>
+            <tr>
+                <td class="text-left"><strong>Presenciales</strong></td>
+                <td class="text-left">{{$asistio['a_t_p']}}</td>
+                <td class="text-left">{{$noasistio['na_t_p']}}</td>
+                
+            </tr>
+            <tr>
+                <td class="text-left"><strong>Virtuales</strong></td>
+                <td class="text-left">{{$asistio['a_t_v']}}</td>
+                <td class="text-left">{{$noasistio['na_t_v']}}</td>
+            </tr>
+            <tr style="background-color: #eee">
+                <td class="text-left">Totales de talleres</td>
+                <td class="text-left">{{$asistio['a_t_p']+$asistio['a_t_v']}}</td>
+                <td class="text-left">{{$noasistio['na_t_p']+$noasistio['na_t_v']}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table-sisbeca">
+        <thead>
+            <tr>
+                <th colspan="3" style="background-color: #eee">CHAT CLUB ({{$mes_completo}}-{{$anho}})</th>
+            </tr>
+        </thead>
+        <tbody>
+             <tr>
+                <td class="text-left">Modalidad</td>
+                <td class="text-left"><strong>Asistencias</strong></td>
+                <td class="text-left"><strong>Inasistencias</strong></td>
+            </tr>
+            <tr>
+                <td class="text-left"><strong>Presenciales</strong></td>
+                <td class="text-left">{{$asistio['a_c_p']}}</td>
+                <td class="text-left">{{$noasistio['na_c_p']}}</td>
+            </tr>
+            <tr>
+                <td class="text-left"><strong>Virtuales</strong></td>
+                <td class="text-left">{{$asistio['a_c_v']}}</td>
+                <td class="text-left">{{$noasistio['na_c_v']}}</td>
+            </tr>
+            <tr style="background-color: #eee">
+                <td class="text-left">Totales de talleres</td>
+                <td class="text-left">{{$asistio['a_c_p']+$asistio['a_c_v']}}</td>
+                <td class="text-left">{{$noasistio['na_c_p']+$noasistio['na_c_v']}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--
+    <table class="table-sisbeca">
+        <thead>
+            <tr>
                 <th colspan="4" style="background-color: #eee">TALLER Y CHAT CLUB ({{$mes_completo}}-{{$anho}})</th>
             </tr>
         </thead>
@@ -434,7 +496,7 @@
             </tr>
         </tbody>
     </table>
-   
+    -->
 
     <div class="linea-sisbeca">
     </div>

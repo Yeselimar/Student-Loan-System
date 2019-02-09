@@ -24,6 +24,7 @@ use avaa\Mentor;
 use avaa\Aval;
 use avaa\Solicitud;
 use avaa\Imagen;
+use avaa\Ticket;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -97,6 +98,8 @@ class GetPublicController extends Controller
     {
         $id = 6;
         $usuario = User::find($id);
+        $ticket = Ticket::find(1);
+        return $ticket->usuariorespuesta;
         $anho = '2019';
         $ab = ActividadBecario::paraActividad(1)->get();
         $af = DB::table('actividades')

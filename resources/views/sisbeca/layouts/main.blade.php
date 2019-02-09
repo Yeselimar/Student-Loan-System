@@ -78,7 +78,13 @@
 
         </div>
         <!-- footer -->
-        <footer class="footer"> © {{ date('Y') }} Todos los derechos reservados. Desarrollado por  <strong><a href="#" style="color:#003865">AFODI</a></strong></footer>
+        <footer class="footer">
+        © {{ date('Y') }} Todos los Derechos Reservados. Desarrollado por <strong><a href="#" style="color:#003865">AFODI</a></strong> 
+
+        @if(!Auth::user()->esSoporte())
+        | <a href="{{route('ticket.index',Auth::user()->id)}}" style="color:#003865"> Mis Tickets</a> 
+        @endif
+        </footer>
         <!-- End footer -->
         <!-- End Page wrapper  -->
     </div>

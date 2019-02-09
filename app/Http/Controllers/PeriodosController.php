@@ -246,4 +246,26 @@ class PeriodosController extends Controller
 		$aval->delete();
 		return response()->json(['success'=>'El periodo fue eliminado exitosamente.']);
 	}
+
+	public function detalles($id)
+	{
+		$periodo = Periodo::find($id);
+		$becario = $periodo->becario;
+		return view('sisbeca.periodos.detalles')->with(compact('periodo','becario'));
+	}
+
+	public function detallesservicio($id)
+	{
+		$periodo = Periodo::where('id','=',$id)->with('aval')->first();
+		return response()->json(['periodo'=>$periodo]);
+	}
+
+	public function actualizarperiodo(Request $request,$id)
+	{
+		$periodo = Periodo::find($id);
+		$periodo->aval->estatus = $request->estatus;
+		$periodo->aval->observacion = $request->observacion;
+		$periodo->aval->save();
+		return response()->json(['success'=>'El periodo fue actualizado exitosamente.']);
+	}
 }
