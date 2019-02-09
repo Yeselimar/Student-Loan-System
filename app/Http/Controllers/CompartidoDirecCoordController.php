@@ -159,7 +159,7 @@ class CompartidoDirecCoordController extends Controller
         else
         {
             
-            // $postulanteBecario->user->rol='rechazado';
+            //$postulanteBecario->user->rol='rechazado';
             $postulanteBecario->status='rechazado';
             $postulanteBecario->user->save();
             $postulanteBecario->acepto_terminos=false;
@@ -191,6 +191,8 @@ class CompartidoDirecCoordController extends Controller
             $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
             if($fotografia)
             {
+                $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+                $postulanteBecario->save();
                 $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
                 $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
                 $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
@@ -232,8 +234,9 @@ class CompartidoDirecCoordController extends Controller
                 $referencia_profesor2->delete();
                 $ensayo->delete();
             }
-            return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
-       }
+
+            return response()->json(['success'=>'El Postulante ha sido rechazado exitosamente.']);
+        }
 
     }
 

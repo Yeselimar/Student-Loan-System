@@ -129,28 +129,29 @@
 				    </div>
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px !important">
 								<label class="control-label " for="nombreyapellido" style="margin-bottom: 0px !important">Postulante Becario</label>
-								<input type="text" name="nombreyapellido" class="sisbeca-input input-sm sisbeca-disabled" :value="nombreyapellido" style="margin-bottom: 0px" disabled="disabled">
+								<input type="text" name="nombreyapellido" class="sisbeca-input input-sm sisbeca-disabled" :value="nombreyapellido" style="margin-bottom: 5px" disabled="disabled">
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
-								<label class="control-label " style="margin-bottom: 0px !important">Fecha</label>
+								<label class="control-label " style="margin-bottom: 5px !important">Fecha</label>
 									<date-picker class="sisbeca-input input-sm" name="fecha" v-model="fecha" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
 							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+							
+						  	<div class="col-lg- col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
+							<label class="control-label " style="margin-bottom: 5px !important">Hora</label>
+								<!--<input type="text" autocomplete="off" class="sisbeca-input input-sm" > -->
+								<date-picker class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" placeholder="HH:MM AA" :config="{ enableTime: true, enableSeconds: false, noCalendar: true,  dateFormat: 'h:i K'}"></date-picker>
+							</div>
+
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px !important">
 								<label class="control-label " style="margin-bottom: 0px !important">Lugar</label>
-								<select v-model="lugar" class="sisbeca-input input-sm" style="margin-bottom: 0px">
+								<select v-model="lugar" class="sisbeca-input input-sm" style="margin-bottom: 5px">
 									<option>Centro Empresarial Miranda, Sede AVAA</option>
 								  	<option>MultiCentro Empresarial del Este, Chacao</option>
 								</select>
 						  	</div>
-						  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
-							<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
-								<!--	<input type="text" autocomplete="off" class="sisbeca-input input-sm" > -->
-								<date-picker class="sisbeca-input input-sm" v-model="hora" placeholder="HH:MM AA" placeholder="HH:MM AA" :config="{ enableTime: true, enableSeconds: false, noCalendar: true,  dateFormat: 'h:i K'}"></date-picker>
-							</div>
 						</div>
-
 
 						<div class="row">
 							<div class="col-lg-12">
