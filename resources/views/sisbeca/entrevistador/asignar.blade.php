@@ -138,8 +138,11 @@
 									<date-picker class="sisbeca-input input-sm" name="fecha" v-model="fecha" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
-								<label class="control-label " for="lugar" style="margin-bottom: 0px !important">Lugar</label>
-							<input type="text" name="lugar" v-model="lugar" class="sisbeca-input input-sm" placeholder="Los Ruices">
+								<label class="control-label " style="margin-bottom: 0px !important">Lugar</label>
+								<select v-model="lugar" class="sisbeca-input input-sm" style="margin-bottom: 0px">
+									<option>Centro Empresarial Miranda, Sede AVAA</option>
+								  	<option>MultiCentro Empresarial del Este, Chacao</option>
+								</select>
 						  	</div>
 						  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 							<label class="control-label " style="margin-bottom: 0px !important">Hora</label>
