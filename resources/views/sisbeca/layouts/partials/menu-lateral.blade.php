@@ -120,6 +120,9 @@
                     <li> <a class="has-arrow " href="{{route('banner.index')}}" aria-expanded="false"><i class="fa fa-picture-o">
                         </i><span class="hide-menu">Banner</span></a>
                     </li>
+                    <li> <a class="has-arrow " href="{{route('aliados.index')}}" aria-expanded="false"><i class="fa fa-users">
+                    </i><span class="hide-menu">Aliados</span></a>
+                    </li>
                 @endif
                 {{--Fin de Vistas del Coordinador Educativo es decir el Editor--}}
 

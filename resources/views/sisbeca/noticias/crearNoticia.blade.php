@@ -7,7 +7,6 @@
         <a href="{{ route('noticia.index') }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
     </div>
     <br>
-
     <div class="col sisbeca-container-formulario">
         <form action="{{route('noticia.store')}}" accept-charset="UTF-8" enctype="multipart/form-data" method="POST" class="form-horizontal" files="true">
             {{csrf_field()}}

@@ -94,4 +94,82 @@ class BannerController extends Controller
         flash("El banner fue eliminado exitosamente.",'success');
         return redirect()->route('banner.index');
     }
+
+    //Banner de Aliados
+    public function indexaliados()
+    {
+        $banners = Banner::all();
+        return view('sisbeca.banner.indexAliados')->with(compact('banners'));
+    }
+    public function createaliado()
+    {
+        $model="crear";
+        return view('sisbeca.banner.modelAliado')->with(compact('model'));
+    }
+    public function storealiado(Request $request)
+    {
+        $validation = Validator::make($request->all(), BannerRequest::rulesCreate());
+        if ( $validation->fails() )
+        {
+            flash("Por favor, verifique el formulario.",'danger');
+            return back()->withErrors($validation)->withInput();
+        }
+        if($request->file('imagen'))
+        {
+            $archivo= $request->file('imagen');
+            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+            $ruta = public_path().'/'.Banner::carpetaAliados();
+            $archivo->move($ruta, $nombre);
+        }
+        $banner = new Banner;
+        $banner->titulo = $request->get('titulo');
+        $banner->url = $request->get('url');
+        $banner->imagen = Banner::carpetaAliados().$nombre;
+        $banner->save();
+        flash("El Aliado fue creado exitosamente.",'success');
+        return redirect()->route('aliados.index');
+    }
+
+    public function editaliado($id)
+    {
+        $banner = Banner::find($id);
+        $model = "editar";
+        return view('sisbeca.banner.modelAliado')->with(compact('banner','model'));
+    }
+
+    public function updatealiado(Request $request, $id)
+    {
+        $validation = Validator::make($request->all(), BannerRequest::rulesUpdate());
+        if ( $validation->fails() )
+        {
+            flash("Por favor, verifique el formulario.",'danger');
+            return back()->withErrors($validation)->withInput();
+        }
+        $banner = Banner::find($id);
+        if($request->file('imagen'))
+        {
+            File::delete($banner->imagen);
+
+            $archivo= $request->file('imagen');
+            $nombre = str_random(100).'.'.$archivo->getClientOriginalExtension();
+            $ruta = public_path().'/'.Banner::carpetaAliados();
+            $archivo->move($ruta, $nombre);
+
+            $banner->imagen = Banner::carpetaAliados().$nombre;
+        }
+        $banner->titulo = $request->get('titulo');
+        $banner->url = $request->get('url');
+        $banner->save();
+
+        flash("El Aliado fue actualizado exitosamente.",'success');
+        return redirect()->route('aliados.index');
+    }
+    public function destroyaliado($id)
+    {
+        $banner = Banner::find($id);
+        File::delete($banner->imagen);
+        $banner->delete();
+        flash("El Aliado fue eliminado exitosamente.",'success');
+        return redirect()->route('aliados.index');
+    }
 }

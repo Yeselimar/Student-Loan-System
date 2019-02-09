@@ -12,6 +12,10 @@ class Banner extends Model
     {
         return 'images/banners/';
     }
+    public static function carpetaAliados()
+    {
+        return 'images/aliados/';
+    }
 
     public function fechaActualizacion()
     {

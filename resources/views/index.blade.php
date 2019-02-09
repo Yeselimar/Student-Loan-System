@@ -169,16 +169,14 @@
    <div class="linea-sobra" id="miembros-institucionales"></div>
 
 
-   <!-- Miembros Institucionales -->
-
+   <!-- Aliados -->
    <section class="section">
       <div class="container">
          <div class="section-header">
-            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Miembros </h2>
+            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Aliados </h2>
             <hr class="lines wow zoomIn" data-wow-delay="0.3s">
-            <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Los miembros institucionales contribuyen con el desarrollo de nuestros programas de inversión social.</p>
+            <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Conoce nuestros Aliados</p>
          </div>
-
          @if($miembros->count()!=0)
 
          <div class="" style="border:1px solid #fff">
@@ -191,12 +189,7 @@
                      </a>
                   </div>
                @endforeach
-
             </div>
-            <!-- <div class="text-center">
-            <a class="anterior" ><i class="fa fa-angle-left fa-2x" style="color:#021f3a"></i></a>
-            &nbsp;&nbsp;&nbsp;<a class="siguiente"><i class="fa fa-angle-right fa-2x" style="color:#021f3a"></i></a>
-            </div> -->
          </div>
          @endif
       </div>
@@ -209,7 +202,7 @@
 
    <!-- Organizaciones -->
 
-   <section class="section">
+ <!--   <section class="section">
          <div class="container">
             <div class="section-header">
                <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Organizaciones </h2>
@@ -231,14 +224,10 @@
                   @endforeach
 
                </div>
-               <!-- <div class="text-center">
-               <a class="anterior" ><i class="fa fa-angle-left fa-2x" style="color:#021f3a"></i></a>
-               &nbsp;&nbsp;&nbsp;<a class="siguiente"><i class="fa fa-angle-right fa-2x" style="color:#021f3a"></i></a>
-               </div> -->
             </div>
             @endif
          </div>
-      </section>
+      </section> -->
 
       <div class="linea-sobra"></div>
    <!-- Fin Organizaciones -->
