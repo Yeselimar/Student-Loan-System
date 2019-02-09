@@ -849,7 +849,7 @@ height: 20px;
 }
 
 
-@media screen and (max-width: 1200px) 
+@media screen and (max-width: 1200px)
 {
 
   .navbar-header
@@ -864,7 +864,7 @@ height: 20px;
     max-width: 900px;
   }
   /*fin de nuevo*/
-  
+
   .navbar-brand
   {
     position: absolute;
