@@ -54,6 +54,18 @@
 				</div>
 			</div>
 
+			<div class="form-group">
+				<div class="row" >
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="text-right label-xs" for="link_video">*Link Video</label>
+					</div>
+					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+						{{ Form::text('link_video', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: https://www.youtube.com/channel/v/qnOBj-k-wA'])}}
+						<span class="errors">{{ $errors->becario->first('link_video') }}</span>
+					</div>
+				</div>
+			</div>
+
 			<hr>	
 
 			<div class="form-group ">

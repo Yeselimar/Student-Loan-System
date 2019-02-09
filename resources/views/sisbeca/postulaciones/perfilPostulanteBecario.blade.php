@@ -76,7 +76,7 @@
 					</div>
 
 				</div>
-                @if($postulante->status==='postulante')
+                @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
                 <hr/>
 
                 <div align="center">
@@ -517,16 +517,17 @@
                         </div>
                     </div>
 
+
                     <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">
                             {{csrf_field()}}
         
                     <div class="form-group">
-                        <div class="col container-fluid">
+                        <div class="col-lg-12">
                             <label for="exampleFormControlTextarea1">Observaciones: </label>
                             <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
-        
+                            
+                            
                             <button type='submit' title="Guardar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>
-        
                         </div>
                     </div>
             </form>
@@ -574,7 +575,7 @@
         
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                        <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
+                        <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
         
                     </div>
         

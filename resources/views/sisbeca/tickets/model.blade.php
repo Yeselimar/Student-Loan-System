@@ -90,12 +90,11 @@
 				
 			</div>
 
-			<hr>	
+			<hr>
 
 			<div class="form-group">
 				<div class="row">
 					<div class="col-lg-12 text-right" >
-                        <a href="{{ URL::previous() }}" class="btn sisbeca-btn-default">Cancelar</a>
                         <button class="btn sisbeca-btn-primary" type="submit" >Guardar</button>
 					</div>
 				</div>

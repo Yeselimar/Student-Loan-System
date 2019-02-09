@@ -38,6 +38,7 @@ class RegistroSisbecaController extends Controller
             $user->sexo = $request->sexo;
             $user->rol= 'pre_postulante_mentor';
             $user->edad = $request->edad;//redundante
+            $user->remember_token = str_random(10);
             $user->save();
 
         	/* $file = $request->file('url_pdf');
@@ -115,6 +116,7 @@ class RegistroSisbecaController extends Controller
             $user->cedula = $request->cedula;
             $user->sexo = $request->sexo;
             $user->edad = $request->edad;
+            $user->remember_token = str_random(10);
             $user->save();
 
             $becario = new Becario;
