@@ -616,6 +616,7 @@ class Todo extends Migration
         Schema::create('banner', function (Blueprint $table)
         {
             $table->increments('id');
+            $table->enum('tipo',['banner','empresas','organizaciones','instituciones'])->default('banner');
             $table->string('titulo');
             $table->string('imagen');
             $table->string('url');
