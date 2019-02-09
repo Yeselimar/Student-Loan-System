@@ -40,7 +40,18 @@ body
   background: #fff;
   overflow-x: hidden;
 }
+.cursor{
+  cursor: pointer;
+}
+.page-link-seb{
+  background-color: #003865 !important;
+  color: transparent !important
+}
+.disabled-page{
+  background-color: #0038651c !important;
+  cursor: not-allowed !important
 
+}
 html
 {
   overflow-x: hidden;
@@ -688,7 +699,7 @@ height: 30px;
 
 .top-nav-collapse .navbar-nav .nav-link:hover
 {
-  color: #3d91d6 !important;
+  color: #003865 !important;
 }
 
 .top-nav-collapse .navbar-nav .nav-link.active
@@ -722,7 +733,11 @@ height: 30px;
   color: #003865;
 }
 
-@media (min-width: 991px)
+.dropdown-item.active, .dropdown-item:active{
+  background-color: #003865;
+  color: white !important
+}
+@media (min-width: 1200px)
 {
   .navbar .nav-link.active
   {
@@ -772,13 +787,21 @@ height: 30px;
 }
 
 
-@media screen and (max-width: 1010px) 
+@media screen and (max-width: 1200px) 
 {
   .navbar-header
   {
     width: 100%;
   }
-
+  /*nuevo */
+  #main-navbar {
+    display: none !important;
+  }
+  .slicknav_menu{
+    max-width: 900px;
+  }
+  /*fin de nuevo*/
+  
   .navbar-brand
   {
     position: absolute;
@@ -1909,13 +1932,13 @@ footer
 .menu ul li:hover  ul.nivel2, #menu ul li a:hover  ul.nivel2
 {
     display: block;
-    position: absolute;left: 0px; top: 50px;
+    position: absolute;left: 0px; top: /*50px*/ 60px;
 }
 
 nav.top-nav-collapse .menu ul li:hover  ul.nivel2, #menu ul li a:hover  ul.nivel2
 {
     display: block;
-    position: absolute;left: 0px; top: 30px !important;
+    position: absolute;left: 0px; top: /*30px*/40px !important;
 }
 
 
@@ -2067,7 +2090,7 @@ nav.top-nav-collapse .menu ul li:hover  ul.nivel2, #menu ul li a:hover  ul.nivel
 
 .top-nav-collapse .navbar-nav a.active:hover
 {
-  color: black !important;
+  /*color: black !important*/;
 }
 
 .Material-default-accordion .panel-default .panel-heading a{background-color:#003865}

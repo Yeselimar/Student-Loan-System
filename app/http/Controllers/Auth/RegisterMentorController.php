@@ -30,7 +30,7 @@ class RegisterMentorController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/sisbeca';
+    protected $redirectTo = '/seb';
 
     /**
      * Create a new controller instance.

@@ -44,7 +44,7 @@ class PostulanteBecarioController extends Controller
         } else {
             flash('Disculpe, ha ocurrido un error inesperado.', 'success')->important();
         }
-        return redirect()->route('sisbeca');
+        return redirect()->route('seb');
     }
     public function enviarPostulacionGuardar($progreso)
     {
@@ -74,7 +74,7 @@ class PostulanteBecarioController extends Controller
             $mail->addAddress($becario->user->email);
             $mail->send();
             
-            return redirect()->route('sisbeca');
+            return redirect()->route('seb');
 
         }
         else

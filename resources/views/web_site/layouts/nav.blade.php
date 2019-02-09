@@ -134,7 +134,12 @@
                      </li>
                      <li class="nivel1 nav-item">
 
-                       <a class="nav-link" target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
+                        <a class="nav-link" target="_blank" href="{{asset(route('seb'))}}">AVAA USA</a>
+ 
+                      </li>
+                     <li class="nivel1 nav-item">
+
+                       <a class="nav-link" target="_blank" href="{{asset(route('seb'))}}">SEB</a>
 
                      </li>
                   </ul>
@@ -258,7 +263,12 @@
                </li>
                <li>
                
-                  <a target="_blank" href="{{asset(route('sisbeca'))}}">SISBECA</a>
+                  <a target="_blank" href="{{asset(route('seb'))}}">AVAA USA</a>
+                  
+               </li>
+               <li>
+               
+                  <a target="_blank" href="{{asset(route('seb'))}}">SISBECA</a>
                   
                </li>
 

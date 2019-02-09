@@ -8,7 +8,7 @@
 		<p class="h5 text-center" style="color:#424242">Disculpe, la página solicitada ya expiró o no puede ser encontrada. Por favor, verifique la URL e intente nuevamente.</p>
 		<hr>
 		<div class="text-center">
-			<a class="btn btn-md sisbeca-btn-primary" href="{{ route('sisbeca') }}">Ir al inicio</a>
+			<a class="btn btn-md sisbeca-btn-primary" href="{{ route('seb') }}">Ir al inicio</a>
 		</div>
 	</div>
 </div>

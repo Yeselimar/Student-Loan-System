@@ -7,33 +7,33 @@
         <table class="table table-bordered table-hover" id="solicitudes" style="border: 1px solid #eee">
             <thead>
                 <tr>
-                    <th class="text-center">Tipo</th>
-                    <th class="text-center">Estatus <br> proceso</th>
-                    <th class="text-center">Solicitada <br> Por</th>
-                    <th class="text-center">Usuario <br> Respuesta</th>
-                    <th class="text-center">Fecha <br> Solicitud</th>
-                    <th class="text-center">Acciones</th>
+                    <th class="text-center" style="width:1px !important">Tipo</th>
+                    <th class="text-center"  style="width:1px !important">Estatus <br> proceso</th>
+                    <th class="text-center"  style="width:1px !important">Solicitada <br> Por</th>
+                    <th class="text-center" style="width:1px !important">Usuario <br> Respuesta</th>
+                    <th class="text-center"  style="width:1px !important">Fecha <br> Solicitud</th>
+                    <th class="text-center"  style="width:1px !important">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @if($solicitudes->count() > 0)
                 @foreach($solicitudes as $solicitud)
                     <tr>
-                        <td class="text-center">{{strtoupper( $solicitud->titulo )}}</td>
+                        <td class="text-center"  style="width:1px !important">{{strtoupper( $solicitud->titulo )}}</td>
                         @if($solicitud->status==='aceptada')
                             <td class="text-center">
-                                <span class="label label-success">{{strtoupper( $solicitud->status )}}
+                                <span class="label label-success">Aceptada
                                 </span>
                             </td>
                         @else
                             @if($solicitud->status==='enviada')
                                 <td class="text-center">
-                                    <span class="label label-warning">POR PROCESAR</span>
+                                    <span class="label label-warning">Por Procesar</span>
                                 </td>
                             @else
-                                <td class="text-center">
+                                <td class="text-center"> 
                                     <span class="label label-danger">
-                                        {{strtoupper( $solicitud->status )}}
+                                        Rechazada
                                     </span>
                                 </td>
                             @endif

@@ -4,7 +4,7 @@
 
     <div class="navbar-header">
 
-        <a class="navbar-brand" href="{{asset(route('sisbeca'))}}">
+        <a class="navbar-brand" href="{{asset(route('seb'))}}">
             
             <b><img src="{{asset('public_sisbeca/images/logo.png')}}" alt="homepage" class="dark-logo" /></b>
             <span><img src="{{asset('public_sisbeca/images/logo-text.png')}}" alt="homepage" class="dark-logo" /></span>
