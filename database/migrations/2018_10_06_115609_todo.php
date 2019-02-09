@@ -641,6 +641,7 @@ class Todo extends Migration
             $table->text('descripcion');
             $table->text('imagen')->nullable();
             $table->text('url')->nullable();
+            $table->text('respuesta');
 
             $table->unsignedInteger('usuario_genero_id');
             $table->foreign('usuario_genero_id')->references('id')->on('users')->onDelete('cascade');

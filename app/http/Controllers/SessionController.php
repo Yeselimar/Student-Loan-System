@@ -88,7 +88,7 @@ class SessionController extends Controller
 				$user = User::where('remember_token','=',$token)->first();
 				$user->edad = 99;
 				$user->password = bcrypt($request->contrasena_nueva);
-				$user->remember_token = str_random(10);
+				$user->remember_token = str_random(10);//actualizamos el token
 				$user->save();
 
 				$body = view('emails.usuarios.restablecida-contrasena')->with(compact('user'));

@@ -439,6 +439,17 @@
                     </a>
                 </li>
                 @endif
+
+                <!-- Rutas para los de Soporte -->
+                @if(Auth::user()->esSoporte())
+                <li class="nav-label">Gestión de Tickets</li>
+                <li>
+                    <a href="{{route('ticket.todos')}}" aria-expanded="false">
+                        <i class="fa  fa-ticket"></i>
+                        <span class="hide-menu">Todos los tickets</span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

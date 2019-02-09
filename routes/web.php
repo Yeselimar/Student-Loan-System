@@ -93,12 +93,18 @@ Route::group(["prefix"=>"sisbeca",'middleware'=>'auth'],function ()
 {
     Route::get('/',['uses'=> 'SisbecaController@index','as' =>'sisbeca']);
 
-
-    Route::get('/tickets/todos',['uses'=> 'TicketsController@index','as' =>'tickest.index']);
-    Route::get('/tickets/crear',['uses'=> 'TicketsController@crear','as' =>'tickest.crear']);
-    Route::post('/tickets/guardar',['uses'=> 'TicketsController@guardar','as' =>'tickest.guardar']);
-    Route::get('/tickets/{id}/editar',['uses'=> 'TicketsController@editar','as' =>'tickest.editar']);
-    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'tickest.actualizar']);
+    //sistema de tickets
+     Route::get('/tickets/estatus',['uses'=> 'TicketsController@ticketsestatus','as' =>'ticket.estatus']);
+    Route::get('/todos/tickets',['uses'=> 'TicketsController@todos','as' =>'ticket.todos']);
+    Route::get('/todos/tickets/servicio',['uses'=> 'TicketsController@todosservicio','as' =>'ticket.todos.servicio']);
+    Route::get('/usuario/{id}/mis-tickets',['uses'=> 'TicketsController@index','as' =>'ticket.index']);
+    Route::get('/usuario/{id}/mis-tickets/servicio',['uses'=> 'TicketsController@mistickets','as' =>'mis.tickets']);
+    Route::get('/tickets/crear',['uses'=> 'TicketsController@crear','as' =>'ticket.crear']);
+    Route::post('/tickets/guardar',['uses'=> 'TicketsController@guardar','as' =>'ticket.guardar']);
+    Route::get('/tickets/{id}/editar',['uses'=> 'TicketsController@editar','as' =>'ticket.editar']);
+    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);
+    Route::get('/ticket/{id}/detalles',['uses'=> 'TicketsController@detalles','as' =>'ticket.detalles']);
+    Route::get('/ticket/{id}/detalles/servicio',['uses'=> 'TicketsController@detallesservicio','as' =>'ticket.detalles.servicio']);
 
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()

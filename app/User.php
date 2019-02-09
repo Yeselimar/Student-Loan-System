@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->rol==='postulante_mentor';
     }
 
+    public function esSoporte()
+    {
+        return $this->rol==='soporte';
+    }
+
     public function coordinador()//para la relación de 1 a 1 que tiene con la tabla coordinadores (de llegar a tener)
     {
         return $this->hasOne('avaa\Coordinador','user_id');
@@ -116,15 +121,23 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('avaa\Becario','becarios_entrevistadores','entrevistador_id','becario_id');
     }
-
+    
+    public function tickets()// relacion buena
+    {
+        return $this->hasMany('avaa\Ticket','usuario_genero_id');
+    }
+    
+    public function ticketsrespondidos()// relacion buena
+    {
+        return $this->hasMany('avaa\Ticket','usuario_respuesta_id');
+    }
 
     //scope para buscar los usuario con rol entrevistadores
     public function scopeEntrevistadores($query)
     {
         return $query->where('rol','=','entrevistador');
     }
-
-
+    
     public function getFechaNacimiento()
     {
         return date("d/m/Y", strtotime($this->fecha_nacimiento));

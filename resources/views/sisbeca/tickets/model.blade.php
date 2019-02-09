@@ -3,17 +3,36 @@
 @section('content')
 	<div class="col-lg-12">
         <div class="text-right">
-           
-            <a href="{{ URL::previous() }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            <a href="{{ route('ticket.index',Auth::user()->id) }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         </div>
 		<br>
+        <div class="alert alert-primary" role="alert">
+            Pasos para <strong>crear un ticket</strong> de Soporte o Ayuda:
+            <br>
+            <strong>1.</strong> Identifique de que tipo es el ticket a generar. Soporte: Si se generó un error o Ayuda: si solicita información detallada de una accion a realizar en el sistema.
+            <br>
+            <strong>2.</strong> Seleccione la prioridad que considera del error reportado o de la ayuda solicitada.
+            <br>
+            <strong>3.</strong> Ingrese el asunto  del soporte o ayuda solicitada.
+            <br>
+            <strong>4.</strong> En la descripción especifique de manera detallada su error.
+            <br>
+            <strong>5.</strong> Ingrese el link donde se genero el error.
+            <br>
+            <strong>6.</strong> Si es posible tome foto o pantallazo al error producido.
+            <br>
+            <strong>7.</strong> Guarde el ticket y espere respuesta de nuestro personal de soporte.
+            <br>
+            <strong>8.</strong> Los campos con asterisco son obligatorios.
+        </div>
+
 		<div class="col sisbeca-container-formulario">
 
 			@if($model=='crear')
-				{{ Form::open(['route' => ['tickets.guardar'], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
+				{{ Form::open(['route' => ['ticket.guardar'], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
 
 			@else
-				{{ Form::model($curso,['route' => ['tickets.actualizar',$ticket->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
+				{{ Form::model($curso,['route' => ['ticket.actualizar',$ticket->id], 'method' => 'post', 'class'=>'form-horizontal', 'novalidate' => 'novalidate', 'files'=> true]) }}
 			@endif
 
 
@@ -21,69 +40,54 @@
 				<div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">Usuario</label>
-                        {{ Form::text('usuario', ->user->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
+                        <!-- Si es editar ticket el usuario cambia, se muestra quien genero ticket --><!-- Si es crear ticket el usuarioa a mostrar es el que está logueado -->
+                        {{ Form::text('usuario', $usuario->nombreyapellido(), ['class' => 'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled'])}}
                     </div>
-                    {{ Form::hidden('tipocurso_id', 1) }}
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Tipo</label>
-                        {{ Form::select('tipocurso_id', $tipocurso,1,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled']) }}
-                        <span class="errors" style="color:#red">{{ $errors->first('tipocurso_id') }}</span>
+                        {{ Form::select('tipo', array('soporte'=>'Soporte','ayuda'=>'Ayuda'),($model=='crear') ? 'soporte' : $ticket->tipo ,['class' =>'sisbeca-input']) }}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Modo</label>
-                        {{ Form::select('modo', array('sabatino'=>'sabatino','interdiario'=>'interdiario','diario'=>'diario','intensivo'=>'intensivo'),($model=='crear') ? 'sabatino' : $curso->modo,['class' =>'sisbeca-input']) }}
+                        <label class="control-label">*Prioridad</label>
+                        {{ Form::select('prioridad', array('baja'=>'Baja','media'=>'Media','alta'=>'Alta'),($model=='crear') ? 'baja' : $ticket->prioridad,['class' =>'sisbeca-input']) }}
+                        <span class="errors" style="color:#red">{{ $errors->first('prioridad') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Nivel</label>
-                        {{ Form::select('nivel', array('basico'=>'basico','intermedio'=>'intermedio','avanzado'=>'avanzado'),($model=='crear') ? 'basico' : $curso->nivel,['class' =>'sisbeca-input']) }}
+                        <label class="control-label">*Asunto</label>
+                        {{ Form::text('asunto', ($model=='crear') ? null : $ticket->asunto, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: Error al iniciar sesión'])}}
+                        <span class="errors" style="color:#red">{{ $errors->first('asunto') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Módulo</label>
-                        {{ Form::select('modulo', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18'),($model=='crear') ? 1 : $curso->modulo,['class' =>'sisbeca-input']) }}
+                        <label class="control-label">URL (Link o enlace)</label>
+                        {{ Form::text('url', ($model=='crear') ? null : $ticket->url, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: https://www.avaa.org/sisbeca'])}}
+                        <span class="errors" style="color:#red">{{ $errors->first('url') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Nota</label>
-                        {{ Form::text('nota', ($model=='crear') ? null : $curso->nota, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 50'])}}
-                        <span class="errors" style="color:#red">{{ $errors->first('nota') }}</span>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Fecha Inicio</label>
-                        {{ Form::text('fecha_inicio', ($model=='crear') ? null : date("d/m/Y", strtotime($curso->fecha_inicio)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechainicio"])}}
-                        <span class="errors" >{{ $errors->first('fecha_inicio') }}</span>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label class="control-label">*Fecha Fin</label>
-                        {{ Form::text('fecha_fin', ($model=='crear') ? null : date("d/m/Y", strtotime($curso->fecha_fin)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechafin"])}}
-                        <span class="errors">{{ $errors->first('fecha_fin') }}</span>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6">
-                    	<label for="constancia_nota" class="control-label">
-                    		{{ $model=='crear' ? '*Constancia Nota' : 'Actualizar Constancia Nota' }}
+                        <label for="imagen" class="control-label">
+                            {{ $model=='crear' ? 'Imagen' : 'Actualizar Imagen' }}
                         </label>
-                        {{ Form::file('constancia_nota',['class' => 'sisbeca-input ', 'accept'=>'image/jpeg,image/jpg/image/png,application/pdf' ] ) }}
-                        <span class="errors">{{ $errors->first('constancia_nota') }}</span>
+                        {{ Form::file('imagen',['class' => 'sisbeca-input ', 'accept'=>'image/jpeg,image/jpg/image/png' ] ) }}
+                        <span class="errors">{{ $errors->first('imagen') }}</span>
                     </div>
+
                     @if($model=='editar')
                     <div class="col-lg-4 col-md-4 col-sm-6">
-                    	<label for="constancia" class="control-label">Nota Actual</label>
-                        <a href="{{url($curso->aval->url)}}" target="_blank" class="btn sisbeca-btn-primary btn-block">
-                        	@if( $curso->aval->esImagen() )
-                        		<i class="fa fa-photo"></i>
-                        	@else
-                        		<i class="fa fa-file-pdf-o"></i>
-                        	@endif
-                        	Ver
-                    	</a>
+                        <label for="imagen" class="control-label">Imagen Actual</label>
+                        <a href="{{url($ticket->imagen)}}" target="_blank" class="btn sisbeca-btn-primary btn-block">
+                            <i class="fa fa-photo"></i>
+                        </a>
                     </div>
                     @endif
+                </div>
 
-                    @if(Auth::user()->rol==="admin")
-                    <div class="col-lg-4 col-md-4 col-sm-6">
-                        <label for="estatus" class="control-label">Estatus Nota</label>
-                        {{ Form::select('estatus', array('pendiente'=>'pendiente','aceptada'=>'aceptada','negada'=>'negada'), $curso->aval->estatus,['class' =>'sisbeca-input']) }}
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label class="control-label">*Descripción</label>
+                        {{ Form::textarea('descripcion', ($model=='crear') ? null : $ticket->descripcion , ['class' => 'sisbeca-input sisbeca-textarea', 'placeholder'=>'EJ: El día de hoy presente...'])}}
+                        <span class="errors">{{ $errors->first('descripcion') }}</span>
                     </div>
-                    @endif
-				</div>
+                </div>
+				
 			</div>
 
 			<hr>	
@@ -91,20 +95,8 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-lg-12 text-right" >
-                        @if(Auth::user()->esBecario())
-						    <a href="{{route('cursos.index')}}" class="btn sisbeca-btn-default">Cancelar</a>
-                        @else
-                            <a href="{{route('cursos.todos')}}" class="btn sisbeca-btn-default">Cancelar</a>
-                        @endif
-                        @if($model=='editar')
-                            @if($curso->aval->estatus!='aceptada')
-                                <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
-                            @else
-                                <button class="btn sisbeca-btn-primary" type="submit" disabled="disabled">Guardar</button>
-                            @endif
-                        @else
-                            <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
-                        @endif
+                        <a href="{{ URL::previous() }}" class="btn sisbeca-btn-default">Cancelar</a>
+                        <button class="btn sisbeca-btn-primary" type="submit" >Guardar</button>
 					</div>
 				</div>
 			</div>		
