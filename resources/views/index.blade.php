@@ -94,9 +94,8 @@
             <hr class="lines wow zoomIn" data-wow-delay="0.3s">
             <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">La Asociación Venezolano Americana de Amistad desarrolla tres programas sociales en el área educativa.</p>
          </div>
-         <div class="row programa-tables letrasResponsive">
-               <div class="col-md-1 col-sm-1 col-xs-12"></div>
-            <div class="col-md-5 col-sm-5 col-xs-12">
+         <div class="d-flex flex-sm-column flex-md-row programa-tables letrasResponsive">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
 
@@ -136,7 +135,7 @@
                </div>
 
             </div> -->
-            <div class="col-md-5 col-sm-5 col-xs-12">
+            <div class="col-lg-6 col-sm-12 col-md-6 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
                      <h2 class="title-programas align-items-center d-flex justify-content-around " data-mh="programa-titulo">
@@ -159,7 +158,6 @@
                   </div>
                </div>
             </div>
-            <div class="col-md-1 col-sm-1 col-xs-12"></div>
          </div>
       </div>
    </section>

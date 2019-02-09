@@ -42,17 +42,17 @@
                                                 v-model="filterText">
                                             </div>
               </div>
-          <div v-for="(noticia,i) in noticiasC" :key="i" class="col-lg-4 col-md-4 col-sm-6 col-xs-12"  style="margin-bottom: 10px;" v-if="(i > (currentPageMovil*perPageMovil)-1 && i < ((currentPageMovil*perPageMovil)+perPageMovil)  )">
+          <div v-for="(noticia,i) in noticiasC" :key="i" class="col-lg-4 col-md-6 col-sm-6 col-xs-12"  style="margin-bottom: 10px;" v-if="(i > (currentPageMovil*perPageMovil)-1 && i < ((currentPageMovil*perPageMovil)+perPageMovil)  )">
             <a :href="noticia.slug">
-            <div  style="border: 1px solid #021f3a;padding-right: 0px;padding-left: 0px;">
-              <img style="width: 100%;height: auto;" :src="noticia.url_image" :alt="noticia.titulo">
-              <div style="padding:10px; ">
-                <p class="h4" style="color:#021f3a" data-mh="noticia-titulo">
+            <div data-mh="content-notice" style="border: 1px solid #021f3a;padding-right: 0px;padding-left: 0px; height:455px">
+              <img data-mh="img-notice" style="width: 100%;height: 60%;" :src="noticia.url_image" :alt="noticia.titulo">
+              <div data-mh="content-h-notice" style="height:40%;padding:10px; ">
+                <p data-mh="title" class="h4 d-flex text-center justify-content-center align-items-center" style="color:#021f3a;height:50%" data-mh="noticia-titulo">
                   <strong>@{{noticia.titulo}}</strong>
                 </p>
                 <hr>
                 <div data-mh="noticia-informacion">
-                <p class="h6" style="color:#9E9E9E">
+                <p data-mh="hnf" class="h6" style="color:#9E9E9E">
                   @{{noticia.fecha_actualizacion}} - @{{noticia.informacion_contacto}}
                 </p>
                 </div>
@@ -149,7 +149,7 @@ const app = new Vue({
 			});
     },
     doFilter(){
-      console.log('buscando...')
+      this.currentPageMovil = 0;
     },
     prevPage () {
         if(this.currentPageMovil !== 0) {

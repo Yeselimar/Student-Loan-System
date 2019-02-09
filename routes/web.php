@@ -57,7 +57,7 @@ Route::get('/nosotros', function(){
 
 Route::get('/programas', 'SitioWebController@programas')->name('programas');
 
-Route::get('/membresias','SitioWebController@membresias')->name('membresias');
+Route::get('/donaciones','SitioWebController@donaciones')->name('donaciones');
 
 Route::get('/contactenos', function(){
     return view('web_site.contactenos')->with('route','contactenos');

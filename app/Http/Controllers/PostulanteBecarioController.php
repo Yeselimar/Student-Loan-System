@@ -219,6 +219,7 @@ class PostulanteBecarioController extends Controller
         $becario->costo_matricula = $request->get('costo_matricula');
         $becario->promedio_universidad = $request->get('promedio_universidad');
         $becario->periodo_academico = $request->get('periodo_academico');
+        $becario->regimen = $request->get('regimen');
         $becario->estudios_universitarios = true;
         $becario->save();
         flash("Los estudios universitarios fueron cargados exitosamente.",'success');
@@ -243,6 +244,7 @@ class PostulanteBecarioController extends Controller
         $becario->medio_proexcelencia = $request->get('medio_proexcelencia');
         $becario->otro_medio_proexcelencia = $request->get('otro_medio_proexcelencia');
         $becario->motivo_beca = $request->get('motivo_beca');
+        $becario->link_video = $request->get('link_video');
         $becario->informacion_adicional = true;
         $becario->save();
         flash("La información adicional fue cargada exitosamente.",'success');

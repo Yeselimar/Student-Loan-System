@@ -8,7 +8,7 @@
                      <li class="contacto-letra h6"><strong>AVAA</strong></li>
                      <li><a href="{{asset('nosotros')}}" class="contacto-letra">Nosotros</a></li>
                      <li><a href="{{asset('programas')}}" class="contacto-letra">Programas</a></li>
-                     <li><a href="{{asset('membresias')}}"" class="contacto-letra">Membresías</a></li>
+                     <li><a href="{{asset('donaciones')}}"" class="contacto-letra">Membresías</a></li>
                      <li><a href="{{asset('noticias')}}" class="contacto-letra">Noticias</a></li>
                      <li><a href="{{asset('contactenos')}}" class="contacto-letra">Contáctenos</a></li>
                   </ul>

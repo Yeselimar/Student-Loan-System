@@ -65,7 +65,7 @@ class SitioWebController extends Controller
         return view('web_site.programas')->with('route','programas')->with(compact('costos','charla'));
     }
 
-    public function membresias()
+    public function donaciones()
     {
         $costos = Costo::query()->first();
 
@@ -74,7 +74,7 @@ class SitioWebController extends Controller
         {
             $costos = new Costo();
         }
-        return view('web_site.membresias')->with('route','membresias')->with('costos',$costos);
+        return view('web_site.membresias')->with('route','donaciones')->with('costos',$costos);
     }
 
 

@@ -159,7 +159,7 @@ class CompartidoDirecCoordController extends Controller
         else
         {
             
-            // $postulanteBecario->user->rol='rechazado';
+            //$postulanteBecario->user->rol='rechazado';
             $postulanteBecario->status='rechazado';
             $postulanteBecario->user->save();
             $postulanteBecario->acepto_terminos=false;
@@ -191,6 +191,8 @@ class CompartidoDirecCoordController extends Controller
             $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
             if($fotografia)
             {
+                $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+                $postulanteBecario->save();
                 $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
                 $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
                 $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
@@ -232,8 +234,9 @@ class CompartidoDirecCoordController extends Controller
                 $referencia_profesor2->delete();
                 $ensayo->delete();
             }
-            return response()->json(['success'=>'El Postulante ha sido Rechazado Exitosamente']);
-       }
+
+            return response()->json(['success'=>'El Postulante ha sido rechazado exitosamente.']);
+        }
 
     }
 
@@ -564,7 +567,8 @@ class CompartidoDirecCoordController extends Controller
                 return view('sisbeca.postulaciones.perfilPostulanteBecario')->with('postulante',$postulante)->with('documentos', $documentos)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil)->with('entrevistadores', $entrevistadores);
             }
         }
-        else{
+        else
+        {
             flash('Usuario Inválido','danger')->important();
             return redirect()->route('seb');
         }

@@ -157,7 +157,7 @@ class Todo extends Migration
             $table->datetime('fecha_bienvenida')->nullable();
             $table->time('hora_bienvenida')->nullable();
             $table->text('lugar_bienvenida')->nullable();
-            $table->text('observacion_privada')->nullable();
+            $table->text('observacion_privada')->nullable();//no esta siendo usada
 
             //campo para control de nómina
             $table->datetime('final_carga_academica')->nullable();
@@ -616,6 +616,7 @@ class Todo extends Migration
         Schema::create('banner', function (Blueprint $table)
         {
             $table->increments('id');
+            $table->enum('tipo',['banner','empresas','organizaciones','instituciones'])->default('banner');
             $table->string('titulo');
             $table->string('imagen');
             $table->string('url');

@@ -36,17 +36,26 @@
 				<label class="control-label ">Asunto</label>
 				<input type="text" class="sisbeca-input sisbeca-disabled" :value="ticket.asunto" disabled="disabled">
 			</div>
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				<label class="control-label ">URL</label>
 				<input type="text" class="sisbeca-input sisbeca-disabled" :value="ticket.url" disabled="disabled">
 			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label ">Imagen</label>
+				<a :href="urlVerImagen(ticket.imagen)" target="_blank" class="btn sisbeca-btn-primary btn-block">
+                	Ver Imagen <i class="fa fa-photo"></i>
+            	</a>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<label class="control-label ">Descripción</label>
 				<textarea class="sisbeca-textarea sisbeca-input sisbeca-disabled" :value="ticket.descripcion" disabled="disabled"></textarea> 
 			</div>
-
 		</div>
+
 		<hr>
+		
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<label class="control-label ">Respuesta</label>
@@ -67,7 +76,6 @@
                 <div class="modal-header">
                     <h5 class="modal-title pull-left">
                     	<strong>Ticket @{{ticket.nro}}</strong>
-			    		
                     </h5>
                     <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                 </div>
@@ -190,7 +198,7 @@ $(document).ready(function(){
 		fechaformatear(fecha)
 		{
 			return moment(new Date (fecha)).format('DD/MM/YYYY hh:mm A');
-		},
+		}
 	}
 });
 </script>

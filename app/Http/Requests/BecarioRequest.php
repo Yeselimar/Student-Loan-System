@@ -72,6 +72,7 @@ class BecarioRequest extends FormRequest
         return [
             'otro_medio_proexcelencia'      => 'required|min:2,max:255',
             'motivo_beca'                   => 'required|min:2,max:1000',
+            'link_video'                    => 'required|url',
 
         ];
     }
