@@ -726,8 +726,6 @@ height: 20px;
 .top-nav-collapse .navbar-nav .nav-link
 {
   color: #333 !important;
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
 }
 
 .top-nav-collapse .navbar-nav .nav-link:hover
@@ -825,7 +823,7 @@ height: 20px;
 
 /* only small tablets */
 
-@media (min-width: 768px) and (max-width: 1010px)
+@media (min-width: 900px) and (max-width: 1010px)
 {
   #nav-main li a.nav-link
   {
@@ -2020,7 +2018,7 @@ footer
 nav.top-nav-collapse .menu ul li:hover  ul.nivel2, #menu ul li a:hover  ul.nivel2
 {
     display: block;
-    position: absolute;left: 0px; top: /*30px*/40px !important;
+    position: absolute;left: 0px; top: /*30px*/60px !important;
 }
 
 
