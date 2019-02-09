@@ -58,6 +58,18 @@
 			<div class="form-group">
 				<div class="row" >
 					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
+						<label class="pull-right label-xs" for="regimen">*Régimen:</label>
+					</div>
+					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+						{{ Form::select('regimen', array('anual'=>'Anual','semestral'=>'Semestral','trimestral'=>'Trimestral'),$becario->regimen,['class' =>'sisbeca-input']) }}
+						<span class="errors">{{ $errors->becario->first('regimen') }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="row" >
+					<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" align="right" >
 						<label class="text-right label-xs" for="costo_matricula">Costo de la matrícula académica:</label>
 					</div>
 					<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">

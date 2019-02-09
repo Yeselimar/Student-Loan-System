@@ -574,7 +574,7 @@
         
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
-                        <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Si</button>
+                        <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
         
                     </div>
         
