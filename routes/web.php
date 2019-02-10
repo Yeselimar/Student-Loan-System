@@ -103,7 +103,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     Route::get('/tickets/crear',['uses'=> 'TicketsController@crear','as' =>'ticket.crear']);
     Route::post('/tickets/guardar',['uses'=> 'TicketsController@guardar','as' =>'ticket.guardar']);
     Route::get('/tickets/{id}/editar',['uses'=> 'TicketsController@editar','as' =>'ticket.editar']);
-    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);
+    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);//Usado por los de soporte a la hora de dar la respuesta y actualizar el ticket. Ojo con eso.
     Route::get('/ticket/{id}/detalles',['uses'=> 'TicketsController@detalles','as' =>'ticket.detalles']);
     Route::get('/ticket/{id}/detalles/servicio',['uses'=> 'TicketsController@detallesservicio','as' =>'ticket.detalles.servicio']);
 

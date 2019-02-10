@@ -13,7 +13,7 @@ class TicketsController extends Controller
 {
 	public function ticketsestatus()
 	{
-		$estatus = (object)["0"=>"enviado", "1"=>"en revision", "2"=>"cerrada"];
+		$estatus = (object)["0"=>"enviado", "1"=>"en revision", "2"=>"cerrado"];
 		return response()->json(['estatus'=>$estatus]);
 	}
 
@@ -156,9 +156,14 @@ class TicketsController extends Controller
     	
     }
 
-    public function actualizar()
+    public function actualizar(Request $request, $id)
     {
-    	
+    	$ticket = Ticket::find($id);
+        $ticket->respuesta = $request->respuesta;
+        $ticket->estatus = $request->estatus;
+        $ticket->usuario_respuesta_id = Auth::user()->id;
+        $ticket->save();
+        return response()->json(['success'=>'El ticket '.$ticket->getNro().' fue respondido exitosamente.']);
     }
 
     public function detalles($id)
