@@ -97,10 +97,27 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        //return Auth::user()->id;
+        return Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
         $id = 17;
         $becario = Becario::find($id);
+        $usuario = User::find($id);
+        $alerta = Alerta::find(1);
+        return $alerta->user;
+        return $usuario->alertas;
         //return $becario->entrevistadores;
         //Enviar correo a los entrevistadores
+        $alerta = new Alerta;
+        $alerta->titulo = "Entrevista";
+        $alerta->descripcion = "A ud se le asigno una fecha entrevista.";
+        $alerta->leido = 0;
+        $alerta->nivel = "alto";
+        $alerta->nivel = "enviada";
+        $alerta->tipo = "entrevista";
+        $alerta->oculto = 0;
+        $alerta->user_id = 17;
+        $alerta->save();
+        return "se creo una alerta";
         foreach ($becario->entrevistadores as $entrevista)
         {
             $mail = new PHPMailer();
@@ -119,7 +136,7 @@ class GetPublicController extends Controller
             $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
             $mail->MsgHTML($body);
             $mail->addAddress($entrevistador->email);
-            $mail->send();
+            //$mail->send();
         }
         return "correos enviados";
         $ticket = Ticket::find(1);

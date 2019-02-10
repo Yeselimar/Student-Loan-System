@@ -65,7 +65,8 @@ class SisbecaController extends Controller
         }
         else
         {
-            $alertas = Alerta::query()->where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+            $alertas = Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+
                 Alerta::where('status', '=', 'generada')->where('user_id', '=', Auth::user()->id)->update(array('leido' => true));
         }
         return  view('sisbeca.notificaciones.listarNotificaciones')->with('notificaciones',$alertas);

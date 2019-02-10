@@ -8,7 +8,7 @@ class Alerta extends Model
 {
     protected $table= 'alertas';
 
-    public function user()
+    public function user() // relación buena
     {
         return $this->belongsTo('avaa\User','user_id');
     }

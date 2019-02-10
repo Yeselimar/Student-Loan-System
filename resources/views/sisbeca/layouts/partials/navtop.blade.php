@@ -78,7 +78,7 @@
                             <a>{{Auth::user()->nombreyapellido()}}</a>
                         </li>
                         <li>
-                            <a>Rol: {{strtoupper(Auth::user()->rol)}}</a>
+                            <a><strong> {{Auth::user()->getRol()}} </strong></a>
                         </li>
                         <li>
                             <a href="{{ route('logout') }}"

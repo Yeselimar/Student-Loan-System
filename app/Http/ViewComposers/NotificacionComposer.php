@@ -117,12 +117,13 @@ class NotificacionComposer{
 
             if(Auth::user()->rol==='directivo')
             {
-                $alertas = Alerta::query()->where('leido', '=', false)
+                $alertas = Alerta::where('leido', '=', false)
                 ->where('status','=','enviada')->whereIn('user_id',$principal)->orWhere('user_id','=',Auth::user()->id)->orWhere('tipo','=','nomina')->get();
             }
-            else{
+            else
+            {
                 
-                $alertas = Alerta::query()->where('leido', '=', false)->where('tipo','<>','nomina')
+                $alertas = Alerta::where('leido', '=', false)->where('tipo','<>','nomina')
                 ->where('status','=','enviada')->whereIn('user_id',$principal)->orWhere('user_id','=',Auth::user()->id);
             }
 
@@ -131,7 +132,6 @@ class NotificacionComposer{
         {
             /*if(Auth::user()->rol==='coordinador')
             {
-
                 //ademas solo se le mostrara las solicitudes que tiene a cargo de sus becarios
                 $becariosAsignados= Becario::query()->where('coordinador_id','=',Auth::user()->id)->get();
 
@@ -164,16 +164,10 @@ class NotificacionComposer{
                      array_push($principal,$s);
                  }
 
-
-
                 $solicitudesDeBecarios= Solicitud::query()->where('status','=','enviada')
                     ->whereIn('user_id',$principal)->get();
 
-
                 $numSolicitudesDeBecarios= $solicitudesDeBecarios->count();
-
-
-
 
                 //Ademas Las Notificaciones que se le mostraran a los coordinadores tendran status enviada ya que esta es enviada por uno de sus becarios que tiene
                 //a su disposicion
@@ -185,7 +179,7 @@ class NotificacionComposer{
             if(Auth::user()->rol==='becario' || Auth::user()->rol==='mentor')
             {
                 //Las Notificaciones que se le mostraran a los becarios tendran status generado ya que esta es generada por otro ente del sistema
-                $alertas = Alerta::query()->where('user_id', '=', $user_id)->where('leido', '=', false)
+                $alertas = Alerta::where('user_id', '=', $user_id)->where('leido', '=', false)
                     ->where('status','=','generada')->get();
             }
         }
@@ -197,6 +191,13 @@ class NotificacionComposer{
         {
             $cant_notificaciones= $alertas->count();
         }
+
+        if(Auth::user()->esEntrevistador()) // agregado por Rafael
+        {
+            $alertas = Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+            $cant_notificaciones = $alertas->count();
+        }
+
         $imagen_perfil= Imagen::query()->where('user_id','=',Auth::user()->id)->where('titulo','=','img_perfil')->get();
         $view->with('alertas',$alertas)->with('numT',$numPostulantesB+$numPostulantesM)->with('cantNotif',$cant_notificaciones)
         ->with('numSoliBecarios',$numSolicitudesDeBecarios)->with('numNominas',$numNominas)->with('image_perfil',$imagen_perfil)->with('numdesincorporaciones',$numdesincorporaciones);

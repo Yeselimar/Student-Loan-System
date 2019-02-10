@@ -51,10 +51,9 @@
 				</template>
 								
 				<template slot="estatus" slot-scope="row">
-					<span v-if="row.item.estatus=='enviado'" class="label label-warning">enviado</span>
-					<span v-else-if="row.item.estatus=='en revision'" class="label label-success">en revisión</span>
-					<span v-else-if="row.item.estatus=='cerrado'" class="label label-danger">cerrado</span>
-					
+					<span v-if="row.item.estatus=='Enviado'" class="label label-warning">@{{row.item.estatus}}</span>
+					<span v-else-if="row.item.estatus=='En revisión'" class="label label-success">@{{row.item.estatus}}</span>
+					<span v-else-if="row.item.estatus=='Cerrado'" class="label label-danger">@{{row.item.estatus}}</span>
 				</template>
 
 				<template slot="prioridad" slot-scope="row">
@@ -75,9 +74,16 @@
 						<i class="fa fa-eye"></i>
 					</button>
 
-					<a v-b-popover.hover.bottom="'Ver imagen'" :href="urlVerImagen(row.item.imagen)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
-						<i class="fa fa-photo"></i>
-					</a>
+					<template v-if="row.item.imagen!=null">
+						<a v-b-popover.hover.bottom="'Ver imagen'" :href="urlVerImagen(row.item.imagen)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
+							<i class="fa fa-photo"></i>
+						</a>
+					</template>
+					<template v-else>
+						<a v-b-popover.hover.bottom="'Ver imagen'" class="btn btn-xs sisbeca-btn-primary" target="_blank" disabled="disabled">
+							<i class="fa fa-photo"></i>
+						</a>
+					</template>
 
 					<a v-b-popover.hover.bottom="'Ver detalles en una pestaña'" :href="urlVerDetalles(row.item.id)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
 						<i class="fa fa-external-link"></i>
@@ -103,9 +109,9 @@
 				<div class="modal-header">
 			    	<h5 class="modal-title pull-left">
 			    		<strong>Ticket @{{ticket.nro}}</strong>
-			    		<span v-if="ticket.estatus=='enviado'" class="label label-warning">enviado</span>
-						<span v-else-if="ticket.estatus=='en revision'" class="label label-success">en revisión</span>
-						<span v-else-if="ticket.estatus=='cerrado'" class="label label-danger">cerrado</span>
+			    		<span v-if="ticket.estatus=='Enviado'" class="label label-warning">@{{ticket.estatus}}</span>
+						<span v-else-if="ticket.estatus=='En revisión'" class="label label-success">@{{ticket.estatus}}</span>
+						<span v-else-if="ticket.estatus=='Cerrado'" class="label label-danger">@{{ticket.estatus}}</span>
 			    	</h5>
 			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
 			    </div>

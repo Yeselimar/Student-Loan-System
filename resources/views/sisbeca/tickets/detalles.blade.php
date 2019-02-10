@@ -42,9 +42,16 @@
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				<label class="control-label ">Imagen</label>
-				<a :href="urlVerImagen(ticket.imagen)" target="_blank" class="btn sisbeca-btn-primary btn-block">
-                	Ver Imagen <i class="fa fa-photo"></i>
-            	</a>
+				<template v-if="ticket.imagen!=null">
+					<a :href="urlVerImagen(ticket.imagen)" target="_blank" class="btn sisbeca-btn-primary btn-block">
+	                	Ver Imagen <i class="fa fa-photo"></i>
+	            	</a>
+            	</template>
+            	<template v-else>
+            		<a target="_blank" class="btn sisbeca-btn-primary btn-block" disabled="disabled">
+	                	Ver Imagen <i class="fa fa-photo"></i>
+	            	</a>
+            	</template>
 			</div>
 		</div>
 		<div class="row">
@@ -77,9 +84,9 @@
                     <h5 class="modal-title pull-left">
                     	<strong>
                     		Ticket @{{ticket.nro}}
-                    		<span v-if="ticket.estatus=='enviado'" class="label label-warning">enviado</span>
-							<span v-else-if="ticket.estatus=='en revision'" class="label label-success">en revisión</span>
-							<span v-else-if="ticket.estatus=='cerrado'" class="label label-danger">cerrado</span>
+                    		<span v-if="ticket.estatus=='Enviado'" class="label label-warning">@{{ticket.estatus}}</span>
+							<span v-else-if="ticket.estatus=='En revisión'" class="label label-success">@{{ticket.estatus}}</span>
+							<span v-else-if="ticket.estatus=='Cerrado'" class="label label-danger">@{{ticket.estatus}}</span>
                     	</strong>
                     </h5>
                     <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
@@ -156,6 +163,7 @@ $(document).ready(function(){
 				Vue.set(app.ticket, 'id', t.id);
 				Vue.set(app.ticket, 'nro', t.nro);
 				Vue.set(app.ticket, 'estatus', t.estatus);
+				Vue.set(app.ticket, 'estatus_original', t.estatus_original);
 				Vue.set(app.ticket, 'prioridad', this.primeramayuscula(t.prioridad));
 				Vue.set(app.ticket, 'tipo', this.primeramayuscula(t.tipo));
 				Vue.set(app.ticket, 'asunto', t.asunto);
@@ -177,7 +185,7 @@ $(document).ready(function(){
 		modalActualizar()
 		{
 			this.respuesta_actualizar=this.ticket.respuesta;
-			this.estatus_actualizar=this.ticket.estatus;
+			this.estatus_actualizar=this.ticket.estatus_original;
 			$('#modalActualizar').modal('show');
 		},
 		obtenerestatusticket()
