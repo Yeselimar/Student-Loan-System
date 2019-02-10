@@ -205,7 +205,7 @@ class EntrevistadorController extends Controller
 		$becario->notificando_entrevista = 1;
 		$becario->fecha_notificacion_entrevista = date("Y-m-d H:i:s");
 		$becario->save();
-		//Enviar correo a la persona notificando
+		//Enviar correo al postulante notificando
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
@@ -223,7 +223,31 @@ class EntrevistadorController extends Controller
         $mail->addAddress($becario->user->email);
         $mail->send();
 
-        return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()."."]);
+        //Enviar correo a los entrevistadores
+        foreach ($becario->entrevistadores as $item)
+        {
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "IMPORTANTE";
+            $entrevistador = $item;//Reasigno por si falla la iteracción
+            $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($entrevistador->email);
+            $mail->send();
+        }
+
+        //Genero una notificación o alerta
+        
+        return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()." y a sus entrevistadores."]);
 	}
 
 	public function ocultardelista($b_id,$e_id)

@@ -25,6 +25,7 @@ use avaa\Aval;
 use avaa\Solicitud;
 use avaa\Imagen;
 use avaa\Ticket;
+use avaa\Alerta;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -91,13 +92,36 @@ class GetPublicController extends Controller
 
     public function sendmail(Request $request)
     {
-    return response()->json(['nombre'=>$request->data]);
+        return response()->json(['nombre'=>$request->data]);
     }
 
     public function prueba()
     {
-        $id = 6;
-        $usuario = User::find($id);
+        $id = 17;
+        $becario = Becario::find($id);
+        //return $becario->entrevistadores;
+        //Enviar correo a los entrevistadores
+        foreach ($becario->entrevistadores as $entrevista)
+        {
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "IMPORTANTE";
+            $entrevistador = $entrevista;//Reasigno por si falla la iteracción
+            $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($entrevistador->email);
+            $mail->send();
+        }
+        return "correos enviados";
         $ticket = Ticket::find(1);
         return $ticket->usuariorespuesta;
         $anho = '2019';

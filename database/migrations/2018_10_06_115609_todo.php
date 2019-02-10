@@ -201,7 +201,12 @@ class Todo extends Migration
             $table->enum('nivel',['bajo','medio','alto'])->default('bajo');
             $table->enum('status',['enviada','generada'])->default('enviada');
             $table->unsignedInteger('solicitud')->nullable();
-            $table->enum('tipo',['nomina','solicitud','justificativo','relacionbm'])->nullable()->default('solicitud');
+            $table->unsignedInteger('actividad')->nullable();
+            $table->unsignedInteger('cva')->nullable();
+            $table->unsignedInteger('voluntariado')->nullable();
+            $table->unsignedInteger('periodo')->nullable();
+            $table->unsignedInteger('entrevista')->nullable();
+            $table->enum('tipo',['nomina','solicitud','relacionbm','justificativo','actividad','cva','voluntariado','periodo','entrevista','otros'])->nullable()->default('solicitud');
             $table->boolean('oculto')->default(0);
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); //si se borra el registro de user se borra toda la relacion de la tabla alertas
@@ -644,6 +649,8 @@ class Todo extends Migration
             $table->text('imagen')->nullable();
             $table->text('url')->nullable();
             $table->text('respuesta');
+            $table->boolean('notificado')->default('0');
+            $table->datetime('fecha_notificado')->nullable();
 
             $table->unsignedInteger('usuario_genero_id');
             $table->foreign('usuario_genero_id')->references('id')->on('users')->onDelete('cascade');
