@@ -4,7 +4,17 @@
 <div class="col-lg-12" id="app">
 	<div class="text-right">
 		@if(Auth::user()->esSoporte())
-        <button v-b-popover.hover.bottom="'Responder ticket'" class="btn btn-sm sisbeca-btn-primary" @click="modalActualizar()">
+        <template v-if="ticket.usuario_genero_id!=null">
+	        <button v-b-popover.hover.bottom="'Notificar por correo'" class="btn btn-sm sisbeca-btn-primary" @click="modalEnviarCorreo()">
+	        	<i class="fa fa-envelope"></i>
+	        </button>
+        </template>
+        <template v-else>
+        	<button v-b-popover.hover.bottom="'Notificar por correo'" class="btn btn-sm sisbeca-btn-primary" @click="modalEnviarCorreo()">
+	        	<i class="fa fa-envelope"></i>
+	        </button>
+        </template>
+       	<button v-b-popover.hover.bottom="'Responder ticket'" class="btn btn-sm sisbeca-btn-primary" @click="modalActualizar()">
         	<i class="fa fa-gavel"></i>
         </button>
         @endif
@@ -113,6 +123,34 @@
     </div>
     <!-- Modal para tomar accion -->
 
+    <!-- Modal para enviar correo al notificar -->
+    <div class="modal fade" id="modalEnviarCorreo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title pull-left">
+                    	<strong>
+                    		Ticket @{{ticket.nro}}
+                    		<span v-if="ticket.estatus=='Enviado'" class="label label-warning">@{{ticket.estatus}}</span>
+							<span v-else-if="ticket.estatus=='En revisión'" class="label label-success">@{{ticket.estatus}}</span>
+							<span v-else-if="ticket.estatus=='Cerrado'" class="label label-danger">@{{ticket.estatus}}</span>
+                    	</strong>
+                    </h5>
+                    <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-body">
+                	<br>
+                    <p class="text-center">¿Está seguro que desea enviar un correo al usuario que generó el <strong>Ticket @{{ticket.nro}}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >No</button>
+                    <button @click="enviarCorreo()" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para enviar correo al notificar -->
+
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>
@@ -182,21 +220,28 @@ $(document).ready(function(){
 				$("#preloader").hide();
 			});
 		},
-		modalActualizar()
-		{
-			this.respuesta_actualizar=this.ticket.respuesta;
-			this.estatus_actualizar=this.ticket.estatus_original;
-			$('#modalActualizar').modal('show');
-		},
 		obtenerestatusticket()
         {
             var url = '{{route('ticket.estatus')}}';
             axios.get(url).then(response => 
             {
                 this.estatus = response.data.estatus;
-                console.log(this.estatus);
             });
         },
+		modalActualizar()
+		{
+			this.respuesta_actualizar=this.ticket.respuesta;
+			this.estatus_actualizar=this.ticket.estatus_original;
+			$('#modalActualizar').modal('show');
+		},
+		modalEnviarCorreo()
+		{
+			$('#modalEnviarCorreo').modal('show');
+		},
+		enviarCorreo()
+		{
+
+		},
 		actualizarEstatus()
 		{
 			var url = '{{route('ticket.actualizar',':id')}}';
