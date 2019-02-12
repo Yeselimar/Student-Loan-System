@@ -65,8 +65,27 @@ class SisbecaController extends Controller
         }
         else
         {
-            $alertas = Alerta::query()->where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+            if(Auth::user()->esEntrevistador())
+            {
+                $alertas = Alerta::where('user_id', '=', Auth::user()->id)->get();
+            }
+            else
+            {
+                if(Auth::user()->esBecario())
+                {
+
+                    $alertas = Alerta::where('user_id', '=', Auth::user()->id)->get();
+                }
+                else
+                {
+                    $alertas = Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+                }
+               
+
                 Alerta::where('status', '=', 'generada')->where('user_id', '=', Auth::user()->id)->update(array('leido' => true));
+            }
+
+
         }
         return  view('sisbeca.notificaciones.listarNotificaciones')->with('notificaciones',$alertas);
     }

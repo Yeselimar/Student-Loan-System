@@ -8,6 +8,7 @@ use Validator;
 use avaa\Http\Requests\EntrevistadorRequest;
 use File;
 use avaa\Becario;
+use avaa\Alerta;
 use avaa\BecarioEntrevistador;
 use avaa\User;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -205,7 +206,7 @@ class EntrevistadorController extends Controller
 		$becario->notificando_entrevista = 1;
 		$becario->fecha_notificacion_entrevista = date("Y-m-d H:i:s");
 		$becario->save();
-		//Enviar correo a la persona notificando
+		//Enviar correo al postulante notificando
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
@@ -223,7 +224,55 @@ class EntrevistadorController extends Controller
         $mail->addAddress($becario->user->email);
         $mail->send();
 
-        return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()."."]);
+        //Enviar correo a los entrevistadores
+        foreach ($becario->entrevistadores as $item)
+        {
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "IMPORTANTE";
+            $entrevistador = $item;//Reasigno por si falla la iteracción
+            $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($entrevistador->email);
+            $mail->send();
+        }
+
+        //Genero una alerta para el postulante becario
+		$alerta = new Alerta;
+        $alerta->titulo = "Entrevista";
+        $alerta->descripcion = "Nuestro equipo lo invita a una entrevista para el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+        $alerta->leido = 0;
+        $alerta->nivel = "alto";
+        $alerta->status = "generada";
+        $alerta->tipo = "entrevista";
+        $alerta->oculto = 0;
+        $alerta->user_id = $becario->user_id;
+        $alerta->save();
+
+        //Genero una alertas para los entrevistadores
+        foreach ($becario->entrevistadores as $entrevistador)
+        {
+        	$alerta = new Alerta;
+	        $alerta->titulo = "Entrevista";
+	        $alerta->descripcion = "Nuestro equipo le asignó la entrevista del postulante ".$becario->user->nombreyapellido()." el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+	        $alerta->leido = 0;
+	        $alerta->nivel = "alto";
+	        $alerta->status = "generada";
+	        $alerta->tipo = "entrevista";
+	        $alerta->oculto = 0;
+	        $alerta->user_id = $entrevistador->id;
+	        $alerta->save();
+        }
+        return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()." y a sus entrevistadores."]);
 	}
 
 	public function ocultardelista($b_id,$e_id)

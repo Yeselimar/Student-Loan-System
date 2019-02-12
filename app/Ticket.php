@@ -28,4 +28,44 @@ class Ticket extends Model
     {
         return '#'.str_pad($this->id, 4, "0", STR_PAD_LEFT);
     }
+
+    public function getEstatus()
+    {
+        switch ($this->estatus)
+        {
+            case 'enviado':
+                $estatus = "Enviado";
+                break;
+            case 'en revision':
+                $estatus = "En revisión";
+                break;
+            case 'cerrado':
+                $estatus = "Cerrado";
+                break;
+            default:
+                $estatus = 'Estatus no encontrado';
+                break;
+        }
+        return $estatus;
+    }
+
+    public function fechaGenerado()
+    {
+        return date("d/m/Y", strtotime($this->created_at));
+    }
+
+    public function horaGenerado()
+    {
+        return date("h:i A", strtotime($this->created_at));
+    }
+
+    public function fechaNotificado()
+    {
+        return date("d/m/Y", strtotime($this->fecha_notificado));
+    }
+
+    public function horaNotificado()
+    {
+        return date("h:i A", strtotime($this->fecha_notificado));
+    }
 }
