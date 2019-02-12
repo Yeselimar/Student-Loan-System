@@ -106,6 +106,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);//Usado por los de soporte a la hora de dar la respuesta y actualizar el ticket. Ojo con eso.
     Route::get('/ticket/{id}/detalles',['uses'=> 'TicketsController@detalles','as' =>'ticket.detalles']);
     Route::get('/ticket/{id}/detalles/servicio',['uses'=> 'TicketsController@detallesservicio','as' =>'ticket.detalles.servicio']);
+    Route::get('/ticket/{id}/enviar-correo/servicio',['uses'=> 'TicketsController@enviarcorreo','as' =>'ticket.enviarcorreo.servicio']);
 
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()

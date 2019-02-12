@@ -58,4 +58,14 @@ class Ticket extends Model
     {
         return date("h:i A", strtotime($this->created_at));
     }
+
+    public function fechaNotificado()
+    {
+        return date("d/m/Y", strtotime($this->fecha_notificado));
+    }
+
+    public function horaNotificado()
+    {
+        return date("h:i A", strtotime($this->fecha_notificado));
+    }
 }

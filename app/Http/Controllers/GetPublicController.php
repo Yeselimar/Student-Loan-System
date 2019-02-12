@@ -98,6 +98,56 @@ class GetPublicController extends Controller
     public function prueba()
     {
         //return Auth::user()->id;
+        //Genero una alerta para el postulante becario}
+        $becario  = BEcario::find(17);
+        $alerta = new Alerta;
+        $alerta->titulo = "Entrevista";
+        $alerta->descripcion = "Nuestro equipo lo invita a una entrevista para el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+        $alerta->leido = 0;
+        $alerta->nivel = "alto";
+        $alerta->status = "enviada";
+        $alerta->tipo = "entrevista";
+        $alerta->oculto = 0;
+        $alerta->user_id = $becario->user_id;
+        $alerta->save();
+
+        //Genero una alertas para los entrevistadores
+        foreach ($becario->entrevistadores as $entrevistador)
+        {
+            $alerta = new Alerta;
+            $alerta->titulo = "Entrevista";
+            $alerta->descripcion = "Nuestro equipo le asignó la entrevista del postulante ".$becario->user->nombreyapellido()." el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+            $alerta->leido = 0;
+            $alerta->nivel = "alto";
+            $alerta->status = "enviada";
+            $alerta->tipo = "entrevista";
+            $alerta->oculto = 0;
+            $alerta->user_id = $entrevistador->id;
+            $alerta->save();
+        }
+        return "Too bien";
+        $ticket = Ticket::find(1);
+        $ticket->notificado = 1;
+        $ticket->fecha_notificado = date("Y-m-d H:i:s");
+        $ticket->save();
+        //Enviamos un correo al que generó el ticket con la respuesta
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Respuesta Ticket: ".$ticket->getNro();
+        $body = view("emails.tickets.ticket-respuesta")->with(compact("ticket"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($ticket->usuariogenero->email);
+        $mail->send();
+        return "exitoo:)";
         return Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
         $id = 17;
         $becario = Becario::find($id);

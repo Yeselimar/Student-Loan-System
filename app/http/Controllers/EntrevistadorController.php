@@ -8,6 +8,7 @@ use Validator;
 use avaa\Http\Requests\EntrevistadorRequest;
 use File;
 use avaa\Becario;
+use avaa\Alerta;
 use avaa\BecarioEntrevistador;
 use avaa\User;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -245,8 +246,32 @@ class EntrevistadorController extends Controller
             $mail->send();
         }
 
-        //Genero una notificación o alerta
-        
+        //Genero una alerta para el postulante becario
+		$alerta = new Alerta;
+        $alerta->titulo = "Entrevista";
+        $alerta->descripcion = "Nuestro equipo lo invita a una entrevista para el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+        $alerta->leido = 0;
+        $alerta->nivel = "alto";
+        $alerta->status = "generada";
+        $alerta->tipo = "entrevista";
+        $alerta->oculto = 0;
+        $alerta->user_id = $becario->user_id;
+        $alerta->save();
+
+        //Genero una alertas para los entrevistadores
+        foreach ($becario->entrevistadores as $entrevistador)
+        {
+        	$alerta = new Alerta;
+	        $alerta->titulo = "Entrevista";
+	        $alerta->descripcion = "Nuestro equipo le asignó la entrevista del postulante ".$becario->user->nombreyapellido()." el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+	        $alerta->leido = 0;
+	        $alerta->nivel = "alto";
+	        $alerta->status = "generada";
+	        $alerta->tipo = "entrevista";
+	        $alerta->oculto = 0;
+	        $alerta->user_id = $entrevistador->id;
+	        $alerta->save();
+        }
         return response()->json(['success'=>'El correo fue enviado exitosamente a '.$becario->user->nombreyapellido()." y a sus entrevistadores."]);
 	}
 

@@ -4,13 +4,13 @@
 <div class="col-lg-12" id="app">
 	<div class="text-right">
 		@if(Auth::user()->esSoporte())
-        <template v-if="ticket.usuario_genero_id!=null">
+        <template v-if="ticket.notificado!='1'">
 	        <button v-b-popover.hover.bottom="'Notificar por correo'" class="btn btn-sm sisbeca-btn-primary" @click="modalEnviarCorreo()">
 	        	<i class="fa fa-envelope"></i>
 	        </button>
         </template>
         <template v-else>
-        	<button v-b-popover.hover.bottom="'Notificar por correo'" class="btn btn-sm sisbeca-btn-primary" @click="modalEnviarCorreo()">
+        	<button v-b-popover.hover.bottom="'Notificar por correo'" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">
 	        	<i class="fa fa-envelope"></i>
 	        </button>
         </template>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="modal-body">
                 	<br>
-                    <p class="text-center">¿Está seguro que desea enviar un correo al usuario que generó el <strong>Ticket @{{ticket.nro}}</strong>?</p>
+                    <p class="text-center">¿Está seguro que desea enviar un correo al usuario que generó el <strong>Ticket @{{ticket.nro}}</strong> con su respuesta?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >No</button>
@@ -214,6 +214,7 @@ $(document).ready(function(){
 				Vue.set(app.ticket, 'pertenece',  t.usuariogenero+' ('+this.primeramayuscula(t.rolgenero)+')');
 				Vue.set(app.ticket, 'created_at', t.created_at.date);
 				Vue.set(app.ticket, 'updated_at', t.updated_at.date);
+				Vue.set(app.ticket, 'notificado', t.notificado);
 				$("#preloader").hide();
 			}).catch( error => {
 				console.log(error);
@@ -240,7 +241,18 @@ $(document).ready(function(){
 		},
 		enviarCorreo()
 		{
-
+			$('#modalEnviarCorreo').modal('hide');
+			$("#preloader").show();
+			var id = '{{$ticket->id}}';	
+			var url = '{{route('ticket.enviarcorreo.servicio',':id')}}';
+			url = url.replace(':id', id);
+            axios.get(url).then(response => 
+            {
+            	this.obtenerticket();
+				this.obtenerestatusticket();
+				$("#preloader").hide();
+                toastr.success(response.data.success);
+            });
 		},
 		actualizarEstatus()
 		{

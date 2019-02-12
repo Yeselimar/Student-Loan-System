@@ -88,7 +88,8 @@ class NotificacionComposer{
             $beca_to_array= $becariosAsignados->pluck('user_id')->toArray();
             $mentoresNuevos= Mentor::all();
             $collection = collect();
-            foreach ($mentoresNuevos as $mentor) {
+            foreach ($mentoresNuevos as $mentor)
+            {
 
                 if($mentor->becarios()->count()==0)
                 {
@@ -179,7 +180,7 @@ class NotificacionComposer{
             if(Auth::user()->rol==='becario' || Auth::user()->rol==='mentor')
             {
                 //Las Notificaciones que se le mostraran a los becarios tendran status generado ya que esta es generada por otro ente del sistema
-                $alertas = Alerta::where('user_id', '=', $user_id)->where('leido', '=', false)
+                $alertas = Alerta::where('user_id', '=', $user_id)->where('leido', '=', '0')
                     ->where('status','=','generada')->get();
             }
         }
@@ -194,7 +195,9 @@ class NotificacionComposer{
 
         if(Auth::user()->esEntrevistador()) // agregado por Rafael
         {
-            $alertas = Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+
+            $alertas = Alerta::where('user_id', '=', Auth::user()->id)->get();
+            //dd($alertas);
             $cant_notificaciones = $alertas->count();
         }
 

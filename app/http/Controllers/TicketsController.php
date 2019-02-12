@@ -184,7 +184,7 @@ class TicketsController extends Controller
         $ticket->estatus = $request->estatus;
         $ticket->usuario_respuesta_id = Auth::user()->id;
         $ticket->save();
-        return response()->json(['success'=>'El ticket '.$ticket->getNro().' fue respondido exitosamente.']);
+        return response()->json(['success'=>'El ticket '.$ticket->getNro().' fue actualizado exitosamente.']);
     }
 
     public function detalles($id)
@@ -227,6 +227,8 @@ class TicketsController extends Controller
                 "rolgenero" => $t->usuariogenero->getRol(),
                 "created_at" => $t->created_at,
                 "updated_at" => $t->updated_at,
+                "notificado" => $t->notificado,
+                "fecha_notificado" => $t->fecha_notificado,
             ));
     		return response()->json(['ticket'=>$todo[0]]);
     	}
@@ -236,6 +238,32 @@ class TicketsController extends Controller
     public function eliminar()
     {
     	
+    }
+
+    public function enviarcorreo($id)
+    {
+    	$ticket = Ticket::find($id);
+    	$ticket->notificado = 1;
+    	$ticket->fecha_notificado = date("Y-m-d H:i:s");
+    	$ticket->save();
+    	//Enviamos un correo al que generó el ticket con la respuesta
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Respuesta Ticket: ".$ticket->getNro();
+        $body = view("emails.tickets.ticket-respuesta")->with(compact("ticket"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($ticket->usuariogenero->email);
+        $mail->send();
+        return response()->json(['success'=>'El correo de notificación de respuesta fue enviado exitosamente.']);
     }
 
 }
