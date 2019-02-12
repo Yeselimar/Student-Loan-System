@@ -255,7 +255,7 @@
    </div>
 
 <div class="social-container .hidden-lg .hidden-xl">
-   <div class="fixed-bottom  s-container">
+   <div class="fixed-bottom  s-container d-flex">
    <a target="_blank" href="https://www.facebook.com/avaa.org/" class="facebookb"><i class="fa fa-facebook"></i></a>
    <a target="_blank" href="https://twitter.com/Avaa_org?lang=es" class="twitterb"><i class="fa fa-twitter"></i></a>
    <a target="_blank" href="https://www.instagram.com/avaa_org/?hl=es-la" class="instagramb"><i class="fa fa-instagram"></i></a>

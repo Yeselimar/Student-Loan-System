@@ -5,16 +5,20 @@
    <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
    </section>
-   <div class="linea-sobra"></div>
+   <div class="linea-sobra "></div>
+
    <div class="container-cabecera">
-      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="cabecera-imagen">
-      <div class="cabecera-titulo">
+     <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="cabecera-imagen">
+   <div class="cabecera-titulo">
          <p class="h1"> AVAA Asociación Venezolano Americana de Amistad</p>
-      </div>
    </div>
-   <div style="height: 20px" id="noticias"></div>
+
+   </div>
+
+
 <!--Banner-->
 @if($banners->count()!=0)
+
 <div style="height: 30px" id="noticias"></div>
 <div class="container" >
    <div class="carousel-banner owl-carousel owl-theme">
@@ -23,7 +27,7 @@
          <div class="row">
             <div class="col-lg-12" style="padding-left: 0px; padding-right: 0px;">
                <a href="{{$banner->url}}" target_="_blank">
-               <img class="img-fluid img-banner"   src="{{url($banner->imagen)}}" alt="{{$banner->titulo}}" />
+               <img class="img-responsive img-banner"   src="{{url($banner->imagen)}}" alt="{{$banner->titulo}}" />
                </a>
             </div>
 
@@ -41,8 +45,8 @@
          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border:1px solid #fff">
             <section class="section" >
                <div class="section-header" style="margin-bottom: 0px !important">
-                  <h1 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Noticias
-                  </h1>
+                  <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Noticias
+                  </h2>
                   <hr class="lines wow zoomIn" data-wow-delay="0.3s">
                </div>
 
@@ -54,7 +58,7 @@
                      <div class="row">
                      <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
                         <a href="{{route('showNoticia',$noticia->slug)}}">
-                        <img data-mh="imagen" class="img-fluid img-noticias" src="{{url($noticia->url_imagen)}}" alt="{{$noticia->titulo}}" />
+                        <img data-mh="imagen" class="img-responsive img-noticias" src="{{url($noticia->url_imagen)}}" alt="{{$noticia->titulo}}" />
                         </a>
                      </div>
                         <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
@@ -94,7 +98,7 @@
             <hr class="lines wow zoomIn" data-wow-delay="0.3s">
             <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">La Asociación Venezolano Americana de Amistad desarrolla tres programas sociales en el área educativa.</p>
          </div>
-         <div class="d-flex flex-sm-column flex-md-row programa-tables letrasResponsive">
+         <div class="d-flex flex-sm-column flex-md-row programas-flex letrasResponsive">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
@@ -115,33 +119,14 @@
                   </div>
                </div>
             </div>
-            <!-- <div class="col-md-4 col-sm-6 col-xs-12">
-               <div class="programa-table" data-mh="programa">
-                  <div class="programa-details">
-                     <h2 class="title-programas" data-mh="programa-titulo">AVAA US</h2>
 
-                     <img src="{{asset('info_sitio/img/testimonial/avaainc.jpg')}}" alt="Avaa Internacional" / style="min-width: 100%;height: auto">
-
-                     <div class="col-lg-12">
-                        <br>
-                        <p class="h" align="justify">En AVAA buscamos promover y fomentar el intercambio educativo y cultural entre Venezuela, Estados Unidos y Canadá. Para ello, con la certificación y apoyo de las embajadas de estos países.</p>
-                     </div>
-                  </div>
-                  <hr>
-                  <div class="plan-button">
-                     <a target="_blank" href=" https://avaaus.org/
-                     " title="Mas Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Mas Información</span></a>
-                  </div>
-               </div>
-
-            </div> -->
             <div class="col-lg-6 col-sm-12 col-md-6 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
                      <h2 class="title-programas align-items-center d-flex justify-content-around " data-mh="programa-titulo">
-                     <img class="img-fluid" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height: 50px"  />
+                     <img class="img-responsive" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height: 50px"  />
                      ASESORÍAS EDUCATIVAS
-                     <img class="img-fluid" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  />
+                     <img class="img-responsive" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  />
                   </h2>
 
                      <img src="{{asset('info_sitio/img/testimonial/asesorias.jpg')}}" alt="Asesorias educativas" style="width: 100%;height: auto"  />
@@ -165,70 +150,89 @@
 
 
    <div class="linea-sobra" id="miembros-institucionales"></div>
-
-
    <!-- Aliados -->
    <section class="section">
-      <div class="container">
-         <div class="section-header">
-            <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Aliados </h2>
-            <hr class="lines wow zoomIn" data-wow-delay="0.3s">
-            <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Conoce nuestros Aliados</p>
-         </div>
-         @if($miembros->count()!=0)
-
-         <div class="" style="border:1px solid #fff">
-            <div class="carousel-miembros owl-carousel owl-theme">
-               @foreach($miembros as $miembro)
-                  <div class="col-lg-12" >
-                     <a class="miembro-enlace" href="{{route('showNoticia',$miembro->slug)}}">
-                        <img  class="img-fluid img-miembros" src="{{asset($miembro->url_imagen)}}" alt="{{$miembro->titulo}}" style="border:1px solid #eee "/>
-                        <p class="title-miembros-institucionales pt-2">{{$miembro->titulo}}</p>
-                     </a>
-                  </div>
-               @endforeach
+         <div class="container">
+            <div class="section-header">
+               <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Aliados </h2>
+               <hr class="lines wow zoomIn" data-wow-delay="0.3s">
+               <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Conoce nuestros Aliados</p>
             </div>
+         <div class="row">
+            <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
+            <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Organizaciones </h2>
+               @if($organizaciones->count()==0)
+               <div class="col-lg-12">
+                     <img  class="img-responsive " src="/images/aliados/organizaciones.png" style="border:1px solid #eee "/>
+                  </div>
+               @else
+                  <div class="" style="border:1px solid #fff">
+                     <div class="carousel-empresas owl-carousel owl-theme">
+                        @foreach($organizaciones as $organizacion)
+                           <div class="col-lg-12" >
+                              <a class="miembro-enlace" href="{{$organizacion->url}}">
+                                 <img  class="img-responsive " src="{{asset($organizacion->imagen)}}" alt="{{$organizacion->titulo}}" style="border:1px solid #eee "/>
+                                 <p class="title-miembros-institucionales pt-2">{{$organizacion->titulo}}</p>
+                              </a>
+                           </div>
+                        @endforeach
+                     </div>
+                  </div>
+               @endif
+            </div>
+            <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
+            <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Empresas </h2>
+                  @if($empresas->count()==0)
+                  <div class="col-lg-12">
+                        <img  class="img-responsive " src="/images/aliados/empresas.png" style="border:1px solid #eee "/>
+                     </div>
+                  @else
+                     <div class="" style="border:1px solid #fff">
+                        <div class="carousel-empresas owl-carousel owl-theme">
+                           @foreach($empresas as $empresa)
+
+                              <div class="col-lg-12" >
+                                 <a class="miembro-enlace" target="_blank" href="{{$empresa->url}}">
+                                    <img  class="img-responsive " src="{{asset($empresa->imagen)}}" alt="{{$empresa->titulo}}" style="border:1px solid #eee "/>
+                                    <p class="title-miembros-institucionales pt-2">{{$empresa->titulo}}</p>
+                                 </a>
+                              </div>
+                           @endforeach
+                        </div>
+                     </div>
+                  @endif
+               </div>
+               <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+               <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Instituciones </h2>
+
+
+                        <div class="" style="border:1px solid #fff">
+                           <div class="carousel-empresas owl-carousel owl-theme">
+                              @if($instituciones->count()==0)
+                              <div class="col-lg-12">
+                                    <img  class="img-responsive " src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
+                              </div>
+                              @else
+                                 @foreach($instituciones as $institucion)
+                                    <div class="col-lg-12" >
+                                       <a class="miembro-enlace" href="{{$instituciones->url}}">
+                                          <img  class="img-responsive " src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
+                                          <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
+                                       </a>
+                                    </div>
+                                 @endforeach
+                              @endif
+                           </div>
+                        </div>
+                  </div>
          </div>
-         @endif
       </div>
    </section>
 
    <div class="linea-sobra"></div>
 
-   <!-- Fin Miembros Institucionales -->
-
-
-   <!-- Organizaciones -->
-
- <!--   <section class="section">
-         <div class="container">
-            <div class="section-header">
-               <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Organizaciones </h2>
-               <hr class="lines wow zoomIn" data-wow-delay="0.3s">
-               <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Los miembros institucionales contribuyen con el desarrollo de nuestros programas de inversión social.</p>
-            </div>
-
-            @if($miembros->count()!=0)
-
-            <div class="" style="border:1px solid #fff">
-               <div class="carousel-organizaciones owl-carousel owl-theme">
-                  @foreach($miembros as $miembro)
-                     <div class="col-lg-12" >
-                        <a class="miembro-enlace" href="{{route('showNoticia',$miembro->slug)}}">
-                           <img class="img-fluid img-miembros"   src="{{asset($miembro->url_imagen)}}" alt="{{$miembro->titulo}}" style="border:1px solid #eee "/>
-                           <p class="title-miembros-institucionales pt-2">{{$miembro->titulo}}</p>
-                        </a>
-                     </div>
-                  @endforeach
-
-               </div>
-            </div>
-            @endif
-         </div>
-      </section> -->
-
+   <!-- Fin Aliados -->
       <div class="linea-sobra"></div>
-   <!-- Fin Organizaciones -->
 @endsection
 
 @section('personaljs')
@@ -256,34 +260,13 @@
 
       });
 
-      $('.carousel-miembros').owlCarousel({
-      loop: true,
-      margin: 10,
-      autoplay: true,
-      nav:false,
-
-
-      responsive:
-      {
-         0:
-         {
-            items:1,
-            nav:false,
-            dotsEach: true,
-         },
-         600:
-         {
-            items:3,
-            nav:false,
-         },
-         1000:
-         {
-            items:3,
-            nav:false,
-         }
-      },
-      autoplayTimeout:4000,
-      autoplayHoverPause: true,
+      $('.carousel-empresas').owlCarousel({
+         items: 1,
+         loop: true,
+         margin: 0,
+         autoplay: true,
+         autoplayTimeout: 4000,
+         autoplayHoverPause: true,
       });
 
       $('.carousel-organizaciones').owlCarousel({

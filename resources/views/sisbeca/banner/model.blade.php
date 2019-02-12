@@ -55,7 +55,7 @@
 			</div>
 		</div>
 
-		<hr>	
+		<hr>
 
 		<div class="form-group">
 			<div class="row">
@@ -66,7 +66,7 @@
                     <input class="btn sisbeca-btn-primary" type="submit" value="Guardar">
 				</div>
 			</div>
-		</div>		
+		</div>
 
 		{{ Form::close() }}
 	</div>

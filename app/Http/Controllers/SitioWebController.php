@@ -14,9 +14,11 @@ class SitioWebController extends Controller
     public function index()
     {
         $noticias = Noticia::query()->where('tipo', '=', "noticia")->where('al_carrousel','=','1')->orderBy('updated_at','desc')->limit(5)->get();
-        $miembros=  Noticia::query()->where('tipo', '=', "miembroins")->orderBy('updated_at','desc')->get();
-        $banners = Banner::all();
-        return view('index')->with('route',"home")->with(compact('noticias','cantidad','miembros','banners'));
+        $organizaciones=  Banner::where('tipo','=','organizaciones')->get();
+        $instituciones=  Banner::where('tipo','=','instituciones')->get();
+        $empresas=  Banner::where('tipo', '=', "empresas")->get();
+        $banners = Banner::where('tipo', '=', "banner")->get();
+        return view('index')->with('route',"home")->with(compact('noticias','cantidad','organizaciones','instituciones','empresas','banners'));
     }
 
     public function noticias()
@@ -42,7 +44,7 @@ class SitioWebController extends Controller
         return response()->json(['noticias'=>$todas]);
     }
 
-    
+
     public function showNoticia($slug)
     {
         $noticia = Noticia::where('slug','=',$slug)->first();

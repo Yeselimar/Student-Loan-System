@@ -21,28 +21,35 @@
         <div class="form-group">
             <div class="row">
 
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <label for="titulo" class="control-label">*Año</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <label for="titulo" class="control-label">*Nombre</label>
                     {{ Form::text('titulo', ($model=='crear') ? null : $banner->titulo, ['class' => 'sisbeca-input', 'placeholder'=>'Feria Internacional de Becas'])}}
                     <span class="errors" style="color:#red">{{ $errors->first('titulo') }}</span>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <label for="url" class="control-label">*URL</label>
                     {{ Form::text('url', ($model=='crear') ? null : $banner->url, ['class' => 'sisbeca-input', 'placeholder'=>'https://www.avaa.org'])}}
                     <span class="errors" style="color:#red">{{ $errors->first('url') }}</span>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <label for="imagen" class="control-label">
                         {{ $model=='crear' ? '*Imagen' : 'Actualizar Imagen' }}
                     </label>
                     {{ Form::file('imagen',['class' => 'sisbeca-input ', 'accept'=>'image/*' ] ) }}
                     <span class="errors">{{ $errors->first('imagen') }}</span>
                 </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <label for="imagen" class="control-label">
+                        {{ $model=='crear' ? '*Tipo' : 'Actualizar Tipo' }}
+                    </label>
+                    {{ Form::select('tipo', array('empresas'=>'Empresa','instituciones'=>'Institución','organizaciones'=>'Organización'),($model=='crear') ? 'empresa' : $banner->tipo,['class' =>'sisbeca-input']) }}
+                    <span class="errors">{{ $errors->first('tipo') }}</span>
+                </div>
 
                 @if($model=='editar')
-                <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <label for="imagen" class="control-label">Imagen Actual</label>
 
 

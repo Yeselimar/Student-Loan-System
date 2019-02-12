@@ -12,7 +12,7 @@ class BannerController extends Controller
 {
     public function index()
     {
-        $banners = Banner::all();
+        $banners = Banner::where('tipo','=', 'banner')->get();
         return view('sisbeca.banner.index')->with(compact('banners'));
     }
 
@@ -98,8 +98,9 @@ class BannerController extends Controller
     //Banner de Aliados
     public function indexaliados()
     {
-        $banners = Banner::all();
-        return view('sisbeca.banner.indexAliados')->with(compact('banners'));
+        $aliados = Banner::where('tipo', '=', 'empresas')->orwhere('tipo', '=', 'instituciones')->orwhere('tipo', '=', 'organizaciones')->get();
+
+        return view('sisbeca.banner.indexAliados')->with(compact('aliados'));
     }
     public function createaliado()
     {
@@ -124,6 +125,7 @@ class BannerController extends Controller
         $banner = new Banner;
         $banner->titulo = $request->get('titulo');
         $banner->url = $request->get('url');
+        $banner->tipo = $request->get('tipo');
         $banner->imagen = Banner::carpetaAliados().$nombre;
         $banner->save();
         flash("El Aliado fue creado exitosamente.",'success');
@@ -159,6 +161,7 @@ class BannerController extends Controller
         }
         $banner->titulo = $request->get('titulo');
         $banner->url = $request->get('url');
+        $banner->tipo = $request->get('tipo');
         $banner->save();
 
         flash("El Aliado fue actualizado exitosamente.",'success');

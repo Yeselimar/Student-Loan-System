@@ -60,7 +60,7 @@
 
 body
 {
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: 'Raleway', sans-serif;
   color: #333;
   font-size: 14px;
   font-weight: 400;
@@ -86,7 +86,7 @@ html
 
 p
 {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 26px;
 }
 
@@ -105,7 +105,8 @@ a
 
 h1, h2, h3, h4, h5
 {
-  font-family: Verdana, Geneva, sans-serif;
+  /* font-family: Verdana, Geneva, sans-serif; */
+  font-family: 'Raleway', sans-serif;
   font-size: 40px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -850,6 +851,7 @@ height: 20px;
 @media screen and (max-width: 1200px)
 {
 
+
   .navbar-header
   {
     width: 100%;
@@ -860,6 +862,7 @@ height: 20px;
   }
   .slicknav_menu{
     max-width: 900px;
+    display: block;
   }
   /*fin de nuevo*/
 
@@ -1336,7 +1339,7 @@ height: 20px;
 
 .programa-table:hover
 {
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px 0 rgba(0, 56, 101, 0.596);
 }
 
 .programa-table .programa-details h2
@@ -1774,24 +1777,74 @@ height: 20px;
   {
     text-transform: uppercase;
     text-align: center;
-    font-size: 15px !important;
+    /* font-size: 15px !important; */
+    font-size: 20px !important;
     font-weight: bold;
     width: auto;
+    color:#003865 !important;
+  }
+  .section-header .section-title
+  {
+    font-size: 42px !important;
+    margin-top: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #003865;
+    position: relative;
   }
 
  /*  .th-titulo{
     width: 400px !important;
   } */
 }
+@media(max-width: 767px){
+
+  .cabecera-titulo
+  {
+
+      background:#003865;
+
+      text-shadow: 1px 2px 2px #000;
+      /* position: absolute; */
+      width: 100vw;
+      left: auto;
+      right: auto;
+
+  }
+
+  .cabecera-titulo  p
+  {
+    width: auto;
+    color: #fff;
+    padding: 4px 15px 4px 15px !important;
+    font-size: 28px !important;
+    text-align: center !important;
+  }
+}
 @media (max-width: 575px)
 {
+
   .title-programas
   {
     text-transform: uppercase;
     text-align: center;
-    font-size: 20px !important;
+   /*  font-size: 20px !important; */
+   font-size: 25px !important;
     font-weight: bold;
     width: auto;
+    color:#003865 !important;
+  }
+  .section-header .section-title
+  {
+    font-size: 35px !important;
+    margin-top: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #003865;
+    position: relative;
+  }
+  .programas-flex{
+    flex-direction: column;
   }
 }
 /*
@@ -2346,11 +2399,7 @@ p.email span.icon a:hover
 .blockquote-box.blockquote-green{border-color:#61d2b4}
 .blockquote-box.blockquote-green .square{background-color:#61d2b4;color:#FFF}
 
-.img-responsive
-{
-  /*width: 260px !important;
-  height: 210px !important;*/
-}
+
 
 /*MIEMBROS INSTITUCIONALES*/
 .miembro-enlace
@@ -2392,15 +2441,16 @@ p.email span.icon a:hover
   font-size: 20px;
   font-weight: bold;
   width: auto;
-  max-width: 400px;
+ /*  max-width: 400px; */
 }
 .title-programas
 {
   text-transform: uppercase;
   text-align: center;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   width: auto;
+  color:#003865 !important;
 }
 .resumen-noticias {
 
@@ -2419,12 +2469,7 @@ p.email span.icon a:hover
   max-width: 1150px;
   max-height: 300px;
 }
-.img-miembros{
 
-  height: 200px;
-  width: auto;
-  max-width: 400px;
-}
 
 
 
@@ -2512,10 +2557,10 @@ p.email span.icon a:hover
       visibility: hidden !important;
       display: none !important;
   } */
-  .slicknav_menu
+  /* .slicknav_menu
   {
     display: block;
-  }
+  } */
   .back-to-top i
   {
   margin-bottom: 50px !important;
@@ -2527,7 +2572,7 @@ p.email span.icon a:hover
       display: inline-block;
       text-decoration: none;
       font-size: 20px !important;
-      width: 19%;
+      width: 20%;
 
   }
   .social-container a:hover {
@@ -2541,6 +2586,14 @@ p.email span.icon a:hover
   text-align: center;
   background-color: #f3f3f3;
 }
+}
+@media (max-width: 420px){
+  .cabecera-imagen
+  {
+      width: 100% !important;
+      /* height: auto; */
+      height: 40vh !important;
+  }
 }
 
 
@@ -2667,21 +2720,30 @@ table#tablaUnica
 
 .cabecera-titulo
 {
-    color: #fff;
-    background-image: linear-gradient(to bottom right, #003865, #041727);
+
+    background:#003865;
+
     text-shadow: 1px 2px 2px #000;
+   /*  position: absolute; */
+    width: 100vw;
+    left: auto;
+    right: auto;
+
+
 }
 
 .cabecera-titulo  p
 {
-  width: 100%;
+  width: auto;
+  color: #fff;
   padding: 4px 15px 4px 15px !important;
-  font-size: 32px;
+ /*  font-size: 30px; */
   text-align: center !important;
 }
 .cabecera-imagen
 {
     width: 100% !important;
-    height: auto;
+    /* height: auto; */
+    height: 60vh;
 }
 /*Cabecera para las seccioens de la página*/

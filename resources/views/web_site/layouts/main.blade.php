@@ -28,7 +28,8 @@
       <link href="{{asset('plugins/owlcarousel/assets/owl.theme.default.min.css')}}" rel="stylesheet"/>
 
       <link href="{{asset('plugins/toastr/toastr.min.css')}}" rel="stylesheet" />
-      @yield('personalcss')
+      <link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet">
+       @yield('personalcss')
    </head>
    <body>
       <!-- Header Section Start -->
@@ -67,17 +68,17 @@
 
       <script src="{{asset('/plugins/matchheight/jquery.matchHeight.js')}}"></script> <!-- Matcheight -->
       <script src="{{asset('/plugins/owlcarousel/owl.carousel.min.js')}}"></script> <!-- OwlCarousel -->
-    
+
 
       <!-- DataTable javaScript -->
       <!--<script src="{{asset('js/datatable.js')}}"></script>-->
 
-      
+
       <script src="{{asset('/plugins/toastr/toastr.min.js')}}"></script>
 
       <script src="{{asset('js/vue.js')}}"></script><!-- agregado para hacer funcionar el formulario de contacto-->
       <script src="{{asset('js/axios.js')}}"></script>
-      
+
       @yield('personaljs')
    </body>
 </html>
