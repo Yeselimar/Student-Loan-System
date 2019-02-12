@@ -70,4 +70,24 @@ class Aval extends Model
     {
         return $query->where('tipo','=','justificacion');
     }
+
+    public function scopeDePeriodos($query)
+    {
+        return $query->where('tipo','=','constancia');
+    }
+
+    public function scopeDeCVA($query)
+    {
+        return $query->where('tipo','=','nota');
+    }
+
+    public function scopeDeVoluntariados($query)
+    {
+        return $query->where('tipo','=','comprobante');
+    }
+
+    public function scopeConEstatus($query,$estatus)
+    {
+        return $query->where('estatus','=',$estatus);
+    }
 }
