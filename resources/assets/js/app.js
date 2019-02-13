@@ -5,6 +5,7 @@
  */
 
 window.Vue = require("vue");
+DatePicker2 = require('vue2-datepicker');
 BootstrapVue = require('bootstrap-vue');
 DatePicker= require('vue-bulma-datepicker');
 /**

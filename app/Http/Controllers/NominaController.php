@@ -83,6 +83,8 @@ class NominaController extends Controller
 
     public function procesar()
     {
+        return View('sisbeca.nomina.procesar');
+        /*
         //$ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $ultimodia= '2018-04-30';//prueba
         $fechagenerar = strtotime ( '-5 day' , strtotime ( $ultimodia ) ) ;//--poner-5
@@ -105,6 +107,7 @@ class NominaController extends Controller
             ->groupBy('mes','year')
             ->orderby('mes','desc')->orderby('year','desc')->get();
         return View('sisbeca.nomina.procesar')->with('nominas',$nominas)->with('generar',$generar)->with('mes',$mes)->with('anho',$anho);
+        
         /*
         $ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $fechagenerar = strtotime ( '-5 day' , strtotime ( $ultimodia ) ) ;//--poner-5
@@ -181,6 +184,196 @@ class NominaController extends Controller
         }
        
         return response()->json(['nominas'=>$nominasfiltro]);
+    }
+
+    public function generarNominaApi(Request $request){
+        $mes = $request->mes;
+        $year = $request->year;
+        $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
+       if(count($nominasaux) == 0)
+       {
+    
+
+        foreach($request->nomina as $n){
+                $nomina = new Nomina();
+                $nomina->retroactivo = $n['nomina']['retroactivo'];
+                $nomina->datos_nombres= $n['nomina']['datos_nombres'];
+                $nomina->datos_apellidos = $n['nomina']['datos_apellidos'];
+                $nomina->datos_cedula =  $n['nomina']['datos_cedula'];
+                $nomina->datos_email = $n['nomina']['datos_email'];
+                $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
+                $nomina->datos_id= $n['nomina']['datos_id'];
+                $nomina->sueldo_base = $n['nomina']['sueldo_base'];
+                foreach($n['facturas'] as $factlibro)
+                {
+                    $factura = FactLibro::find($factlibro['factura']['id']);
+                    $factura->status= $factlibro['factura']['status'];
+                    $factura->save();
+                }
+                $nomina->monto_libros = $n['nomina']['monto_libros'];
+                $nomina->cva = $n['nomina']['cva'];
+                $nomina->total = $n['nomina']['sueldo_base'] + $n['nomina']['retroactivo'] + $n['nomina']['monto_libros'] + $n['nomina']['cva'];
+                $nomina->mes = $mes;
+                $nomina->year = $year;
+                $nomina->status = 'generado';
+                $nomina->fecha_pago = null;
+                $nomina->fecha_generada = date('Y-m-d H:m:s');
+                $nomina->save();
+ 
+                $bn = new BecarioNomina();
+                $bn->user_id = $nomina->datos_id;//--becario_id
+                $bn->nomina_id = $nomina->id;
+                $bn->save();
+            
+         }
+         return response()->json(['res'=>1]);
+
+       } else {
+            return response()->json(['res'=>0]);
+
+       }
+        
+
+   }
+    public function getConsultarNominaApi($mes, $year){
+
+        $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
+        if(count($nominasaux)==0){
+            $becarios = Becario::whereIn('status',['activo','probatorio1','probatorio2','egresado'])->get();
+            $costo = Costo::first();
+            $sugeridos = collect();
+            $noSugeridos = collect();
+            foreach($becarios as $becario)
+               {
+                    $inNomina = false;
+                    $diff = 0;
+                    $date1 = new DateTime($becario->fecha_bienvenida);
+                    $date2 = new DateTime();
+                    // Entran en nomina aquellos becarios que su fecha de bienvendida sea mayor a un mes
+                    if($becario->fecha_bienvenida != null){
+                        $diff = $date1->diff($date2);
+
+                        if(($diff->invert == 0) && ($diff->m > 0) || ($diff->y > 0)){
+                            $inNomina =true;
+                        }
+                        else {
+                            $inNomina =false;
+                        }
+                    }
+
+                    if($inNomina) {
+                        //Entran en nomina aquellos becarios cuyo fecha fin de carga academica no sea  mayor a 6 meses
+                        $diff = 0;
+                        $date1 = new DateTime($becario->final_carga_academica);
+                        $date2 = new DateTime();
+                        if ($becario->final_carga_academica != null)
+                        {
+                            $diff = $date2->diff($date1);
+                            if(($diff->invert == 0) || (($diff->invert ==1) && ($diff->m <= 6) && ($diff->y == 0)) ){
+                                $inNomina =true;
+                            }
+                            else {
+                                $inNomina =false;
+                            }
+                        } else {
+                            $inNomina = true;
+                            if($becario->status === 'egresado'){
+                                $inNomina = false;
+                            }
+                        }
+                    }
+
+                       $nomina = new Nomina();
+                       $nomina->retroactivo = 0;
+                       $nomina->cva = 0;
+                       $nomina->datos_nombres= $becario->user->name;
+                       $nomina->datos_apellidos = $becario->user->last_name;
+                       $nomina->datos_cedula = $becario->user->cedula;
+                       $nomina->datos_email = $becario->user->email;
+                       $nomina->datos_cuenta = $becario->cuenta_bancaria;
+                       $nomina->datos_id= $becario->user_id;
+                       /*$becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
+                       $becario->save(); */
+                       $nomina->sueldo_base = $costo->sueldo_becario;
+                       $total = 0;
+                       $facturas = collect();
+                       foreach($becario->factlibros as $factlibro)
+                       {
+                           if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
+                           {
+                               $facturas->push(array(
+                                   "id" => count($facturas),
+                                   "factura" => $factlibro,
+                                   'selected' => false
+                                ));
+                           }
+               
+                       }
+                       $nomina->monto_libros = $total;
+                       $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $total;
+                       $nomina->mes = $mes;
+                       $nomina->year = $year;
+                       $nomina->status = 'pendiente';
+                       $nomina->fecha_pago = null;
+                       $nomina->fecha_generada = null;
+
+                       if ($inNomina)
+                       {
+                          $sugeridos->push(array(
+                            "id" => count($sugeridos),
+                            "nomina" => $nomina,
+                            "facturas" => $facturas,
+                            "is_sugerido" => true,
+                            "status_becario" => $becario->status,
+                            'final_carga_academica' => $becario->final_carga_academica,
+                            'fecha_bienvenida' => $becario->fecha_bienvenida,
+                            'fecha_ingreso' => $becario->fecha_ingreso,
+                            'selected' => false
+        
+                            ));
+                       } else {
+                         $noSugeridos->push(array(
+                            "id" => count($noSugeridos),
+                            "nomina" => $nomina,
+                            "facturas" => $facturas,
+                            "is_sugerido" => false,
+                            "status_becario" => $becario->status,
+                            'final_carga_academica' => $becario->final_carga_academica,
+                            'fecha_bienvenida' => $becario->fecha_bienvenida,
+                            'fecha_ingreso' => $becario->fecha_ingreso,
+                            'selected' => false
+                         ));
+
+                       }
+
+
+               }
+               return response()->json(['sugeridos'=>$sugeridos,'noSugeridos'=>$noSugeridos,'res'=> 2]);
+
+        } else {
+               return response()->json(['res'=> 0]);
+        }
+    }
+    public function getConsultarFacturasBecarioApi($id){ 
+        $becario = Becario::find($id);
+        $facturasAA = collect();
+        foreach($becario->factlibros as $factlibro)
+        {
+            if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
+            {
+                $facturasAA->push(array(
+                    "id" => count($facturasAA),
+                    "factura" => $factlibro,
+                    'selected' => false
+                 ));
+            }
+
+        }
+
+            return response()->json(['facturasAA'=>$facturasAA,'res'=> 1]);
+
+        
+
     }
 
     public function generartodo($mes,$anho)

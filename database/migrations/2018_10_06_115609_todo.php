@@ -413,9 +413,12 @@ class Todo extends Migration
             $table->string('curso');
             $table->string('url');
             $table->double('costo',20,2);
+            $table->datetime('fecha_pagada');
+            $table->datetime('fecha_cargada');
+            $table->datetime('fecha_procesada');
             $table->unsignedInteger('mes')->nullable();
             $table->unsignedInteger('year')->nullable();
-            $table->enum('status',['cargada','por procesar','revisada','pagada','rechazada'])->default('cargada');
+            $table->enum('status',['cargada','por procesar','revisada','pagada','rechazada','procesada'])->default('cargada');
 
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');

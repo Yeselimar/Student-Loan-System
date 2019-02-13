@@ -642,6 +642,11 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'NominaController@procesar',
             'as' => 'nomina.procesar'
         ]);
+        Route::get('/consultar/{mes}/becarios/{year}/nomina', 'NominaController@getConsultarNominaApi')->name('consultar.becarios.nomina');// consulta los becarios para la nomina
+        Route::get('/consultar/{id}/facturas/becario', 'NominaController@getConsultarFacturasBecarioApi')->name('consultar.facturas.becario');// consulta las facturas del becario
+        Route::post('/generar/nomina/api','NominaController@generarNominaApi')->name('generarNomina.api');
+
+
 
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@procesardetalle',
