@@ -113,9 +113,9 @@ class UserController extends Controller
         return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
     }
 
-    public function export() 
+    public function export() //
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        return Excel::download(new UsersExport, 'usuarios.xlsx');
     }
     
     public function import() 

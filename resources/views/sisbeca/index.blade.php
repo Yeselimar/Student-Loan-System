@@ -145,7 +145,7 @@
 					<hr class="reporte-linea">
 					<div class="caja-subtitulo" data-mh="reporte-titulo">
 						<p class="h6 text-center reporte-subtitulo">
-						<strong>Volutariados pendientes</strong>
+						<strong>Volutariado pendiente</strong>
 						</p>
 					</div>
 				</div>
@@ -158,7 +158,7 @@
 					<hr class="reporte-linea">
 					<div class="caja-subtitulo" data-mh="reporte-titulo">
 						<p class="h6 text-center reporte-subtitulo">
-						<strong>Notas Académicas pendientes</strong>
+						<strong>Nota Académica pendiente</strong>
 						</p>
 					</div>
 				</div>
@@ -171,7 +171,7 @@
 					<hr class="reporte-linea">
 					<div class="caja-subtitulo" data-mh="reporte-titulo">
 						<p class="h6 text-center reporte-subtitulo">
-						<strong>Justificativos pendientess</strong>
+						<strong>Justificativo pendiente</strong>
 						</p>
 					</div>
 				</div>
@@ -184,7 +184,7 @@
 					<hr class="reporte-linea">
 					<div class="caja-subtitulo" data-mh="reporte-titulo">
 						<p class="h6 text-center reporte-subtitulo">
-						<strong>Solicitudes pendientess</strong>
+						<strong>Solicitud pendiente</strong>
 						</p>
 					</div>
 				</div>
