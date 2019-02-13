@@ -45,7 +45,7 @@ class MantenimientoNoticiaController extends Controller
         $noticia->url_imagen = '/images/noticias/'.$name;
         $noticia->al_carrousel = ($request->destacada=='1') ? 1 : 0;
         $tipo= ( 'noticia' === $noticia->tipo ) ? 'Noticia' : 'Miembro Institucional';
-        
+
         if($noticia->save())
         {
             flash('La publicación tipo: '.$tipo.' fue registrada exitosamente.','success')->important();
@@ -55,7 +55,7 @@ class MantenimientoNoticiaController extends Controller
             flash('Disculpe, ha ocurrido un error al registrar la publicación.')->error()->important();
         }
         return redirect()->route('noticia.index');
-        
+
     }
 
     public function show($id)
@@ -80,7 +80,7 @@ class MantenimientoNoticiaController extends Controller
         $file= $request->file('url_imagen');
         if($request->tipo==='miembroins')
         {
-            $errores = Validator::make($request->all(), 
+            $errores = Validator::make($request->all(),
                 [
                 'url_articulo' => 'required|url',
                 'email_contacto' => [
@@ -90,7 +90,7 @@ class MantenimientoNoticiaController extends Controller
 
             ])->validate();
         }
-        
+
         if($request->url_imagen)
         {
             //return "hay algo";
@@ -103,7 +103,7 @@ class MantenimientoNoticiaController extends Controller
             $path = public_path() . '/images/noticias/';
             $file->move($path, $name);
         }
-        
+
 
         $noticia->fill($request->all());
         $noticia->slug = Noticia::getSlug($noticia->titulo);

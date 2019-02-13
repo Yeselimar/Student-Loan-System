@@ -103,9 +103,10 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     Route::get('/tickets/crear',['uses'=> 'TicketsController@crear','as' =>'ticket.crear']);
     Route::post('/tickets/guardar',['uses'=> 'TicketsController@guardar','as' =>'ticket.guardar']);
     Route::get('/tickets/{id}/editar',['uses'=> 'TicketsController@editar','as' =>'ticket.editar']);
-    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);
+    Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);//Usado por los de soporte a la hora de dar la respuesta y actualizar el ticket. Ojo con eso.
     Route::get('/ticket/{id}/detalles',['uses'=> 'TicketsController@detalles','as' =>'ticket.detalles']);
     Route::get('/ticket/{id}/detalles/servicio',['uses'=> 'TicketsController@detallesservicio','as' =>'ticket.detalles.servicio']);
+    Route::get('/ticket/{id}/enviar-correo/servicio',['uses'=> 'TicketsController@enviarcorreo','as' =>'ticket.enviarcorreo.servicio']);
 
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
@@ -193,7 +194,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     {
         //Eliminar a postulantne
         Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
-        //Segimiento 
+        //Segimiento
         Route::get('/todos/becarios', 'SeguimientoController@todosbecarios')->name('becarios.todos');
         Route::get('/todos/becarios/api', 'SeguimientoController@todosbecariosapi')->name('becarios.todos.api');
         Route::get('/becarios/obtener-estatus/api', 'SeguimientoController@obtenerestatusbecarios')->name('obtener.estatus.becarios');
@@ -202,7 +203,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/becarios/reporte-general', 'SeguimientoController@becariosreportegeneral')->name('becarios.reporte.general');
          Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becariosreportegeneralapi')->name('becarios.reporte.general.api');
         Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/pdf', 'SeguimientoController@becariosreportegeneralpdf')->name('becarios.reporte.general.pdf');
- 
+
 
 
 
@@ -336,6 +337,13 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/banner/{id}/editar', 'BannerController@edit')->name('banner.edit');
         Route::post('/banner/{id}/actualizar', 'BannerController@update')->name('banner.update');
         Route::get('/banner/{id}/eliminar', 'BannerController@destroy')->name('banner.destroy');
+        //aliados
+        Route::get('/aliados', 'BannerController@indexaliados')->name('aliados.index');
+        Route::get('/aliado/crear', 'BannerController@createaliado')->name('aliado.create');
+        Route::post('/aliado/guardar', 'BannerController@storealiado')->name('aliado.store');
+        Route::get('/aliado/{id}/editar', 'BannerController@editaliado')->name('aliado.edit');
+        Route::post('/aliado/{id}/actualizar', 'BannerController@updatealiado')->name('aliado.update');
+        Route::get('/aliado/{id}/eliminar', 'BannerController@destroyaliado')->name('aliado.destroy');
         //contacto
         Route::get('/contactos','ContactoController@index')->name('contacto.index');
     });
@@ -394,7 +402,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         //link para inscribirme y salirme.  justificar
 
 
-        //Reportes de Seguimiento 
+        //Reportes de Seguimiento
         //resumen becario y reporte general (Ojo estan rutas estan en el middleware: admin_mentor)
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
         Route::get('/becario/{id}/reporte-general', 'SeguimientoController@becarioreportegeneral')->name('seguimiento.becarioreportegeneral');

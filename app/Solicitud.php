@@ -36,4 +36,9 @@ class Solicitud extends Model
     {
         return $query->where('oculto_usuario','=',0);
     }
+
+    public function scopeConEstatus($query,$estatus)
+    {
+        return $query->where('status','=',$estatus);
+    }
 }

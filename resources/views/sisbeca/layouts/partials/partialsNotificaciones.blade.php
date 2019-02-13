@@ -15,7 +15,7 @@
             @if($cantNotif>0)
                 <div class="message-center">
 
-                  <!-- Message -->
+                    <!-- Message -->
                     @for($i=0;$i<$alertas->count(); $i++)
                         @if(Auth::user()->rol==='coordinador')
                             <a href="{{route('solicitud.revisar',$alertas[$i]->solicitud)}}">
@@ -53,7 +53,10 @@
                                                     <h6>{{$alertas[$i]->titulo}}</h6> <span class="mail-desc">{{$alertas[$i]->descripcion}}</span> <span class="time">{{$alertas[$i]->updated_at}}</span>
                                                 </div>
                                             </a>
-                                         @else
+                                        @else
+                                            @if(Auth::user()->esEntrevistador())
+                                               fdfdfd
+                                            @else
                                                 @if($alertas[$i]->titulo==='Desincorporacion(es) pendiente(s) por procesar')
 
                                                     <a href="{{route('desincorporaciones.listar')}}">
@@ -70,6 +73,7 @@
                                                         </div>
                                                     </a>
                                                 @endif
+                                            @endif
                                             @endif
                                         @else
 

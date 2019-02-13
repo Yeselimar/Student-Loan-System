@@ -25,6 +25,7 @@ use avaa\Aval;
 use avaa\Solicitud;
 use avaa\Imagen;
 use avaa\Ticket;
+use avaa\Alerta;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -91,13 +92,103 @@ class GetPublicController extends Controller
 
     public function sendmail(Request $request)
     {
-    return response()->json(['nombre'=>$request->data]);
+        return response()->json(['nombre'=>$request->data]);
     }
 
     public function prueba()
     {
-        $id = 6;
+        //return Auth::user()->id;
+        //Genero una alerta para el postulante becario}
+        $becario  = BEcario::find(17);
+        $alerta = new Alerta;
+        $alerta->titulo = "Entrevista";
+        $alerta->descripcion = "Nuestro equipo lo invita a una entrevista para el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+        $alerta->leido = 0;
+        $alerta->nivel = "alto";
+        $alerta->status = "enviada";
+        $alerta->tipo = "entrevista";
+        $alerta->oculto = 0;
+        $alerta->user_id = $becario->user_id;
+        $alerta->save();
+
+        //Genero una alertas para los entrevistadores
+        foreach ($becario->entrevistadores as $entrevistador)
+        {
+            $alerta = new Alerta;
+            $alerta->titulo = "Entrevista";
+            $alerta->descripcion = "Nuestro equipo le asignó la entrevista del postulante ".$becario->user->nombreyapellido()." el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
+            $alerta->leido = 0;
+            $alerta->nivel = "alto";
+            $alerta->status = "enviada";
+            $alerta->tipo = "entrevista";
+            $alerta->oculto = 0;
+            $alerta->user_id = $entrevistador->id;
+            $alerta->save();
+        }
+        return "Too bien";
+        $ticket = Ticket::find(1);
+        $ticket->notificado = 1;
+        $ticket->fecha_notificado = date("Y-m-d H:i:s");
+        $ticket->save();
+        //Enviamos un correo al que generó el ticket con la respuesta
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Respuesta Ticket: ".$ticket->getNro();
+        $body = view("emails.tickets.ticket-respuesta")->with(compact("ticket"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($ticket->usuariogenero->email);
+        $mail->send();
+        return "exitoo:)";
+        return Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+        $id = 17;
+        $becario = Becario::find($id);
         $usuario = User::find($id);
+        $alerta = Alerta::find(1);
+        return $alerta->user;
+        return $usuario->alertas;
+        //return $becario->entrevistadores;
+        //Enviar correo a los entrevistadores
+        $alerta = new Alerta;
+        $alerta->titulo = "Entrevista";
+        $alerta->descripcion = "A ud se le asigno una fecha entrevista.";
+        $alerta->leido = 0;
+        $alerta->nivel = "alto";
+        $alerta->nivel = "enviada";
+        $alerta->tipo = "entrevista";
+        $alerta->oculto = 0;
+        $alerta->user_id = 17;
+        $alerta->save();
+        return "se creo una alerta";
+        foreach ($becario->entrevistadores as $entrevista)
+        {
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "IMPORTANTE";
+            $entrevistador = $entrevista;//Reasigno por si falla la iteracción
+            $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($entrevistador->email);
+            //$mail->send();
+        }
+        return "correos enviados";
         $ticket = Ticket::find(1);
         return $ticket->usuariorespuesta;
         $anho = '2019';

@@ -361,7 +361,7 @@ class SeguimientoController extends Controller
             $color_cva = "#FFEBEE";
             $color_voluntariado = "#FFEBEE";
             $color_periodo = "#FFEBEE";
-            $tiempo_actividad_facilitada = "#FFEBEE";
+            $color_actividad_facilitada = "#FFEBEE";
             $puntos = 0;
             if(!empty($actividades))
             {

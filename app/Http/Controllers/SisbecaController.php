@@ -16,6 +16,7 @@ use avaa\Becario;
 use avaa\Imagen;
 use avaa\Documento;
 use avaa\Actividad;
+use avaa\Aval;
 
 class SisbecaController extends Controller
 {
@@ -36,8 +37,13 @@ class SisbecaController extends Controller
         {
             $actividades = Actividad::menosConEstatus('oculto')->ordenadaPorFecha('asc')->where('fecha','>=',date('Y-m-d 00:00:00'))->take(10)->get();
         }
-       
-        return view('sisbeca.index')->with(compact('becario','usuario','actividades'));
+        //Conteo de CVA, Notas Académicas, Voluntariados en estatus pendiente.
+        $periodos_pendiente = Aval::dePeriodos()->conEstatus('pendiente')->count();
+        $cva_pendiente = Aval::deCVA()->conEstatus('pendiente')->count();
+        $voluntariados_pendiente = Aval::dePeriodos()->conEstatus('pendiente')->count();
+        $justificativos_pendiente  = Aval::justificativos()->conEstatus('pendiente')->count();
+        $solicitudes_pendiente  = Solicitud::conEstatus('enviada')->count();
+        return view('sisbeca.index')->with(compact('becario','usuario','actividades','periodos_pendiente','cva_pendiente','voluntariados_pendiente','justificativos_pendiente','solicitudes_pendiente'));
     }
 
     public function allNotificaciones()
@@ -65,8 +71,27 @@ class SisbecaController extends Controller
         }
         else
         {
-            $alertas = Alerta::query()->where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+            if(Auth::user()->esEntrevistador())
+            {
+                $alertas = Alerta::where('user_id', '=', Auth::user()->id)->get();
+            }
+            else
+            {
+                if(Auth::user()->esBecario())
+                {
+
+                    $alertas = Alerta::where('user_id', '=', Auth::user()->id)->get();
+                }
+                else
+                {
+                    $alertas = Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
+                }
+               
+
                 Alerta::where('status', '=', 'generada')->where('user_id', '=', Auth::user()->id)->update(array('leido' => true));
+            }
+
+
         }
         return  view('sisbeca.notificaciones.listarNotificaciones')->with('notificaciones',$alertas);
     }

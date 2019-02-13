@@ -101,7 +101,7 @@ class User extends Authenticatable
         return $this->hasMany('avaa\Imagen','user_id');
     }
 
-    public function alertas()
+    public function alertas() //relación buena
     {
         return $this->hasMany('avaa\Alerta','user_id');
     }
@@ -157,5 +157,58 @@ class User extends Authenticatable
         }
         else
             return false;
+    }
+
+    public function getRol()
+    {
+        switch ($this->rol)
+        {
+            case 'admin':
+                $rol = 'Administrador';
+                break;
+            case 'directivo':
+                $rol = 'Directivo';
+                break;
+            case 'rechazado':
+                $rol = 'Rechazado';
+                break;
+            case 'coordinador':
+                $rol = 'Coordinador';
+                break;
+            case 'mentor':
+                $rol = 'Mentor';
+                break;
+            case 'postulante_becario':
+                $rol = 'Postulante Becario';
+                break;
+            case 'postulante_mentor':
+                $rol = 'Postulante Mentor';
+                break;
+            case 'pre_postulante_mentor':
+                $rol = 'Pre Postulante Mentor';
+                break;
+            case 'becario':
+                $rol = 'Becario';
+                break;
+            case 'editor':
+                $rol = 'Editor';
+                break;
+            case 'mentor desincorporado':
+                $rol = 'Mentor Desincorporado';
+                break;
+            case 'becario desincorporado':
+                $rol = 'Becario Desincorporado';
+                break;
+            case 'entrevistador':
+                $rol = 'Entrevistador';
+                break;
+             case 'soporte':
+                $rol = 'Soporte';
+                break;
+            default:
+                $rol = 'Rol no encontrado';
+                break;
+        }
+        return $rol;
     }
 }

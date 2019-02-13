@@ -204,7 +204,7 @@
 					<div class="col-lg-12">
 						<br>
 						<p class="h6 text-center">
-							¿Está seguro que desea enviar un correo a <strong>@{{nombre_becario_correo}}</strong> notificándole los datos de su entrevista?
+							¿Está seguro que desea enviar un correo a <strong>@{{nombre_becario_correo}}</strong> y a sus <strong>entrevistadores</strong> notificándole los datos de la entrevista?
 						</p>
 					</div>
 					
@@ -217,7 +217,7 @@
 		</div>
 	</div>
 	<!-- Modal para confirmar al enviar correo-->
-
+	
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>
