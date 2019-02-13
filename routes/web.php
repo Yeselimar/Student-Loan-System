@@ -8,6 +8,8 @@
 Auth::routes();
 
 
+Route::get('/excel', 'UserController@export')->name('export');
+
 Route::get('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/post/login', 'Auth\LoginController@postlogin')->name('post.login');
 
