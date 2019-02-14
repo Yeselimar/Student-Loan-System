@@ -64,6 +64,7 @@ class FactLibrosController extends Controller
             $factura->curso= $request->get('curso');
             $factura->becario_id = Auth::user()->id;
             $factura->url= '/documentos/facturas/'.$name;
+            $factura->fecha_cargada = date("Y-m-d H:i:s");
             $factura->save();
 
             //Enviar correo a la persona notificando que fue recibido su justificativo
@@ -93,5 +94,39 @@ class FactLibrosController extends Controller
 
 
         return redirect()->route('facturas.listar');
+    }
+
+    public function facturaspendientes()
+    {
+        return view('sisbeca.factlibros.obtenerpendientes');
+    }
+
+    public function obtenerpendienteservicio()
+    {
+        $todos = collect();
+        $becarios = Becario::egresados()->probatorio1()->probatorio2()->activos()->get();
+        $cursos = FactLibro::conEstatus('cargada')->with("becario")->with("usuario")->orderby('created_at','desc')->get();
+        foreach ($becarios as $becario)
+        {
+            if(count($becario->factlibros)!=0)
+            {
+                $todos->push(array(
+                    'id' => $becario->user_id,
+                    'estatus_becario' => $becario->status,
+                    'nombre_becario' => $becario->user->nombreyapellido(),
+                    'total_pendientes' =>$becario->getTotalFacturasPendientes(),
+                    'facturas' => $becario->factlibros
+                ));
+            }
+        }
+        return response()->json(['becarios'=>$todos]);
+    }
+
+    public function actualizarfactura(Request $request, $id)
+    {
+        $factura = FactLibro::find($id);
+        $factura->status = $request->status;
+        $factura->save();
+        return response()->json(['success'=>'La factura fue actualizada exitosamente.']);
     }
 }

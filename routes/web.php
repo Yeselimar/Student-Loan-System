@@ -802,7 +802,11 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
-    {
+    {   
+        //Facturas Libros Modulo aparte
+        Route::get('/modulo/facturas-libros', 'FactLibrosController@facturaspendientes')->name('modulo.facturas.pendientes');
+        Route::get('/modulo/facturas-libros/servicio', 'FactLibrosController@obtenerpendienteservicio')->name('modulo.facturas.pendientes.servicio');
+        Route::post('/modulo/factura/{id}/actualizar/servicio', 'FactLibrosController@actualizarfactura')->name('modulo.facturas.actualizar.servicio');
 
         Route::get('listar/becariosDesincorporados', [
             'uses' => 'DirectivoController@listarBecariosDesincorporados',
