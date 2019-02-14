@@ -117,6 +117,11 @@ class Becario extends Model
         return $query->orwhere('status','=','probatorio2');
     }
 
+    public function scopeEgresados($query)
+    {
+        return $query->orwhere('status','=','egresado');
+    }
+
     public function scopeTerminosAceptados($query)
     {
         return $query->where('acepto_terminos','=','1');
@@ -387,5 +392,18 @@ class Becario extends Model
     {
         $ab = ActividadBecario::paraBecario($this->user->id)->orderby('created_at','desc')->get();
         return $ab->count();
+    }
+
+    public function getTotalFacturasPendientes()
+    {
+        $total = 0;
+        foreach ($this->factlibros as $factura)
+        {
+            if($factura->esCargada())
+            {
+                $total++;
+            }
+        }
+        return $total;
     }
 }

@@ -99,7 +99,10 @@ class GetPublicController extends Controller
     {
         //return Auth::user()->id;
         //Genero una alerta para el postulante becario}
-        $becario  = BEcario::find(17);
+        $becario  = Becario::find(6);
+        $factura = FactLibro::find(1);
+        return $factura->usuario;
+        return $becario->factLibros;
         $alerta = new Alerta;
         $alerta->titulo = "Entrevista";
         $alerta->descripcion = "Nuestro equipo lo invita a una entrevista para el ".$becario->fechaEntrevista()." a las ".$becario->horaEntrevistaCorta()." en ".$becario->lugar_entrevista;
