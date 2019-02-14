@@ -27,7 +27,7 @@ class NominaController extends Controller
 
     public function listar()
     {
-        $ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
+        /*$ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $fechagenerar = strtotime ( '-1 day' , strtotime ( $ultimodia ) ) ;//--poner-5
         $fechagenerar = date ( 'Y-m-d' , $fechagenerar );
         $hoy = date('Y-m-d');
@@ -46,8 +46,8 @@ class NominaController extends Controller
                      ->groupBy('mes','year')
                      ->orderby('mes','desc')->orderby('year','desc')->get();
 
-       
-        return View('sisbeca.nomina.listar')->with('nominas',$nominas)->with('generar',$generar)->with('mes',$mes)->with('anho',$anho);
+       */
+        return View('sisbeca.nomina.listar');
     }
 
     public function listarver($mes, $anho)
@@ -193,7 +193,7 @@ class NominaController extends Controller
        if(count($nominasaux) == 0)
        {
     
-
+        $hoy = date('Y-m-d H:m:s');
         foreach($request->nomina as $n){
                 $nomina = new Nomina();
                 $nomina->retroactivo = $n['nomina']['retroactivo'];
@@ -207,7 +207,17 @@ class NominaController extends Controller
                 foreach($n['facturas'] as $factlibro)
                 {
                     $factura = FactLibro::find($factlibro['factura']['id']);
-                    $factura->status= $factlibro['factura']['status'];
+                    if($factlibro['factura']['status'] == 'por procesar' ){
+                        $factura->status = 'procesada';
+                        $factura->fecha_procesada = $hoy;
+                    }
+                    else{
+                        if($factlibro['factura']['status'] == 'rechazada')
+                        {
+                            $factura->fecha_procesada = $hoy;
+                        }
+                        $factura->status= $factlibro['factura']['status'];
+                    }
                     $factura->save();
                 }
                 $nomina->monto_libros = $n['nomina']['monto_libros'];
@@ -217,7 +227,7 @@ class NominaController extends Controller
                 $nomina->year = $year;
                 $nomina->status = 'generado';
                 $nomina->fecha_pago = null;
-                $nomina->fecha_generada = date('Y-m-d H:m:s');
+                $nomina->fecha_generada = $hoy;
                 $nomina->save();
  
                 $bn = new BecarioNomina();
@@ -301,6 +311,9 @@ class NominaController extends Controller
                        {
                            if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
                            {
+                            if($factlibro->status === 'por procesar'){
+                                $total = $total + $factlibro->costo;
+                            }
                                $facturas->push(array(
                                    "id" => count($facturas),
                                    "factura" => $factlibro,
@@ -310,7 +323,7 @@ class NominaController extends Controller
                
                        }
                        $nomina->monto_libros = $total;
-                       $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $total;
+                       $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $nomina->monto_libros;
                        $nomina->mes = $mes;
                        $nomina->year = $year;
                        $nomina->status = 'pendiente';
@@ -352,6 +365,20 @@ class NominaController extends Controller
 
         } else {
                return response()->json(['res'=> 0]);
+        }
+    }
+    public function listarNominasApi(){
+        $nominas = DB::table('nominas')
+                     ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,fecha_generada, fecha_pago,sueldo_base, status, id'))
+                     ->where('status','=','generado')
+                     ->groupBy('mes','year')
+                     ->orderby('mes','desc')->orderby('year','desc')->get();
+        if(count($nominas)>0){
+            return response()->json(['nominas'=>$nominas,'res'=> 1]);
+
+        } else {
+            return response()->json(['res'=> 0]);
+
         }
     }
     public function getConsultarFacturasBecarioApi($id){ 

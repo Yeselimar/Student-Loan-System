@@ -407,23 +407,23 @@
 										</template>
 										<template slot="status" slot-scope="row" @click.prevent.stop="">
 											<div @click.prevent.stop="">
-											<div v-if="selectedStatusFactura==row.item.id" @click.prevent.stop="">
+											<div v-if="selectedStatusFactura==row.item.id" @click.prevent.stop="row.item.selected = true">
 													<select v-model="row.item.factura.status" class="sisbeca-input">
-															<option value="procesada">Procesar</option>
+															<option value="por procesar">Procesar</option>
 															<option value="rechazada">Rechazar</option>
 															<option value="cargada">Cargada</option>
 														</select>
 											</div>
 											<div v-else>
-													<span v-if="row.item.factura.status=='por procesar'" class="label label-warning"> Por Procesar</span>
+													<span v-if="row.item.factura.status=='por procesar'" class="label label-warning"> Procesar</span>
 													<span v-else-if="row.item.factura.status=='procesada'" class="label label-success">Procesar</span>
 													<span v-else-if="row.item.factura.status=='cargada'" class="label label-info">Cargada</span>
 													<span v-else-if="row.item.factura.status=='rechazada'" class="label label-danger">Rechazar</span>
 											</div>
-											<a v-if="selectedStatusFactura==row.item.id" v-b-popover.hover.bottom="'Aceptar'" @click.prevent.stop="selectedStatusFactura=-1" class="btn btn-xs sisbeca-btn-primary">
+											<a v-if="selectedStatusFactura==row.item.id" v-b-popover.hover.bottom="'Aceptar'" @click.prevent.stop="selectedStatusFactura=-1; row.item.selected = true" class="btn btn-xs sisbeca-btn-primary">
 													<i class="fa fa-plus"></i>
 											</a>
-											<a v-else v-b-popover.hover.bottom="'Editar Status'" @click.prevent.stop="selectedStatusFactura=row.item.id" class="btn btn-xs sisbeca-btn-primary">
+											<a v-else v-b-popover.hover.bottom="'Editar Status'" @click.prevent.stop="selectedStatusFactura=row.item.id;row.item.selected = true" class="btn btn-xs sisbeca-btn-primary">
 													<i class="fa fa-pencil"></i>
 											</a>
 											</div>
@@ -669,6 +669,8 @@ const app = new Vue({
 						this.itemsS = []
 						this.itemsNS = []
 						toastr.success('La nomina del '+this.fecha+' fue generada exitosamente');
+						let url = "{{route('nomina.listar')}}"
+						location.replace(url)
 
 					}else {
 						toastr.warning('Ya existe una nomina para la fecha '+ this.fecha);
@@ -687,7 +689,7 @@ const app = new Vue({
 					}
 				},this)
 				this.$refs.modalRetroactivo.hide()
-				toastr.success('Campo Editado Exitosamente');
+				toastr.info('Campo Editado Exitosamente');
 
 				this.retroactivo = 0
 			},
@@ -698,7 +700,7 @@ const app = new Vue({
 					}
 				},this)
 				this.$refs.modalCVA.hide()
-				toastr.success('Campo Editado Exitosamente');
+				toastr.info('Campo Editado Exitosamente');
 
 				this.cva = 0
 			},
@@ -743,9 +745,13 @@ const app = new Vue({
 					if(f.factura.url) {
 						url = url.replace(':url_fact',f.factura.url.replace('/','',1))
 					}
+					let select = false
+					if(f.factura.status !== 'cargada'){
+						select = true
+					}
 					this.facturas.push({
 						id: f.id,
-						selected: false,
+						selected: select,
 						link: url,
 						factura: {...f.factura}
 					})
@@ -796,7 +802,7 @@ const app = new Vue({
 					}
 				},this)
 				this.selectedAllS = false
-				toastr.success('Becarios seleccionados agregados a lista de no sugeridos');
+				toastr.info('Becarios seleccionados agregados a lista de no sugeridos');
 
 			},
 			quitarDeSugeridos (item, index, band) {
@@ -824,7 +830,7 @@ const app = new Vue({
 					this.itemsS.splice(id_eliminar, 1);
 					this.itemsNS.push(aux)
 					if(band){
-						toastr.success('Becario agregado a lista de no sugeridos');
+						toastr.info('Becario agregado a lista de no sugeridos');
 					}
 				}
 			},
@@ -839,7 +845,7 @@ const app = new Vue({
 					}
 				},this)
 				this.selectedAllNS = false
-				toastr.success('Becarios seleccionados agregados a lista de sugeridos');
+				toastr.info('Becarios seleccionados agregados a lista de sugeridos');
 
 			},
 			agregarSelectedsFacturas(){
@@ -850,7 +856,7 @@ const app = new Vue({
 						let total = parseFloat(0)
 						this.facturas.forEach(function(fact,i){
 							if(fact.selected){
-								if(fact.factura.status === 'procesada'){
+								if(fact.factura.status === 'por procesar'){
 									total = parseFloat(total) + parseFloat(fact.factura.costo)
 								}
 								item.facturas[i] = fact
@@ -877,7 +883,7 @@ const app = new Vue({
 				this.facturas = []
 				this.selectedAllF = false
 				this.selectedStatusFactura = -1
-				toastr.success('Factura(s) edita(s) ');
+				toastr.info('Factura(s) edita(s) ');
 
 			},
 			agregarASugeridos (item, index,band) {
@@ -906,7 +912,7 @@ const app = new Vue({
 					this.itemsS.push(aux)
 					if(band) 
 					{
-						toastr.success('Becario Agregado a lista de sugeridos');
+						toastr.info('Becario Agregado a lista de sugeridos');
 
 					}
 				}
@@ -941,7 +947,10 @@ const app = new Vue({
 			},
 			formatomoneda(monto)
 			{
-				return Number(monto).toLocaleString("es-ES", {minimumFractionDigits: 2});
+					if(monto)
+						return Number(monto).toLocaleString("es-ES", {minimumFractionDigits: 2});
+					else 
+						return 0
 			},
 			onFilteredNS (filteredItems)
 			{

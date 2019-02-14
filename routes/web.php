@@ -701,6 +701,11 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'NominaController@listar',
             'as' => 'nomina.listar'
         ]);
+        Route::get('nomina/generadas/api', [
+            'uses' => 'NominaController@listarNominasApi',
+            'as' => 'listar.nominas.api'
+        ]);
+
 
         Route::get('nomina/generadas/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@listarver',
