@@ -350,7 +350,9 @@ class SeguimientoController extends Controller
                  ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
                 ;
-            })->first();
+            })->first();//va first
+
+            //return response()->json($periodos);
             //para actividades  facilitadas
             $af = DB::table('actividades')
                 ->selectRaw('*')
@@ -1991,7 +1993,8 @@ class SeguimientoController extends Controller
             $periodo = DB::table('periodos')
                 ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
-                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->orderby('aval.updated_at','desc')
+                ->selectRaw('*,numero_periodo as nivel_carrera')
                 ->join('aval', function ($join) use($id)
             {
             $join->on('periodos.aval_id','=','aval.id')
@@ -2082,7 +2085,8 @@ class SeguimientoController extends Controller
             $periodo = DB::table('periodos')
                 ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
-                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->orderby('aval.updated_at','desc')
+                ->selectRaw('*,numero_periodo as nivel_carrera')
                 ->join('aval', function ($join) use($id)
             {
             $join->on('periodos.aval_id','=','aval.id')
@@ -2162,25 +2166,33 @@ class SeguimientoController extends Controller
                 
             })->first();
         }
-
-        if($becario->esAnual())
+        //return response()->json($periodo);
+        $nivel_carrera='-';
+        $regimen = '-';
+        if($periodo)
         {
-            $regimen = "año";
-        }
-        else
-        {
-            if($becario->esSemestral())
+            $periodo_tmp = Periodo::find($periodo->id);
+            //return $
+            if($periodo_tmp->esAnual())
             {
-                $regimen = "semestre";
+                $regimen = "año";
             }
             else
             {
-                $regimen = "trimestre";
+                if($periodo_tmp->esSemestral())
+                {
+                    $regimen = "semestre";
+                }
+                else
+                {
+                    $regimen = "trimestre";
+                }
             }
+            $nivel_carrera = ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen;
         }
 
         $todo = array(
-            'nivel_carrera' => ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen,
+            'nivel_carrera' => $nivel_carrera,
             'horas_voluntariados' => $horas_voluntariado,
             'asistio_t' => ($asistio_t->total==null) ? '0' : $asistio_t->total,
             'asistio_cc' => ($asistio_cc->total==null) ? '0' : $asistio_cc->total,

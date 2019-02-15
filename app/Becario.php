@@ -248,6 +248,11 @@ class Becario extends Model
         return $this->regimen=="semestral";
     }
 
+    public function esTrimestral()
+    {
+        return $this->regimen=="trimestral";
+    }
+
     public function getAceptoTerminos()
     {
         if($this->acepto_terminos=="1")

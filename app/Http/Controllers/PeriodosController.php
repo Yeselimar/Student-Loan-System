@@ -86,6 +86,7 @@ class PeriodosController extends Controller
 
     public function guardar(Request $request,$id)
     {
+    	$becario = Becario::find($id);
     	$validation = Validator::make($request->all(), PeriodosRequest::rulesCreate());
 		if ( $validation->fails() )
 		{
@@ -112,6 +113,7 @@ class PeriodosController extends Controller
 		$periodo = new Periodo;
 		$periodo->numero_periodo = $request->get('numero_periodo');
 		$periodo->anho_lectivo = $request->get('anho_lectivo');
+		$periodo->regimen_periodo = $becario->regimen;
 		$periodo->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
 		$periodo->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');
 		$periodo->becario_id = $id;
@@ -155,7 +157,7 @@ class PeriodosController extends Controller
 		}
                 
         $periodo = Periodo::find($id);
-
+        $becario = Becario::find($periodo->user_id);
         if($request->file('constancia'))
         {	
         	File::delete($periodo->aval->url);
@@ -173,7 +175,8 @@ class PeriodosController extends Controller
 			$aval->save();
         }
 		
-		$periodo->numero_periodo = $request->get('numero_periodo');
+		//$periodo->numero_periodo = $request->get('numero_periodo');
+		//$periodo->regimen_periodo = $becario->regimen;
 		$periodo->anho_lectivo = $request->get('anho_lectivo');
 		$periodo->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->get('fecha_inicio'))->format('Y-m-d');
 		$periodo->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->get('fecha_fin'))->format('Y-m-d');

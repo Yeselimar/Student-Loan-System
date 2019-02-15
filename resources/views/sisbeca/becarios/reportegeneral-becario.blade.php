@@ -270,6 +270,7 @@
 				console.log(error);
 				$("#preloader").hide();
 			});
+			console.log(this.becario);
 			url = '{{route('seguimiento.reportetiempo.becario',array('id'=>':id'))}}';
 			url = url.replace(':id', id);
 			axios.get(url).then(response => 
@@ -279,6 +280,7 @@
 			}).catch( error => {
 				console.log(error);
 			});
+			console.log(this.tiempo);
 		},
 		consultabecariosreportegeneral(anho,mes)
 		{
