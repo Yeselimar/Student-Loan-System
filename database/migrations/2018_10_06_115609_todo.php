@@ -357,7 +357,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->integer('numero_periodo');//1er semestre: según el regimen del becario
-            $table->integer('regimen_periodo');//por si se cambia de regimen
+            $table->string('regimen_periodo');//por si se cambia de regimen
             $table->string('anho_lectivo');//2-2018
             $table->datetime('fecha_inicio');
             $table->datetime('fecha_fin');

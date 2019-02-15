@@ -71,11 +71,7 @@
 			<button @click="consultabecariosreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
 		</div>
 	</div>
-	<div class="text-right">
-		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-	</div>
+	
 	<div class="table-responsive">
 		<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
 			<div class="row">
@@ -121,11 +117,11 @@
 					@{{ row.item.becario.nombreyapellido}} (@{{ row.item.nivel_carrera}})
 				</template>
 
-				<template slot="actions" slot-scope="row">
-					<!--<div class="circulo-rojo">
+				<!--<template slot="actions" slot-scope="row">
+					<div class="circulo-rojo">
 						<p class="circulo-texto">1</p>
-					</div>-->
-				</template>
+					</div>
+				</template>-->
 				
 			</b-table>
 
@@ -135,6 +131,15 @@
 
 
 		</div>
+	</div>
+	<hr>
+	<div class="text-right">
+		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
 	</div>
 	<p>Falta average de desempeño</p>
 	<!--
@@ -244,7 +249,6 @@ $(document).ready(function() {
 			},
 		}],
 		fields: [
-		{ key: 'actions', label: '', sortable: true, 'class': 'text-center' },
 		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 		{ key: 'horas_voluntariados', label: 'H. Vol', sortable: true, 'class': 'text-center' },
 		{ key: 'asistio_t', label: '# Taller', sortable: true, 'class': 'text-center' },
@@ -328,6 +332,13 @@ $(document).ready(function() {
 		descargarpdf(anho,mes)
 		{
 			var url = '{{route('becarios.reporte.general.pdf',array('anho'=>':anho','mes'=>':mes'))}}'
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			return url;
+		},
+		descargarexcel(anho,mes)
+		{
+			var url = '{{route('becarios.reporte.general.excel',array('anho'=>':anho','mes'=>':mes'))}}'
 			url = url.replace(':anho', anho);
 			url = url.replace(':mes', mes);
 			return url;

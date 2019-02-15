@@ -127,14 +127,18 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
 
         Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
+
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
 
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
 
+         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/excel/', 'SeguimientoController@resumenanhomesexcel')->name('seguimiento.resumen.anhomes.excel');
         //reporte "tiempo"
         Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
+        Route::get('/becarios/reporte-tiempo/excel', 'SeguimientoController@reportetiempoexcel')->name('seguimiento.reportetiempo.excel');
         Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
         Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
+       
 
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
@@ -206,7 +210,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
          Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becariosreportegeneralapi')->name('becarios.reporte.general.api');
         Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/pdf', 'SeguimientoController@becariosreportegeneralpdf')->name('becarios.reporte.general.pdf');
 
-
+        Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/excel', 'SeguimientoController@becariosreportegeneralexcel')->name('becarios.reporte.general.excel');
 
 
         //actividades

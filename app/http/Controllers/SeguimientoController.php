@@ -15,6 +15,11 @@ use avaa\Curso;
 use avaa\Voluntariado;
 use avaa\Periodo;
 use DateTime;
+use Maatwebsite\Excel\Facades\Excel;
+use avaa\Exports\BecariosReporteGeneralExport;
+use avaa\Exports\BecariosReporteTiempoExport;
+use avaa\Exports\ResumenBecarioExport;
+
 
 class SeguimientoController extends Controller
 {   
@@ -289,6 +294,11 @@ class SeguimientoController extends Controller
             ));
         }
         return response()->json(['becarios'=>$todos]);
+    }
+
+    public function reportetiempoexcel()
+    {
+        return Excel::download(new BecariosReporteTiempoExport(), 'Reporte Tiempo.xlsx');
     }
 
     public function reportetiempobecario($id) //Actulizado el 25/01/2019
@@ -1151,6 +1161,54 @@ class SeguimientoController extends Controller
         return $pdf->stream('Reporte General - '.$mes_completo.'-'.$anho.'.pdf');
     }
 
+    public function becariosreportegeneralexcel($anho,$mes)
+    {
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+
+        return Excel::download(new BecariosReporteGeneralExport($anho,$mes), 'Reporte General ('.$mes_completo.'-'.$anho.').xlsx');
+    }
+
    	public function todosbecarios()
    	{
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
@@ -1853,10 +1911,62 @@ class SeguimientoController extends Controller
                     $mes_completo = "Diciembre";
                 break;
             }
+
+            
             $pdf = PDF::loadView('pdf.seguimiento.resumen-mes-anho', compact('becario','regimen','anho','mes','periodos','voluntariados','cursos','actividades_facilitadas','asistio','noasistio','mes_completo'));
 
             return $pdf->stream('Resumen-Becario-'.$mes_completo.'-'.$anho.'-'.$becario->user->nombreyapellido().'.pdf');
         }
+    }
+
+    public function resumenanhomesexcel($id,$anho,$mes)
+    {
+        $becario = Becario::find($id);
+        //return $anho;
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        //php artisan make:export ResumenBecarioExport --model=avaa\Becario
+        return Excel::download(new ResumenBecarioExport($id,$anho,$mes), 'Resumen Becario '.$becario->user->nombreyapellido().' ('.$mes_completo.'-'.$anho.').xlsx');
     }
 
     public function becarioreportegeneral($id)

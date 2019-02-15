@@ -402,7 +402,7 @@
             </tr>
         </thead>
         <tbody>
-             <tr>
+            <tr>
                 <td class="text-left">Modalidad</td>
                 <td class="text-left"><strong>Asistencias</strong></td>
                 <td class="text-left"><strong>Inasistencias</strong></td>
