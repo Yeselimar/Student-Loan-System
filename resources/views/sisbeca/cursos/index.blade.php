@@ -45,6 +45,12 @@
 						</td>
 						
 						<td>
+							<span data-toggle="modal" data-target="#curso{{$curso->id}}">
+								<button type="button" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Detalles Respuesta CVA"  >
+									<i class="fa fa-eye"></i>
+								</button>
+							</span>
+
 							<a href="{{url($curso->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Nota CVA">
 								@if( $curso->aval->esImagen() )
 	                        		<i class="fa fa-photo"></i>
@@ -88,8 +94,8 @@
 	<p class="h6 text-right">{{ $cursos->count() }} cva(s) </p>
 </div>
 
-<!-- Modal para eliminar curso -->
 @foreach($cursos as $curso)
+<!-- Modal para eliminar curso -->
 <div class="modal fade" id="eliminarcurso{{$curso->id}}">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -113,8 +119,39 @@
 		</div>
 	</div>
 </div>
-@endforeach
 <!-- Modal para eliminar curso -->
+
+<!-- Modal para ver curso -->
+<div class="modal fade" id="curso{{$curso->id}}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left"><strong>CVA</strong></h5>
+                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="modal-body">
+            	<div class="col" style="padding-left: 0px;padding-right: 0px;">
+            		<label class="control-label " for="cva">Nivel/Módulo</label>
+            		{{ Form::text('cva', $curso->nivel.' '.$curso->modulo , ['class' => 'sisbeca-input sisbeca-disabled input-sm','disabled'=>'disabled','placeholder'=>'John Doe'])}}
+            	</div>
+                <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                    <label class="control-label " for="nombre">Estatus</label>
+                    {{ Form::select('estatus', array('pendiente'=>'Pendiente','aceptada'=>'Aceptada','negada'=>'Negada','devuelto'=>'Devuelto'),$curso->aval->estatus,['class' =>'sisbeca-input input-sm sisbeca-select sisbeca-disabled','disabled'=>'disabled']) }}
+                </div>
+                <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                    <label class="control-label" for="observacion">Observación</label>
+                    <textarea name="observacion" class="sisbeca-input sisbeca-disabled" disabled="disabled" style="margin-bottom: 0px;">{{$curso->aval->observacion}}
+                    </textarea> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para ver curso -->
+@endforeach
 
 @endsection
 

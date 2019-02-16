@@ -410,7 +410,7 @@
 								<a v-b-popover.hover.bottom="'Editar Justificativo'" :href="getRutaEditarJustificativos(becario.user.id)" class="btn btn-xs sisbeca-btn-primary" >
 									<i class="fa fa-edit"></i>
 								</a>
-								 @{{becario.estatus}}
+								
 							</template>
 							<template v-else>
 								<a v-b-popover.hover.bottom="'Editar Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">

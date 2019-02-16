@@ -272,7 +272,7 @@
         <tbody>
             <tr>
                 <td class="text-left"><strong>Año</strong></td>
-                <td class="text-left"><strong>Módulo</strong></td>
+                <td class="text-left"><strong>Nivel/Módulo</strong></td>
                 <td class="text-left"><strong>Total por Nivel</strong></td>
                 <td class="text-right"><strong>Promedio</strong></td>
             </tr>
@@ -284,7 +284,20 @@
                 @php ($total_curso = $total_curso + $curso->total_modulo)
                 <tr>
                     <td class="text-left ancho-sisbeca">{{date("m", strtotime($curso->fecha_inicio))}}-{{date("Y", strtotime($curso->fecha_inicio))}}</td>
-                    <td class="text-left">{{$curso->modulo}} Nivel</td>
+                    <td class="text-left">
+                        @if($curso->nivel=='basico')
+                            Básico
+                        @endif
+                        @if($curso->nivel=='intermedio')
+                            Intermedio
+                        @endif
+                        @if($curso->nivel=='avanzado')
+                            Avanzado
+                        @endif
+                        @if($curso->total_modulo==1)
+                            {{$curso->modulo}}
+                        @endif
+                    </td>
                     <td class="text-left">{{$curso->total_modulo}}</td>
                     <td class="text-right">{{number_format($curso->promedio_modulo, 2, '.', ',')}}</td>
                 </tr>

@@ -149,7 +149,7 @@
 								<hr class="reporte-linea">
 								<div class="caja-subtitulo" data-mh="reporte-titulo">
 									<p class="h6 text-center reporte-subtitulo">
-									<strong>Volutariado pendiente</strong>
+									<strong>Voluntariado pendiente</strong>
 									</p>
 								</div>
 							</div>

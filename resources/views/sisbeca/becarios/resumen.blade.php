@@ -130,7 +130,7 @@
 			<tbody>
 				<tr>
 					<td class="text-left"><strong>Año</strong></td>
-					<td class="text-left"><strong>Módulo</strong></td>
+					<td class="text-left"><strong>Nivel/Módulo</strong></td>
 					<td class="text-left"><strong>Total por Nivel</strong></td>
 					<td class="text-right"><strong>Promedio</strong></td>
 				</tr>
@@ -140,7 +140,18 @@
 							@{{obtenermes(curso.fecha_inicio)}}-@{{obteneranho(curso.fecha_inicio)}}
 						</td>
 						<td class="text-left">
-							@{{curso.modulo}} Nivel
+							<template v-if="curso.nivel=='basico'">
+								Básico
+							</template>
+							<template v-if="curso.nivel=='intermedio'">
+								Intermedio
+							</template>
+							<template v-if="curso.nivel=='avanzado'">
+								Avanzado
+							</template>
+							<template v-if="curso.total_modulo==1">
+								@{{curso.modulo}}
+							</template>
 						</td>
 						<td class="text-left">
 							@{{curso.total_modulo}}

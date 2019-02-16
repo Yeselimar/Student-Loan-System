@@ -71,7 +71,7 @@
                 </div>
      
 			</div>
-
+            <hr>
 			<div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12">
                     <label class="control-label">Estatus Voluntariado</label>

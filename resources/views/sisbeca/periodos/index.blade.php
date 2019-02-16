@@ -50,6 +50,12 @@
 							</td>
 							
 							<td>
+								<span data-toggle="modal" data-target="#periodo{{$periodo->id}}">
+									<button type="button" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Detalles Respuesta Periodo"  >
+										<i class="fa fa-eye"></i>
+									</button>
+								</span>
+
 								<a href="{{url($periodo->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Constancia">
 									@if( $periodo->aval->esImagen() )
 		                        		<i class="fa fa-photo"></i>
@@ -97,8 +103,9 @@
 		<p class="h6 text-right">{{ $periodos->count() }} periodo(s) </p>
 	</div>
 
-	<!-- Modal para eliminar periodo -->
+	
 	@foreach($periodos as $periodo)
+	<!-- Modal para eliminar periodo -->
 	<div class="modal fade" id="eliminarperiodo{{$periodo->id}}">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -122,8 +129,39 @@
 			</div>
 		</div>
 	</div>
-	@endforeach
 	<!-- Modal para eliminar periodo -->
+	<!-- Modal para ver periodo -->
+	<div class="modal fade" id="periodo{{$periodo->id}}">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title pull-left"><strong>Periodo</strong></h5>
+	                <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+	            </div>
+	            <div class="modal-body">
+	            	<div class="col" style="padding-left: 0px;padding-right: 0px;">
+	            		<label class="control-label " for="nombre">Año Lectivo</label>
+	            		{{ Form::text('anho_lectivo', $periodo->anho_lectivo , ['class' => 'sisbeca-input sisbeca-disabled input-sm','disabled'=>'disabled'])}}
+	            	</div>
+	                <div class="col" style="padding-left: 0px;padding-right: 0px;">
+	                    <label class="control-label " for="nombre">Estatus</label>
+	                    {{ Form::select('estatus', array('pendiente'=>'Pendiente','aceptada'=>'Aceptada','negada'=>'Negada','devuelto'=>'Devuelto'),$periodo->aval->estatus,['class' =>'sisbeca-input input-sm sisbeca-select sisbeca-disabled','disabled'=>'disabled']) }}
+	                </div>
+	                <div class="col" style="padding-left: 0px;padding-right: 0px;">
+	                    <label class="control-label" for="observacion">Observación del Comprobante</label>
+	                    <textarea name="observacion" class="sisbeca-input sisbeca-disabled" disabled="disabled" style="margin-bottom: 0px;">{{$periodo->aval->observacion}}
+	                    </textarea> 
+	                </div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cerrar</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<!-- Modal para ver periodo -->
+	@endforeach
+	
 @endsection
 
 @section('personaljs')

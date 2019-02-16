@@ -41,7 +41,7 @@ class SisbecaController extends Controller
         //Conteo de CVA, Notas Académicas, Voluntariados en estatus pendiente.
         $periodos_pendiente = Aval::dePeriodos()->conEstatus('pendiente')->count();
         $cva_pendiente = Aval::deCVA()->conEstatus('pendiente')->count();
-        $voluntariados_pendiente = Aval::dePeriodos()->conEstatus('pendiente')->count();
+        $voluntariados_pendiente = Aval::deVoluntariados()->conEstatus('pendiente')->count();
         $justificativos_pendiente  = Aval::justificativos()->conEstatus('pendiente')->count();
         $solicitudes_pendiente  = Solicitud::conEstatus('enviada')->count();
         $facturas_pendiente  = FactLibro::conEstatus('cargada')->count();

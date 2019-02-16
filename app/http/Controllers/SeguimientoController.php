@@ -1295,7 +1295,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho,$mes)
@@ -1440,7 +1440,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho,$mes)
@@ -1450,6 +1450,7 @@ class SeguimientoController extends Controller
                     ->whereYear('cursos.fecha_inicio', '=', $anho)//corregido
                     ;
                 })->get();
+                //return response()->json($cursos);
                 $actividades_facilitadas = DB::table('actividades')
                 ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
                 ->join('actividades_facilitadores', function ($join) use($id,$anho)
@@ -1568,8 +1569,10 @@ class SeguimientoController extends Controller
                 "na_c_v" => $na_c_v->total_actividades,
                 "na_c_p" => $na_c_p->total_actividades,
             );
+            //return ".l";
             return response()->json(['regimen'=>$becario->regimen,'anho'=>$anho,'mes'=>$mes,'periodos'=>$periodos,'voluntariados'=>$voluntariados,'cursos'=>$cursos,'actividades_facilitadas'=>$actividades_facilitadas[0],"asistio"=>$asistio,"noasistio"=>$noasistio]);
         }
+
         return response()->json(['error'=>"Error de permisos"]);
     }   
 
@@ -1598,7 +1601,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho,$mes)
@@ -1743,7 +1746,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho)
