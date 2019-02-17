@@ -90,17 +90,18 @@
                             <i class="fa fa-eye"></i>
                         </a>
                         
-                        <button v-b-popover.hover.bottom="'Aprobar justificativo'" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)">
+                        <button v-b-popover.hover.bottom="'Aprobar justificativo'" class="btn btn-xs sisbeca-btn-primary" @click="modalAprobar(justificativo)">
                             <i class="fa fa-check"></i>
                         </button>
-                    
-                        <button v-b-popover.hover.bottom="'Rechazar justificativo'" class="btn btn-xs sisbeca-btn-default" @click="negarJustificativo(justificativo.aval.id)">
+                        <!-- @click="aprobarJustificativo(justificativo.aval.id)"-->
+                        <button v-b-popover.hover.bottom="'Rechazar justificativo'" class="btn btn-xs sisbeca-btn-default" @click="modalRechazar(justificativo)">
                             <i class="fa fa-remove"></i>
                         </button>
-                        
-                        <button v-b-popover.hover.bottom="'Devolver justificativo'" class="btn btn-xs sisbeca-btn-default" @click="devolverJustificativo(justificativo.aval.id)">
+                        <!--  @click="negarJustificativo(justificativo.aval.id)"-->
+                        <button v-b-popover.hover.bottom="'Devolver justificativo'" class="btn btn-xs sisbeca-btn-default" @click="modalDevolver(justificativo)">
                             <i class="fa fa-reply"></i>
                         </button>
+                        <!--@click="devolverJustificativo(justificativo.aval.id)"-->
 					</td>
 				</tr>
 				<tr v-if="justificativos.length==0">
@@ -131,6 +132,7 @@ const app = new Vue({
     el: '#app',
     data:
     {
+        justificativo:{},
         justificativos:[],
     },
     created: function()
@@ -149,6 +151,10 @@ const app = new Vue({
             var url = '{{url(':link')}}';
             url = url.replace(':link', link);
             return url;
+        },
+        modalAprobar(justificativo)
+        {
+            Vue.set(app.justificativo, 'id', t.id);
         },
         aprobarJustificativo(id)
         {

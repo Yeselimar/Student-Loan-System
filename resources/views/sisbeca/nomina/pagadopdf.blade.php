@@ -165,8 +165,8 @@
             <tr>
                 <th class="text-center">#</th>
                 <th class="text-left">Nombres y Apellidos</th>
-                <th class="text-left">Cedula</th>
-                <th class="text-left">E-mail</th>
+                <th class="text-left">Cédula</th>
+                <th class="text-left">Correo Electrónico</th>
                 <th class="text-center">N° Cuenta</th>
                 <th class="text-right">Total Pagado</th>
                 <th class="text-center">Fecha Pago</th>
@@ -182,8 +182,7 @@
                 @if( $nominas[$i]->datos_cuenta != null)
                     <td class="text-center"> {{ $nominas[$i]->datos_cuenta }} </td>
                 @else
-                    <td class="text-center"><span style="color: red"><strong>S/NC</strong></span></td>
-
+                    <td class="text-center"><span style="color: red"><strong>SIN NÚMERO DE CUENTA</strong></span></td>
                 @endif
 
                 <td class="text-right">{{ number_format($nominas[$i]->total, 2, ',', '.')}}</td>

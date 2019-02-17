@@ -661,7 +661,6 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::post('/generar/nomina/api','NominaController@generarNominaApi')->name('generarNomina.api');
 
 
-
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@procesardetalle',
             'as' => 'nomina.procesar.detalle'
@@ -771,7 +770,16 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'as' => 'facturas.validar'
         ]);
 
-
+        //Generando excel en nómina
+        Route::get('nomina/generada/mes/{mes}/anho/{anho}/excel', [
+            'uses' => 'NominaController@nominageneradaexcel',
+            'as' =>
+             'nomina.generada.excel'
+        ]);
+        Route::get('nomina/pagada/mes/{mes}/anho/{anho}/excel', [
+            'uses' => 'NominaController@nominapagadaexcel',
+            'as' => 'nomina.pagada.excel'
+        ]);
      });
 
     Route::group(['middleware'=>'coordinador'],function ()
