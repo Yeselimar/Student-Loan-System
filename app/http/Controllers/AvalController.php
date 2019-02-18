@@ -248,4 +248,76 @@ class AvalController extends Controller
 
 		return response()->json(['success'=>'La justificación fue negada exitosamente.']);
 	}
+
+    public function tomaraccion(Request $request, $id)
+    {
+        $aval = Aval::find($id);
+        $aval->estatus = $request->estatus;
+        $aval->observacion = $request->observacion;
+        $aval->save();
+
+        $enviarcorreo = true;
+        if($request->estatus=='aceptada')
+        {
+            $ab = ActividadBecario::paraAval($id)->first();
+            $ab->estatus = "asistio";
+            $ab->save();
+            $estatus_justificativo = "ACEPTADA";
+            $estatus_actividad = "ASISTIÓ";
+        }
+        else
+        {
+            if($request->estatus=='negada')
+            {
+                $ab = ActividadBecario::paraAval($id)->first();
+                $ab->estatus = "no asistio";
+                $ab->save();
+                $estatus_justificativo = "NEGADA";
+                $estatus_actividad = "NO ASISTIÓ";
+            }
+            else
+            {
+                if($request->estatus=='devuelto')
+                {
+                    $ab = ActividadBecario::paraAval($id)->first();
+                    $ab->estatus = "justificacion cargada";
+                    $ab->save();
+                    $estatus_justificativo = "DEVUELTO";
+                }
+                else
+                {
+                    $ab = ActividadBecario::paraAval($id)->first();
+                    $ab->estatus = "justificacion cargada";
+                    $ab->save();
+                    $enviarcorreo = false;
+                }
+            }
+        }
+        
+        $actividad = $ab->actividad;
+        $becario = $aval->becario;
+
+        //Enviar correo al becario notificandole
+        if($enviarcorreo)
+        {
+            $mail = new PHPMailer(true);
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = "utf-8";
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "TLS";
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "delgadorafael2011@gmail.com";
+            $mail->Password = "scxxuchujshrgpao";
+            $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+            $mail->Subject = "Notificación";
+            $body = view("emails.actividades.notificacion-justificativo-estatus")->with(compact("actividad","becario","estatus_actividad","estatus_justificativo","aval"));
+            $mail->MsgHTML($body);
+            $mail->addAddress($becario->user->email);
+            $mail->send();
+        }
+
+        return response()->json(['success'=>'La justificación fue actualizada exitosamente.']);
+    }
 }

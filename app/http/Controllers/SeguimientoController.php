@@ -1997,7 +1997,7 @@ class SeguimientoController extends Controller
                 ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
                 ->orderby('aval.updated_at','desc')
-                ->selectRaw('*,numero_periodo as nivel_carrera')
+                ->selectRaw('*,numero_periodo as nivel_carrera,periodos.id as periodo_id')
                 ->join('aval', function ($join) use($id)
             {
             $join->on('periodos.aval_id','=','aval.id')
@@ -2089,7 +2089,7 @@ class SeguimientoController extends Controller
                 ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
                 ->orderby('aval.updated_at','desc')
-                ->selectRaw('*,numero_periodo as nivel_carrera')
+                ->selectRaw('*,numero_periodo as nivel_carrera,periodos.id as periodo_id')
                 ->join('aval', function ($join) use($id)
             {
             $join->on('periodos.aval_id','=','aval.id')
@@ -2174,8 +2174,9 @@ class SeguimientoController extends Controller
         $regimen = '-';
         if($periodo)
         {
-            $periodo_tmp = Periodo::find($periodo->id);
+            $periodo_tmp = Periodo::find($periodo->periodo_id);
             //return $
+            //return response()->json($periodo);
             if($periodo_tmp->esAnual())
             {
                 $regimen = "año";

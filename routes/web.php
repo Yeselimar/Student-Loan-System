@@ -277,6 +277,8 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/aval/{id}/negar', 'AvalController@negar')->name('aval.negar');
         Route::get('/aval/{id}/devolver', 'AvalController@devolver')->name('aval.devolver');
 
+        Route::post('/aval/{id}/tomar-accion', 'AvalController@tomaraccion')->name('aval.tomaraccion');
+
     });
 
     //Estas Rutas solo seran accedidas por el Administrador (admin es un middleware

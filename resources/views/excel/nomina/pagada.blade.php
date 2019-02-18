@@ -7,10 +7,16 @@
             <td style="background-color: #eeeeee">#</td>
             <td style="background-color: #eeeeee">Nombres y Apellidos</td>
             <td style="background-color: #eeeeee">Cédula</td>
-            <td style="background-color: #eeeeee">Correo Electrónico</td>
             <td style="background-color: #eeeeee">N° Cuenta</td>
-            <td style="background-color: #eeeeee">Total Pagado</td>
+            <th style="background-color: #eeeeee">CVA</th>
+            <th style="background-color: #eeeeee">Facturas Libros</th>
+            <th style="background-color: #eeeeee">Retroactivo</th>
+            <th style="background-color: #eeeeee">Estipendiendo</th>
+            <th style="background-color: #eeeeee">Total a Pagar</th>
             <td style="background-color: #eeeeee">Fecha Pago</td>
+            <th style="background-color: #eeeeee">Beca Aprobada</th>
+            <th style="background-color: #eeeeee">Ingreso</th>
+            <th style="background-color: #eeeeee">Egreso</th>
         </tr>                         
     </thead>
     <tbody>
@@ -19,15 +25,20 @@
             <td> {{ $i+1}} </td>
             <td> {{$nominas[$i]->datos_nombres.' '.$nominas[$i]->datos_apellidos}} </td>
             <td> {{ $nominas[$i]->datos_cedula}} </td>
-            <td> {{ $nominas[$i]->datos_email}} </td>
             @if( $nominas[$i]->datos_cuenta != null)
                 <td> {{ $nominas[$i]->datos_cuenta }} </td>
             @else
                 <td>SIN NÚMERO DE CUENTA</td>
             @endif
-
-            <td>{{ number_format($nominas[$i]->total, 2, ',', '')}}</td>
+            <td>{{number_format($nominas[$i]->cva, 2, ',', '')}}</td>
+            <td>{{number_format($nominas[$i]->monto_libros, 2, ',', '')}}</td>
+            <td>{{number_format($nominas[$i]->retroactivo, 2, ',', '')}}</td>
+            <td>{{number_format($nominas[$i]->sueldo_base, 2, ',', '')}}</td>
+            <td>{{number_format($nominas[$i]->total, 2, ',', '')}}</td>
             <td>{{ $nominas[$i]->getFechaPago()}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         @endfor
     </tbody>

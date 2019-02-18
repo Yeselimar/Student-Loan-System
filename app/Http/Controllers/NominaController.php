@@ -561,16 +561,103 @@ class NominaController extends Controller
 
     public function generadopdf($mes,$anho)
     {
-        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','generado')->get(); 
-        $pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho'));
-        return $pdf->stream('listado.pdf','PDF xasa');
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','generado')->get();
+        $pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho','mes_completo'));
+        $pdf->setPaper('A4', 'landscape');
+        
+        return $pdf->stream('Nómina Generada '.$mes_completo.'-'.$anho.'.pdf','PDF');
     }
 
     public function pagadopdf($mes,$anho)
     {
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
         $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','pagado')->get(); 
-        $pdf = PDF::loadView('sisbeca.nomina.pagadopdf', compact('nominas','mes','anho'));
-        return $pdf->stream('listado.pdf','PDF xasa');
+        $pdf = PDF::loadView('sisbeca.nomina.pagadopdf', compact('nominas','mes','anho','mes_completo'));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('Nómina Pagada '.$mes_completo.'-'.$anho.'.pdf','PDF');
     }
 
     public function cambiar()

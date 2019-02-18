@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use DB;
+use DateTime;
 
 class BecariosReporteTiempoExport implements FromView
 {
