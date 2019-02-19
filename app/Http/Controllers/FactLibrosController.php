@@ -127,6 +127,25 @@ class FactLibrosController extends Controller
         $factura = FactLibro::find($id);
         $factura->status = $request->status;
         $factura->save();
-        return response()->json(['success'=>'La factura fue actualizada exitosamente.']);
+
+        $becario = $factura->becario;
+        //Enviar correo a la persona notificando que fue recibido su justificativo
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "TLS";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587;
+        $mail->Username = "delgadorafael2011@gmail.com";
+        $mail->Password = "scxxuchujshrgpao";
+        $mail->setFrom("no-responder@avaa.org", "Sisbeca");
+        $mail->Subject = "Notificación";
+        $body = view("emails.facturas.notificacion-estatus")->with(compact("factura","becario"));
+        $mail->MsgHTML($body);
+        $mail->addAddress($becario->user->email);
+        $mail->send();
+        return response()->json(['success'=>'La factura de '.$becario->user->nombreyapellido().' fue actualizada exitosamente.']);
     }
 }

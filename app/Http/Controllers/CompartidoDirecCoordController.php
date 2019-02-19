@@ -158,7 +158,6 @@ class CompartidoDirecCoordController extends Controller
         }
         else
         {
-            
             //$postulanteBecario->user->rol='rechazado';
             $postulanteBecario->status='rechazado';
             $postulanteBecario->user->save();
@@ -234,10 +233,8 @@ class CompartidoDirecCoordController extends Controller
                 $referencia_profesor2->delete();
                 $ensayo->delete();
             }
-
             return response()->json(['success'=>'El Postulante ha sido rechazado exitosamente.']);
         }
-
     }
 
     public function listarPostulantesBecarios($data)

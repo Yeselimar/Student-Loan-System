@@ -233,8 +233,14 @@
 			habilitara(factura)
 			{
 				this.estatus_factura =  factura.status;
-				this.habilitar=1;
-				console.log(this.habilitar);
+				if(this.habilitar==1)
+				{
+					this.habilitar=0;
+				}
+				else
+				{
+					this.habilitar=1;
+				}
 			},
 			actualizarestatus(id,estatus)
 			{

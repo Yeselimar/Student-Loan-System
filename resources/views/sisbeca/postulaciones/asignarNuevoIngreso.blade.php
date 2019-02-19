@@ -279,7 +279,6 @@
         created: function()
         {
             this.obtenerpostulantes();
-
         },
         data:
         {
@@ -299,7 +298,6 @@
             observacion:'',
             postulantes:[],
             contador:0,
-
         },
         methods:
         {
