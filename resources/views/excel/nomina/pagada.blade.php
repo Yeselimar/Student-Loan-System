@@ -11,7 +11,7 @@
             <th style="background-color: #eeeeee">CVA</th>
             <th style="background-color: #eeeeee">Facturas Libros</th>
             <th style="background-color: #eeeeee">Retroactivo</th>
-            <th style="background-color: #eeeeee">Estipendiendo</th>
+            <th style="background-color: #eeeeee">Estipendio</th>
             <th style="background-color: #eeeeee">Total a Pagar</th>
             <td style="background-color: #eeeeee">Fecha Pago</td>
             <th style="background-color: #eeeeee">Beca Aprobada</th>

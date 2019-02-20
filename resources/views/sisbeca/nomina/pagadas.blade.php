@@ -3,7 +3,6 @@
 @section('content')
 	
 <div class="col-lg-12">
-	<strong>Nóminas Pagadas</strong>
 
 	<div class="table-responsive">
 		
@@ -12,7 +11,7 @@
 				<tr>
 					<th class="text-center">Mes/Año</th>
 					<th class="text-center">N° Becarios</th>
-					<th class="text-right">Sueldo Base</th>
+					<th class="text-right">Estipendio Base</th>
 					<th class="text-right">Total Pagado</th>
 					<th class="text-center">Fecha Pago</th>
 					<th class="text-center">Acciones</th>
@@ -22,7 +21,7 @@
 				@if($nominas->count() > 0)
 					@foreach($nominas as $nomina)
 					<tr>
-						<td class="text-center">{{ $nomina->mes.'/'.$nomina->year }}</td>
+						<td class="text-center">{{ $nomina->mes.'-'.$nomina->year }}</td>
 						<td class="text-center">{{ $nomina->total_becarios }}</td>
 						<td class="text-right">{{ number_format($nomina->sueldo_base, 2, ',', '.') }}</td>
 						<td class="text-right">{{ number_format($nomina->total_pagado, 2, ',', '.') }}</td>

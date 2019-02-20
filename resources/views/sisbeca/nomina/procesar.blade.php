@@ -125,7 +125,7 @@
 											<thead>
 												<tr>
 													<th class="text-center">Datos Becario</th>
-													<th class="text-center">Status</th>
+													<th class="text-center">Estatus</th>
 													<th class="text-center">Cuenta Bancaria</th>
 													<th class="text-center">Beca Aprobada</th>
 													<th class="text-center">Ingreso</th>
@@ -278,7 +278,7 @@
 										<thead>
 											<tr>
 												<th class="text-center">Becario</th>
-												<th class="text-center">Status</th>
+												<th class="text-center">Estatus</th>
 												<th class="text-center">Cuenta Bancaria</th>
 												<th class="text-center">Beca Aprobada</th>
 												<th class="text-center">Ingreso</th>
@@ -423,7 +423,7 @@
 											<a v-if="selectedStatusFactura==row.item.id" v-b-popover.hover.bottom="'Aceptar'" @click.prevent.stop="selectedStatusFactura=-1; row.item.selected = true" class="btn btn-xs sisbeca-btn-primary">
 													<i class="fa fa-plus"></i>
 											</a>
-											<a v-else v-b-popover.hover.bottom="'Editar Status'" @click.prevent.stop="selectedStatusFactura=row.item.id;row.item.selected = true" class="btn btn-xs sisbeca-btn-primary">
+											<a v-else v-b-popover.hover.bottom="'Editar Estatus'" @click.prevent.stop="selectedStatusFactura=row.item.id;row.item.selected = true" class="btn btn-xs sisbeca-btn-primary">
 													<i class="fa fa-pencil"></i>
 											</a>
 											</div>
@@ -513,7 +513,7 @@ const app = new Vue({
 			[],
 			fieldsNS: [
 			{ key: 'selected', label: 'Marcar', sortable: true, 'class': 'text-center' },
-			{ key: 'status', label: 'Status', sortable: true, 'class': 'text-center' },
+			{ key: 'status', label: 'Estatus', sortable: true, 'class': 'text-center' },
 			{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 			{ key: 'estipendio', label: 'Estipendio', sortable: true, 'class': 'text-center' },
 			{ key: 'retroactivo', label: 'Retroactivo', sortable: true, 'class': 'text-center' },
@@ -535,7 +535,7 @@ const app = new Vue({
 			[],
 			fieldsS: [
 			{ key: 'selected', label: 'Marcar', sortable: true, 'class': 'text-center' },
-			{ key: 'status', label: 'Status', sortable: true, 'class': 'text-center' },
+			{ key: 'status', label: 'Estatus', sortable: true, 'class': 'text-center' },
 			{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 			{ key: 'estipendio', label: 'Estipendio', sortable: true, 'class': 'text-center' },
 			{ key: 'retroactivo', label: 'Retroactivo', sortable: true, 'class': 'text-center' },
@@ -558,7 +558,7 @@ const app = new Vue({
 			[],
 			fieldsF: [
 			{ key: 'selected', label: 'Marcar', sortable: true, 'class': 'text-center' },
-			{ key: 'status', label: 'Status', sortable: true, 'class': 'text-center' },
+			{ key: 'status', label: 'Estatus', sortable: true, 'class': 'text-center' },
 			{ key: 'name', label: 'Libro / Curso', sortable: true, 'class': 'text-center' },
 			{ key: 'costo', label: 'Costo', sortable: true, 'class': 'text-center' },
 			{ key: 'created_at', label: 'Fecha Cargada', sortable: true, 'class': 'text-center' },

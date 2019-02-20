@@ -153,7 +153,7 @@
 <body>
 <header>
 
-        <h1 class="text-center "><strong>Nómina Generada de: {{ $nominas[0]::getMes($mes).'/'.$anho }}</strong><br/></h1>
+        <h1 class="text-center "><strong>Nómina Generada {{ $nominas[0]::getMes($mes).'-'.$anho }}</strong><br/></h1>
 
 </header>
 <footer class="page derecha"></footer>
@@ -169,7 +169,7 @@
                 <th class="text-right">CVA</th>
                 <th class="text-right">Fact. Libros</th>
                 <th class="text-right">Retroactivo</th>
-                <th class="text-right">Estipendiendo</th>
+                <th class="text-right">Estipendio</th>
                 <th class="text-right">Total a Pagar</th>
                 <th class="text-center">Beca Aprobada</th>
                 <th class="text-center">Ingreso</th>

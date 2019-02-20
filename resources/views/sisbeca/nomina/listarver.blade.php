@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="col-lg-12" style="padding-top: 15px; padding-bottom: 15px;">
-    <strong>Nómina Generada: {{ $nominas[0]::getMes($mes).'/'.$anho }}</strong>
+    <strong>Nómina Generada: {{ $nominas[0]::getMes($mes).'-'.$anho }}</strong>
     <a href="{{ route('nomina.listar') }}" class="btn btn-sm sisbeca-btn-primary pull-right ">Atrás</a>
 
     
@@ -19,7 +19,7 @@
                     <th class="text-right">CVA</th>
                     <th class="text-right">Retroactivo</th>
                     <th class="text-right">Libros</th>
-                    <th class="text-right">Sueldo</th>
+                    <th class="text-right">Estipendio</th>
                     <th class="text-right" style="background-color: #eee">Total</th>
                     <th class="text-center">F. Generada</th>
                 </tr>
