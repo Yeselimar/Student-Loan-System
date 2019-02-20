@@ -6,7 +6,7 @@
 	<li><strong><h1>Notificación</h1></strong></li>
 	<li></li>
 	<li>
-		Hola <strong>{{$becario->user->nombreyapellido()}}</strong>, su justificativo para el <strong>{{ucwords($actividad->tipo)}}</strong>: <strong>{{$actividad->actividad_nombre}}</strong> fue <strong>{{$estatus_justificativo}}</strong> el día <strong>{{date("d/m/Y h:i A")}}</strong>
+		Hola <strong>{{$becario->user->nombreyapellido()}}</strong>, su justificativo para el <strong>{{ucwords($actividad->tipo)}}</strong>: <strong>{{$actividad->nombre}}</strong> fue <strong>{{$estatus_justificativo}}</strong> el día <strong>{{date("d/m/Y h:i A")}}</strong>
 			@if($estatus_justificativo!='DEVUELTO') 
 			y por lo tanto ud. fue calificad@ como <strong>{{$estatus_actividad}}</strong> a dicha actividad.
 			@else

@@ -844,4 +844,10 @@ class ActividadController extends Controller
         $mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como NO ASISTIÓ.']);
     }
+
+    public function obtenerjustificativobecario($a_id,$b_id)
+    {
+        $ab = ActividadBecario::paraActividad($a_id)->paraBecario($b_id)->with("aval")->first();
+        return response()->json(['justificativo'=>$ab]);
+    }
 }   

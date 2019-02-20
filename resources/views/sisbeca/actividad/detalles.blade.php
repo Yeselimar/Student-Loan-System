@@ -4,6 +4,21 @@
 <div class="col-lg-12" id="app">
 	<div class="text-right">
 		@if(Auth::user()->esBecario() ) <!-- Para el Becario -->
+
+			<template v-if="justificativo.aval_id!=null">
+				<button v-b-popover.hover.bottom="'Estatus del justificativo'"  class="btn sisbeca-btn-primary" @click="modalJustificativo()">
+					<i class="fa fa-eye"></i>
+				</button>
+				<a v-b-popover.hover.bottom="'Ver justificativo'" class="btn sisbeca-btn-primary" target="_blank" :href="urlJustificativo(justificativo.aval.url)">
+					<template v-if="justificativo.aval.extension=='imagen'">
+						<i class="fa fa-image"></i>
+					</template>
+					<template v-else>
+						<i class="fa fa-file-pdf-o"></i>
+					</template>
+				</a>
+			</template>
+
 			<template v-if="!inscrito">
 				@if($actividad->inscribionabierta())
 				<button type="button" class="btn btn-sm sisbeca-btn-primary" @click="actividadinscribirme()">Inscribirme</button>
@@ -11,6 +26,7 @@
 				<button type="button" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Inscribirme</button>
 				@endif
 			</template>
+
 			<template v-else>
 				@if($actividad->inscribionabierta())
 					<button type="button" class="btn btn-sm sisbeca-btn-primary" @click="desinscribirme()">Desinscribirme</button>
@@ -18,6 +34,7 @@
 					<button type="button" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Desinscribirme</button>
 				@endif
 			</template>
+
 			<template v-if="lapso_justificar==true">
 				<template v-if="estatus_becario==='justificacion cargada'">
 					<span data-toggle="tooltip"  title="Editar Justificativo" data-placement="bottom">
@@ -41,11 +58,10 @@
 						<a href="{{ route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>Auth::user()->id)) }}" class="btn btn-sm sisbeca-btn-primary">Editar justificativo</a>
 					</template>
 					<template v-if="estatus_aval=='pendiente' || estatus_aval=='aceptada' || estatus_aval=='negada'">
-						<a href="" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Editar Justificativo</a>
+						<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Editar Justificativo</a>
 					</template>
 				</template>
 			</template>
-			
 		@else <!-- Para el Coordinador o Directivo -->
 			<span data-toggle="tooltip"  title="Eliminar Taller/Chat Club" data-placement="bottom">
 				<button type="button" class="btn btn-sm sisbeca-btn-default" @click="eliminarActividad()" >
@@ -62,7 +78,7 @@
 				</a>
 			</template>
 			<template v-else>
-				<a href="" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom" disabled="disabled">
+				<a href="#" class="btn btn-sm sisbeca-btn-primary" data-toggle="tooltip" title="Editar Taller/Chat Club" data-placement="bottom" disabled="disabled">
 					<i class="fa fa-pencil"></i>
 				</a>
 			</template>
@@ -399,7 +415,7 @@
 								</a>
 							</template>
 							<template v-else> 
-								<a v-b-popover.hover.bottom="'Subir Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+								<a v-b-popover.hover.bottom="'Subir Justificativo'" href="#" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
 									<i class="fa fa-upload" aria-hidden="true"></i>
 								</a>
 							</template>
@@ -413,15 +429,22 @@
 								
 							</template>
 							<template v-else>
-								<a v-b-popover.hover.bottom="'Editar Justificativo'" href="" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
+								<a v-b-popover.hover.bottom="'Editar Justificativo'" href="#" class="btn btn-xs sisbeca-btn-primary" disabled="disabled">
 									<i class="fa fa-edit"></i>
 								</a>
 							</template>
 
 						</template>
-						<button v-b-popover.hover.bottom="'Eliminar Inscripción'" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
-							<i class="fa fa-trash" ></i>
-						</button>
+						<template v-if="actividad.status=='disponible' && becario.estatus=='asistira'">
+							<button v-b-popover.hover.bottom="'Eliminar Inscripción'" class="btn btn-xs sisbeca-btn-default" @click="desinscribirModal(becario.user.id,becario.user.name+' '+becario.user.last_name)" >
+								<i class="fa fa-trash" ></i>
+							</button>
+						</template>
+						<template v-else>
+							<button v-b-popover.hover.bottom="'Eliminar Inscripción'" class="btn btn-xs sisbeca-btn-default" disabled="disabled">
+								<i class="fa fa-trash" ></i>
+							</button>
+						</template>
 					</td>
 					@endif
 				</tr>
@@ -487,6 +510,33 @@
 	</div>
 	<!-- Modal para eliminar actividad -->
 
+	<!-- Modal para justificativo -->
+	<div class="modal fade" id="justificativo">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<h5 class="modal-title pull-left"><strong>Justificativo</strong></h5>
+			    	<a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+			    </div>
+				<div class="modal-body">
+					<div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label ">Estatus Justificativo</label>
+                        <input type="text" class="sisbeca-input sisbeca-disabled input-sm" disabled="disabled" :value="estatus_justificativo">
+                    </div>
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label" >Observación Justificativo</label>
+                        <textarea name="observacion" class="sisbeca-input sisbeca-disabled" disabled="disabled" style="margin-bottom: 0px;">@{{observacion_justificativo}}
+                        </textarea> 
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal para justificativo -->
+
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>
@@ -519,10 +569,14 @@ const app = new Vue({
         inscrito:true,
         estatus:'',
         estatus_actividad:'',
+        justificativo:{},
+        estatus_justificativo:'',
+        observacion_justificativo:''
     },
     created: function()
     {
         this.obtenerdetallesactividad();
+        this.obtenerjustificativobecario();
     },
     mounted: function()
     {
@@ -530,6 +584,31 @@ const app = new Vue({
     },
     methods: 
     {	
+    	//obtener  justificativo logueado
+    	modalJustificativo()
+    	{
+    		$('#justificativo').modal('show');
+    		this.estatus_justificativo=this.justificativo.aval.estatus;
+    		this.observacion_justificativo=this.justificativo.aval.observacion;
+    	},
+    	urlJustificativo(link)
+    	{
+    		var url = '{{url(':link')}}';
+            url = url.replace(':link', link);
+            return url;
+    	},
+    	obtenerjustificativobecario()
+    	{
+    		var a_id = "{{$actividad->id}}";
+    		var b_id = "{{Auth::user()->id}}";
+    		var url = "{{route('actividad.obtener.justificativo',array('a_id'=>':a_id','b_id'=>':b_id'))}}";
+    		url = url.replace(':a_id', a_id);
+    		url = url.replace(':b_id', b_id);
+            axios.get(url).then(response => 
+            {
+				this.justificativo = response.data.justificativo;
+            });
+    	},
     	colocarDisponible()
     	{
     		$("#preloader").show();

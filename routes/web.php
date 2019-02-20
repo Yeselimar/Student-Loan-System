@@ -145,6 +145,8 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
 
         //talleres y chat club: servicios
+        Route::get('/actividad/{a_id}/becario/{b_id}/justificativo/servicio', 'ActividadController@obtenerjustificativobecario')->name('actividad.obtener.justificativo');
+
         Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
         Route::get('/actividades/{id}/detalles/servicio', 'ActividadController@detallesservicio')->name('actividad.detalles.servicio');
 

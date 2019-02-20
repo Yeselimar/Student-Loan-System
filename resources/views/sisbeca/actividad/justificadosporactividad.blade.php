@@ -192,7 +192,6 @@ const app = new Vue({
     {
     	getJustificativo(link)
         {
-
             var url = '{{url(':link')}}';
             url = url.replace(':link', link);
             return url;
