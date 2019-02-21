@@ -70,6 +70,13 @@ class PeriodosController extends Controller
     	return view('sisbeca.periodos.index')->with(compact('periodos','becario'));
     }
 
+    public function periodosbecario($id)
+	{
+		$becario = Becario::find($id);
+    	$periodos = Periodo::where('becario_id','=',$id)->get();
+    	return view('sisbeca.periodos.index')->with(compact('periodos','becario'));
+	}
+	
     public function crear($id)
     {
     	$model = 'crear';

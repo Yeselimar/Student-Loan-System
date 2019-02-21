@@ -1,13 +1,21 @@
 @extends('sisbeca.layouts.main')
-@section('title','Voluntariados')
+@if(Auth::user()->esBecario())
+	@section('title','Voluntariados')
+@else
+	@section('title','Voluntariados: '.$becario->user->nombreyapellido())
+@endif
 @section('content')
 <div class="col-lg-12">
 	<div class="text-right">
-		<a href="{{route('voluntariados.crear',Auth::user()->id)}}" class="btn btn-sm sisbeca-btn-primary">Cargar Voluntariado</a>
+		@if(Auth::user()->esBecario())
+			<a href="{{route('voluntariados.crear',Auth::user()->id)}}" class="btn btn-sm sisbeca-btn-primary">Cargar Voluntariado</a>
+		@else
+			<a href="{{ URL::previous() }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+		@endif
 	</div>
 	<br>
 	<div class="table-responsive">
-		<table class="table table-hover table-bordered">
+		<table class="table table-hover table-bordered" id="voluntariados">
 			<thead>
 				<tr>
 					<th>Nombre</th>
@@ -19,79 +27,73 @@
 				</tr>
 			</thead>
 			<tbody>
-				@if($voluntariados->count()==0)
-					<td colspan="7" class="text-center">
-						No hay <strong>voluntariados</strong>
+				
+				@foreach($voluntariados as $voluntariado)
+				<tr>
+					<td>
+						{{$voluntariado->nombre}}
 					</td>
-				@else
-					@foreach($voluntariados as $voluntariado)
-					<tr>
-						<td>
-							{{$voluntariado->nombre}}
-						</td>
-						<td>{{$voluntariado->getFecha()}}</td>
-						<td>{{$voluntariado->tipo}}</td>
-						<td class="text-center">{{$voluntariado->horas}}</td>
-						<td class="text-center">
-							@switch($voluntariado->aval->estatus)
-					    		@case('pendiente')
-					    			<span class="label label-warning">pendiente</span>
-					    		@break;
-					    		
-					    		@case( 'aceptada')
-					    			<span class="label label-success">aceptada</span>
-					    		@break
+					<td>{{$voluntariado->getFecha()}}</td>
+					<td>{{$voluntariado->tipo}}</td>
+					<td class="text-center">{{$voluntariado->horas}}</td>
+					<td class="text-center">
+						@switch($voluntariado->aval->estatus)
+				    		@case('pendiente')
+				    			<span class="label label-warning">pendiente</span>
+				    		@break;
+				    		
+				    		@case( 'aceptada')
+				    			<span class="label label-success">aceptada</span>
+				    		@break
 
-					    		@case ('negada')
-					    			<span class="label label-danger">negada</span>
-					    		@break
-					    		@case ('devuelto')
-					    			<span class="label label-danger">devuelto</span>
-					    		@break
-					    	@endswitch
-						</td>
-						
-						<td>
-							<span data-toggle="modal" data-target="#voluntariado{{$voluntariado->id}}">
-								<button type="button" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Respuesta Voluntariado"  >
-									<i class="fa fa-eye"></i>
-								</button>
-							</span>
+				    		@case ('negada')
+				    			<span class="label label-danger">negada</span>
+				    		@break
+				    		@case ('devuelto')
+				    			<span class="label label-danger">devuelto</span>
+				    		@break
+				    	@endswitch
+					</td>
+					
+					<td>
+						<span data-toggle="modal" data-target="#voluntariado{{$voluntariado->id}}">
+							<button type="button" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Respuesta Voluntariado"  >
+								<i class="fa fa-eye"></i>
+							</button>
+						</span>
 
-							<a href="{{url($voluntariado->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Comprobante">
-								@if( $voluntariado->aval->esImagen() )
-	                        		<i class="fa fa-photo"></i>
-	                        	@else
-	                        		<i class="fa fa-file-pdf-o"></i>
-	                        	@endif
-							</a>
+						<a href="{{url($voluntariado->aval->url)}}" target="_blank" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Comprobante">
+							@if( $voluntariado->aval->esImagen() )
+                        		<i class="fa fa-photo"></i>
+                        	@else
+                        		<i class="fa fa-file-pdf-o"></i>
+                        	@endif
+						</a>
 
-							<a href="{{route('voluntariados.editar',$voluntariado->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar Voluntariado">
-	                        	<i class="fa fa-pencil"></i>
-							</a>
+						<a href="{{route('voluntariados.editar',$voluntariado->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar Voluntariado">
+                        	<i class="fa fa-pencil"></i>
+						</a>
 
-							@if($voluntariado->aval->estatus!='aceptada')
-								<span data-toggle="modal" data-target="#eliminarvoluntariado{{$voluntariado->id}}">
-									<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar Voluntariado"  >
-										<i class="fa fa-trash"></i>
-									</button>
-								</span>
-							@else
-								<button class="btn btn-xs sisbeca-btn-default" disabled="disabled">
+						@if($voluntariado->aval->estatus!='aceptada')
+							<span data-toggle="modal" data-target="#eliminarvoluntariado{{$voluntariado->id}}">
+								<button type="button" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="bottom" title="Eliminar Voluntariado"  >
 									<i class="fa fa-trash"></i>
 								</button>
-							@endif
-							
-							
-						</td>
-					</tr>
-					@endforeach
-				@endif
+							</span>
+						@else
+							<button class="btn btn-xs sisbeca-btn-default" disabled="disabled">
+								<i class="fa fa-trash"></i>
+							</button>
+						@endif
+						
+						
+					</td>
+				</tr>
+				@endforeach
+				
 			</tbody>
 		</table>
 	</div>
-	<hr>
-	<p class="h6 text-right">{{ $voluntariados->count() }} voluntariado(s) </p>
 </div>
 
 
@@ -161,6 +163,34 @@
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<script>
+$(document).ready(function() {
+    $('#voluntariados').DataTable({
+
+        "language": {
+        "decimal": "",
+        "emptyTable": "No hay voluntariados",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "No hay resultados encontrados",
+        "paginate":
+            {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
+            }
+        }
+    });
 });
 </script>
 @endsection

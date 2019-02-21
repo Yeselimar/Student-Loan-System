@@ -35,7 +35,12 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
 	</div>
 	<br>
 	<div class="row" style="border:1px solid #fff">
@@ -117,11 +122,22 @@
 					@{{ row.item.becario.nombreyapellido}} (@{{ row.item.nivel_carrera}})
 				</template>
 
-				<!--<template slot="actions" slot-scope="row">
-					<div class="circulo-rojo">
-						<p class="circulo-texto">1</p>
-					</div>
-				</template>-->
+				<template slot="actions" slot-scope="row">
+
+					<a v-b-popover.hover.bottom="'Ver Taller/Chat Club'" class="btn btn-xs sisbeca-btn-primary" :href="verActividades(row.item.becario.id)">
+						<i class="fa fa-commenting-o"></i>
+					</a>
+					<a v-b-popover.hover.bottom="'Ver Periodos'" class="btn btn-xs sisbeca-btn-primary" :href="verPeriodos(row.item.becario.id)">
+						<i class="fa fa-sticky-note-o"></i>
+					</a>
+					<a v-b-popover.hover.bottom="'Ver CVA'" class="btn btn-xs sisbeca-btn-primary"  :href="verCVA(row.item.becario.id)">
+						<i class="fa fa-book"></i>
+					</a>
+					<a v-b-popover.hover.bottom="'Ver Voluntariados'" class="btn btn-xs sisbeca-btn-primary" :href="verVoluntariados(row.item.becario.id)">
+						<i class="fa fa-star"></i>
+					</a>
+					
+				</template>
 				
 			</b-table>
 
@@ -133,14 +149,6 @@
 		</div>
 	</div>
 	<hr>
-	<div class="text-right">
-		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-	</div>
 	<p>Falta average de desempeño</p>
 	<!--
 	<div class="table-responsive">
@@ -256,7 +264,7 @@ $(document).ready(function() {
 		{ key: 'nivel_cva', label: 'CVA', sortable: true, 'class': 'text-center' },
 		{ key: 'avg_cva', label: 'AVG CVA', sortable: true, 'class': 'text-center' },
 		{ key: 'avg_academico', label: 'AVG Acad.', sortable: true, 'class': 'text-center' },
-		//{ key: 'actions', label: 'Acciones' }
+		{ key: 'actions', label: 'Acciones', 'class': 'text-center'}
 		],
 		currentPage: 1,
 		perPage: 5,
@@ -341,6 +349,30 @@ $(document).ready(function() {
 			var url = '{{route('becarios.reporte.general.excel',array('anho'=>':anho','mes'=>':mes'))}}'
 			url = url.replace(':anho', anho);
 			url = url.replace(':mes', mes);
+			return url;
+		},
+		verActividades(id)
+		{
+			var url = '{{route('actividades.becario',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		verPeriodos(id)
+		{
+			var url = '{{route('periodos.becario',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		verCVA(id)
+		{
+			var url = '{{route('cursos.becario',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		verVoluntariados(id)
+		{
+			var url = '{{route('voluntariados.becario',':id')}}';
+			url = url.replace(':id', id);
 			return url;
 		},
 		obtenermescompleto(mes)

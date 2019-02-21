@@ -341,16 +341,22 @@
                     </a>
                 </li>
                 <li>
-                    <a class="has-arrow  " href="{{route('seguimiento.becarioreportegeneral',Auth::user()->id)}}" aria-expanded="false">
+                    <a class="has-arrow" href="{{route('seguimiento.becarioreportegeneral',Auth::user()->id)}}" aria-expanded="false">
                         <i class="fa fa-bar-chart"></i>
                         <span class="hide-menu">Mi Reporte General</span>
                     </a>
                 </li>
                 <li>
-                    <a class="has-arrow  " href="{{route('actividad.listar')}}" aria-expanded="false">
+                    <a class="has-arrow " href="#" aria-expanded="false">
                         <i class="fa fa-commenting-o"></i>
                         <span class="hide-menu">Taller/Chat Club</span>
                     </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividad.listar')}}">Calendario</a></li>
+                    </ul>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividades.becario',Auth::user()->id)}}">Mis Taller/Chat Club</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">

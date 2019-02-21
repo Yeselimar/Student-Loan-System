@@ -53,6 +53,13 @@ class VoluntariadoController extends Controller
     	return view('sisbeca.voluntariados.index')->with(compact('voluntariados'));
     }
 
+    public function voluntariadosbecario($id)
+    {
+        $voluntariados = Voluntariado::where('becario_id','=',$id)->get();
+        $becario = Becario::find($id);
+        return view('sisbeca.voluntariados.index')->with(compact('voluntariados','becario'));
+    }
+
     public function crear($id)
     {
     	$model =  'crear';

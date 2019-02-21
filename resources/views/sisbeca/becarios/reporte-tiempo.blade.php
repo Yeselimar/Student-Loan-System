@@ -35,7 +35,9 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+		<a href="{{route('seguimiento.reportetiempo.excel')}}" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Descargar Excel 
+    	</a>
 	</div>
 	<br>
 
@@ -149,12 +151,7 @@
 
 		</div>
 	</div>
-	<hr>
-	<div class="text-right">
-		<a href="{{route('seguimiento.reportetiempo.excel')}}" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-excel-o"></i> Descargar Excel 
-    	</a>
-    </div>
+	
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>

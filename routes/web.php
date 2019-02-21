@@ -113,6 +113,8 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
+        //Ruta para ver los  taller/chat club que ha participado un becario
+        Route::get('/becario/{id}/actividades', 'ActividadController@actividadesbecario')->name('actividades.becario');
         //Editar datos del usuario y becario
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
         Route::get('/becario/{id}/editar-datos', 'UserController@editardatos')->name('becarios.editar.datos');
@@ -819,6 +821,13 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {   
+        //Para que los directivos y coordinadores pueden ver las actividades del becario
+        Route::get('/becario/{id}/periodos', 'PeriodosController@periodosbecario')->name('periodos.becario');
+        Route::get('/becario/{id}/cursos', 'CursoController@cursosbecario')->name('cursos.becario');
+        Route::get('/becario/{id}/voluntariados', 'VoluntariadoController@voluntariadosbecario')->name('voluntariados.becario');
+
+        //Route::get('/becario/{id}/actividades', 'ActividadController@actividadesbecario')->name('actividades.becario');
+
         //Facturas Libros Modulo aparte
         Route::get('/modulo/facturas-libros', 'FactLibrosController@facturaspendientes')->name('modulo.facturas.pendientes');
         Route::get('/modulo/facturas-libros/servicio', 'FactLibrosController@obtenerpendienteservicio')->name('modulo.facturas.pendientes.servicio');

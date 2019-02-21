@@ -19,6 +19,16 @@ use PHPMailer\PHPMailer\Exception;
 
 class ActividadController extends Controller
 {
+    public function actividadesbecario($id)
+    {
+        if(Auth::user()->id == $id or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
+        {
+            $becario = Becario::find($id);
+            $ab = ActividadBecario::paraBecario($id)->get();
+            return view('sisbeca.actividad.actividadesbecario')->with(compact('becario','ab'));
+        }
+        return view('sisbeca.error.404');
+    }
 
     public function actualizardisponible($id)
     {
