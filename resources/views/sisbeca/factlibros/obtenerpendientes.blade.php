@@ -78,9 +78,9 @@
 									<td class="text-left">@{{factura.curso}}</td>
 									<td class="text-left">@{{formatomoneda(factura.costo)}}</td>
 									<td class="text-left">
-										<span v-if="factura.status=='por procesar'" class="label label-warning"> Por Procesar</span>
+										<span v-if="factura.status=='por procesar'" class="label label-warning">Aprobada</span>
 										<span v-else-if="factura.status=='procesada'" class="label label-success">Procesada</span>
-										<span v-else-if="factura.status=='cargada'" class="label label-info">Cargada</span>
+										<span v-else-if="factura.status=='cargada'" class="label label-info">Pendiente</span>
 										<span v-else-if="factura.status=='rechazada'" class="label label-danger">Rechazada</span>
 										<template v-if="factura.status=='pagada'">
 											<p class="h6">@{{fechaformatear(factura.fecha_pagada)}}</p>
@@ -110,12 +110,9 @@
 										<template v-if="habilitar==1 && factura.status!='pagada' && factura.status!='procesada' && factura.status!='rechazada' && factura.status!='por procesar'">
 											
 											<select v-model="estatus_factura" class="sisbeca-input input-sm sisbeca-select" @change="actualizarestatus(factura.id,estatus_factura)">
-												<option value="cargada">Cargada</option>
-												<option value="por procesar" >Por Procesar</option>
+												<option value="cargada">Pendiente</option>
+												<option value="por procesar" >Aprobada</option>
 												<option value="rechazada">Rechazada</option>
-												<option value="revisada" disabled>Revisada</option>
-												<option value="pagada" disabled>Pagada</option>
-												<option value="procesada " disabled>Procesada</option>
 											</select>
 										</template>
 									</td>
