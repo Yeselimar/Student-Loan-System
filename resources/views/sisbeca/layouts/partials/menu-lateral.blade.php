@@ -147,19 +147,8 @@
                         </ul>
                     </li>
                     <li class="nav-label">Gestionar</li>
-                    <li> <a class="has-arrow none-list" href="{{route('estipendioBecario')}}" aria-expanded="false"><i class="fa fa-usd"></i><span class="hide-menu">Estipendio</span></a>
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nómina
-                                @if($numNominas>0)
-                                    <span class="label label-rouded label-danger pull-center">{{$numNominas}}</span>
-                                @endif
-                            </span></a>
-                        <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{ route('nomina.procesar') }}">Consultar Nómina</a>
-                            </li>
-                            <li><a href="{{ route('nomina.listar') }}">Nóminas Generadas</a></li>
-                            <li><a href="{{ route('nomina.pagadas') }}">Nóminas Pagadas</a></li>
-                        </ul>
-                    </li>
+                    <li> <a class="has-arrow none-list" href="{{route('estipendioBecario')}}" aria-expanded="false"><i class="fa fa-usd"></i><span class="hide-menu">Estipendio</span></a></li>
+                    
                    <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user-times"></i><span class="hide-menu">Desincorporaciones
                                 @if($numdesincorporaciones>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numdesincorporaciones}}</span>
@@ -214,6 +203,18 @@
                         </span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('gestionSolicitudes.listar')}}">Gestionar</a></li>
+                        </ul>
+                    </li>
+                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nómina
+                                @if($numNominas>0)
+                                    <span class="label label-rouded label-danger pull-center">{{$numNominas}}</span>
+                                @endif
+                            </span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="{{ route('nomina.procesar') }}">Consultar Nómina</a>
+                            </li>
+                            <li><a href="{{ route('nomina.listar') }}">Nóminas Generadas</a></li>
+                            <li><a href="{{ route('nomina.pagadas') }}">Nóminas Pagadas</a></li>
                         </ul>
                     </li>
                     <li>
