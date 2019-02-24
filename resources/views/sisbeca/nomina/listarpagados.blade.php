@@ -2,7 +2,7 @@
 @section('title','Nóminas Pagadas')
 @section('content')
 <div class="col-lg-12">
-    <strong>Listar Pagados: {{ $nominas[0]::getMes($mes).'/'.$anho }}</strong>
+    <strong>Listar Pagados: {{ $nominas[0]::getMes($mes).'-'.$anho }}</strong>
     <a href="{{ route('nomina.pagadas') }}" class="btn btn-sm sisbeca-btn-primary pull-right ">Atrás</a>
    
     {{csrf_field()}}
@@ -12,9 +12,10 @@
             <thead>
                 <tr>
                     <th class="text-center">Nombre y Apellido</th>
+                    <th class="text-right">CVA</th>
                     <th class="text-right">Retroactivo</th>
                     <th class="text-right">Libros</th>
-                    <th class="text-right">Sueldo</th>
+                    <th class="text-right">Estipendio</th>
                     <th class="text-right" style="background-color: rgba(113,113,113,0.1);">Total</th>
                     <th class="text-center">F. Generada</th>
                     <th class="text-center">F. Pago</th>
@@ -25,6 +26,8 @@
                     @foreach($nominas as $nomina)
                         <tr>
                             <td class="text-center"> {{ $nomina->datos_nombres.' '.$nomina->datos_apellidos}} </td>
+                            <td class="text-right">{{ number_format($nomina->cva, 2, ',', '.')}}
+                            </td>
                             <td class="text-right">{{ number_format($nomina->retroactivo, 2, ',', '.')}}
                             </td>
                             <td class="text-right">{{ number_format($nomina->monto_libros, 2, ',', '.') }}</td>

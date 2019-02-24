@@ -112,9 +112,25 @@ class Periodo extends Model
         }
     }
 
+    public function esAnual()
+    {
+        return $this->regimen_periodo=="anual";
+    }
+
+    public function esSemestral()
+    {
+        return $this->regimen_periodo=="semestral";
+    }
+
+    public function esTrimestral()
+    {
+        return $this->regimen_periodo=="trimestral";
+    }
+
+
     public function getNumeroPeriodo()
     {
-        if($this->becario->esAnual())
+        if($this->esAnual())
         {
             switch($this->numero_periodo)
             {
@@ -137,7 +153,7 @@ class Periodo extends Model
         }
         else
         {
-            if($this->becario->esAnual())
+            if($this->esSemestral())
             {
                 switch($this->numero_periodo)
                 {

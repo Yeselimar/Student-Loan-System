@@ -35,7 +35,9 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+		<a href="{{route('seguimiento.reportetiempo.excel')}}" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Descargar Excel 
+    	</a>
 	</div>
 	<br>
 
@@ -187,7 +189,7 @@
 		fields: [
 		{ key: 'puntos', label: '', sortable: true, 'class': 'text-center'},
 		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
-		{ key: 'tiempo_actividades', label: 'Chat Club/Talleres', sortable: true, 'class': 'text-center' },
+		{ key: 'tiempo_actividades', label: 'Talleres/Chat Club', sortable: true, 'class': 'text-center' },
 		{ key: 'tiempo_cva', label: 'CVA', sortable: true, 'class': 'text-center' },
 		{ key: 'tiempo_voluntariado', label: 'Voluntariado', sortable: true, 'class': 'text-center' },
 		{ key: 'tiempo_periodos', label: 'Nota Académica', sortable: true, 'class': 'text-center' },

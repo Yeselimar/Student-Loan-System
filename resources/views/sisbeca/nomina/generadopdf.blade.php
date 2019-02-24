@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nómina Generada</title>
+    <title>Nómina Generada {{$mes_completo.'-'.$anho}}</title>
     <style type="text/css">
     *
     {
@@ -153,7 +153,7 @@
 <body>
 <header>
 
-        <h1 class="text-center "><strong>Nómina Generada de: {{ $nominas[0]::getMes($mes).'/'.$anho }}</strong><br/></h1>
+        <h1 class="text-center "><strong>Nómina Generada {{ $nominas[0]::getMes($mes).'-'.$anho }}</strong><br/></h1>
 
 </header>
 <footer class="page derecha"></footer>
@@ -164,27 +164,41 @@
                 <th class="text-center">#</th>
                 <th class="text-left">Nombres</th>
                 <th class="text-left">Apellidos</th>
-                <th class="text-left">Cedula</th>
-                <th class="text-left">E-mail</th>
+                <th class="text-left">Cédula</th>
                 <th class="text-center">N° Cuenta</th>
+                <th class="text-right">CVA</th>
+                <th class="text-right">Fact. Libros</th>
+                <th class="text-right">Retroactivo</th>
+                <th class="text-right">Estipendio</th>
                 <th class="text-right">Total a Pagar</th>
+                <th class="text-center">Beca Aprobada</th>
+                <th class="text-center">Ingreso</th>
+                <th class="text-center">Egreso</th>
             </tr>                         
         </thead>
         <tbody>
             @for($i=0;$i<$nominas->count();$i++)
             <tr>
-                <td class="text-center" style="background-color: rgba(218,218,218,0.2) !important; "> {{ $i+1}} </td>
+                <td class="text-center" style="background-color: rgba(218,218,218,0.2) !important; ">
+                  {{ $i+1}}
+                </td>
                 <td class="text-left"> {{ $nominas[$i]->datos_nombres}} </td>
                 <td class="text-left"> {{ $nominas[$i]->datos_apellidos }} </td>
                 <td class="text-left"> {{ $nominas[$i]->datos_cedula }} </td>
-                <td class="text-left"> {{ $nominas[$i]->datos_email }} </td>
                 @if( $nominas[$i]->datos_cuenta != null)
                 <td class="text-center"> {{ $nominas[$i]->datos_cuenta }} </td>
                 @else
-                    <td class="text-center"><span style="color: red"><strong>SIN NUMERO DE CUENTA</strong></span></td>
+                    <td class="text-center"><span style="color: red"><strong>SIN NÚMERO DE CUENTA</strong></span></td>
 
                 @endif
+                <td class="text-right">{{number_format($nominas[$i]->cva, 2, ',', '.')}}</td>
+                <td class="text-right">{{number_format($nominas[$i]->monto_libros, 2, ',', '.')}}</td>
+                <td class="text-right">{{number_format($nominas[$i]->retroactivo, 2, ',', '.')}}</td>
+                <td class="text-right">{{number_format($nominas[$i]->sueldo_base, 2, ',', '.')}}</td>
                 <td class="text-right">{{number_format($nominas[$i]->total, 2, ',', '.')}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
 
             @endfor

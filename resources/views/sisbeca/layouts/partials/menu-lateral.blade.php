@@ -216,6 +216,13 @@
                             <li><a href="{{route('gestionSolicitudes.listar')}}">Gestionar</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="{{route('modulo.facturas.pendientes')}}" aria-expanded="false">
+                            <i class="fa  fa-file-text-o"></i>
+                            <span class="hide-menu">Fact. Libros</span>
+                        </a>
+                    </li>
+
                     <li class="nav-label">Consultas y Reportes</li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Becarios</span></a>
                         <ul aria-expanded="false" class="collapse">
@@ -224,14 +231,20 @@
                             <li><a href="#">Consultar Mejor Promedio</a></li> --}}
                         </ul>
                     </li>
-                    <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-street-view"></i><span class="hide-menu">Mentorias</span></a>
+                    <li>
+                        <a class="has-arrow  " href="#" aria-expanded="false">
+                            <i class="fa fa-street-view"></i><span class="hide-menu">Mentorias</span>
+                        </a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{ route('mentores.listar') }}">Listar Mentores</a></li>
                         </ul>
                     </li>
-                    <li> <a class="has-arrow none-list" href="{{route('formularioReporte.solicitudes')}}" aria-expanded="false"><i class="fa fa-clone"></i><span class="hide-menu">Solicitudes</span></a>
-
+                    <li>
+                        <a class="has-arrow none-list" href="{{route('formularioReporte.solicitudes')}}" aria-expanded="false">
+                            <i class="fa fa-clone"></i><span class="hide-menu">Solicitudes</span>
+                        </a>
                     </li>
+                   
                     @if((Auth::user()->rol==='directivo'))
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-eject"></i><span class="hide-menu">Egresados</span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -328,16 +341,22 @@
                     </a>
                 </li>
                 <li>
-                    <a class="has-arrow  " href="{{route('seguimiento.becarioreportegeneral',Auth::user()->id)}}" aria-expanded="false">
+                    <a class="has-arrow" href="{{route('seguimiento.becarioreportegeneral',Auth::user()->id)}}" aria-expanded="false">
                         <i class="fa fa-bar-chart"></i>
                         <span class="hide-menu">Mi Reporte General</span>
                     </a>
                 </li>
                 <li>
-                    <a class="has-arrow  " href="{{route('actividad.listar')}}" aria-expanded="false">
+                    <a class="has-arrow " href="#" aria-expanded="false">
                         <i class="fa fa-commenting-o"></i>
                         <span class="hide-menu">Taller/Chat Club</span>
                     </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividad.listar')}}">Calendario</a></li>
+                    </ul>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{route('actividades.becario',Auth::user()->id)}}">Mis Taller/Chat Club</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a class="has-arrow  " href="#" aria-expanded="false">

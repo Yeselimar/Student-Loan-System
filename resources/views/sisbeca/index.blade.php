@@ -62,7 +62,7 @@
 		</div>
 	</div>
 	<br>
-	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() or Auth::user()->esEntrevistador())
+	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
 	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
 		<div class="row">
 			<div class='col-sm-12'>
@@ -115,13 +115,156 @@
 				</div>
 				@endforeach
 			@else
-				<div class="col" style="border: 1px solid #dedede;border-radius: 10px;padding-top: 10px;">
+				<div class="col-lg-12" style="border: 1px solid #dedede;border-radius: 10px;padding-top: 10px;">
 					<p class="h6 text-center"><strong>No hay actividades próximas</strong></p>
 				</div>
 			@endif
 		</div>
 	</div>
+	<br>
+		@if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<a href="{{route('cursos.todos')}}">
+							<div class="col-lg-12 reporte-caja">
+								<div data-mh="reporte-contenido" class="repote-contenido">
+									<p class="h1 text-center">{{$cva_pendiente}}</p>
+								</div>
+								<hr class="reporte-linea">
+								<div class="caja-subtitulo" data-mh="reporte-titulo">
+									<p class="h6 text-center reporte-subtitulo">
+									<strong>CVA pendiente</strong>
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<a href="{{route('voluntariados.todos')}}">
+							<div class="col-lg-12 reporte-caja">
+								<div data-mh="reporte-contenido" class="repote-contenido">
+									<p class="h1 text-center">{{$voluntariados_pendiente}}</p>
+								</div>
+								<hr class="reporte-linea">
+								<div class="caja-subtitulo" data-mh="reporte-titulo">
+									<p class="h6 text-center reporte-subtitulo">
+									<strong>Voluntariado pendiente</strong>
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<a href="{{route('periodos.todos')}}">
+							<div class="col-lg-12 reporte-caja">
+								<div data-mh="reporte-contenido" class="repote-contenido">
+									<p class="h1 text-center">{{$periodos_pendiente}}</p>
+								</div>
+								<hr class="reporte-linea">
+								<div class="caja-subtitulo" data-mh="reporte-titulo">
+									<p class="h6 text-center reporte-subtitulo">
+									<strong>Nota Académica pendiente</strong>
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<a href="{{route('actividad.listarjustificativos')}}">
+							<div class="col-lg-12 reporte-caja">
+								<div data-mh="reporte-contenido" class="repote-contenido">
+									<p class="h1 text-center">{{$justificativos_pendiente }}</p>
+								</div>
+								<hr class="reporte-linea">
+								<div class="caja-subtitulo" data-mh="reporte-titulo">
+									<p class="h6 text-center reporte-subtitulo">
+									<strong>Justificativo pendiente</strong>
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<a href="{{route('gestionSolicitudes.listar')}}">
+							<div class="col-lg-12 reporte-caja">
+								<div data-mh="reporte-contenido" class="repote-contenido">
+									<p class="h1 text-center">{{$solicitudes_pendiente }}</p>
+								</div>
+								<hr class="reporte-linea">
+								<div class="caja-subtitulo" data-mh="reporte-titulo">
+									<p class="h6 text-center reporte-subtitulo">
+									<strong>Solicitud pendiente</strong>
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<a href="{{route('modulo.facturas.pendientes')}}">
+							<div class="col-lg-12 reporte-caja">
+								<div data-mh="reporte-contenido" class="repote-contenido">
+									<p class="h1 text-center">{{$facturas_pendiente }}</p>
+								</div>
+								<hr class="reporte-linea">
+								<div class="caja-subtitulo" data-mh="reporte-titulo">
+									<p class="h6 text-center reporte-subtitulo">
+									<strong>Facturas Libro pendiente</strong>
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+					
+				</div>
+			</div>
+		@endif
 	@endif
+
 @endsection
 @endif
 
+@section('personalcss')
+<style>
+    .repote-contenido
+    {
+    	padding-top:15px; 
+    	height: 55px;
+    }
+	.reporte-contenedor
+	{
+		margin-bottom: 10px;
+		padding-right: 5px!important;
+		padding-left: 5px!important;
+	}
+	.reporte-linea
+	{
+		display: block;
+	    height: 1px;
+	    border: 0;
+	    border-top: 1px solid #dc3545 !important;
+	    margin: 1em 0;
+	    padding: 0; 
+	}
+	.reporte-caja
+	{
+		border:1px solid #003865;
+		border-radius: 5px;
+		background-color: #fff;
+		color:#212121 !important;
+	}
+	.reporte-caja:hover
+	{
+		background-color: #eee;
+	}
+	.reporte-subtitulo,.h5
+	{
+		color:#212121 !important;
+	}
+	
+	.caja-subtitulo
+	{
+		padding-bottom: 5px;
+	}
+</style>
+@endsection

@@ -55,6 +55,13 @@ class CursoController extends Controller
     	return view('sisbeca.cursos.index')->with(compact('cursos','becario'));
     }
 
+    public function cursosbecario($id)
+    {
+        $becario = Becario::find($id);
+        $cursos = Curso::where('becario_id','=',$id)->get();
+        return view('sisbeca.cursos.index')->with(compact('cursos','becario'));
+    }
+
     public function crear($id)
     {
     	$model = 'crear';

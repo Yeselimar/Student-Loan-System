@@ -357,7 +357,7 @@ class Todo extends Migration
         {
             $table->increments('id');
             $table->integer('numero_periodo');//1er semestre: según el regimen del becario
-            $table->integer('regimen_periodo');//por si se cambia de regimen
+            $table->string('regimen_periodo');//por si se cambia de regimen
             $table->string('anho_lectivo');//2-2018
             $table->datetime('fecha_inicio');
             $table->datetime('fecha_fin');
@@ -418,9 +418,12 @@ class Todo extends Migration
             $table->string('curso');
             $table->string('url');
             $table->double('costo',20,2);
+            $table->datetime('fecha_pagada');
+            $table->datetime('fecha_cargada');
+            $table->datetime('fecha_procesada');
             $table->unsignedInteger('mes')->nullable();
             $table->unsignedInteger('year')->nullable();
-            $table->enum('status',['cargada','por procesar','revisada','pagada','rechazada'])->default('cargada');
+            $table->enum('status',['cargada','por procesar','revisada','pagada','rechazada','procesada'])->default('cargada');
 
             $table->unsignedInteger('becario_id');
             $table->foreign('becario_id')->references('user_id')->on('becarios')->onDelete('cascade');

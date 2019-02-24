@@ -40,7 +40,7 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-12 text-right" >
-                        <button type="submit" class="btn sisbeca-btn-primary">
+                        <button type="submit" @click="isLoading=true" class="btn sisbeca-btn-primary">
                             Cargar Factura
                         </button>
                     </div>
@@ -49,7 +49,12 @@
 
         </form>
     </div>
-
+    <section v-if="isLoading" class="loading" id="preloader">
+      <div>
+          <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+      </div>
+    </section>
 </div>
 
 @endsection
@@ -108,5 +113,13 @@
             return n
         }
     }
+const app = new Vue({
+	el: '#app',
+	data:
+	{
+		isLoading: false,
+    } 
+    
+})
 </script>
 @endsection

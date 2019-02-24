@@ -113,9 +113,18 @@
 					<td>@{{fechaformartear(justificativo.aval.updated_at)}}</td>
 					<td>
                         <a v-b-popover.hover.bottom="'Ver justificativo'" :href="getJustificativo(justificativo.aval.url)" class="btn btn-xs sisbeca-btn-primary" target="_blank">
-                            <i class="fa fa-eye"></i>
+                            <template v-if="justificativo.aval.extension=='imagen'">
+                                <i class="fa fa-image"></i>
+                            </template>
+                            <template v-else>
+                                <i class="fa fa-file-pdf-o"></i>
+                            </template>
                         </a>
                         
+                        <button v-b-popover.hover.bottom="'Aprobar/Negar/Devolver justificativo'" class="btn btn-xs sisbeca-btn-primary" @click="modalAccion(justificativo)">
+                            <i class="fa fa-gavel"></i>
+                        </button>
+                        <!--
                         <button v-b-popover.hover.bottom="'Aprobar justificativo'" class="btn btn-xs sisbeca-btn-primary" @click="aprobarJustificativo(justificativo.aval.id)" >
                             <i class="fa fa-check"></i>
                         </button>
@@ -127,7 +136,7 @@
                         <button v-b-popover.hover.bottom="'Devolver justificativo'" class="btn btn-xs sisbeca-btn-default" @click="devolverJustificativo(justificativo.aval.id)">
                             <i class="fa fa-reply"></i>
                         </button>
-                        
+                        -->
                     </td>
 				</tr>
                 <tr v-if="justificativos.length==0">
@@ -137,6 +146,44 @@
 		</table>
 	</div>
 
+    <!-- Modal para tomar accion -->
+    <div class="modal fade" id="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title pull-left"><strong>Justificativo</strong></h5>
+                    <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-body">
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label" for="observacion">Becario</label>
+                         <input type="text" class="sisbeca-input sisbeca-disabled input-sm" disabled="disabled" :value="justificativo.becario">
+                    </div>
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label" for="observacion">Actividad</label>
+                         <input type="text" class="sisbeca-input sisbeca-disabled input-sm" disabled="disabled" :value="justificativo.actividad">
+                    </div>
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label " for="nombre">Estatus Justificativo</label>
+                        <select v-model="justificativo.estatus" class="sisbeca-input input-sm sisbeca-select">
+                            <option v-for="estatu in estatus" :value="estatu">@{{ estatu}}</option>
+                        </select>
+                    </div>
+                    <div class="col" style="padding-left: 0px;padding-right: 0px;">
+                        <label class="control-label" for="observacion">Observación Justificativo</label>
+                        <textarea name="observacion" class="sisbeca-input " v-model="justificativo.observacion" placeholder="EJ: No se observacion bien el archivo..." style="margin-bottom: 0px">
+                        </textarea> 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal" >Cancelar</button>
+                    <button @click="actualizarEstatus(justificativo)" class="btn btn-sm sisbeca-btn-primary pull-right">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para tomar accion -->
+    
     <!-- Cargando.. -->
     <section class="loading" id="preloader">
         <div>
@@ -156,12 +203,14 @@ const app = new Vue({
     el: '#app',
     data:
     {
+        estatus:[],
+        justificativo:{},
         justificativos:[],
     },
     created: function()
     {
         this.obtenerjustificativos();
-
+        this.obtenerestatusaval();
     },
     mounted: function()
     {
@@ -169,6 +218,39 @@ const app = new Vue({
     },
     methods: 
     {
+        obtenerestatusaval: function()
+        {
+            var url = '{{route('aval.getEstatus')}}';
+            axios.get(url).then(response => 
+            {
+                this.estatus = response.data.estatus;
+            }); 
+        },
+        modalAccion(justificativo)
+        {
+            Vue.set(app.justificativo, 'id', justificativo.aval.id);
+            Vue.set(app.justificativo, 'estatus', justificativo.aval.estatus);
+            Vue.set(app.justificativo, 'observacion', justificativo.aval.observacion);
+            Vue.set(app.justificativo, 'becario', justificativo.user.name+' '+justificativo.user.last_name);
+            Vue.set(app.justificativo, 'actividad', justificativo.actividad.nombre);
+            $('#modal').modal('show');
+        },
+        actualizarEstatus(justificativo)
+        {
+            $('#modal').modal('hide');
+            $("#preloader").show();
+            var url = '{{route('aval.tomaraccion',':id')}}';
+            url = url.replace(':id', justificativo.id);
+            var dataform = new FormData();
+            dataform.append('estatus', justificativo.estatus);
+            dataform.append('observacion', justificativo.observacion);
+            axios.post(url,dataform).then(response => 
+            {
+                this.obtenerjustificativos();
+                $("#preloader").hide();
+                toastr.success(response.data.success);
+            });
+        },
         getUrlDetalles(id)
         {
             var url = '{{route('actividad.detalles',':id')}}';

@@ -117,6 +117,11 @@ class Becario extends Model
         return $query->orwhere('status','=','probatorio2');
     }
 
+    public function scopeEgresados($query)
+    {
+        return $query->orwhere('status','=','egresado');
+    }
+
     public function scopeTerminosAceptados($query)
     {
         return $query->where('acepto_terminos','=','1');
@@ -241,6 +246,11 @@ class Becario extends Model
     public function esSemestral()
     {
         return $this->regimen=="semestral";
+    }
+
+    public function esTrimestral()
+    {
+        return $this->regimen=="trimestral";
     }
 
     public function getAceptoTerminos()
@@ -441,5 +451,17 @@ class Becario extends Model
             $referencia_profesor2->delete();
             $ensayo->delete();
         }
+    }
+    public function getTotalFacturasPendientes()
+    {
+        $total = 0;
+        foreach ($this->factlibros as $factura)
+        {
+            if($factura->esCargada())
+            {
+                $total++;
+            }
+        }
+        return $total;
     }
 }

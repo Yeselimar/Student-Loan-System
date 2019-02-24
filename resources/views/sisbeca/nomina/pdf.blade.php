@@ -152,7 +152,7 @@
 <body>
     <header>
 
-        <h1 class="text-center"><strong>Nómina de: {{ date($mes).'/'.$anho }}</strong></h1>
+        <h1 class="text-center"><strong>Nómina de: {{ date($mes).'-'.$anho }}</strong></h1>
 
     </header>
 
@@ -163,7 +163,7 @@
                 <th class="text-left">Nombre y Apellido</th>
                 <th class="text-right">Retroactivo</th>
                 <th class="text-right">Monto Libros</th>
-                <th class="text-right">Sueldo Base</th>
+                <th class="text-right">Estipendio Base</th>
                 <th class="text-right" style="background-color: rgba(113,113,113,0.1);">Total</th>
                 <th class="text-center">Fecha Pago</th>
                 <th class="text-center">Fecha Generada</th>

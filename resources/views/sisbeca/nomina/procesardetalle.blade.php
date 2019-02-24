@@ -2,7 +2,7 @@
 @section('title','Procesar Nómina')
 @section('content')
 <div class="col-lg-12" id="app">
-    <strong>Procesar Nómina: {{ $mes.'/'.$anho }}</strong>
+    <strong>Procesar Nómina: {{ $mes.'-'.$anho }}</strong>
     <a href="{{route('nomina.procesar')}}" class="btn btn-sm sisbeca-btn-primary pull-right ">Atrás</a>
     
     <br>
@@ -17,7 +17,7 @@
                     <th class="text-center">CVA</th>
                     <th class="text-right">Retroactivo</th>
                     <th class="text-right">Libros</th>
-                    <th class="text-right">Sueldo</th>
+                    <th class="text-right">Estipendio</th>
                     <th class="text-right" style="background-color: #eee;">Total a Pagar</th>
                     <th class="text-center">Acciones</th>
                 </tr>

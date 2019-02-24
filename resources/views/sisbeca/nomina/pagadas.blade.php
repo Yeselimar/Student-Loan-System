@@ -3,7 +3,6 @@
 @section('content')
 	
 <div class="col-lg-12">
-	<strong>Nóminas Pagadas</strong>
 
 	<div class="table-responsive">
 		
@@ -12,7 +11,7 @@
 				<tr>
 					<th class="text-center">Mes/Año</th>
 					<th class="text-center">N° Becarios</th>
-					<th class="text-right">Sueldo Base</th>
+					<th class="text-right">Estipendio Base</th>
 					<th class="text-right">Total Pagado</th>
 					<th class="text-center">Fecha Pago</th>
 					<th class="text-center">Acciones</th>
@@ -22,14 +21,25 @@
 				@if($nominas->count() > 0)
 					@foreach($nominas as $nomina)
 					<tr>
-						<td class="text-center">{{ $nomina->mes.'/'.$nomina->year }}</td>
+						<td class="text-center">{{ $nomina->mes.'-'.$nomina->year }}</td>
 						<td class="text-center">{{ $nomina->total_becarios }}</td>
 						<td class="text-right">{{ number_format($nomina->sueldo_base, 2, ',', '.') }}</td>
 						<td class="text-right">{{ number_format($nomina->total_pagado, 2, ',', '.') }}</td>
 						<td class="text-center">{{ date("d/m/Y", strtotime($nomina->fecha_pago)) }}</td>
 						<td class="text-center">
-							<a href="{{ route('nomina.listar.pagadas',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary">Consultar</a>
-							<a href="{{ route('nomina.pagado.pdf',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" target="_blank">Generar PDF</a>
+
+							<a href="{{ route('nomina.pagado.pdf',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Generar Nómina en PDF" >
+								<i class="fa fa-file-pdf-o"></i>
+							</a>
+
+							<a href="{{ route('nomina.pagada.excel',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Generar Nómina en Excel" >
+								<i class="fa fa-file-excel-o"></i>
+							</a>
+							
+							<a href="{{ route('nomina.listar.pagadas',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Detalle de la Nómina" >
+								<i class="fa fa-eye"></i>
+							</a>
+
 						</td>
 					</tr>
 					@endforeach
@@ -74,4 +84,9 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });
+    </script>
 @endsection

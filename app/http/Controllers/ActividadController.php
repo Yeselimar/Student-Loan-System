@@ -19,6 +19,16 @@ use PHPMailer\PHPMailer\Exception;
 
 class ActividadController extends Controller
 {
+    public function actividadesbecario($id)
+    {
+        if(Auth::user()->id == $id or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
+        {
+            $becario = Becario::find($id);
+            $ab = ActividadBecario::paraBecario($id)->get();
+            return view('sisbeca.actividad.actividadesbecario')->with(compact('becario','ab'));
+        }
+        return view('sisbeca.error.404');
+    }
 
     public function actualizardisponible($id)
     {
@@ -843,5 +853,11 @@ class ActividadController extends Controller
         $mail->addAddress($becario->user->email);
         $mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como NO ASISTIÓ.']);
+    }
+
+    public function obtenerjustificativobecario($a_id,$b_id)
+    {
+        $ab = ActividadBecario::paraActividad($a_id)->paraBecario($b_id)->with("aval")->first();
+        return response()->json(['justificativo'=>$ab]);
     }
 }   

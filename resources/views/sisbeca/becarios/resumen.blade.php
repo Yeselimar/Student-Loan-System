@@ -53,14 +53,6 @@
 			<button @click="consultarreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
 		</div>
 	</div>
-    <div class="text-right">
-        <!--<a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF
-    	</a>-->
-    	<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-    </div>
 	<br>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover">
@@ -138,7 +130,7 @@
 			<tbody>
 				<tr>
 					<td class="text-left"><strong>Año</strong></td>
-					<td class="text-left"><strong>Módulo</strong></td>
+					<td class="text-left"><strong>Nivel/Módulo</strong></td>
 					<td class="text-left"><strong>Total por Nivel</strong></td>
 					<td class="text-right"><strong>Promedio</strong></td>
 				</tr>
@@ -148,7 +140,18 @@
 							@{{obtenermes(curso.fecha_inicio)}}-@{{obteneranho(curso.fecha_inicio)}}
 						</td>
 						<td class="text-left">
-							@{{curso.modulo}} Nivel
+							<template v-if="curso.nivel=='basico'">
+								Básico
+							</template>
+							<template v-if="curso.nivel=='intermedio'">
+								Intermedio
+							</template>
+							<template v-if="curso.nivel=='avanzado'">
+								Avanzado
+							</template>
+							<template v-if="curso.total_modulo==1">
+								@{{curso.modulo}}
+							</template>
 						</td>
 						<td class="text-left">
 							@{{curso.total_modulo}}
@@ -288,7 +291,18 @@
 			</tbody>
 		</table>
 	</div>
-	<br>
+	<hr>
+	<div class="text-right">
+        <!--<a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF
+    	</a>-->
+    	<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+    </div>
 	<!--
 	<p>No borrar este código, aún funciona. Pero está hecho en PHP</p>
 	<br>
@@ -651,6 +665,15 @@ const app = new Vue({
 		descargarpdf(anho,mes)
 		{
 			var url = '{{route('seguimiento.resumen.anhomes.pdf',array('id'=>':id','anho'=>':anho','mes'=>':mes'))}}'
+			var id = '{{$becario->user->id}}';
+			url = url.replace(':id', id);
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			return url;
+		},
+		descargarexcel(anho,mes)
+		{
+			var url = '{{route('seguimiento.resumen.anhomes.excel',array('id'=>':id','anho'=>':anho','mes'=>':mes'))}}'
 			var id = '{{$becario->user->id}}';
 			url = url.replace(':id', id);
 			url = url.replace(':anho', anho);

@@ -41,14 +41,26 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Número Periodo</label>
-                    @if($becario->esAnual())
-                    	{{ Form::select('numero_periodo', array('1'=>'1 año','2'=>'2 año','3'=>'3 año','4'=>'4 año','5'=>'5 año'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input']) }}
+                    @if($model=='crear')
+                        @if($becario->esAnual())
+                        	{{ Form::select('numero_periodo', array('1'=>'1 año','2'=>'2 año','3'=>'3 año','4'=>'4 año','5'=>'5 año'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input']) }}
+                        @else
+                        	@if($becario->esSemestral())
+                        		{{ Form::select('numero_periodo', array('1'=>'1 semestre','2'=>'2 semestre','3'=>'3 semestre','4'=>'4 semestre','5'=>'5 semestre','6'=>'6 semestre','7'=>'7 semestre','8'=>'8 semestre','9'=>'9 semestre','10'=>'10 semestre'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input']) }}
+                        	@else
+                        		{{ Form::select('numero_periodo', array('1'=>'1 trimestre','2'=>'2 trimestre','3'=>'3 trimestre','4'=>'4 trimestre','5'=>'5 trimestre','6'=>'6 trimestre','7'=>'7 trimestre','8'=>'8 trimestre','9'=>'9 trimestre','10'=>'10 trimestre','11'=>'11 trimestre','12'=>'12 trimestre','13'=>'13 trimestre','14'=>'14 trimestre','15'=>'15 trimestre','16'=>'16 trimestre','17'=>'17 trimestre','18'=>'18 trimestre','19'=>'19 trimestre','20'=>'20 trimestre'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input']) }}
+                        	@endif
+                        @endif
                     @else
-                    	@if($becario->esSemestral())
-                    		{{ Form::select('numero_periodo', array('1'=>'1 semestre','2'=>'2 semestre','3'=>'3 semestre','4'=>'4 semestre','5'=>'5 semestre','6'=>'6 semestre','7'=>'7 semestre','8'=>'8 semestre','9'=>'9 semestre','10'=>'10 semestre'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input']) }}
-                    	@else
-                    		{{ Form::select('numero_periodo', array('1'=>'1 trimestre','2'=>'2 trimestre','3'=>'3 trimestre','4'=>'4 trimestre','5'=>'5 trimestre','6'=>'6 trimestre','7'=>'7 trimestre','8'=>'8 trimestre','9'=>'9 trimestre','10'=>'10 trimestre','11'=>'11 trimestre','12'=>'12 trimestre','13'=>'13 trimestre','14'=>'14 trimestre','15'=>'15 trimestre','16'=>'16 trimestre','17'=>'17 trimestre','18'=>'18 trimestre','19'=>'19 trimestre','20'=>'20 trimestre'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input']) }}
-                    	@endif
+                        @if($periodo->esAnual())
+                            {{ Form::select('numero_periodo', array('1'=>'1 año','2'=>'2 año','3'=>'3 año','4'=>'4 año','5'=>'5 año'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled']) }}
+                        @else
+                            @if($periodo->esSemestral())
+                                {{ Form::select('numero_periodo', array('1'=>'1 semestre','2'=>'2 semestre','3'=>'3 semestre','4'=>'4 semestre','5'=>'5 semestre','6'=>'6 semestre','7'=>'7 semestre','8'=>'8 semestre','9'=>'9 semestre','10'=>'10 semestre'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled']) }}
+                            @else
+                                {{ Form::select('numero_periodo', array('1'=>'1 trimestre','2'=>'2 trimestre','3'=>'3 trimestre','4'=>'4 trimestre','5'=>'5 trimestre','6'=>'6 trimestre','7'=>'7 trimestre','8'=>'8 trimestre','9'=>'9 trimestre','10'=>'10 trimestre','11'=>'11 trimestre','12'=>'12 trimestre','13'=>'13 trimestre','14'=>'14 trimestre','15'=>'15 trimestre','16'=>'16 trimestre','17'=>'17 trimestre','18'=>'18 trimestre','19'=>'19 trimestre','20'=>'20 trimestre'),($model=='crear') ? 1 : $periodo->numero_periodo,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled']) }}
+                            @endif
+                        @endif
                     @endif
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">

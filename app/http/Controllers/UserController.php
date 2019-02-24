@@ -8,6 +8,9 @@ use Barryvdh\DomPDF\Facade as PDF;
 use avaa\Becario;
 use avaa\User;
 use DateTime;
+use avaa\Exports\UsersExport;
+use avaa\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -108,5 +111,15 @@ class UserController extends Controller
             return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
         }
         return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+    }
+
+    public function export() //
+    {
+        return Excel::download(new UsersExport, 'usuarios.xlsx');
+    }
+    
+    public function import() 
+    {
+        return Excel::import(new UsersImport, 'users.xlsx');
     }
 }   

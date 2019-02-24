@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
 use avaa\Http\Requests\NominaRequest;
 use DateTime;
+use Maatwebsite\Excel\Facades\Excel;
+use avaa\Exports\NominaGeneradaExport;
+use avaa\Exports\NominaPagadaExport;
+
 
 
 class NominaController extends Controller
@@ -27,7 +31,7 @@ class NominaController extends Controller
 
     public function listar()
     {
-        $ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
+        /*$ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $fechagenerar = strtotime ( '-1 day' , strtotime ( $ultimodia ) ) ;//--poner-5
         $fechagenerar = date ( 'Y-m-d' , $fechagenerar );
         $hoy = date('Y-m-d');
@@ -46,8 +50,8 @@ class NominaController extends Controller
                      ->groupBy('mes','year')
                      ->orderby('mes','desc')->orderby('year','desc')->get();
 
-       
-        return View('sisbeca.nomina.listar')->with('nominas',$nominas)->with('generar',$generar)->with('mes',$mes)->with('anho',$anho);
+       */
+        return View('sisbeca.nomina.listar');
     }
 
     public function listarver($mes, $anho)
@@ -83,6 +87,8 @@ class NominaController extends Controller
 
     public function procesar()
     {
+        return View('sisbeca.nomina.procesar');
+        /*
         //$ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $ultimodia= '2018-04-30';//prueba
         $fechagenerar = strtotime ( '-5 day' , strtotime ( $ultimodia ) ) ;//--poner-5
@@ -105,6 +111,7 @@ class NominaController extends Controller
             ->groupBy('mes','year')
             ->orderby('mes','desc')->orderby('year','desc')->get();
         return View('sisbeca.nomina.procesar')->with('nominas',$nominas)->with('generar',$generar)->with('mes',$mes)->with('anho',$anho);
+        
         /*
         $ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $fechagenerar = strtotime ( '-5 day' , strtotime ( $ultimodia ) ) ;//--poner-5
@@ -183,6 +190,242 @@ class NominaController extends Controller
         return response()->json(['nominas'=>$nominasfiltro]);
     }
 
+    public function generarNominaApi(Request $request)
+    {
+        $mes = $request->mes;
+        $year = $request->year;
+        $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
+        if(count($nominasaux) == 0)
+        {
+    
+            $hoy = date('Y-m-d H:m:s');
+            foreach($request->nomina as $n)
+            {
+                $nomina = new Nomina();
+                $nomina->retroactivo = $n['nomina']['retroactivo'];
+                $nomina->datos_nombres= $n['nomina']['datos_nombres'];
+                $nomina->datos_apellidos = $n['nomina']['datos_apellidos'];
+                $nomina->datos_cedula =  $n['nomina']['datos_cedula'];
+                $nomina->datos_email = $n['nomina']['datos_email'];
+                $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
+                $nomina->datos_id= $n['nomina']['datos_id'];
+                $nomina->sueldo_base = $n['nomina']['sueldo_base'];
+                foreach($n['facturas'] as $factlibro)
+                {
+                    $factura = FactLibro::find($factlibro['factura']['id']);
+                    if($factlibro['factura']['status'] == 'por procesar' )
+                    {
+                        $factura->status = 'procesada';
+                        $factura->fecha_procesada = $hoy;
+                    }
+                    else
+                    {
+                        if($factlibro['factura']['status'] == 'rechazada')
+                        {
+                            $factura->fecha_procesada = $hoy;
+                        }
+                        $factura->status= $factlibro['factura']['status'];
+                    }
+                    $factura->save();
+                }
+                $nomina->monto_libros = $n['nomina']['monto_libros'];
+                $nomina->cva = $n['nomina']['cva'];
+                $nomina->total = $n['nomina']['sueldo_base'] + $n['nomina']['retroactivo'] + $n['nomina']['monto_libros'] + $n['nomina']['cva'];
+                $nomina->mes = $mes;
+                $nomina->year = $year;
+                $nomina->status = 'generado';
+                $nomina->fecha_pago = null;
+                $nomina->fecha_generada = $hoy;
+                $nomina->save();
+
+                $bn = new BecarioNomina();
+                $bn->user_id = $nomina->datos_id;//--becario_id
+                $bn->nomina_id = $nomina->id;
+                $bn->save();
+                
+            }
+            return response()->json(['res'=>1]);
+        }
+        else
+        {
+            return response()->json(['res'=>0]);
+        }
+
+   }
+    public function getConsultarNominaApi($mes, $year)
+    {
+
+        $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
+        if(count($nominasaux)==0)
+        {
+            $becarios = Becario::whereIn('status',['activo','probatorio1','probatorio2','egresado'])->get();
+            $costo = Costo::first();
+            $sugeridos = collect();
+            $noSugeridos = collect();
+            foreach($becarios as $becario)
+            {
+                $inNomina = false;
+                $diff = 0;
+                $date1 = new DateTime($becario->fecha_bienvenida);
+                $date2 = new DateTime();
+                // Entran en nomina aquellos becarios que su fecha de bienvendida sea mayor a un mes
+                if($becario->fecha_bienvenida != null)
+                {
+                    $diff = $date1->diff($date2);
+
+                    if(($diff->invert == 0) && ($diff->m > 0) || ($diff->y > 0))
+                    {
+                        $inNomina =true;
+                    }
+                    else
+                    {
+                        $inNomina =false;
+                    }
+                }
+
+                if($inNomina)
+                {
+                    //Entran en nomina aquellos becarios cuyo fecha fin de carga academica no sea  mayor a 6 meses
+                    $diff = 0;
+                    $date1 = new DateTime($becario->final_carga_academica);
+                    $date2 = new DateTime();
+                    if ($becario->final_carga_academica != null)
+                    {
+                        $diff = $date2->diff($date1);
+                        if(($diff->invert == 0) || (($diff->invert ==1) && ($diff->m <= 6) && ($diff->y == 0)) )
+                        {
+                            $inNomina =true;
+                        }
+                        else
+                        {
+                            $inNomina =false;
+                        }
+                    }
+                    else
+                    {
+                        $inNomina = true;
+                        if($becario->status === 'egresado')
+                        {
+                            $inNomina = false;
+                        }
+                    }
+                }
+
+                $nomina = new Nomina();
+                $nomina->retroactivo = 0;
+                $nomina->cva = 0;
+                $nomina->datos_nombres= $becario->user->name;
+                $nomina->datos_apellidos = $becario->user->last_name;
+                $nomina->datos_cedula = $becario->user->cedula;
+                $nomina->datos_email = $becario->user->email;
+                $nomina->datos_cuenta = $becario->cuenta_bancaria;
+                $nomina->datos_id= $becario->user_id;
+                /*$becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
+                $becario->save(); */
+                $nomina->sueldo_base = $costo->sueldo_becario;
+                $total = 0;
+                $facturas = collect();
+                foreach($becario->factlibros as $factlibro)
+                {
+                    if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
+                    {
+                        if($factlibro->status === 'por procesar')
+                        {
+                            $total = $total + $factlibro->costo;
+                        }
+                        $facturas->push(array(
+                           "id" => count($facturas),
+                           "factura" => $factlibro,
+                           'selected' => false
+                        ));
+                   }
+       
+                }
+                $nomina->monto_libros = $total;
+                $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $nomina->monto_libros;
+                $nomina->mes = $mes;
+                $nomina->year = $year;
+                $nomina->status = 'pendiente';
+                $nomina->fecha_pago = null;
+                $nomina->fecha_generada = null;
+
+                if ($inNomina)
+                {
+                  $sugeridos->push(array(
+                    "id" => count($sugeridos),
+                    "nomina" => $nomina,
+                    "facturas" => $facturas,
+                    "is_sugerido" => true,
+                    "status_becario" => $becario->status,
+                    'final_carga_academica' => $becario->final_carga_academica,
+                    'fecha_bienvenida' => $becario->fecha_bienvenida,
+                    'fecha_ingreso' => $becario->fecha_ingreso,
+                    'selected' => false
+
+                    ));
+                }
+                else
+                {
+                    $noSugeridos->push(array(
+                    "id" => count($noSugeridos),
+                    "nomina" => $nomina,
+                    "facturas" => $facturas,
+                    "is_sugerido" => false,
+                    "status_becario" => $becario->status,
+                    'final_carga_academica' => $becario->final_carga_academica,
+                    'fecha_bienvenida' => $becario->fecha_bienvenida,
+                    'fecha_ingreso' => $becario->fecha_ingreso,
+                    'selected' => false
+                    ));
+
+                }
+
+
+            }
+            return response()->json(['sugeridos'=>$sugeridos,'noSugeridos'=>$noSugeridos,'res'=> 2]);
+
+        }
+        else
+        {
+            return response()->json(['res'=> 0]);
+        }
+    }
+
+    public function listarNominasApi()
+    {
+        $nominas = DB::table('nominas')
+         ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,fecha_generada, fecha_pago,sueldo_base, status, id'))
+         ->where('status','=','generado')
+         ->groupBy('mes','year')
+         ->orderby('mes','desc')->orderby('year','desc')->get();
+        if(count($nominas)>0)
+        {
+            return response()->json(['nominas'=>$nominas,'res'=> 1]);
+
+        }
+        else
+        {
+            return response()->json(['res'=> 0]);
+        }
+    }
+    public function getConsultarFacturasBecarioApi($id)
+    { 
+        $becario = Becario::find($id);
+        $facturasAA = collect();
+        foreach($becario->factlibros as $factlibro)
+        {
+            if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
+            {
+                $facturasAA->push(array(
+                    "id" => count($facturasAA),
+                    "factura" => $factlibro,
+                    'selected' => false
+                 ));
+            }
+        }
+        return response()->json(['facturasAA'=>$facturasAA,'res'=> 1]);
+    }
+
     public function generartodo($mes,$anho)
     {
     	//validar que no se haya generado para una fecha
@@ -200,109 +443,116 @@ class NominaController extends Controller
 
         if(count($nominasaux)==0)
         {
-           $becarios = Becario::where('acepto_terminos','=',1)->where('status','=','activo')->get();
-               $costo = Costo::first();
+            $becarios = Becario::where('acepto_terminos','=',1)->where('status','=','activo')->get();
+            $costo = Costo::first();
 
-               foreach($becarios as $becario)
-               {
-                    $inNomina = false;
+            foreach($becarios as $becario)
+            {
+                $inNomina = false;
+                $diff = 0;
+                $date1 = new DateTime($becario->fecha_bienvenida);
+                $date2 = new DateTime();
+                // Entran en nomina aquellos becarios que su fecha de bienvendida sea mayor a un mes
+                if($becario->fecha_bienvenida != null)
+                {
+                    $diff = $date1->diff($date2);
+
+                    if(($diff->invert == 0) && ($diff->m > 0) || ($diff->y > 0))
+                    {
+                        $inNomina =true;
+                    }
+                    else {
+                        $inNomina =false;
+                    }
+                }
+
+                if($inNomina)
+                {
+                    //Entran en nomina aquellos becarios cuyo fecha fin de carga academica no sea  mayor a 6 meses
                     $diff = 0;
-                    $date1 = new DateTime($becario->fecha_bienvenida);
+                    $date1 = new DateTime($becario->final_carga_academica);
                     $date2 = new DateTime();
-                    // Entran en nomina aquellos becarios que su fecha de bienvendida sea mayor a un mes
-                    if($becario->fecha_bienvenida != null){
-                        $diff = $date1->diff($date2);
-
-                        if(($diff->invert == 0) && ($diff->m > 0) || ($diff->y > 0)){
+                    if ($becario->final_carga_academica != null)
+                    {
+                        $diff = $date2->diff($date1);
+                        if(($diff->invert == 0) || (($diff->invert ==1) && ($diff->m <= 6) && ($diff->y == 0)) )
+                        {
                             $inNomina =true;
                         }
-                        else {
+                        else
+                        {
                             $inNomina =false;
                         }
                     }
-
-                    if($inNomina) {
-                        //Entran en nomina aquellos becarios cuyo fecha fin de carga academica no sea  mayor a 6 meses
-                        $diff = 0;
-                        $date1 = new DateTime($becario->final_carga_academica);
-                        $date2 = new DateTime();
-                        if ($becario->final_carga_academica != null)
-                        {
-                            $diff = $date2->diff($date1);
-                            if(($diff->invert == 0) || (($diff->invert ==1) && ($diff->m <= 6) && ($diff->y == 0)) ){
-                                $inNomina =true;
-                            }
-                            else {
-                                $inNomina =false;
-                            }
-                        } else {
-                            $inNomina = true;
-                        }
+                    else
+                    {
+                        $inNomina = true;
                     }
+                }
 
-                   if ($inNomina)
+                if ($inNomina)
+                {
+                   $nomina = new Nomina();
+                   $nomina->retroactivo = $becario->retroactivo;
+                   $nomina->datos_nombres= $becario->user->name;
+                   $nomina->datos_apellidos = $becario->user->last_name;
+                   $nomina->datos_cedula = $becario->user->cedula;
+                   $nomina->datos_email = $becario->user->email;
+                   $nomina->datos_cuenta = $becario->cuenta_bancaria;
+                   $nomina->datos_id= $becario->user_id;
+                   $becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
+                   $becario->save();
+                   $nomina->sueldo_base = $costo->sueldo_becario;
+                   $total = 0;
+                   foreach($becario->factlibros as $factlibro)
                    {
-                       $nomina = new Nomina();
-                       $nomina->retroactivo = $becario->retroactivo;
-                       $nomina->datos_nombres= $becario->user->name;
-                       $nomina->datos_apellidos = $becario->user->last_name;
-                       $nomina->datos_cedula = $becario->user->cedula;
-                       $nomina->datos_email = $becario->user->email;
-                       $nomina->datos_cuenta = $becario->cuenta_bancaria;
-                       $nomina->datos_id= $becario->user_id;
-                       $becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
-                       $becario->save();
-                       $nomina->sueldo_base = $costo->sueldo_becario;
-                       $total = 0;
-                       foreach($becario->factlibros as $factlibro)
+                       if($factlibro->status === 'cargada')
                        {
-                           if($factlibro->status === 'cargada')
-                           {
-                               //$total = $total + $factlibro->costo; //se comenta porque no se sumara aún
-                               $factlibro->status='por procesar';
-                               $factlibro->save();
-                           }
+                           //$total = $total + $factlibro->costo; //se comenta porque no se sumara aún
+                           $factlibro->status='por procesar';
+                           $factlibro->save();
                        }
-                       $nomina->monto_libros = $total;
-                       $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $total;
-                       $nomina->mes = $mes;
-                       $nomina->year = $anho;
-                       $nomina->status = 'pendiente';
-                       $nomina->fecha_pago = null;
-                       $nomina->fecha_generada = null;
-                       $nomina->save();
-   
-                       $bn = new BecarioNomina();
-                       $bn->user_id = $becario->user_id;//--becario_id
-                       $bn->nomina_id = $nomina->id;
-                       $bn->save();
                    }
+                   $nomina->monto_libros = $total;
+                   $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $total;
+                   $nomina->mes = $mes;
+                   $nomina->year = $anho;
+                   $nomina->status = 'pendiente';
+                   $nomina->fecha_pago = null;
+                   $nomina->fecha_generada = null;
+                   $nomina->save();
+
+                   $bn = new BecarioNomina();
+                   $bn->user_id = $becario->user_id;//--becario_id
+                   $bn->nomina_id = $nomina->id;
+                   $bn->save();
+                }
 
 
-               }
-               /*Enviar Alerta al directivo */
-               //primero veo si la alerta existe
-               if ($inNomina)
+            }
+            /*Enviar Alerta al directivo */
+            //primero veo si la alerta existe
+            if ($inNomina)
+            {
+               $alerta= Alerta::query()->where('titulo','=','Nomina(s) pendiente(s) por procesar')->where('tipo','=','nomina')->where('status','=','enviada')->first();
+               if(!is_null($alerta))
                {
-                   $alerta= Alerta::query()->where('titulo','=','Nomina(s) pendiente(s) por procesar')->where('tipo','=','nomina')->where('status','=','enviada')->first();
-                   if(!is_null($alerta))
-                   {
-                       $alerta->leido=false;
-                       $alerta->save();
-                   }
-                   else
-                   {
-                       $alerta = new Alerta();
-                       $alerta->titulo= 'Nomina(s) pendiente(s) por procesar';
-                       $alerta->descripcion= 'Tiene Nomina(s) pendiente(s) por procesar, se le aconseja procesar las nominas que tiene pendiente en el Menu de Nominas->Por Procesar';
-                       $alerta->user_id=null;
-                       $alerta->tipo = 'nomina';
-                       $alerta->nivel='alto';
-                       $alerta->save();
-                   }
+                   $alerta->leido=false;
+                   $alerta->save();
                }
+               else
+               {
+                   $alerta = new Alerta();
+                   $alerta->titulo= 'Nomina(s) pendiente(s) por procesar';
+                   $alerta->descripcion= 'Tiene Nomina(s) pendiente(s) por procesar, se le aconseja procesar las nominas que tiene pendiente en el Menu de Nominas->Por Procesar';
+                   $alerta->user_id=null;
+                   $alerta->tipo = 'nomina';
+                   $alerta->nivel='alto';
+                   $alerta->save();
+               }
+            }
 
-     }
+        }
         /* $control->cont = $control->cont+1
         $control->save();*/
         flash("La nómina del ".$mes."/".$anho." esta lista para ser procesada.",'success');
@@ -311,16 +561,103 @@ class NominaController extends Controller
 
     public function generadopdf($mes,$anho)
     {
-        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','generado')->get(); 
-        $pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho'));
-        return $pdf->stream('listado.pdf','PDF xasa');
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','generado')->get();
+        $pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho','mes_completo'));
+        $pdf->setPaper('A4', 'landscape');
+        
+        return $pdf->stream('Nómina Generada '.$mes_completo.'-'.$anho.'.pdf','PDF');
     }
 
     public function pagadopdf($mes,$anho)
     {
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
         $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','pagado')->get(); 
-        $pdf = PDF::loadView('sisbeca.nomina.pagadopdf', compact('nominas','mes','anho'));
-        return $pdf->stream('listado.pdf','PDF xasa');
+        $pdf = PDF::loadView('sisbeca.nomina.pagadopdf', compact('nominas','mes','anho','mes_completo'));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('Nómina Pagada '.$mes_completo.'-'.$anho.'.pdf','PDF');
     }
 
     public function cambiar()
@@ -356,7 +693,8 @@ class NominaController extends Controller
             // Alerta esto puede generar error
             //$becario = Becario::find($nomina->becarios[0]->user_id);
             $becario = Becario::find($nomina->datos_id);
-            if(!is_null($becario)) {
+            if(!is_null($becario))
+            {
                 $becario->retroactivo = 0.0;
                 $becario->save();
                 $factlibros = FactLibro::where('becario_id', '=', $nomina->becarios[0]->user->id)->where('status', '=', 'revisada')->where('mes', '=', $mes)->where('year', '=', $anho)->get();
@@ -366,7 +704,6 @@ class NominaController extends Controller
                     $factura->save();
                 }
             }
-            
         }
         return redirect()->route('nomina.pagadas');
     }
@@ -449,5 +786,100 @@ class NominaController extends Controller
         $nomina->retroactivo = $request->retroactivo;
         $nomina->save();
         return response()->json(['success'=>'El monto retroactivo para '.$nomina->datos_nombres.' '.$nomina->datos_apellidos.' fue guardado exitosamente']);
+    }
+
+    //Reporte Excel de  Nómia  generada
+    public function nominageneradaexcel($mes,$anho)
+    {
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        return Excel::download(new NominaGeneradaExport($mes,$anho), 'Nómina Generada '.$mes_completo.'-'.$anho.'.xlsx');
+    }
+
+    public function nominapagadaexcel($mes,$anho)
+    {
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        return Excel::download(new NominaPagadaExport($mes,$anho), 'Nómina Pagada '.$mes_completo.'-'.$anho.'.xlsx');
     }
 }

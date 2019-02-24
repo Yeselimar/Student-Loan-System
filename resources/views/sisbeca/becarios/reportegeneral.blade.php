@@ -35,7 +35,12 @@
 @section('content')
 <div class="col-lg-12" id="app">
 	<div class="text-right">
-		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
 	</div>
 	<br>
 	<div class="row" style="border:1px solid #fff">
@@ -71,11 +76,7 @@
 			<button @click="consultabecariosreportegeneral(anho,mes)" class="btn btn-md sisbeca-btn-primary btn-block" style="line-height: 1.80 !important">Consultar</button>
 		</div>
 	</div>
-	<div class="text-right">
-		<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-	</div>
+	
 	<div class="table-responsive">
 		<div id="becarios_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
 			<div class="row">
@@ -122,9 +123,20 @@
 				</template>
 
 				<template slot="actions" slot-scope="row">
-					<!--<div class="circulo-rojo">
-						<p class="circulo-texto">1</p>
-					</div>-->
+
+					<a v-b-popover.hover.bottom="'Ver Taller/Chat Club'" class="btn btn-xs sisbeca-btn-primary" :href="verActividades(row.item.becario.id)">
+						<i class="fa fa-commenting-o"></i>
+					</a>
+					<a v-b-popover.hover.bottom="'Ver Periodos'" class="btn btn-xs sisbeca-btn-primary" :href="verPeriodos(row.item.becario.id)">
+						<i class="fa fa-sticky-note-o"></i>
+					</a>
+					<a v-b-popover.hover.bottom="'Ver CVA'" class="btn btn-xs sisbeca-btn-primary"  :href="verCVA(row.item.becario.id)">
+						<i class="fa fa-book"></i>
+					</a>
+					<a v-b-popover.hover.bottom="'Ver Voluntariados'" class="btn btn-xs sisbeca-btn-primary" :href="verVoluntariados(row.item.becario.id)">
+						<i class="fa fa-star"></i>
+					</a>
+					
 				</template>
 				
 			</b-table>
@@ -136,6 +148,7 @@
 
 		</div>
 	</div>
+	<hr>
 	<p>Falta average de desempeño</p>
 	<!--
 	<div class="table-responsive">
@@ -244,7 +257,6 @@ $(document).ready(function() {
 			},
 		}],
 		fields: [
-		{ key: 'actions', label: '', sortable: true, 'class': 'text-center' },
 		{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
 		{ key: 'horas_voluntariados', label: 'H. Vol', sortable: true, 'class': 'text-center' },
 		{ key: 'asistio_t', label: '# Taller', sortable: true, 'class': 'text-center' },
@@ -252,7 +264,7 @@ $(document).ready(function() {
 		{ key: 'nivel_cva', label: 'CVA', sortable: true, 'class': 'text-center' },
 		{ key: 'avg_cva', label: 'AVG CVA', sortable: true, 'class': 'text-center' },
 		{ key: 'avg_academico', label: 'AVG Acad.', sortable: true, 'class': 'text-center' },
-		//{ key: 'actions', label: 'Acciones' }
+		{ key: 'actions', label: 'Acciones', 'class': 'text-center'}
 		],
 		currentPage: 1,
 		perPage: 5,
@@ -330,6 +342,37 @@ $(document).ready(function() {
 			var url = '{{route('becarios.reporte.general.pdf',array('anho'=>':anho','mes'=>':mes'))}}'
 			url = url.replace(':anho', anho);
 			url = url.replace(':mes', mes);
+			return url;
+		},
+		descargarexcel(anho,mes)
+		{
+			var url = '{{route('becarios.reporte.general.excel',array('anho'=>':anho','mes'=>':mes'))}}'
+			url = url.replace(':anho', anho);
+			url = url.replace(':mes', mes);
+			return url;
+		},
+		verActividades(id)
+		{
+			var url = '{{route('actividades.becario',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		verPeriodos(id)
+		{
+			var url = '{{route('periodos.becario',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		verCVA(id)
+		{
+			var url = '{{route('cursos.becario',':id')}}';
+			url = url.replace(':id', id);
+			return url;
+		},
+		verVoluntariados(id)
+		{
+			var url = '{{route('voluntariados.becario',':id')}}';
+			url = url.replace(':id', id);
 			return url;
 		},
 		obtenermescompleto(mes)

@@ -15,6 +15,11 @@ use avaa\Curso;
 use avaa\Voluntariado;
 use avaa\Periodo;
 use DateTime;
+use Maatwebsite\Excel\Facades\Excel;
+use avaa\Exports\BecariosReporteGeneralExport;
+use avaa\Exports\BecariosReporteTiempoExport;
+use avaa\Exports\ResumenBecarioExport;
+
 
 class SeguimientoController extends Controller
 {   
@@ -291,6 +296,11 @@ class SeguimientoController extends Controller
         return response()->json(['becarios'=>$todos]);
     }
 
+    public function reportetiempoexcel()
+    {
+        return Excel::download(new BecariosReporteTiempoExport(), 'Reporte Tiempo.xlsx');
+    }
+
     public function reportetiempobecario($id) //Actulizado el 25/01/2019
     {
         $becario = Becario::find($id);
@@ -340,7 +350,9 @@ class SeguimientoController extends Controller
                  ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
                 ;
-            })->first();
+            })->first();//va first
+
+            //return response()->json($periodos);
             //para actividades  facilitadas
             $af = DB::table('actividades')
                 ->selectRaw('*')
@@ -361,7 +373,7 @@ class SeguimientoController extends Controller
             $color_cva = "#FFEBEE";
             $color_voluntariado = "#FFEBEE";
             $color_periodo = "#FFEBEE";
-            $tiempo_actividad_facilitada = "#FFEBEE";
+            $color_actividad_facilitada = "#FFEBEE";
             $puntos = 0;
             if(!empty($actividades))
             {
@@ -1151,6 +1163,54 @@ class SeguimientoController extends Controller
         return $pdf->stream('Reporte General - '.$mes_completo.'-'.$anho.'.pdf');
     }
 
+    public function becariosreportegeneralexcel($anho,$mes)
+    {
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+
+        return Excel::download(new BecariosReporteGeneralExport($anho,$mes), 'Reporte General ('.$mes_completo.'-'.$anho.').xlsx');
+    }
+
    	public function todosbecarios()
    	{
         $becarios = Becario::activos()->inactivos()->terminosaceptados()->probatorio1()->probatorio2()->get();
@@ -1235,7 +1295,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho,$mes)
@@ -1380,7 +1440,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho,$mes)
@@ -1390,6 +1450,7 @@ class SeguimientoController extends Controller
                     ->whereYear('cursos.fecha_inicio', '=', $anho)//corregido
                     ;
                 })->get();
+                //return response()->json($cursos);
                 $actividades_facilitadas = DB::table('actividades')
                 ->selectRaw("*,SUM(horas) as horas_voluntariado,Count(*) as total_actividades")
                 ->join('actividades_facilitadores', function ($join) use($id,$anho)
@@ -1508,8 +1569,10 @@ class SeguimientoController extends Controller
                 "na_c_v" => $na_c_v->total_actividades,
                 "na_c_p" => $na_c_p->total_actividades,
             );
+            //return ".l";
             return response()->json(['regimen'=>$becario->regimen,'anho'=>$anho,'mes'=>$mes,'periodos'=>$periodos,'voluntariados'=>$voluntariados,'cursos'=>$cursos,'actividades_facilitadas'=>$actividades_facilitadas[0],"asistio"=>$asistio,"noasistio"=>$noasistio]);
         }
+
         return response()->json(['error'=>"Error de permisos"]);
     }   
 
@@ -1538,7 +1601,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho,$mes)
@@ -1683,7 +1746,7 @@ class SeguimientoController extends Controller
                 $cursos = DB::table('cursos')
                     ->where('aval.tipo','=','nota')
                     ->where('aval.estatus','=','aceptada')
-                    ->groupby('cursos.modulo')
+                    ->groupby('cursos.nivel')
                     ->orderby('cursos.modulo','asc')
                     ->selectRaw('*,AVG(nota) as promedio_modulo,Count(*) as total_modulo')
                     ->join('aval', function ($join) use($id,$anho)
@@ -1853,10 +1916,62 @@ class SeguimientoController extends Controller
                     $mes_completo = "Diciembre";
                 break;
             }
+
+            
             $pdf = PDF::loadView('pdf.seguimiento.resumen-mes-anho', compact('becario','regimen','anho','mes','periodos','voluntariados','cursos','actividades_facilitadas','asistio','noasistio','mes_completo'));
 
             return $pdf->stream('Resumen-Becario-'.$mes_completo.'-'.$anho.'-'.$becario->user->nombreyapellido().'.pdf');
         }
+    }
+
+    public function resumenanhomesexcel($id,$anho,$mes)
+    {
+        $becario = Becario::find($id);
+        //return $anho;
+        switch ($mes)
+        {
+            case '00':
+                $mes_completo = "Todos";
+            break;
+            case '01':
+                $mes_completo = "Enero";
+            break;
+            case '02':
+                $mes_completo = "Febrero";
+            break;
+            case '03':
+                $mes_completo = "Marzo";
+            break;
+            case '04':
+                $mes_completo = "Abril";
+            break;
+            case '05':
+                $mes_completo = "Mayo";
+            break;
+            case '06':
+                $mes_completo = "Junio";
+            break;
+            case '07':
+                $mes_completo = "Julio";
+            break;
+            case '08':
+                $mes_completo = "Agosto";
+            break;
+            case '09':
+                $mes_completo = "Septiembre";
+            break;
+            case '10':
+                $mes_completo = "Octubre";
+            break;
+            case '11':
+                $mes_completo = "Noviembre";
+            break;
+            case '12':
+                $mes_completo = "Diciembre";
+            break;
+        }
+        //php artisan make:export ResumenBecarioExport --model=avaa\Becario
+        return Excel::download(new ResumenBecarioExport($id,$anho,$mes), 'Resumen Becario '.$becario->user->nombreyapellido().' ('.$mes_completo.'-'.$anho.').xlsx');
     }
 
     public function becarioreportegeneral($id)
@@ -1881,7 +1996,8 @@ class SeguimientoController extends Controller
             $periodo = DB::table('periodos')
                 ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
-                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->orderby('aval.updated_at','desc')
+                ->selectRaw('*,numero_periodo as nivel_carrera,periodos.id as periodo_id')
                 ->join('aval', function ($join) use($id)
             {
             $join->on('periodos.aval_id','=','aval.id')
@@ -1972,7 +2088,8 @@ class SeguimientoController extends Controller
             $periodo = DB::table('periodos')
                 ->where('aval.tipo','=','constancia')
                 ->where('aval.estatus','=','aceptada')
-                ->selectRaw('*,MAX(numero_periodo) as nivel_carrera')
+                ->orderby('aval.updated_at','desc')
+                ->selectRaw('*,numero_periodo as nivel_carrera,periodos.id as periodo_id')
                 ->join('aval', function ($join) use($id)
             {
             $join->on('periodos.aval_id','=','aval.id')
@@ -2052,25 +2169,34 @@ class SeguimientoController extends Controller
                 
             })->first();
         }
-
-        if($becario->esAnual())
+        //return response()->json($periodo);
+        $nivel_carrera='-';
+        $regimen = '-';
+        if($periodo)
         {
-            $regimen = "año";
-        }
-        else
-        {
-            if($becario->esSemestral())
+            $periodo_tmp = Periodo::find($periodo->periodo_id);
+            //return $
+            //return response()->json($periodo);
+            if($periodo_tmp->esAnual())
             {
-                $regimen = "semestre";
+                $regimen = "año";
             }
             else
             {
-                $regimen = "trimestre";
+                if($periodo_tmp->esSemestral())
+                {
+                    $regimen = "semestre";
+                }
+                else
+                {
+                    $regimen = "trimestre";
+                }
             }
+            $nivel_carrera = ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen;
         }
 
         $todo = array(
-            'nivel_carrera' => ($periodo->nivel_carrera==null) ? 'N/A' : $periodo->nivel_carrera.' '.$regimen,
+            'nivel_carrera' => $nivel_carrera,
             'horas_voluntariados' => $horas_voluntariado,
             'asistio_t' => ($asistio_t->total==null) ? '0' : $asistio_t->total,
             'asistio_cc' => ($asistio_cc->total==null) ? '0' : $asistio_cc->total,

@@ -323,7 +323,6 @@
         created: function()
         {
             this.obtenerpostulantes();
-
         },
         data:
         {
@@ -344,7 +343,6 @@
             postulantes:[],
             rechazados:[],
             contador:0,
-
         },
         methods:
         {
