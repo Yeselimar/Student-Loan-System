@@ -34,7 +34,7 @@
                                     {{route('listar.becariosAsignados')}}
                                     @endif
                                     @else
-                                      {{route('solicitud.edit',$alertas[$i]->solicitud)}}
+                                      {{route('solicitud.show',$alertas[$i]->solicitud)}}
                                     @endif
                                     "
                                >
