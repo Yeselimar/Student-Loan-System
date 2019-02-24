@@ -471,6 +471,10 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['postulante_becario']],function ()
     {
+        Route::any('volverAPostularse', [
+            'uses' => 'PostulanteBecarioController@volverapostularse',
+            'as' => 'voler.a.postularse'
+        ]);
         Route::post('terminosCondicionesAprobar', [
             'uses' => 'PostulanteBecarioController@terminosCondicionesAprobar',
             'as' => 'terminosCondiciones.aprobar'

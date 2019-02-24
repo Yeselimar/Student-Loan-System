@@ -364,11 +364,13 @@ class Becario extends Model
         $diff = 0;
         $bienvenida = new DateTime($this->fecha_bienvenida);
         $hoy = new DateTime();
+       $hoy->setTime(0,0,0);//se coloca la hora en 0 pues solo me interesa la fecha
         // Muestra los terminos y condiciones si la fecha de bienvenida es mayor o igual a la actual
         if($this->fecha_bienvenida != null)
         {
-            $diff = $hoy->diff($bienvenida);
-            if(($diff->invert == 1))
+            $diff = $bienvenida->diff($hoy);
+//dd($diff);
+           if(($diff->invert==0))
             {
                 return 'true';
             }
@@ -387,5 +389,57 @@ class Becario extends Model
     {
         $ab = ActividadBecario::paraBecario($this->user->id)->orderby('created_at','desc')->get();
         return $ab->count();
+    }
+    public function borrarDocumentos(){
+        //borrar documentos
+
+        $id = $this->user->id;
+        $postulanteBecario=Becario::find($id);
+        $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
+        if($fotografia)
+        {
+            $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+            $postulanteBecario->save();
+            $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
+            $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
+            $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
+            $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
+            $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
+            $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
+            $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
+            $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
+            $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
+            $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
+            $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
+            $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
+
+            File::delete(substr($fotografia->url,1));
+            File::delete(substr($cedula->url,1));
+            File::delete(substr($constancia_cnu->url,1));
+            File::delete(substr($calificaciones_bachillerato->url,1));
+            File::delete(substr($constancia_aceptacion->url,1));
+            File::delete(substr($constancia_estudios->url,1));
+            File::delete(substr($calificaciones_universidad->url,1));
+            File::delete(substr($constancia_trabajo->url,1));
+            File::delete(substr($declaracion_impuestos->url,1));
+            File::delete(substr($recibo_pago->url,1));
+            File::delete(substr($referencia_profesor1->url,1));
+            File::delete(substr($referencia_profesor2->url,1));
+            File::delete(substr($ensayo->url,1));
+
+            $fotografia->delete();
+            $cedula->delete();
+            $constancia_cnu->delete();
+            $calificaciones_bachillerato->delete();
+            $constancia_aceptacion->delete();
+            $constancia_estudios->delete();
+            $calificaciones_universidad->delete();
+            $constancia_trabajo->delete();
+            $declaracion_impuestos->delete();
+            $recibo_pago->delete();
+            $referencia_profesor1->delete();
+            $referencia_profesor2->delete();
+            $ensayo->delete();
+        }
     }
 }

@@ -7,12 +7,13 @@
         <i class="fa fa-calendar"></i> Asignar Fecha de Bienvenida
     </button>
     <br>
+    <h3 class="letras-verdes">Postulantes Candidatos a Becario:</h3>
     <div clas="table-responsive">
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th class="text-center">Estatus</th>
-                    <th class="text-center">Nombre y Apellido</th>
+                    <th class="text-center">Postulante</th>
                     <th class="text-center">Cédula</th>
                     <th class="text-center">Entrevistadores</th>
                     <th class="text-center">Fecha Entrevista</th>
@@ -22,12 +23,13 @@
             </thead>
             <tbody>
                 <tr v-for="postulante in postulantes">
+                <template v-if="postulante.status!='rechazado'">
                     <td class="text-center">
                         <template v-if="postulante.status=='activo'">
                             <span class="label label-success">Aprobado</span>
                         </template>
                         <template v-else-if="postulante.status=='entrevistado'">
-                            <span class="label label-warning">Entrevistado</span>
+                            <span class="label label-success">E.Aprobada</span>
                         </template>
                         <template v-else-if="postulante.status=='rechazado'">
                             <span class="label label-danger">Rechazado</span>
@@ -98,16 +100,58 @@
                         </button>
                     </template>
                     </td>
+                </template>
                 </tr>
                 <tr v-if="postulantes.length==0">
                     <td colspan="7" class="text-center">
-                        No hay <strong>postulantes a entrevistados</strong>
+                        No hay <strong>postulantes con entrevista Aprobada</strong>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
+    <div class="linea"></div>
+   <br>
+   <h3 class="letras-rojas">Postulantes Rechazados:</h3>
+    <!--Postulantes Rechazados-->
+    <div clas="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">Estatus</th>
+                    <th class="text-center">Postulante</th>
+                    <th class="text-center">Cédula</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="rechazado in rechazados">
+                    <td class="text-center">
+                        <template v-if="rechazado.status=='rechazado'">
+                            <span class="label label-danger">Rechazado</span>
+                        </template>
+                    </td>
+                    <td class="text-center">@{{rechazado.user.name}} @{{rechazado.user.last_name}} </td>
+                    <td class="text-center">@{{rechazado.user.cedula}}</td>
+                    <td class="text-center">
+                        <template>
+                            <a :href="getRutaVerPerfil(rechazado.user.id)" class="btn btn-xs sisbeca-btn-primary"> <i class="fa fa-eye"></i></a>
+                        </template>
+                        <template v-if="rechazado.status=='rechazado'">
+                            <button  v-b-popover.hover="'Eliminar postulante'" class="btn btn-xs sisbeca-btn-default" @click="modalEliminarPostulante(rechazado)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </template>
+                    </td>
+                </tr>
+                <tr v-if="rechazados.length==0">
+                    <td colspan="7" class="text-center">
+                        No hay <strong>postulantes Rechazados</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <!-- Modal para eliminar al postulante becario -->
     <div class="modal fade" id="eliminarpostulante">
         <div class="modal-dialog">
@@ -120,10 +164,10 @@
                     <div class="col-lg-12">
                         <br>
                         <p class="h6 text-center">
-                            ¿Está seguro que desea <strong>eliminar</strong> al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanente? 
+                            ¿Está seguro que desea <strong>eliminar</strong> al postulante becario <strong>@{{eliminar_postulante}}</strong> de manera permanente?
                         </p>
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
@@ -298,6 +342,7 @@
             promedio:'',
             observacion:'',
             postulantes:[],
+            rechazados:[],
             contador:0,
 
         },
@@ -317,6 +362,7 @@
                 axios.get(url).then(response =>
                 {
                     this.postulantes = response.data.postulantes;
+                    this.rechazados = response.data.rechazados;
                     $("#preloader").hide();
                 });
             },

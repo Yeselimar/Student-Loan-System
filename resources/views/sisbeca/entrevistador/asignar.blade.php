@@ -21,13 +21,13 @@
 					<span class="label label-default">Pendiente</span>
 				</td>
 				<td class="text-center" v-else-if="postulante.status == 'entrevistado'">
-						<span class="label label-warning">Entrevistado</span>
+						<span class="label label-success">E.Aprobada</span>
 				</td>
 				<td class="text-center">@{{ postulante.user.name}} @{{ postulante.user.last_name}}</td>
 				<td class="text-center">
 					<template v-if="postulante.entrevistadores">
 						<template v-for="entrevistador in postulante.entrevistadores">
-								@{{ entrevistador.name}} @{{ entrevistador.last_name}};&nbsp;
+								@{{entrevistador.name}} @{{ entrevistador.last_name}};&nbsp;
 						</template>
 					</template>
 					<template v-if="postulante.entrevistadores.length==0">
@@ -37,7 +37,7 @@
 				<td class="text-center">
 					<div class="col-lg-12">
 						<template v-if="postulante.fecha_entrevista!=null">
-							<span class="label label-inverse">@{{ fechaformartear(postulante.fecha_entrevista) }}</span>
+							<span class="label label-inverse">@{{fechaformartear(postulante.fecha_entrevista)}}</span>
 						</template>
 						<template v-else>
 							<span class="label label-default">Sin Fecha</span>
@@ -137,7 +137,7 @@
 								<label class="control-label " style="margin-bottom: 5px !important">Fecha</label>
 									<date-picker class="sisbeca-input input-sm" name="fecha" v-model="fecha" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
 							</div>
-							
+
 						  	<div class="col-lg- col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 0px !important">
 							<label class="control-label " style="margin-bottom: 5px !important">Hora</label>
 								<!--<input type="text" autocomplete="off" class="sisbeca-input input-sm" > -->
@@ -207,7 +207,7 @@
 							¿Está seguro que desea enviar un correo a <strong>@{{nombre_becario_correo}}</strong> y a sus <strong>entrevistadores</strong> notificándole los datos de la entrevista?
 						</p>
 					</div>
-					
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
@@ -217,7 +217,7 @@
 		</div>
 	</div>
 	<!-- Modal para confirmar al enviar correo-->
-	
+
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>

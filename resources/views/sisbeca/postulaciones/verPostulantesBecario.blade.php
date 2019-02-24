@@ -28,9 +28,9 @@
                         @if($becario->status !='pre-postulante')
                             <tr>
                             @if($becario->status=='entrevista')
-                                    <td class="text-center">
-                                        <span class="label label-inverse">Por entrevistar</span>
-                                    </td>
+                                <td class="text-center">
+                                    <span class="label label-inverse">Por entrevistar</span>
+                                </td>
                                 @elseif($becario->status=='no_entrevista')
                                 <td class="text-center">
                                     <span class="label label-danger">No Seleccionado</span>

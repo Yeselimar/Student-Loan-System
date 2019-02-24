@@ -28,20 +28,20 @@
                 @if(Auth::user()->rol==='postulante_becario')
                     <li class="nav-label">Inicio</li>
                    @if(Auth::user()->becario->status=='prepostulante')
-                   <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-spinner"></i><span class="hide-menu">Mi perfil</span></a>
+                   <li class="active"> <a class="has-arrow  " href="#" aria-expanded="true"><i class="fa fa-spinner"></i><span class="hide-menu">Postulación</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{ route('postulantebecario.datospersonales') }}">Datos Personales</a></li>
-                        <li><a href="{{ route('postulantebecario.estudiossecundarios') }}">Estudios Secundarios</a></li>
-                        <li><a href="{{ route('postulantebecario.estudiosuniversitarios') }}">Estudios Universitarios</a></li>
-                        <li><a href="{{ route('postulantebecario.informacionadicional') }}">Información Adicional</a></li>
-                        <li><a href="{{ route('postulantebecario.documentos') }}">Documentos</a></li>
+                        <li><a href="{{ route('postulantebecario.datospersonales') }}"><i class="fa fa-id-card">&nbsp</i>Datos Personales</a></li>
+                        <li><a href="{{ route('postulantebecario.estudiossecundarios') }}"><i class="fa fa-graduation-cap">&nbsp</i>Estudios Secundarios</a></li>
+                        <li><a href="{{ route('postulantebecario.estudiosuniversitarios') }}"><i class="fa fa-university">&nbsp</i>Estudios Universitarios</a></li>
+                        <li><a href="{{ route('postulantebecario.informacionadicional') }}"><i class="fa fa-info-circle">&nbsp</i>Información Adicional</a></li>
+                        <li><a href="{{ route('postulantebecario.documentos') }}"><i class="fa fa-file">&nbsp</i>Documentos</a></li>
                     </ul>
                    </li>
                     <li>
-                        <a href="{{route('postulantebecario.enviarPostulacion', Auth::user()->id)}}" >  <i class="fa fa-send-o"></i><span class="hide-menu">Enviar Postulación</span></a>
+                        <a href="{{route('postulantebecario.enviarPostulacion', Auth::user()->id)}}" >  <i class="fa fa-send-o"></i><span class="hide-menu"><b>Enviar Postulación</b></span></a>
                    </li>
-                    @elseif(Auth::user()->becario->status=='activo')
-                       <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Términos Generales</span></a>
+                    @elseif((Auth::user()->becario->status=='activo')&&(Auth::user()->becario->acepto_terminos==0)&&Auth::user()->becario->getfechabienvenida()=='true')
+                       <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Términosa Generales</span></a>
                        </li>
                     @else
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-info"></i><span class="hide-menu">Postulación</span></a>

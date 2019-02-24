@@ -277,7 +277,7 @@ class EntrevistadorController extends Controller
 
 	public function ocultardelista($b_id,$e_id)
 	{
-		$becario = Becario::find($b_id); 
+		$becario = Becario::find($b_id);
 		$be = BecarioEntrevistador::paraBecario($b_id)->ParaEntrevistador($e_id)->first();
 		$be->oculto = 1;
 		$be->save();

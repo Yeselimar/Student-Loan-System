@@ -29,6 +29,7 @@ class CompartidoDirecCoordController extends Controller
     {
         $this->middleware('compartido_direc_coord');
     }
+
     //Asignar fecha de bienvenida a todos por Igual
     public function asignarfechabienvenidaparatodos(Request $request){
         $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
@@ -80,10 +81,14 @@ class CompartidoDirecCoordController extends Controller
     //Obtener los postulantes que ya pueden ser aprobados o rechazados como becario
     public function obtener_entrevistados()
     {
-        $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->with("user")->with('entrevistadores')->with('imagenes')->get();
-        return response()->json(['postulantes'=>$postulantes]);
+        $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->with("user")->with('entrevistadores')->with('imagenes')->get();
+        $rechazados = Becario::where('status','=','rechazado')->where('fecha_entrevista', '!=', null)->with("user")->get();
+
+       // return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados);
+
+        return response()->json(['postulantes'=>$postulantes, 'rechazados'=>$rechazados]);
     }
-    //Aprobar a un postulante para ir a entrevista
+    //Aprobar/Rechazar a un postulante para ir a entrevista
     public function aprobarParaEntrevista(Request $request, $id)
     {
         $postulante = Becario::find($id);
@@ -97,32 +102,40 @@ class CompartidoDirecCoordController extends Controller
             }
             else
             {
-                $postulante->status='no_entrevista';
+                $postulante->status='rechazado';
                 $postulante->acepto_terminos ='0';
                 $postulante->save();
+                //borrar documentos
                 flash( $postulante->user->name . ' ha sido rechazado para ir a entrevista. ', 'danger')->important();
             }
         }
         return  redirect()->route('listarPostulantesBecarios',"2");
     }
-    //Marcar a un postulante como entrevistado
+    //Aprobar/rechazar la entrevista de un postulante
     public function cambiostatusentrevistado(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
         if(!is_null($postulanteBecario))
         {
-            $postulanteBecario->status= 'entrevistado';
-            $postulanteBecario->save();
-            flash($postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido marcado como entrevistado.','success')->important();
+            if($request->funcion=='Aprobar'){
+                $postulanteBecario->status= 'entrevistado';
+                $postulanteBecario->save();
+                return response()->json(['success'=>$postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido aprobado durante el proceso de entrevista.']);
+                }
+            else{
+                $postulanteBecario->status= 'rechazado';
+                $postulanteBecario->save();
+                $postulanteBecario->borrarDocumentos();
+                //borrar documentos
+                return response()->json(['success'=>$postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido rechazado durante el proceso de entrevista.']);
+            }
         }
         else
         {
             flash('Disculpe, ha forzado la información incorrecta','danger')->important();
         }
-        return response()->json(['success'=>'El Estatus de la Entrevista ha sido Cambiado Exitosamente']);
-
     }
-    //Aprobar o rechazar a un postulante a ProExcelencia
+    //Aprobar/Rechazar a un postulante a ProExcelencia
     public function veredictoPostulantesBecarios(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
@@ -158,7 +171,7 @@ class CompartidoDirecCoordController extends Controller
         }
         else
         {
-            
+
             //$postulanteBecario->user->rol='rechazado';
             $postulanteBecario->status='rechazado';
             $postulanteBecario->user->save();
@@ -183,11 +196,10 @@ class CompartidoDirecCoordController extends Controller
             $mail->MsgHTML($body);
             $mail->addAddress($postulanteBecario->user->email);
             $mail->send();
-            
-            $id = $postulanteBecario->user->id;
-            //borrar documentos
-            
 
+            //borrar documentos
+/*
+            $id = $postulanteBecario->user->id;
             $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
             if($fotografia)
             {
@@ -205,7 +217,7 @@ class CompartidoDirecCoordController extends Controller
                 $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
                 $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
                 $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-                
+
                 File::delete(substr($fotografia->url,1));
                 File::delete(substr($cedula->url,1));
                 File::delete(substr($constancia_cnu->url,1));
@@ -233,7 +245,7 @@ class CompartidoDirecCoordController extends Controller
                 $referencia_profesor1->delete();
                 $referencia_profesor2->delete();
                 $ensayo->delete();
-            }
+            } */
 
             return response()->json(['success'=>'El Postulante ha sido rechazado exitosamente.']);
         }
@@ -251,8 +263,7 @@ class CompartidoDirecCoordController extends Controller
         if($data==2) //todos los postulantes
         {
             $usuario=User::where('rol','=','postulante_becario')->get();
-        //    $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','no_entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios);
 
         }
@@ -262,10 +273,11 @@ class CompartidoDirecCoordController extends Controller
             return view('sisbeca.postulaciones.verModificarEntrevistas')->with('becarios',$becarios)->with('becarios',$becarios);
 
         }
-        else if($data==3) //todos lo que ya fueron entrevistados, aprobados o rechazados
+        else if($data==3) //todos lo que Aprobaron la entrevista o fueron aprobados como becario
         {
-            $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-            return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios);
+            $rechazados = Becario::where('status','=','rechazado')->get();
+            $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados);
         }
     }
 
@@ -339,8 +351,6 @@ class CompartidoDirecCoordController extends Controller
         $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
         $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray(); */
         $solicitudes = Solicitud::visibleAdmin()->get();
-        //return $solicitudes;
-        // dd($solicitudes);
         return view('sisbeca.gestionSolicitudes.listarSolicitudes')->with('solicitudes',$solicitudes);
     }
 
@@ -360,7 +370,7 @@ class CompartidoDirecCoordController extends Controller
     public function gestionSolicitudUpdate(Request $request, $id)
     {
         $solicitud = Solicitud::find($id);
-        
+
         if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
             $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
@@ -697,7 +707,7 @@ class CompartidoDirecCoordController extends Controller
 
     public function eliminarpostulante($id)
     {
-        $usuario = User::find($id); 
+        $usuario = User::find($id);
         $becario = Becario::find($id);
         //Elimino la foto de perfil
         $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
@@ -709,7 +719,7 @@ class CompartidoDirecCoordController extends Controller
             }
             $img_perfil->delete();
         }
-        
+
         //Eliminio el documeto final entrevista
         if($becario->documento_final_entrevista!=null)
         {

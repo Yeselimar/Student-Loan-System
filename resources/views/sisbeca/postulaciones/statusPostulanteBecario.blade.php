@@ -40,13 +40,28 @@
                                 @elseif($postulante->status==='rechazado')
                                 <div class="alert alert-danger" role="alert">
                                         Su postulación ha sido revisada y usted no ha quedo asignado en el proceso de selección. Agradecemos por su participación.
+
                                 </div>
-                                    <p>Estatus: <span class="label label-danger">No Aprobado</span></p>
-                                @elseif($postulante->status==='activo')
-                                <div class="alert  alert alert-success" role="alert">
-                                        ¡Felicidades! {{$postulante->user->name}} {{$postulante->user->last_name}} has sido asignad@ como Becario al programa ProExcelencia. Esta atent@ para la fecha de inicio de actividades.
-                                </div>
-                                    <p>Estatus: <span class="label label-success"> Aprobado</span></p>
+                                <p>Estatus: <span class="label label-danger">No Aprobado</span></p>
+                                <p>Si desea puede volver a realizar el proceso de Postulación desde cero: </p>
+                                    <a href="{{ route('voler.a.postularse') }}" class="btn btn-sm sisbeca-btn-primary">Volver a Postularme</a>
+                                @elseif(($postulante->status==='activo') && (Auth::user()->becario->getfechabienvenida()=='false'))
+                                    @if(Auth::user()->becario->fecha_bienvenida==NULL)
+                                    <div class="alert  alert alert-success" role="alert">
+                                            ¡Felicidades! {{$postulante->user->name}} {{$postulante->user->last_name}} has sido asignad@ como Becario al programa ProExcelencia. Esta atent@ para la fecha de inicio de actividades.
+                                    </div>
+                                        <p>Estatus: <span class="label label-success"> Aprobado</span></p>
+                                    @else
+                                    <div class="alert  alert alert-success" role="alert">
+                                                ¡Felicidades! {{$postulante->user->name}} {{$postulante->user->last_name}} has sido asignad@ como Becario al programa ProExcelencia.
+                                                <p>Estatus: <span class="label label-success"> Aprobado</span></p>
+                                    </div >
+                                    <div class="alert  alert alert-danger" role="alert">
+
+                                            <p><b>ATENCIÓN: </b>Debe asistir el día {{ date("d/m/Y", strtotime($postulante->fecha_bienvenida)) }} a las {{$postulante->hora_bienvenida}} en "{{$postulante->lugar_bienvenida}}" a una reunión de bienvenida <b>obligatoria</b>, donde deberá firmar el reglamento de inicio al programa.</p>
+
+                                    </div>
+                                    @endif
                                 @elseif($postulante->status==='no_entrevista')
                                 <div class="alert alert-danger" role="alert">
                                         Su postulación ha sido revisada y usted no ha quedo seleccionado para el proceso de entrevista. Agradecemos su participación.

@@ -21,6 +21,14 @@ use PHPMailer\PHPMailer\Exception;
 
 class PostulanteBecarioController extends Controller
 {
+    public function volverapostularse(){
+//voler.a.postularse
+$becario = Becario::find(Auth::user()->id);
+$becario->status='prepostulante';
+$becario->save();
+return redirect()->route('seb');
+
+}
     public function statusPostulanteBecario()
     {
         $postulante = Becario::find(Auth::User()->id);
@@ -55,7 +63,7 @@ class PostulanteBecarioController extends Controller
         {
             $becario->status='postulante';
             $becario->save();
-            
+
             //Enviar correo a la persona notificando
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
@@ -73,7 +81,7 @@ class PostulanteBecarioController extends Controller
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
             $mail->send();
-            
+
             return redirect()->route('seb');
 
         }
