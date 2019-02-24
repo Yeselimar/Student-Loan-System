@@ -3,7 +3,10 @@
 @section('content')
 
 <div class="col-lg-12" id="app">
-	
+		<div class="alert  alert-warning alert-important" role="alert">
+				Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
+			</div>
+
 <form v-if="showDate"  @submit.prevent.stop="consultar" class="container-fluid mt-3 pt-4 d-flex" style="background-color: rgba(169, 169, 169, 0.2);">
 
 <div class="input-append date col-lg-2 col-sm-4 col-md-3 d-flex" id="dp3" data-date-format="mm/yyyy">
@@ -11,7 +14,7 @@
   <span class="add-on"><i class="fa fa-calendar"></i></span>
 </div>
 	<button v-b-popover.hover="'Consultar Nomina'" @submit.prevent.stop="consultar" class="btn btn-xs sisbeca-btn-primary h-100">
-		Consultar 
+		Consultar
 	</button>
 
 </form>
@@ -27,13 +30,13 @@
 					<hr/>
 			</div>
 			<div id="collapseOne" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample">
-				
+
 			<div class="table-responsive">
 					<div class="dataTables_wrapper dt-bootstrap4 no-footer">
 						<div class="row">
 							<div class="col-sm-12 col-md-6">
 								<div class="dataTables_length" style="">
-									<label>Mostrar 
+									<label>Mostrar
 										<select aria-controls="dd" v-model="perPageS" class="custom-select custom-select-sm form-control form-control-sm">
 											<option v-for="(value, key) in pageOptionsS" :key="key">
 												@{{value}}
@@ -53,7 +56,7 @@
 							<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span v-if="!selectedAllS">Marcar Todos</span><span v-else>Desmarcar Todos</span></b-form-checkbox>
 							<b-btn size="sm" :disabled="!itemsSC" class="float-right sisbeca-btn-primary" variant="sisbeca-btn-primary" @click="quitarSelectedsDeSugeridos"> Quitar Marcados de Sugeridos</b-btn>
 
-							<b-table 
+							<b-table
 							show-empty
 							empty-text ="<span class='label label-default'>No existe becarios sugeridos</span>"
 							empty-filtered-text="
@@ -102,12 +105,12 @@
 								<a v-b-popover.hover.bottom="'Procesar Facturas'" @click.stop="editFacturas(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
 										<i class="fa fa-pencil"></i>
 								</a>
-								
+
 							</template>
 							<template slot="total" slot-scope="row">
-								<span>@{{formatomoneda(row.item.nomina.total)}}</span> 
+								<span>@{{formatomoneda(row.item.nomina.total)}}</span>
 							</template>
-							
+
 							<template slot="actions" slot-scope="row">
 									<a v-b-popover.hover.bottom="'Detalles'" @click.stop="row.toggleDetails"class="btn btn-xs sisbeca-btn-primary">
 										<i class="fa fa-eye" v-if="!row.detailsShowing"></i> <i v-else class=" fa fa-eye-slash"></i>
@@ -115,11 +118,11 @@
 									<a v-b-popover.hover.bottom="'Quitar de Sugeridos'" @click.stop="quitarDeSugeridos(row.item, row.index,true)" class="btn btn-xs sisbeca-btn-primary">
 											<i class="fa fa-minus"></i>
 									</a>
-							
+
 								</template>
 								<template slot="row-details" slot-scope="row">
 									<div class="table-responsive">
-	
+
 										<!-- data-order='[[ 5, "asc" ],[2,"desc"],[0,"asc"]]'-->
 										<table  class="table striped stacked" >
 											<thead>
@@ -135,7 +138,7 @@
 											<tbody>
 												<tr>
 													<td class="text-center"> @{{row.item.nomina.datos_nombres }} @{{row.item.nomina.datos_apellidos }}<br/>@{{row.item.nomina.datos_email}}<br/>@{{row.item.nomina.datos_cedula}}<br/> </td>
-													<td class="text-center"> 
+													<td class="text-center">
 															<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
 															<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
 															<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
@@ -143,25 +146,25 @@
 														</td>
 													<td class="text-center"><span>@{{row.item.nomina.datos_cuenta}}</span>
 													</td>
-													
-													<td class="text-center"> 
+
+													<td class="text-center">
 															<span v-if="row.item.fecha_ingreso">@{{ fechaformatear(row.item.fecha_ingreso) }}</span>
 															<span v-else class='label label-default'>Sin Fecha Ingreso</span>
 													</td>
-													<td class="text-center"> 
+													<td class="text-center">
 															<span v-if="row.item.fecha_bienvenida">@{{ fechaformatear(row.item.fecha_bienvenida) }}</span>
 															<span v-else class='label label-default'>Sin Fecha Bienvenida</span>
 													</td>
-													<td class="text-center"> 
+													<td class="text-center">
 														<span v-if="row.item.final_carga_academica">@{{ fechaformatear(row.item.final_carga_academica) }}</span>
 														<span v-else-if="obtenerFechaEgreso(row.item.fecha_ingreso) !== '-'">@{{obtenerFechaEgreso(row.item.fecha_ingreso)}}</span>
 														<span v-else class='label label-default'>Sin Fecha Egreso</span>
 													</td>
-													
-								
+
+
 												</tr>
 											</tbody>
-								
+
 										</table>
 									</div>
 								<hr/>
@@ -176,7 +179,7 @@
 
 					</div>
 				</div>
-				
+
 
 			</div>
 		</div>
@@ -188,13 +191,13 @@
 					<hr/>
 			</div>
 			<div id="collapseTwo" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample2">
-				
+
 			<div class="table-responsive">
 					<div class="dataTables_wrapper dt-bootstrap4 no-footer">
 						<div class="row">
 							<div class="col-sm-12 col-md-6">
 								<div class="dataTables_length" style="">
-									<label>Mostrar 
+									<label>Mostrar
 										<select aria-controls="dd" v-model="perPageNS" class="custom-select custom-select-sm form-control form-control-sm">
 											<option v-for="(value, key) in pageOptionsNS" :key="key">
 												@{{value}}
@@ -214,7 +217,7 @@
 							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span v-if="!selectedAllNS">Marcar Todos</span><span v-else>Desmarcar Todos</span></b-form-checkbox>
 							<b-btn :disabled="!itemsNSC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > Agregar Marcados a Sugeridos</b-btn>
 
-							<b-table 
+							<b-table
 							show-empty
 							empty-text ="<span class='label label-default'>No existen becarios no sugeridos a entrar en Nomina</span>"
 							empty-filtered-text="
@@ -258,7 +261,7 @@
 							<template slot="total" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.total)}}</span>
 							</template>
-							
+
 							<template slot="actions" slot-scope="row">
 								<a v-b-popover.hover.bottom="'Detalles'" @click.stop="row.toggleDetails"class="btn btn-xs sisbeca-btn-primary">
 									<i class="fa fa-eye" v-if="!row.detailsShowing"></i> <i v-else class="fa fa-eye-slash"></i>
@@ -266,11 +269,11 @@
 								<a v-b-popover.hover.bottom="'Agregar a Sugeridos'"@click.stop="agregarASugeridos(row.item, row.index,true)" class="btn btn-xs sisbeca-btn-primary">
 										<i class="fa fa-plus"></i>
 								</a>
-						
-									
+
+
 							</template>
 							<template slot="row-details" slot-scope="row">
-								
+
 								<div class="table-responsive">
 
 									<!-- data-order='[[ 5, "asc" ],[2,"desc"],[0,"asc"]]'-->
@@ -288,7 +291,7 @@
 										<tbody>
 											<tr>
 												<td class="text-center"> @{{row.item.nomina.datos_nombres }} @{{row.item.nomina.datos_apellidos }}<br/>@{{row.item.nomina.datos_email}}<br/>@{{row.item.nomina.datos_cedula}}<br/> </td>
-												<td class="text-center"> 
+												<td class="text-center">
 														<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
 														<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
 														<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
@@ -296,25 +299,25 @@
 													</td>
 												<td class="text-center"><span>@{{row.item.nomina.datos_cuenta}}</span>
 												</td>
-												
-												<td class="text-center"> 
+
+												<td class="text-center">
 														<span v-if="row.item.fecha_ingreso">@{{ fechaformatear(row.item.fecha_ingreso) }}</span>
 														<span v-else class='label label-default'>Sin Fecha Ingreso</span>
 												</td>
-												<td class="text-center"> 
+												<td class="text-center">
 														<span v-if="row.item.fecha_bienvenida">@{{ fechaformatear(row.item.fecha_bienvenida) }}</span>
 														<span v-else class='label label-default'>Sin Fecha Bienvenida</span>
 												</td>
-												<td class="text-center"> 
+												<td class="text-center">
 													<span v-if="row.item.final_carga_academica">@{{ fechaformatear(row.item.final_carga_academica) }}</span>
 													<span v-else-if="obtenerFechaEgreso(row.item.fecha_ingreso) !== '-'">@{{obtenerFechaEgreso(row.item.fecha_ingreso)}}</span>
 													<span v-else class='label label-default'>Sin Fecha Egreso</span>
 												</td>
-												
-							
+
+
 											</tr>
 										</tbody>
-							
+
 									</table>
 								</div>
 								<hr/>
@@ -329,8 +332,8 @@
 
 					</div>
 				</div>
-									
-				
+
+
 
 			</div>
 
@@ -366,7 +369,7 @@
 									<div class="row">
 										<div class="col-sm-12 col-md-6">
 											<div class="dataTables_length" style="">
-												<label>Mostrar 
+												<label>Mostrar
 													<select aria-controls="dd" v-model="perPageF" class="custom-select custom-select-sm form-control form-control-sm">
 														<option v-for="(value, key) in pageOptionsF"  :key="key">
 															@{{value}}
@@ -384,8 +387,8 @@
 											</div>
 										</div>
 										<b-form-checkbox :disabled="(typeof this.facturas === 'undefined') || !this.facturas.length" class="ml-2" v-model="selectedAllF" @change="selectF" > <span v-if="!selectedAllF">Marcar Todas</span><span v-else>Desmarcar Todas</span></b-form-checkbox>
-			
-										<b-table 
+
+										<b-table
 										show-empty
 										empty-text ="<span class='label label-default'>No existen Facturas cargadas del becario</span>"
 										empty-filtered-text="
@@ -434,27 +437,27 @@
 										<template slot="costo" slot-scope="row">
 											<span>@{{formatomoneda(row.item.factura.costo)}}</span>
 										</template>
-									
+
 										<template slot="created_at" slot-scope="row">
 												<span v-if="row.item.factura.created_at">@{{ fechaformatear(row.item.factura.created_at) }}</span>
 												<span v-else class='label label-default'>Sin Fecha Carga</span>
 										</template>
-										
+
 										<template slot="actions" slot-scope="row">
 											<a v-b-popover.hover.bottom="'Ver Factura'" :href="row.item.link" target="_blank" class="btn btn-xs sisbeca-btn-primary">
 												<i class="fa fa-eye"></i>
 											</a>
-											
-									
-												
+
+
+
 										</template>
-			
+
 									</b-table>
-			
+
 									<b-row class="my-0 pull-right" >
 										<b-pagination :total-rows="totalRowsF" :per-page="parseInt(perPageF)" v-model="currentPageF" class="my-0" />
 									</b-row>
-			
+
 								</div>
 							</div>
 						<template slot="modal-footer">
@@ -471,19 +474,19 @@
           <svg class="circular" viewBox="25 25 50 50">
               <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
       </div>
-    </section>	
-	
+    </section>
+
 </div>
 @endsection
 
-@section('personaljs')   
+@section('personaljs')
 <script>
 
 $(document).ready(function(){
-	$('[data-toggle="tooltip"]').tooltip(); 
+	$('[data-toggle="tooltip"]').tooltip();
 	$("#dp3").datepicker( {
     format: "mm/yyyy",
-    viewMode: "months", 
+    viewMode: "months",
     minViewMode: "months"
 	});
 });
@@ -572,19 +575,19 @@ const app = new Vue({
 			sortDescF: false,
 			sortDirectionF: 'asc',
 			filterF: null
-		
+
 	},
 	computed:
 		{
 			itemsSComputed(){
-				
+
 				this.itemsS.forEach(function(e,i){
 					e.nomina.total = parseFloat(e.nomina.monto_libros) + parseFloat(e.nomina.retroactivo) + parseFloat(e.nomina.sueldo_base) + parseFloat(e.nomina.cva)
 				},this)
 				return this.itemsS
 			},
 			itemsNSComputed(){
-				
+
 				this.itemsNS.forEach(function(e,i){
 					e.nomina.total = parseFloat(e.nomina.monto_libros) + parseFloat(e.nomina.retroactivo) + parseFloat(e.nomina.sueldo_base) + parseFloat(e.nomina.cva)
 				},this)
@@ -640,7 +643,7 @@ const app = new Vue({
 					}
 				})
 				}
-				
+
 				return existe
 			}
 		},
@@ -654,14 +657,14 @@ const app = new Vue({
 				let data = JSON.stringify({
                 mes: parseInt(this.mes),
                 year: parseInt(this.year),
-								nomina: this.itemsS                
+								nomina: this.itemsS
             });
 				axios.post(url,data,{
 				headers:
 				{
 						'Content-Type': 'application/json',
-				} 
-				}).then(response => 
+				}
+				}).then(response =>
 				{
 					console.log(response)
 					if(response.data.res){
@@ -763,12 +766,12 @@ const app = new Vue({
 				  url = "{{route('consultar.facturas.becario',array('id'=>':a_id'))}}"
 				  url = url.replace(':a_id',id)
 				  this.isLoading = true
-				  axios.get(url).then(response => 
+				  axios.get(url).then(response =>
 					{
 						console.log(response)
-						
+
 						this.facturas = response.data.facturasAA
-						
+
 						this.$root.$emit('bv::show::modal', 'modalEditFacturas', button)
 
 						this.isLoading = false
@@ -819,7 +822,7 @@ const app = new Vue({
 					aux.id =   this.itemsNS[this.itemsNS.length-1].id + 1
 
 				}
-				
+
 	 			let id_eliminar = -1
 				this.itemsS.forEach(function (elemento, indice) {
 					if( elemento.id === item.id){
@@ -867,7 +870,7 @@ const app = new Vue({
 						/*
 						let total = parseFloat(0)
 						item.facturas.forEach(function(f,i){
-							
+
 							if(f.factura.status === 'procesada'){
 								total = parseFloat(total) + parseFloat(f.factura.costo)
 							}
@@ -878,7 +881,7 @@ const app = new Vue({
 					}
 				},this)
 
-				
+
 				this.$refs.modalFacturas.hide()
 				this.facturas = []
 				this.selectedAllF = false
@@ -900,7 +903,7 @@ const app = new Vue({
 					aux.id =   this.itemsS[this.itemsS.length-1].id + 1
 
 				}
-				
+
 	 			let id_eliminar = -1
 				this.itemsNS.forEach(function (elemento, indice) {
 					if( elemento.id === item.id){
@@ -910,7 +913,7 @@ const app = new Vue({
 				if (id_eliminar !== -1){
 					this.itemsNS.splice(id_eliminar, 1);
 					this.itemsS.push(aux)
-					if(band) 
+					if(band)
 					{
 						toastr.info('Becario Agregado a lista de sugeridos');
 
@@ -949,7 +952,7 @@ const app = new Vue({
 			{
 					if(monto)
 						return Number(monto).toLocaleString("es-ES", {minimumFractionDigits: 2});
-					else 
+					else
 						return 0
 			},
 			onFilteredNS (filteredItems)
@@ -985,7 +988,7 @@ const app = new Vue({
 				  url = url.replace(':a_mes',parseInt(mes))
 				  url = url.replace(':b_year',parseInt(year))
 				  this.isLoading = true
-				  axios.get(url).then(response => 
+				  axios.get(url).then(response =>
 					{
 						if(response.data.res){
 							this.itemsNS = response.data.noSugeridos
@@ -1033,7 +1036,7 @@ const app = new Vue({
 		height: 100%
 	}
 	tbody tr td:last-child {
-		text-align: center 
+		text-align: center
 	}
 	.datepicker table tr td span.active.active,	.month.focused.active{
 		background-color: #003865 !important;

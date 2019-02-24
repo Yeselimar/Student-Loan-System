@@ -1,11 +1,11 @@
 @extends('sisbeca.layouts.main')
 @section('title','Nóminas Pagadas')
 @section('content')
-	
+
 <div class="col-lg-12">
 
 	<div class="table-responsive">
-		
+
 		<table id="nomina" class="table table-bordered table-hover">
 			<thead>
 				<tr>
@@ -27,15 +27,14 @@
 						<td class="text-right">{{ number_format($nomina->total_pagado, 2, ',', '.') }}</td>
 						<td class="text-center">{{ date("d/m/Y", strtotime($nomina->fecha_pago)) }}</td>
 						<td class="text-center">
-
-							<a href="{{ route('nomina.pagado.pdf',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Generar Nómina en PDF" >
+							<a href="{{ route('nomina.pagado.pdf',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Ver Nómina en PDF" >
 								<i class="fa fa-file-pdf-o"></i>
 							</a>
 
-							<a href="{{ route('nomina.pagada.excel',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Generar Nómina en Excel" >
+							<a href="{{ route('nomina.pagada.excel',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Nómina en Excel" >
 								<i class="fa fa-file-excel-o"></i>
 							</a>
-							
+
 							<a href="{{ route('nomina.listar.pagadas',array('mes'=>$nomina->mes,'anho'=>$nomina->year)) }}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Detalle de la Nómina" >
 								<i class="fa fa-eye"></i>
 							</a>
@@ -50,7 +49,7 @@
 				@endif
 			</tbody>
 		</table>
-		
+
 	</div>
 </div>
 @endsection
@@ -86,7 +85,7 @@ $(document).ready(function() {
 </script>
 <script>
     $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
+        $('[data-toggle="tooltip"]').tooltip();
     });
     </script>
 @endsection

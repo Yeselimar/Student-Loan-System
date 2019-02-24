@@ -154,7 +154,7 @@
                                 @endif
                             </span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{ route('nomina.procesar') }}">Nóminas por Procesar</a>
+                            <li><a href="{{ route('nomina.procesar') }}">Consultar Nómina</a>
                             </li>
                             <li><a href="{{ route('nomina.listar') }}">Nóminas Generadas</a></li>
                             <li><a href="{{ route('nomina.pagadas') }}">Nóminas Pagadas</a></li>
@@ -193,7 +193,7 @@
 
                                 </ul>
                             </li>
-                            <li><a href="{{ route('listarPostulantesMentores')}}">Mentores</a></li>
+
                         </ul>
                     </li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-users"></i><span class="hide-menu">Mentorias</span></a>
@@ -244,7 +244,7 @@
                             <i class="fa fa-clone"></i><span class="hide-menu">Solicitudes</span>
                         </a>
                     </li>
-                   
+
                     @if((Auth::user()->rol==='directivo'))
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-eject"></i><span class="hide-menu">Egresados</span></a>
                             <ul aria-expanded="false" class="collapse">
