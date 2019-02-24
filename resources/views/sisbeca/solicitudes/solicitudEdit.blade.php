@@ -365,14 +365,14 @@
       </div>
 
       <p align="center">
-        ¿Esta seguro que desea Eliminar la Siguiente Solicitud?
+        ¿Está seguro que desea eliminar la siguiente solicitud?
       </p>
 
       <div class="form-group form-modal-none">
-        <strong> Titulo:</strong> {{strtoupper( $solicitud->titulo)}}
+        <strong> Título:</strong> {{strtoupper( $solicitud->titulo)}}
       </div>
       <div class="form-group form-modal-none">
-        <strong> Status:</strong> {{strtoupper( $solicitud->status)}}
+        <strong> Estatus:</strong> {{strtoupper( $solicitud->status)}}
       </div>
 
       <div class="modal-footer">

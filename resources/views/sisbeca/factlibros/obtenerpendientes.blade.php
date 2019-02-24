@@ -78,17 +78,19 @@
 									<td class="text-left">@{{factura.curso}}</td>
 									<td class="text-left">@{{formatomoneda(factura.costo)}}</td>
 									<td class="text-left">
-										<span v-if="factura.status=='por procesar'" class="label label-warning">Aprobada</span>
+										<span v-if="factura.status=='por procesar'" class="label label-primary">Aprobada</span>
 										<span v-else-if="factura.status=='procesada'" class="label label-success">Procesada</span>
 										<span v-else-if="factura.status=='cargada'" class="label label-info">Pendiente</span>
 										<span v-else-if="factura.status=='rechazada'" class="label label-danger">Rechazada</span>
+										<span v-else-if="factura.status=='revisada'" class="label label-danger">Revisada</span>
+										<span v-else-if="factura.status=='pagada'" class="label label-danger">Pagada</span>
 										<template v-if="factura.status=='pagada'">
 											<p class="h6">@{{fechaformatear(factura.fecha_pagada)}}</p>
 										</template>
 										<template v-if="factura.status=='cargada'">
 											<p class="h6">@{{fechaformatear(factura.fecha_cargada)}}</p>
 										</template>
-										<template v-if="factura.status=='procesada'">
+										<template v-if="factura.status=='por procesar'">
 											<p class="h6">@{{fechaformatear(factura.fecha_procesada)}}</p>
 										</template>
 									</td>
@@ -96,7 +98,7 @@
 										<a :href="verArchivo(factura.url)" target="_blank" class="btn btn-xs sisbeca-btn-primary">
 											<i class="fa fa-file-pdf-o"></i>
 										</a>
-										<template v-if="factura.status!='pagada' && factura.status!='procesada' && factura.status!='rechazada' && factura.status!='por procesar'">
+										<template v-if="factura.status!='pagada' && factura.status!='procesada' &&  factura.status!='revisada'">
 											<button v-b-popover.hover.bottom="'Actualizar Factura'" class="btn btn-xs sisbeca-btn-primary" @click="habilitara(factura)">
 												<i class="fa fa-edit"></i>
 											</button>
@@ -107,7 +109,7 @@
 											</button>
 										</template>
 										
-										<template v-if="habilitar==1 && factura.status!='pagada' && factura.status!='procesada' && factura.status!='rechazada' && factura.status!='por procesar'">
+										<template v-if="habilitar==1 && factura.status!='pagada' && factura.status!='procesada' && factura.status!='revisada'">
 											
 											<select v-model="estatus_factura" class="sisbeca-input input-sm sisbeca-select" @change="actualizarestatus(factura.id,estatus_factura)">
 												<option value="cargada">Pendiente</option>
@@ -215,7 +217,6 @@
 					console.log(error);
 					$("#preloader").hide();
 				});
-				console.log(this.habilitar);
 			},
 			formatomoneda(monto)
 			{
@@ -241,7 +242,6 @@
 			},
 			actualizarestatus(id,estatus)
 			{
-				console.log(id);
 				this.habilitar=0;
 				var dataform = new FormData();
 	            dataform.append('status', estatus);

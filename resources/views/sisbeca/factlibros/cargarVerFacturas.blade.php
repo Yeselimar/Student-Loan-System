@@ -29,36 +29,31 @@
 
                         <td class="text-center">{{ $factura->obtenerCosto() }}</td>
 
-                        @if($factura->status==='cargada')
-                            <td class="text-center">
+                        <td class="text-center">
+                            @if($factura->status==='cargada')
                                 <span class="label label-warning">Cargada</span>
-                            </td>
-                        @else
-                            @if($factura->status==='por procesar')
-                                <td class="text-center">
-                                    <span class="label label-primary">Por Procesar</span>
-                                </td>
                             @else
-                                @if($factura->status==='revisada')
-                                <td class="text-center">
-                                    <span class="label label-info">Revisada</span>
-                                </td>
+                                @if($factura->status==='por procesar')
+                                    <span class="label label-primary">Aprobada</span>
                                 @else
-                                    @if($factura->status==='pagada')
-                                        <td class="text-center">
-                                            <span class="label label-success">Pagada</span>
-                                        </td>
+                                    @if($factura->status==='revisada')
+                                        <span class="label label-info">Revisada</span>
                                     @else
-                                        <td class="text-center">
-                                            <span class="label label-default">{{ ucwords($factura->status) }}</span>
-                                        </td>
+                                        @if($factura->status==='pagada')
+                                            <span class="label label-success">Pagada</span>
+                                        @else
+                                            @if($factura->status==='rechazada')
+                                                <span class="label label-danger">Rechazada</span>
+                                            @else
+                                                <span class="label label-default">{{ ucwords($factura->status) }}</span>
+                                            @endif
+                                        @endif
 
                                     @endif
-
                                 @endif
                             @endif
-                        @endif
-
+                        </td>
+                        
                         <td class="text-center">{{ date("d/m/Y", strtotime($factura->created_at))}}</td>
 
                         <td class="text-center">

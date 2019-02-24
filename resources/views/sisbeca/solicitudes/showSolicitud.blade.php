@@ -23,7 +23,7 @@
                 <div class="panel-body">
                   @if($solicitud->status==='enviada')
                   <div class="alert  alert alert-info alert-important" role="alert">
-                  Su Solicitud fue enviada exitosamente, actualmente se
+                  Su solicitud fue enviada exitosamente, actualmente se
                     encuentra en proceso de ser revisada por nuestro equipo
                     técnico.
                   </div>
@@ -97,14 +97,14 @@
             </div>
       
             <p align="center">
-              ¿Esta seguro que desea Cancelar la Siguiente Solicitud?
+              ¿Está seguro que desea cancelar la siguiente solicitud?
             </p>
       
             <div class="form-group form-modal-none">
               <strong> Titulo:</strong> {{strtoupper( $solicitud->titulo)}}
             </div>
             <div class="form-group form-modal-none">
-              <strong> Status:</strong> {{strtoupper( $solicitud->status)}}
+              <strong> Estatus:</strong> {{strtoupper( $solicitud->status)}}
             </div>
       
             <div class="modal-footer">
