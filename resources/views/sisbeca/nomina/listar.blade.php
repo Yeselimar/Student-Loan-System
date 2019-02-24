@@ -82,7 +82,7 @@
 							<i class="fa fa-eye"></i>
 					</a>
 					
-					<a v-b-popover.hover.bottom="'Pagar Nómina'" :href="row.item.url_pagar" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary">
+					<a v-b-popover.hover.bottom="'Pagar Nómina'"  @click.stop="nominaPagada(row.item.mes,row.item.year,row.item.url_pagar)" class="btn btn-xs sisbeca-btn-primary">
 							<i class="fa fa-plus"></i>
 					</a>
 						
@@ -97,7 +97,14 @@
 
 		</div>
 	</div>
-                
+
+	<b-modal id="nominaPagadaID" hide-header-close ref="nominaPagadaRef" @hide="resetModal" :title="'Pagar Nomina '+mes+'/'+year" >
+	  	¿Estas Seguro que desea pagar la Nomina correspondiente al @{{mes}}/@{{year}} ?
+	  <template slot="modal-footer">
+				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaPagadaRef.hide()'> No</b-btn>
+				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="pagarNomina(mes,year)" variant="sisbeca-btn-primary" > Si </b-btn>
+	   </template>	
+    </b-modal>
 	<!-- Cargando.. -->
 	<section class="loading" id="preloader">
 		<div>
@@ -158,6 +165,23 @@ const app = new Vue({
 	},
 	methods:
 	{
+		resetModal() {
+        	this.mes = ''
+			this.year = ''
+		  },
+		nominaPagada(mes,year,url) {
+			this.mes = mes
+			this.year = year
+			this.$refs.nominaPagadaRef.show()
+		},
+		pagarNomina(mes,year){
+			//aqui se paga
+			
+			this.mes = ''
+			this.year = ''
+			this.$refs.nominaPagadaRef.hide()
+
+		},
 		onFiltered (filteredItems)
 		{
 			// Trigger pagination to update the number of buttons/pages due to filtering

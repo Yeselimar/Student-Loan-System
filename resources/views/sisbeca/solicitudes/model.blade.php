@@ -35,12 +35,12 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-6 rendered1">
                         <label class="control-label" for="datepicker1">Fecha de Inactividad</label>
-                        <input type="text" class="sisbeca-input" id="datepicker1" name="fecha_inactividad" required>
+                        <input type="text" class="sisbeca-input" autocomplete="off" id="datepicker1" name="fecha_inactividad" required>
                     </div>
 
                     <div class="col-lg-12 col-md-12 col-sm-6 rendered2">
                         <label class="control-label" for="datepicker2">Fecha de Desincorporación</label>
-                        <input type="text" class="sisbeca-input" id="datepicker2" name="fecha_desincorporacion" required>
+                        <input type="text" class="sisbeca-input"  autocomplete="off" id="datepicker2" name="fecha_desincorporacion" required>
                     </div>
 
                     <div class="col-lg-12 col-md-12 col-sm-6 ">

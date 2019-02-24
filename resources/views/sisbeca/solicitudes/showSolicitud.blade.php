@@ -110,18 +110,18 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-default pull-left"
+                class="btn btn-danger pull-left"
                 data-dismiss="modal"
               >
-                Cerrar
+                No
               </button>
               <button
                 type="button"
                 onclick="eliminar()"
-                class="btn btn-danger pull-left"
+                class="btn sisbeca-btn-primary pull-left"
                 data-dismiss="modal"
               >
-                Eliminar
+                Si
               </button>
             </div>
           </div>
