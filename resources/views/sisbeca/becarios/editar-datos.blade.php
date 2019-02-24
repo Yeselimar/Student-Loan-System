@@ -16,9 +16,6 @@
       <li class="nav-item">
         <a class="nav-link" href="#foto-perfil" role="tab" data-toggle="tab">Foto Perfil</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#contrasena" role="tab" data-toggle="tab">Contraseña</a>
-      </li>
 	</ul>
 	
 	<div class="tab-content">
@@ -232,12 +229,14 @@
 
     <div class="tab-pane" id="foto-perfil">
       <br>
-      <div class="row">
-        <div class="col-lg-6">
-          <img src="#" alt="">
-        </div>
-        <div class="col-lg-6">
-          
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-6">
+            <input type="file" name="foto" @change="cargafoto">
+          </div>
+          <div class="col-lg-6">
+            <button class="sisbeca-btn-primary" @click="guardarfoto()">Guardar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -298,6 +297,7 @@
     el: '#app',
     data:
     {
+      foto: null,
       becario_estatus:'',
       usuario_estatus:'',
       regimen:'',
@@ -481,6 +481,30 @@
           //toastr.error("Disculpe, verifique el formulario");
         });
       },
+      cargafoto(event)
+      {
+        this.foto = event.target.files[0];
+      },
+      guardarfoto()
+      {
+        console.log(this.foto);
+        $("#preloader").show();
+        var id = '{{$becario->user_id}}';
+        var url = "{{ route('becarios.actualizar.foto',':id' ) }}";
+        url = url.replace(':id', id);
+        var dataform = new FormData();
+        dataform.append('foto', this.foto);
+        axios.post(url,dataform).then(response => 
+        {
+          $("#preloader").hide();
+          console.log(response.data);
+          toastr.success(response.data.success);
+        }).catch( error =>
+        {
+          $("#preloader").hide();
+          console.log(error);
+        });
+      }
     }
 
 	});

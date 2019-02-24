@@ -113,6 +113,23 @@ class UserController extends Controller
         return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
     }
 
+    public function actualizarfoto(Request $request,$id)
+    {
+        $user = User::find($id);
+        if($request->foto)
+        {
+            $name = 'img-user_' . $user->cedula . time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path() . '/images/perfil/';
+            $file->move($path, $name);
+            $img_perfil = new Imagen();
+            $img_perfil->titulo = 'img_perfil';
+            $img_perfil->url = '/images/perfil/' . $name;
+            $img_perfil->verificado = true;
+            $img_perfil->user_id = $user->id;
+            $img_perfil->save();
+        }
+    }
+
     public function export() //
     {
         return Excel::download(new UsersExport, 'usuarios.xlsx');
