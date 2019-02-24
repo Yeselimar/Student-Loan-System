@@ -341,7 +341,7 @@
 	</div>
 
 	<!-- Info modal -->
-				<b-modal id="modalEditRetroactivo" ref='modalRetroactivo' @hide="resetModalEditRectroactivo" :title="'Editar Retroactivo'" >
+				<b-modal id="modalEditRetroactivo" hide-header-close ref='modalRetroactivo' @hide="resetModalEditRectroactivo" :title="'Editar Retroactivo'" >
 								<div class="col" style="padding-left: 0px;padding-right: 0px;">
 										<label class="control-label " for="retroactivo">Retroactivo</label>
 										<input type="number" name="retroactivo" v-model="retroactivo"  class="sisbeca-input input-sm" id="retroactivo"  style="margin-bottom: 0px">
@@ -352,7 +352,7 @@
 						</template>
 				</b-modal>
 
-				<b-modal id="modalEditCVA" ref='modalCVA' @hide="resetModalEditCVA" :title="'Editar CVA'">
+				<b-modal id="modalEditCVA" ref='modalCVA' hide-header-close @hide="resetModalEditCVA" :title="'Editar CVA'">
 								<div class="col" style="padding-left: 0px;padding-right: 0px;">
 											<label class="control-label " for="cva">CVA</label>
 											<input type="number" name="cva" v-model="cva"  class="sisbeca-input input-sm" id="cva" style="margin-bottom: 0px">
@@ -363,7 +363,7 @@
 						</template>
 				</b-modal>
 
-				<b-modal id="modalEditFacturas" ref='modalFacturas' size='lg' @hide="resetModalEditFacturas" :title="'Procesar Facturas'">
+				<b-modal id="modalEditFacturas" ref='modalFacturas' hide-header-close size="lg" @hide="resetModalEditFacturas" :title="'Procesar Facturas'">
 						<div class="table-responsive" @click="selectedStatusFactura=-1">
 								<div class="dataTables_wrapper dt-bootstrap4 no-footer">
 									<div class="row">

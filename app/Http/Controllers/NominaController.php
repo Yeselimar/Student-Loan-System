@@ -26,7 +26,7 @@ class NominaController extends Controller
 {
 	public function __construct()
     {
-        $this->middleware('directivo');
+        $this->middleware('compartido_direc_coord');
     }
 
     public function listar()
