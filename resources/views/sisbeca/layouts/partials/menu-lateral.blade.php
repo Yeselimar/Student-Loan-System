@@ -218,6 +218,7 @@
                         </ul>
                     </li>
                     <li>
+                        <!-- route('modulo.facturas.pendientes')-->
                         <a href="{{route('modulo.facturas.pendientes')}}" aria-expanded="false">
                             <i class="fa  fa-file-text-o"></i>
                             <span class="hide-menu">Fact. Libros</span>
@@ -228,7 +229,7 @@
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Becarios</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{ route('becarios.listar') }}">Listar</a></li>
-                       {{--     <li><a href="#">Reportes de Notas</a></li>
+                            {{--     <li><a href="#">Reportes de Notas</a></li>
                             <li><a href="#">Consultar Mejor Promedio</a></li> --}}
                         </ul>
                     </li>

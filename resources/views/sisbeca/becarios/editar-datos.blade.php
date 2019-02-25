@@ -48,7 +48,7 @@
           </div>
 
           <div class="col-lg-4 col-md-4 col-sm-6">
-              <label class="control-label">Sexo</label>
+              <label class="control-label">*Sexo</label>
              	<select v-model="sexo" class="sisbeca-input">
                 <option disabled value="">Sexo</option>
                 <option>femenino</option>
@@ -57,7 +57,7 @@
              	<span v-if="errores.sexo" :class="['label label-danger']">@{{ errores.sexo[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6">
-            <label class="control-label">Fecha Nacimiento</label>
+            <label class="control-label">*Fecha Nacimiento</label>
             <date-picker class="sisbeca-input" name="fecha_nacimiento" v-model="fecha_nacimiento" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
             <span v-if="errores.fecha_nacimiento" :class="['label label-danger']">@{{ errores.fecha_nacimiento[0] }}</span>
           </div>
@@ -66,7 +66,7 @@
         <hr>
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-12">
-            <label class="control-label">Dirección Permanente</label>
+            <label class="control-label">*Dirección Permanente</label>
             <input type="text" name="direccion_permanente" class="sisbeca-input" v-model="direccion_permanente" placeholder="EJ: Urb. Las Quintas, Naguanagua, Carabobo">
               <span v-if="errores.direccion_permanente" :class="['label label-danger']">@{{ errores.direccion_permanente[0] }}</span>
           </div>
@@ -79,17 +79,17 @@
         <hr>
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-12">
-            <label class="control-label">Teléfono Celular</label>
+            <label class="control-label">*Teléfono Celular</label>
             <input type="text" name="celular" class="sisbeca-input" v-model="celular" placeholder="EJ: 04247778822">
               <span v-if="errores.celular" :class="['label label-danger']">@{{ errores.celular[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-12">
-            <label class="control-label">Teléfono Habitación</label>
+            <label class="control-label">*Teléfono Habitación</label>
             <input type="text" name="telefono_habitacion" class="sisbeca-input" v-model="telefono_habitacion" placeholder="EJ: 02415556600">
               <span v-if="errores.telefono_habitacion" :class="['label label-danger']">@{{ errores.telefono_habitacion[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-12">
-            <label class="control-label">Teléfono Pariente</label>
+            <label class="control-label">*Teléfono Pariente</label>
             <input type="text" name="telefono_pariente" class="sisbeca-input" v-model="telefono_pariente" placeholder="EJ: 04129996600">
               <span v-if="errores.telefono_pariente" :class="['label label-danger']">@{{ errores.telefono_pariente[0] }}</span>
           </div>
@@ -246,11 +246,6 @@
 
       <div class="form-group" style="border: 1px solid #eee; padding: 10px; border-radius: 5px;">
         <div class="row">
-          <div class="col-lg-4 col-md-4 col-sm-6">
-              <label class="control-label">Contraseña Actual</label>
-              <input type="password" name="contrasena_actual" class="sisbeca-input" v-model="contrasena_actual">
-              <span v-if="errores.contrasena_actual" :class="['label label-danger']">@{{ errores.contrasena_actual[0] }}</span>
-          </div>
           <div class="col-lg-4 col-md-4 col-sm-6">
               <label class="control-label">Contraseña Nueva</label>
               <input type="password" name="contrasena_nueva" class="sisbeca-input" v-model="contrasena_nueva">
@@ -461,24 +456,26 @@
       {
         $("#preloader").show();
         var id = '{{$becario->user_id}}';
+        console.log(id);
         var url = "{{ route('becarios.actualizar.contrasena',':id' ) }}";
         url = url.replace(':id', id);
+        console.log(url);
         var dataform = new FormData();
         dataform.append('contrasena_actual', this.contrasena_actual);
         dataform.append('contrasena_nueva', this.contrasena_nueva);
-        dataform.append('contrase_repite', this.contrase_repite);
+        dataform.append('contrasena_repite', this.contrase_repite);
         axios.post(url,dataform).then(response => 
         {
           $("#preloader").hide();
           this.errores=[];
           console.log(response.data);
-          //toastr.success(response.data.success);
+          toastr.success(response.data.success);
         }).catch( error =>
         {
           $("#preloader").hide();
           console.log(error);
-          //this.errores = error.response.data.errors;
-          //toastr.error("Disculpe, verifique el formulario");
+          this.errores = error.response.data.errors;
+          toastr.error("Disculpe, verifique el formulario");
         });
       },
       cargafoto(event)

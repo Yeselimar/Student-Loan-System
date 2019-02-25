@@ -15,6 +15,15 @@
 @section('content')
 <div class="col-lg-12" id ="app">
 	<div class="text-right">
+		<!--<a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF
+    	</a>-->
+    	<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
+    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
+        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
+    	</a>
 		<a href="{{URL::previous()}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
 	</div>
 	<br>
@@ -291,18 +300,7 @@
 			</tbody>
 		</table>
 	</div>
-	<hr>
-	<div class="text-right">
-        <!--<a href="{{route('seguimiento.resumen.pdf',$becario->user->id)}}" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF
-    	</a>-->
-    	<a target="_blank" :href="descargarpdf(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-pdf-o"></i> PDF (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-    	<a :href="descargarexcel(anho,mes)" class="btn btn-sm sisbeca-btn-primary">
-        	<i class="fa fa-file-excel-o"></i> Excel (@{{obtenermescompleto(mes)}}-@{{anho}})
-    	</a>
-    </div>
+	
 	<!--
 	<p>No borrar este código, aún funciona. Pero está hecho en PHP</p>
 	<br>

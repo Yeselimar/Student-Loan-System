@@ -40,8 +40,7 @@ class UserController extends Controller
             'telefono_pariente' => 'min:11,max:11',
             'lugar_trabajo' => 'min:0,max:255',
             'cargo_trabajo' => 'min:0,max:255',
-            'lugar_trabajo' => 'min:0,max:255',
-            'horas_trabajo' => 'integer'
+            'lugar_trabajo' => 'min:0,max:255'
         ]);
         $becario = Becario::find($id);
         $usuario = User::find($id);
@@ -106,11 +105,17 @@ class UserController extends Controller
 
     public function actualizarcontrasena(Request $request, $id)
     {
-        if(Hash::check($request->contrasena_actual, Auth::user()->password))
+        /*$request->validate([
+            
+            'password' => 'required|min:6|confirmed'
+            
+            
+        ]);*/
+        if($request->contrasena_nueva==$request->contrasena_repite)
         {
-            return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+            return response()->json(['errors'=>'success','error'=>'La contraseña fue actualizada exitosamente.']);
         }
-        return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+        return response()->json(['tipo'=>'success','success'=>'La contraseña fue actualizada exitosamente.']);
     }
 
     public function actualizarfoto(Request $request,$id)
