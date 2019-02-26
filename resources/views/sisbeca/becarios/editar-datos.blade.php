@@ -194,6 +194,7 @@
               <select v-model="becario_estatus" class="sisbeca-input">
                 <option disabled value="">Estatus Becario</option>
                 <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
                 <option value="probatorio1">Probatorio 1</option>
                 <option value="probatorio2">Probatorio 2</option>
               </select>
@@ -229,37 +230,39 @@
 
     <div class="tab-pane" id="foto-perfil">
       <br>
-      <div class="form-group">
-        <div class="row">
-          <div class="col-lg-4"></div>
-          <div class="col-lg-4">
-              <label class="control-label">Foto Actual</label>
-              <img :src="urlFotoPerfil()" alt="Foto de Perfil" class="img-responsive" style="border:1px solid #eee">
+      <form id="formulario" @submit.prevent="guardarfoto">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <label class="control-label">Foto Actual</label>
+                <img :src="urlFotoPerfil()" alt="Foto de Perfil" class="img-responsive" style="border:1px solid #eee">
+            </div>
+            <div class="col-lg-4"></div>
           </div>
-          <div class="col-lg-4"></div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="row">
-          <div class="col-lg-4"></div>
-          <div class="col-lg-4">
-            <label class="control-label">Actualizar Foto</label>
-            <input type="file" name="foto" class="sisbeca-input" accept="image/*" @change="cargafoto">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <label class="control-label">Actualizar Foto</label>
+              <input type="file" name="foto" class="sisbeca-input" accept="image/*" @change="cargafoto">
+            </div>
+            <div class="col-lg-4"></div>
           </div>
-          <div class="col-lg-4"></div>
         </div>
-      </div>
-      <!--
-      <div class="form-group">
-        <div class="row">
-          <div class="col-lg-4"></div>
-          <div class="col-lg-4">
-            <button class="btn sisbeca-btn-primary pull-right" @click="guardarfoto()">Guardar</button>
+        
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <button class="btn sisbeca-btn-primary pull-right" type="submit">Guardar</button>
+            </div>
+            <div class="col-lg-4"></div>
           </div>
-          <div class="col-lg-4"></div>
         </div>
-      </div>
-    -->
+      </form>
+      
     </div>
 
     <div class="tab-pane" id="contrasena">
@@ -463,7 +466,7 @@
         url = url.replace(':id', id);
         var dataform = new FormData();
         dataform.append('becario_estatus', this.becario_estatus);
-        dataform.append('usuario_estatus.', this.usuario_estatus);
+        dataform.append('usuario_estatus', this.usuario_estatus);
         axios.post(url,dataform).then(response => 
         {
           $("#preloader").hide();
@@ -502,10 +505,10 @@
       },
       cargafoto(event)
       {
-        console.log(event);
         this.foto = event.target.files[0];
-        console.log(event);
-        //event.target.reset();
+      },
+      guardarfoto(event)
+      {
         $("#preloader").show();
         var id = '{{$becario->user_id}}';
         var url = "{{ route('becarios.actualizar.foto',':id' ) }}";
@@ -522,6 +525,7 @@
           $("#preloader").hide();
           console.log(error);
         });
+        event.target.reset();
       },
       urlFotoPerfil()
       {

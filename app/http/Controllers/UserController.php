@@ -2,6 +2,7 @@
 
 namespace avaa\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -33,7 +34,11 @@ class UserController extends Controller
     {
     	$becario = Becario::find($id);
     	$usuario = User::find($id);
-        return view('sisbeca.becarios.editar-datos')->with(compact("becario","usuario"));
+        if((Auth::user()->id == $id and Auth::user()->esBecario()) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
+        {
+            return view('sisbeca.becarios.editar-datos')->with(compact("becario","usuario"));
+        }
+        return view('sisbeca.error.404');
     }
 
     public function actualizardatos(Request $request,$id)
@@ -113,12 +118,6 @@ class UserController extends Controller
 
     public function actualizarcontrasena(Request $request, $id)
     {
-        /*$request->validate([
-            
-            'password' => 'required|min:6|confirmed'
-            
-            
-        ]);*/
         if($request->contrasena_nueva==$request->contrasena_repite)
         {
             return response()->json(['errors'=>'success','error'=>'La contraseña fue actualizada exitosamente.']);

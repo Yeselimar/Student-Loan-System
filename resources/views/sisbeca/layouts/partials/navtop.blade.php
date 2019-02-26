@@ -59,7 +59,21 @@
                 <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                     <ul class="dropdown-user">
                         <li>
+                            <a>
+                                <i class="fa fa-check"></i> 
+                                <strong>{{Auth::user()->nombreyapellido()}}</strong>
+                            </a>
+                        </li>
 
+                        <li>
+                            <a>
+                                <strong>
+                                    <i class="fa fa-star-o"></i> {{Auth::user()->getRol()}}
+                                </strong>
+                            </a>
+                        </li>
+
+                        <li>
                             @if(Auth::user()->rol==='mentor')
                                 <a href="{{route('ver.miPerfilMentor')}}"><i class="ti-user"></i> Perfil</a>
                             @else
@@ -67,23 +81,26 @@
                                     <a href="{{ route('postulanteObecario.perfil',Auth::user()->id) }}"><i class="ti-user"></i> Perfil</a>
                                 @else
                                     @if(Auth::user()->rol==='postulante_mentor')
-                                        <a href="{{route('ver.miPerfilPostulanteMentor')}}"><i class="ti-user"></i>Perfil </a>
+                                        <a href="{{route('ver.miPerfilPostulanteMentor')}}"><i class="ti-user"></i> Perfil </a>
                                     @endif
                                 @endif
                             @endif
                         </li>
-                        {{--  <li><a href="#"><i class="ti-settings"></i> Ajustes</a></li>--}}
+                        @if(Auth::user()->esBecario())
+                            <li>
+                                <a href="{{route('becarios.editar.datos',Auth::user()->id)}}">
+                                    <i class="fa fa-cog"></i> Editar Perfil
+                                </a>
+                            </li>
+                        @endif
+                        
                         {{--<li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li> --}}
-                        <li>
-                            <a>{{Auth::user()->nombreyapellido()}}</a>
-                        </li>
-                        <li>
-                            <a><strong> {{Auth::user()->getRol()}} </strong></a>
-                        </li>
+                        
                         <li>
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out"></i> 
                                 Cerrar Sesión
                             </a>
 
