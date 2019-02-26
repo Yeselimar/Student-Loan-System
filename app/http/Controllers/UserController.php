@@ -36,7 +36,10 @@ class UserController extends Controller
     	$usuario = User::find($id);
         if((Auth::user()->id == $id and Auth::user()->esBecario()) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
         {
-            return view('sisbeca.becarios.editar-datos')->with(compact("becario","usuario"));
+            if($becario)
+            {
+                return view('sisbeca.becarios.editar-datos')->with(compact("becario","usuario"));
+            }
         }
         return view('sisbeca.error.404');
     }
