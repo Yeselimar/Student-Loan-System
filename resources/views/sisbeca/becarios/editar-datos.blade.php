@@ -231,14 +231,35 @@
       <br>
       <div class="form-group">
         <div class="row">
-          <div class="col-lg-6">
-            <input type="file" name="foto" @change="cargafoto">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4">
+              <label class="control-label">Foto Actual</label>
+              <img :src="urlFotoPerfil()" alt="Foto de Perfil" class="img-responsive" style="border:1px solid #eee">
           </div>
-          <div class="col-lg-6">
-            <button class="sisbeca-btn-primary" @click="guardarfoto()">Guardar</button>
-          </div>
+          <div class="col-lg-4"></div>
         </div>
       </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4">
+            <label class="control-label">Actualizar Foto</label>
+            <input type="file" name="foto" class="sisbeca-input" accept="image/*" @change="cargafoto">
+          </div>
+          <div class="col-lg-4"></div>
+        </div>
+      </div>
+      <!--
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4">
+            <button class="btn sisbeca-btn-primary pull-right" @click="guardarfoto()">Guardar</button>
+          </div>
+          <div class="col-lg-4"></div>
+        </div>
+      </div>
+    -->
     </div>
 
     <div class="tab-pane" id="contrasena">
@@ -292,6 +313,7 @@
     el: '#app',
     data:
     {
+      img_perfil:'',
       foto: null,
       becario_estatus:'',
       usuario_estatus:'',
@@ -337,43 +359,44 @@
     		var id = "{{$becario->user_id}}";
     		var url = '{{route('becarios.obtener.datos',':id')}}';
     		url = url.replace(':id', id);
-            axios.get(url).then(response => 
+        axios.get(url).then(response => 
+        {
+           	this.becario = response.data.becario;
+           	this.usuario = response.data.usuario;
+            this.img_perfil = response.data.img_perfil;
+            this.usuario_estatus = this.usuario.estatus;
+            this.becario_estatus = this.becario.status;
+           	this.name = this.usuario.name;
+           	this.last_name = this.usuario.last_name;
+           	this.cedula = this.usuario.cedula;
+           	this.sexo = this.usuario.sexo;
+           	this.email = this.usuario.email;
+            this.direccion_permanente = this.becario.direccion_permanente;
+            this.direccion_temporal = this.becario.direccion_temporal;
+            this.celular = this.becario.celular;
+            this.telefono_habitacion = this.becario.telefono_habitacion;
+            this.telefono_pariente = this.becario.telefono_pariente;
+            this.trabaja = this.becario.trabaja;
+            if(this.trabaja==null)
             {
-               	this.becario = response.data.becario;
-               	this.usuario = response.data.usuario;
-                this.usuario_estatus = this.usuario.estatus;
-                this.becario_estatus = this.becario.status;
-               	this.name = this.usuario.name;
-               	this.last_name = this.usuario.last_name;
-               	this.cedula = this.usuario.cedula;
-               	this.sexo = this.usuario.sexo;
-               	this.email = this.usuario.email;
-                this.direccion_permanente = this.becario.direccion_permanente;
-                this.direccion_temporal = this.becario.direccion_temporal;
-                this.celular = this.becario.celular;
-                this.telefono_habitacion = this.becario.telefono_habitacion;
-                this.telefono_pariente = this.becario.telefono_pariente;
-                this.trabaja = this.becario.trabaja;
-                if(this.trabaja==null)
-                {
-                  this.trabaja=0;
-                }
-                this.lugar_trabajo = this.becario.lugar_trabajo;
-                this.cargo_trabajo = this.becario.cargo_trabajo;
-                this.horas_trabajo = this.becario.horas_trabajo;
-                this.nombre_universidad = this.becario.nombre_universidad;
-                this.carrera_universidad = this.becario.carrera_universidad;
-                this.promedio_universidad = this.becario.promedio_universidad;
-                this.regimen = this.becario.regimen;
-                var dia = new Date (this.becario.inicio_universidad);
-                this.inicio_universidad = moment(dia).format('DD/MM/YYYY');
-               	var dia = new Date (this.usuario.fecha_nacimiento);
-                this.fecha_nacimiento = moment(dia).format('DD/MM/YYYY');
-            	 $("#preloader").hide();
-			}).catch( error => {
-				console.log(error);
-				$("#preloader").hide();
-			});
+              this.trabaja=0;
+            }
+            this.lugar_trabajo = this.becario.lugar_trabajo;
+            this.cargo_trabajo = this.becario.cargo_trabajo;
+            this.horas_trabajo = this.becario.horas_trabajo;
+            this.nombre_universidad = this.becario.nombre_universidad;
+            this.carrera_universidad = this.becario.carrera_universidad;
+            this.promedio_universidad = this.becario.promedio_universidad;
+            this.regimen = this.becario.regimen;
+            var dia = new Date (this.becario.inicio_universidad);
+            this.inicio_universidad = moment(dia).format('DD/MM/YYYY');
+           	var dia = new Date (this.usuario.fecha_nacimiento);
+            this.fecha_nacimiento = moment(dia).format('DD/MM/YYYY');
+        	 $("#preloader").hide();
+	      }).catch( error => {
+  				console.log(error);
+  				$("#preloader").hide();
+			  });
     	},
     	guardar()
     	{
@@ -398,7 +421,7 @@
           $("#preloader").hide();
         	this.errores=[];
         	toastr.success(response.data.success);
-          
+          this.obtenerdatosbecario();
         }).catch( error =>
         {
           $("#preloader").hide();
@@ -424,6 +447,7 @@
           $("#preloader").hide();
           this.errores=[];
           toastr.success(response.data.success);
+          this.obtenerdatosbecario();
         }).catch( error =>
         {
           $("#preloader").hide();
@@ -445,6 +469,7 @@
           $("#preloader").hide();
           this.errores=[];
           toastr.success(response.data.success);
+          this.obtenerdatosbecario();
         }).catch( error =>
         {
           $("#preloader").hide();
@@ -456,10 +481,8 @@
       {
         $("#preloader").show();
         var id = '{{$becario->user_id}}';
-        console.log(id);
         var url = "{{ route('becarios.actualizar.contrasena',':id' ) }}";
         url = url.replace(':id', id);
-        console.log(url);
         var dataform = new FormData();
         dataform.append('contrasena_actual', this.contrasena_actual);
         dataform.append('contrasena_nueva', this.contrasena_nueva);
@@ -468,7 +491,6 @@
         {
           $("#preloader").hide();
           this.errores=[];
-          console.log(response.data);
           toastr.success(response.data.success);
         }).catch( error =>
         {
@@ -480,11 +502,10 @@
       },
       cargafoto(event)
       {
+        console.log(event);
         this.foto = event.target.files[0];
-      },
-      guardarfoto()
-      {
-        console.log(this.foto);
+        console.log(event);
+        //event.target.reset();
         $("#preloader").show();
         var id = '{{$becario->user_id}}';
         var url = "{{ route('becarios.actualizar.foto',':id' ) }}";
@@ -493,15 +514,36 @@
         dataform.append('foto', this.foto);
         axios.post(url,dataform).then(response => 
         {
+          this.obtenerdatosbecario();
           $("#preloader").hide();
-          console.log(response.data);
           toastr.success(response.data.success);
         }).catch( error =>
         {
           $("#preloader").hide();
           console.log(error);
         });
-      }
+      },
+      urlFotoPerfil()
+      {
+        if(this.img_perfil==null)
+        {
+          if(this.usuario.sexo=='masculino')
+          {
+            var slug='images/perfil/masculino.png';
+          }
+          else
+          {
+            var slug='images/perfil/femenino.png';
+          }
+        }
+        else
+        {
+          var slug=this.img_perfil.url;
+        }
+        var url = "{{url(':slug')}}";
+        url = url.replace(':slug', slug);
+        return url;
+      },
     }
 
 	});

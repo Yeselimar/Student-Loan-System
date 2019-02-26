@@ -11,6 +11,8 @@ use DateTime;
 use avaa\Exports\UsersExport;
 use avaa\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
+use avaa\Imagen;
+use File;
 
 class UserController extends Controller
 {
@@ -18,7 +20,13 @@ class UserController extends Controller
     {
         $becario = Becario::find($id);
         $usuario = User::find($id);
-        return response()->json(['becario'=>$becario,'usuario'=>$usuario]);
+        $foto = Imagen::where('titulo','=','img_perfil')->where('user_id','=',$id)->first();
+        $img_perfil = null;
+        if($foto)
+        {
+            $img_perfil = $foto;
+        }
+        return response()->json(['becario'=>$becario,'usuario'=>$usuario,'img_perfil'=>$img_perfil]);
     }
 
     public function editardatos($id)
@@ -121,18 +129,29 @@ class UserController extends Controller
     public function actualizarfoto(Request $request,$id)
     {
         $user = User::find($id);
-        if($request->foto)
+        if($request->file('foto'))
         {
+            $file = $request->file('foto');
             $name = 'img-user_' . $user->cedula . time() . '.' . $file->getClientOriginalExtension();
             $path = public_path() . '/images/perfil/';
             $file->move($path, $name);
+            //Borramos la foto anterioor
+            $foto = Imagen::where('titulo','=','img_perfil')->where('user_id','=',$id)->first();
+            if($foto)
+            {
+                File::delete($foto->url);
+                $foto->delete();
+            }
+            
+
             $img_perfil = new Imagen();
             $img_perfil->titulo = 'img_perfil';
-            $img_perfil->url = '/images/perfil/' . $name;
+            $img_perfil->url = 'images/perfil/' . $name;
             $img_perfil->verificado = true;
             $img_perfil->user_id = $user->id;
             $img_perfil->save();
         }
+        return response()->json(['success'=>'La imagen perfil fue actualizada.','foto'=>$request->foto]);
     }
 
     public function export() //
