@@ -430,7 +430,7 @@ class CompartidoDirecCoordController extends Controller
 
         if($request->get('valor')==='1')
         {
-            flash('La solicitud de '.$solicitud->user->name.' ha sido aprobada exitosamente','success')->important();
+            flash('La solicitud de '.$solicitud->user->nombreyapellido().' ha sido aprobada exitosamente','success')->important();
 
             if($solicitud->user->rol==='becario')
                 $instancia= Becario::query()->select()->where('user_id','=',$solicitud->user_id)->first();
@@ -456,7 +456,7 @@ class CompartidoDirecCoordController extends Controller
                         $becario->save();
                     }
                 }
-                flash($instancia->user->name.' Ha sido desincorporado temporalmente en el sistema','info')->important();
+                flash($instancia->user->nombreyapellido().' Ha sido desincorporado temporalmente en el sistema','info')->important();
             }
             else
             {
@@ -523,7 +523,7 @@ class CompartidoDirecCoordController extends Controller
                     if($solicitud->titulo==='reincorporacion')
                     {
                         $instancia->status='activo';
-                        flash($instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
+                        flash($instancia->user->nombreyapellido().' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
 
                     }
                 }
@@ -536,7 +536,7 @@ class CompartidoDirecCoordController extends Controller
         else
         {
             $solicitud->status='rechazada';
-            flash('La solicitud de '.$solicitud->user->name.' ha sido rechazada','info')->important();
+            flash('La solicitud de '.$solicitud->user->nombreyapellido().' ha sido rechazada','info')->important();
         }
 
 

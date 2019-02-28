@@ -2,6 +2,7 @@
 
 namespace avaa\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -11,6 +12,8 @@ use DateTime;
 use avaa\Exports\UsersExport;
 use avaa\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
+use avaa\Imagen;
+use File;
 
 class UserController extends Controller
 {
@@ -18,14 +21,27 @@ class UserController extends Controller
     {
         $becario = Becario::find($id);
         $usuario = User::find($id);
-        return response()->json(['becario'=>$becario,'usuario'=>$usuario]);
+        $foto = Imagen::where('titulo','=','img_perfil')->where('user_id','=',$id)->first();
+        $img_perfil = null;
+        if($foto)
+        {
+            $img_perfil = $foto;
+        }
+        return response()->json(['becario'=>$becario,'usuario'=>$usuario,'img_perfil'=>$img_perfil]);
     }
 
     public function editardatos($id)
     {
     	$becario = Becario::find($id);
     	$usuario = User::find($id);
-        return view('sisbeca.becarios.editar-datos')->with(compact("becario","usuario"));
+        if((Auth::user()->id == $id and Auth::user()->esBecario()) or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
+        {
+            if($becario)
+            {
+                return view('sisbeca.becarios.editar-datos')->with(compact("becario","usuario"));
+            }
+        }
+        return view('sisbeca.error.404');
     }
 
     public function actualizardatos(Request $request,$id)
@@ -40,8 +56,7 @@ class UserController extends Controller
             'telefono_pariente' => 'min:11,max:11',
             'lugar_trabajo' => 'min:0,max:255',
             'cargo_trabajo' => 'min:0,max:255',
-            'lugar_trabajo' => 'min:0,max:255',
-            'horas_trabajo' => 'integer'
+            'lugar_trabajo' => 'min:0,max:255'
         ]);
         $becario = Becario::find($id);
         $usuario = User::find($id);
@@ -106,11 +121,39 @@ class UserController extends Controller
 
     public function actualizarcontrasena(Request $request, $id)
     {
-        if(Hash::check($request->contrasena_actual, Auth::user()->password))
+        if($request->contrasena_nueva==$request->contrasena_repite)
         {
-            return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+            return response()->json(['errors'=>'success','error'=>'La contraseña fue actualizada exitosamente.']);
         }
-        return response()->json(['tipo'=>'success','mensaje'=>'La contraseña fue actualizada exitosamente.']);
+        return response()->json(['tipo'=>'success','success'=>'La contraseña fue actualizada exitosamente.']);
+    }
+
+    public function actualizarfoto(Request $request,$id)
+    {
+        $user = User::find($id);
+        if($request->file('foto'))
+        {
+            $file = $request->file('foto');
+            $name = 'img-user_' . $user->cedula . time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path() . '/images/perfil/';
+            $file->move($path, $name);
+            //Borramos la foto anterioor
+            $foto = Imagen::where('titulo','=','img_perfil')->where('user_id','=',$id)->first();
+            if($foto)
+            {
+                File::delete($foto->url);
+                $foto->delete();
+            }
+            
+
+            $img_perfil = new Imagen();
+            $img_perfil->titulo = 'img_perfil';
+            $img_perfil->url = 'images/perfil/' . $name;
+            $img_perfil->verificado = true;
+            $img_perfil->user_id = $user->id;
+            $img_perfil->save();
+        }
+        return response()->json(['success'=>'La imagen perfil fue actualizada.','foto'=>$request->foto]);
     }
 
     public function export() //

@@ -8,8 +8,6 @@
 Auth::routes();
 
 
-Route::get('/excel', 'UserController@export')->name('export');
-
 Route::get('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/post/login', 'Auth\LoginController@postlogin')->name('post.login');
 
@@ -108,12 +106,11 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     Route::post('/tickets/{id}/actualizar',['uses'=> 'TicketsController@actualizar','as' =>'ticket.actualizar']);//Usado por los de soporte a la hora de dar la respuesta y actualizar el ticket. Ojo con eso.
     Route::get('/ticket/{id}/detalles',['uses'=> 'TicketsController@detalles','as' =>'ticket.detalles']);
     Route::get('/ticket/{id}/detalles/servicio',['uses'=> 'TicketsController@detallesservicio','as' =>'ticket.detalles.servicio']);
-    Route::get('/ticket/{id}/enviar-correo/servicio',['uses'=> 'TicketsController@enviarcorreo','as' =>'ticket.enviarcorreo.servicio']);
 
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
-        //Ruta para ver los  taller/chat club que ha participado un becario
+        //Para  ver las actividades Taller y Chat Club que han participado un becario. 
         Route::get('/becario/{id}/actividades', 'ActividadController@actividadesbecario')->name('actividades.becario');
         //Editar datos del usuario y becario
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
@@ -122,6 +119,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::post('/becario/{id}/actualizar-universidad', 'UserController@actualizaruniversidad')->name('becarios.actualizar.universidad');
         Route::post('/becario/{id}/actualizar-estatus-becario', 'UserController@actualizarestatusbecario')->name('becarios.actualizar.estatusbecario');
         Route::post('/becario/{id}/actualizar-contrasena', 'UserController@actualizarcontrasena')->name('becarios.actualizar.contrasena');
+        Route::post('/becario/{id}/actualizar-foto', 'UserController@actualizarfoto')->name('becarios.actualizar.foto');
 
         //resumen becario y reporte general
         Route::get('/becario/{id}/resumen', 'SeguimientoController@resumen')->name('seguimiento.resumen');
@@ -129,15 +127,16 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becarioreportegeneralapi')->name('seguimiento.becarioreportegeneral.api');
 
         Route::get('/becario/{id}/resumen-pdf', 'SeguimientoController@resumenpdf')->name('seguimiento.resumen.pdf');
-
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/', 'SeguimientoController@resumenanhomes')->name('seguimiento.resumen.anhomes');
 
         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen-pdf/', 'SeguimientoController@resumenanhomespdf')->name('seguimiento.resumen.anhomes.pdf');
 
-         Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/excel/', 'SeguimientoController@resumenanhomesexcel')->name('seguimiento.resumen.anhomes.excel');
+        Route::get('/becario/{id}/anho/{anho}/mes/{mes}/resumen/excel/', 'SeguimientoController@resumenanhomesexcel')->name('seguimiento.resumen.anhomes.excel');
+
         //reporte "tiempo"
         Route::get('/becarios/reporte-tiempo', 'SeguimientoController@reportetiempo')->name('seguimiento.reportetiempo');
         Route::get('/becarios/reporte-tiempo/excel', 'SeguimientoController@reportetiempoexcel')->name('seguimiento.reportetiempo.excel');
+
         Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
         Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
 
@@ -145,10 +144,9 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
         Route::get('/actividades/{id}/detalles', 'ActividadController@detalles')->name('actividad.detalles');
-
-        //talleres y chat club: servicios
         Route::get('/actividad/{a_id}/becario/{b_id}/justificativo/servicio', 'ActividadController@obtenerjustificativobecario')->name('actividad.obtener.justificativo');
 
+        //talleres y chat club: servicios
         Route::get('/actividades/becarios-facilitador', 'ActividadController@obtenerbecarios')->name('actividad.obtenerbecarios');
         Route::get('/actividades/{id}/detalles/servicio', 'ActividadController@detallesservicio')->name('actividad.detalles.servicio');
 
@@ -194,7 +192,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
         Route::get('/voluntariado/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
         Route::post('/voluntariado/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
-         Route::get('/voluntariado/{id}/eliminar-curso/', 'VoluntariadoController@eliminar')->name('voluntariados.eliminar');
+        Route::get('/voluntariado/{id}/eliminar-curso/', 'VoluntariadoController@eliminar')->name('voluntariados.eliminar');
         Route::get('/voluntariado/{id}/eliminar-servicio/', 'VoluntariadoController@eliminarservicio')->name('voluntariados.eliminarservicio');
 
 
@@ -202,6 +200,20 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
+        //Rutas para cargar actividades becarias de becarios viejos y/o existentes
+        Route::get('/becarios/cargar-actividades/', 'ActividadesBecariasController@becarioslistar')->name('becarios.listar.cargar');
+
+        Route::get('/becario/{id}/curso/crear/', 'ActividadesBecariasController@crearcurso')->name('crear.curso');
+        Route::post('/becario/{id}/curso/guardar/', 'ActividadesBecariasController@guardarcurso')->name('guardar.curso');
+        
+        Route::get('/becario/{id}/voluntariado/crear/', 'ActividadesBecariasController@crearvoluntariado')->name('crear.voluntariado');
+        Route::post('/becario/{id}/voluntariado/guardar/', 'ActividadesBecariasController@guardarvoluntariado')->name('guardar.voluntariado');
+
+        Route::get('/becario/{id}/periodo/crear/', 'ActividadesBecariasController@crearperiodo')->name('crear.periodo');
+        Route::post('/becario/{id}/periodo/guardar/', 'ActividadesBecariasController@guardarperiodo')->name('guardar.periodo');
+
+        
+
         //Eliminar a postulantne
         Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
         //Segimiento
@@ -213,8 +225,9 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/becarios/reporte-general', 'SeguimientoController@becariosreportegeneral')->name('becarios.reporte.general');
          Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/api', 'SeguimientoController@becariosreportegeneralapi')->name('becarios.reporte.general.api');
         Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/pdf', 'SeguimientoController@becariosreportegeneralpdf')->name('becarios.reporte.general.pdf');
-
         Route::get('/becarios/anho/{anho}/mes/{mes}/reporte-general/excel', 'SeguimientoController@becariosreportegeneralexcel')->name('becarios.reporte.general.excel');
+
+
 
 
         //actividades
@@ -280,8 +293,8 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/aval/{id}/aceptar', 'AvalController@aceptar')->name('aval.aceptar');
         Route::get('/aval/{id}/negar', 'AvalController@negar')->name('aval.negar');
         Route::get('/aval/{id}/devolver', 'AvalController@devolver')->name('aval.devolver');
-
         Route::post('/aval/{id}/tomar-accion', 'AvalController@tomaraccion')->name('aval.tomaraccion');
+
 
     });
 
@@ -487,7 +500,6 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'PostulanteBecarioController@volverapostularse',
             'as' => 'voler.a.postularse'
         ]);
-
         Route::post('terminosCondicionesAprobar', [
             'uses' => 'PostulanteBecarioController@terminosCondicionesAprobar',
             'as' => 'terminosCondiciones.aprobar'
@@ -667,10 +679,10 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'NominaController@procesar',
             'as' => 'nomina.procesar'
         ]);
+
         Route::get('/consultar/{mes}/becarios/{year}/nomina', 'NominaController@getConsultarNominaApi')->name('consultar.becarios.nomina');// consulta los becarios para la nomina
         Route::get('/consultar/{id}/facturas/becario', 'NominaController@getConsultarFacturasBecarioApi')->name('consultar.facturas.becario');// consulta las facturas del becario
         Route::post('/generar/nomina/api','NominaController@generarNominaApi')->name('generarNomina.api');
-
 
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}', [
             'uses' => 'NominaController@procesardetalle',
@@ -715,6 +727,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'NominaController@listar',
             'as' => 'nomina.listar'
         ]);
+
         Route::get('nomina/generadas/api', [
             'uses' => 'NominaController@listarNominasApi',
             'as' => 'listar.nominas.api'
@@ -791,7 +804,8 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'NominaController@nominapagadaexcel',
             'as' => 'nomina.pagada.excel'
         ]);
-     });
+
+    });
 
     Route::group(['middleware'=>'coordinador'],function ()
     {
@@ -837,7 +851,6 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/modulo/facturas-libros', 'FactLibrosController@facturaspendientes')->name('modulo.facturas.pendientes');
         Route::get('/modulo/facturas-libros/servicio', 'FactLibrosController@obtenerpendienteservicio')->name('modulo.facturas.pendientes.servicio');
         Route::post('/modulo/factura/{id}/actualizar/servicio', 'FactLibrosController@actualizarfactura')->name('modulo.facturas.actualizar.servicio');
-
         Route::get('listar/becariosDesincorporados', [
             'uses' => 'DirectivoController@listarBecariosDesincorporados',
             'as' => 'listar.becariosDesincorporados'

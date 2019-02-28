@@ -3,9 +3,6 @@
 @section('content')
 
 <div class="col-lg-12" id="app">
-		<div class="alert  alert-warning alert-important" role="alert">
-				Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
-			</div>
 
 <form v-if="showDate"  @submit.prevent.stop="consultar" class="container-fluid mt-3 pt-4 d-flex" style="background-color: rgba(169, 169, 169, 0.2);">
 
@@ -18,7 +15,10 @@
 	</button>
 
 </form>
-
+<br/>
+		<div class="alert  alert-warning alert-important" role="alert">
+				Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
+			</div>
 <div class="mt-4" v-if="seccionS">
 
  <div class="accordion row" id="accordionExample">
@@ -341,7 +341,7 @@
 	</div>
 
 	<!-- Info modal -->
-				<b-modal id="modalEditRetroactivo" ref='modalRetroactivo' @hide="resetModalEditRectroactivo" :title="'Editar Retroactivo'" >
+				<b-modal id="modalEditRetroactivo" hide-header-close ref='modalRetroactivo' @hide="resetModalEditRectroactivo" :title="'Editar Retroactivo'" >
 								<div class="col" style="padding-left: 0px;padding-right: 0px;">
 										<label class="control-label " for="retroactivo">Retroactivo</label>
 										<input type="number" name="retroactivo" v-model="retroactivo"  class="sisbeca-input input-sm" id="retroactivo"  style="margin-bottom: 0px">
@@ -352,7 +352,7 @@
 						</template>
 				</b-modal>
 
-				<b-modal id="modalEditCVA" ref='modalCVA' @hide="resetModalEditCVA" :title="'Editar CVA'">
+				<b-modal id="modalEditCVA" ref='modalCVA' hide-header-close @hide="resetModalEditCVA" :title="'Editar CVA'">
 								<div class="col" style="padding-left: 0px;padding-right: 0px;">
 											<label class="control-label " for="cva">CVA</label>
 											<input type="number" name="cva" v-model="cva"  class="sisbeca-input input-sm" id="cva" style="margin-bottom: 0px">
@@ -363,7 +363,7 @@
 						</template>
 				</b-modal>
 
-				<b-modal id="modalEditFacturas" ref='modalFacturas' size='lg' @hide="resetModalEditFacturas" :title="'Procesar Facturas'">
+				<b-modal id="modalEditFacturas" ref='modalFacturas' hide-header-close size="lg" @hide="resetModalEditFacturas" :title="'Procesar Facturas'">
 						<div class="table-responsive" @click="selectedStatusFactura=-1">
 								<div class="dataTables_wrapper dt-bootstrap4 no-footer">
 									<div class="row">
@@ -412,16 +412,16 @@
 											<div @click.prevent.stop="">
 											<div v-if="selectedStatusFactura==row.item.id" @click.prevent.stop="row.item.selected = true">
 													<select v-model="row.item.factura.status" class="sisbeca-input">
-															<option value="por procesar">Procesar</option>
-															<option value="rechazada">Rechazar</option>
-															<option value="cargada">Cargada</option>
+															<option value="por procesar">Aprobada</option>
+															<option value="rechazada">Rechazada</option>
+															<option value="cargada">Pendiente</option>
 														</select>
 											</div>
 											<div v-else>
-													<span v-if="row.item.factura.status=='por procesar'" class="label label-warning"> Procesar</span>
-													<span v-else-if="row.item.factura.status=='procesada'" class="label label-success">Procesar</span>
-													<span v-else-if="row.item.factura.status=='cargada'" class="label label-info">Cargada</span>
-													<span v-else-if="row.item.factura.status=='rechazada'" class="label label-danger">Rechazar</span>
+													<span v-if="row.item.factura.status=='por procesar'" class="label label-warning"> Aprobada</span>
+													<span v-else-if="row.item.factura.status=='procesada'" class="label label-success">Aprobada</span>
+													<span v-else-if="row.item.factura.status=='cargada'" class="label label-info">Pendiente</span>
+													<span v-else-if="row.item.factura.status=='rechazada'" class="label label-danger">Rechazada</span>
 											</div>
 											<a v-if="selectedStatusFactura==row.item.id" v-b-popover.hover.bottom="'Aceptar'" @click.prevent.stop="selectedStatusFactura=-1; row.item.selected = true" class="btn btn-xs sisbeca-btn-primary">
 													<i class="fa fa-plus"></i>

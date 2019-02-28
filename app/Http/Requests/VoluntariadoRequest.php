@@ -37,4 +37,17 @@ class VoluntariadoRequest extends FormRequest
             'comprobante'  => 'mimes:pdf,jpeg,jpg,png|max:10000',
         ];
     }
+
+    public static function rulesCarga()
+    {
+        return [
+            'nombre'       => 'required',
+            'institucion'    => 'required',
+            'responsable'  => 'required',
+            'observacion'  => 'required',
+            'lugar'        => 'required',
+            'horas'        => 'required',
+            'comprobante'  => 'mimes:pdf,jpeg,jpg,png|max:10000',
+        ];
+    }
 }

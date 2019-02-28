@@ -125,7 +125,16 @@ class FactLibrosController extends Controller
     public function actualizarfactura(Request $request, $id)
     {
         $factura = FactLibro::find($id);
-        $factura->status = $request->status;
+        if($request->status=='por procesar')
+        {
+            $factura->status = $request->status;
+            $factura->fecha_procesada = date("Y-m-d H:i:s");
+        }
+        else
+        {
+            $factura->status = $request->status;
+        }
+       
         $factura->save();
 
         $becario = $factura->becario;

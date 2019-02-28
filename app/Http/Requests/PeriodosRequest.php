@@ -30,4 +30,14 @@ class PeriodosRequest extends FormRequest
             'constancia'       => 'mimes:pdf,jpeg,jpg,png|max:10000',
         ];
     }
+
+    public static function rulesCarga()
+    {
+        return [
+            'anho_lectivo'     => 'required',
+            'fecha_inicio'     => 'required',
+            'fecha_fin'        => 'required',
+            'constancia'       => 'mimes:pdf,jpeg,jpg,png|max:10000',
+        ];
+    }
 }

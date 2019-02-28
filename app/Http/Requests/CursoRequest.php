@@ -30,4 +30,14 @@ class CursoRequest extends FormRequest
             'constancia_nota'  => 'mimes:pdf,jpeg,jpg,png|max:10000',
         ];
     }
+
+    public static  function rulesCarga()
+    {
+        return [
+            'nota'             => 'required',
+            'fecha_inicio'     => 'required',
+            'fecha_fin'        => 'required',
+            'constancia_nota'  => 'mimes:pdf,jpeg,jpg,png|max:10000',
+        ];
+    }
 }

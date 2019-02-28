@@ -211,4 +211,9 @@ class User extends Authenticatable
         }
         return $rol;
     }
+
+    public static function carpeta()
+    {
+        return 'carpeta';
+    }
 }
