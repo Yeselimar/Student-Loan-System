@@ -67,7 +67,6 @@
 					</div>
 				</td>
 				<td class="text-center">
-
 				<template v-if="postulante.documento_final_entrevista==null">
 					<a v-b-popover.hover="'Cargar Resumen Final de Entrevista'" :href="getRutaCargarDocumentoConjunto(postulante.user.id)" class="btn btn-xs sisbeca-btn-primary">
 						<i class="fa fa-upload"></i>
@@ -107,7 +106,6 @@
 						</button>
 					</span>
 				</template>
-
 				</td>
 			</tr>
 			<tr v-if="postulantes.length==0">
@@ -116,7 +114,6 @@
 			</tbody>
 		</table>
 	</div>
-
 	<!-- Modal para añadir entrevistadores -->
 	<form method="POST" @submit.prevent="asignarentrevistadores(id,seleccionados)">
 	{{ csrf_field() }}

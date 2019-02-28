@@ -138,9 +138,10 @@
                         <ul aria-expanded="false" class="collapse">
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
-                                    <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"todos")}}">Ver Postulantes</a></li>
                                     <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
-                                    <li><a href="{{route('listarPostulantesBecarios',"3")}}">Asignar Nuevo Ingreso</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"entrevistaAprobada")}}">Asignar Nuevo Ingreso</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"rechazados")}}">Ver Rechazados</a></li>
                                 </ul>
                             </li>
                             <li><a href="{{ route('listarPostulantesMentores')}}">Mentores</a></li>
@@ -188,8 +189,9 @@
                         <ul aria-expanded="false" class="collapse">
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
-                                    <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
+                                <li><a href="{{route('listarPostulantesBecarios',"todos")}}">Ver Postulantes</a></li>
                                     <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"rechazados")}}">Ver Rechazados</a></li>
 
                                 </ul>
                             </li>

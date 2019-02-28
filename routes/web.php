@@ -140,7 +140,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('/becarios/reporte-tiempo/excel', 'SeguimientoController@reportetiempoexcel')->name('seguimiento.reportetiempo.excel');
         Route::get('/becarios/reporte-tiempo/api', 'SeguimientoController@reportetiempoapi')->name('seguimiento.reportetiempo.api');
         Route::get('/becario/{id}/reporte-tiempo', 'SeguimientoController@reportetiempobecario')->name('seguimiento.reportetiempo.becario');
-       
+
 
         //talleres y chat clubs
         Route::get('/actividades', 'ActividadController@listar')->name('actividad.listar');
@@ -487,6 +487,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'PostulanteBecarioController@volverapostularse',
             'as' => 'voler.a.postularse'
         ]);
+
         Route::post('terminosCondicionesAprobar', [
             'uses' => 'PostulanteBecarioController@terminosCondicionesAprobar',
             'as' => 'terminosCondiciones.aprobar'
@@ -824,7 +825,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
-    {   
+    {
         //Para que los directivos y coordinadores pueden ver las actividades del becario
         Route::get('/becario/{id}/periodos', 'PeriodosController@periodosbecario')->name('periodos.becario');
         Route::get('/becario/{id}/cursos', 'CursoController@cursosbecario')->name('cursos.becario');
@@ -942,7 +943,10 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('becario/{id}/enviar-correo/info-entrevista', 'EntrevistadorController@enviarcorreoinfoentrevista')->name('entrevistador.enviarcorreo');
         // postulantes
         Route::get('/becario/postulantes', 'EntrevistadorController@obtenerpostulantes')->name('becario.obtenerpostulantes');
-
+        Route::get('perfilPostulanteRechazado/{id}', [
+            'uses' => 'CompartidoDirecCoordController@perfilPostulanteRechazado',
+            'as' => 'perfilPostulanteRechazado'
+        ]);
         //Otros  reportes de Seguimiento
 
     });

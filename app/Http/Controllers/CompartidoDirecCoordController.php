@@ -14,6 +14,7 @@ use avaa\Alerta;
 use avaa\Solicitud;
 use avaa\Documento;
 use avaa\Imagen;
+use avaa\Rechazado;
 use avaa\BecarioEntrevistador;
 use avaa\Events\SolicitudesAlerts;
 use Illuminate\Support\Facades\Auth;
@@ -82,11 +83,21 @@ class CompartidoDirecCoordController extends Controller
     public function obtener_entrevistados()
     {
         $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->with("user")->with('entrevistadores')->with('imagenes')->get();
-        $rechazados = Becario::where('status','=','rechazado')->where('fecha_entrevista', '!=', null)->with("user")->get();
+        $rechazados= Rechazado::where('etapa','=','despues')->where('datos','=','sinborrar')->get();
+
+        //$rechazados = Becario::where('status','=','rechazado')->where('fecha_entrevista', '!=', null)->with("user")->get();
 
        // return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados);
 
         return response()->json(['postulantes'=>$postulantes, 'rechazados'=>$rechazados]);
+    }
+    public function perfilPostulanteRechazado($id){
+        $usuario = User::where('cedula', '=', $id)->first();
+        if($usuario!=NULL){ //si consigue usuario
+            $becario = Becario::find($usuario->id);//entonces busca el becario
+            return redirect()->route('perfilPostulanteBecario',$becario->user_id);
+        }
+
     }
     //Aprobar/Rechazar a un postulante para ir a entrevista
     public function aprobarParaEntrevista(Request $request, $id)
@@ -102,14 +113,21 @@ class CompartidoDirecCoordController extends Controller
             }
             else
             {
+                $rechazado=new Rechazado;
+                $rechazado->cedula=$postulante->user->cedula;
+                $rechazado->name=$postulante->user->name;
+                $rechazado->last_name=$postulante->user->last_name;
+                $rechazado->telefono=$postulante->telefono;
+                $rechazado->fecha_de_participacion=$postulante->user->created_at;
+                $rechazado->save();
                 $postulante->status='rechazado';
                 $postulante->acepto_terminos ='0';
                 $postulante->save();
-                //borrar documentos
-                flash( $postulante->user->name . ' ha sido rechazado para ir a entrevista. ', 'danger')->important();
+                $postulante->borrarDocumentos();
+                flash( $postulante->user->name . ' ha sido descartado para ir a entrevista. ', 'danger')->important();
             }
         }
-        return  redirect()->route('listarPostulantesBecarios',"2");
+        return  redirect()->route('listarPostulantesBecarios',"todos");
     }
     //Aprobar/rechazar la entrevista de un postulante
     public function cambiostatusentrevistado(Request $request)
@@ -123,6 +141,13 @@ class CompartidoDirecCoordController extends Controller
                 return response()->json(['success'=>$postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido aprobado durante el proceso de entrevista.']);
                 }
             else{
+                $rechazado=new Rechazado;
+                $rechazado->cedula=$postulanteBecario->user->cedula;
+                $rechazado->name=$postulanteBecario->user->name;
+                $rechazado->last_name=$postulanteBecario->user->last_name;
+                $rechazado->telefono=$postulanteBecario->telefono;
+                $rechazado->fecha_de_participacion=$postulanteBecario->user->created_at;
+                $rechazado->save();
                 $postulanteBecario->status= 'rechazado';
                 $postulanteBecario->save();
                 $postulanteBecario->borrarDocumentos();
@@ -141,8 +166,6 @@ class CompartidoDirecCoordController extends Controller
         $postulanteBecario = Becario::find($request->id);
         if($request->funcion=='Aprobar')
         {
-            //$postulanteBecario->user->rol='becario';
-            //$postulanteBecario->user->save();
             $postulanteBecario->status='activo';
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->fecha_ingreso= date('Y-m-d H:i:s');
@@ -166,20 +189,25 @@ class CompartidoDirecCoordController extends Controller
             $mail->MsgHTML($body);
             $mail->addAddress($postulanteBecario->user->email);
             $mail->send();
-
             return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
         }
         else
         {
-
-            //$postulanteBecario->user->rol='rechazado';
+            $rechazado=new Rechazado;
+            $rechazado->cedula=$postulanteBecario->user->cedula;
+            $rechazado->name=$postulanteBecario->user->name;
+            $rechazado->last_name=$postulanteBecario->user->last_name;
+            $rechazado->telefono=$postulanteBecario->telefono;
+            $rechazado->fecha_de_participacion=$postulanteBecario->user->created_at;
+            $rechazado->etapa='despues';
+            $rechazado->save();
             $postulanteBecario->status='rechazado';
-            $postulanteBecario->user->save();
+            //$postulanteBecario->user->save();
             $postulanteBecario->acepto_terminos=false;
             $postulanteBecario->save();
             $decision = "RECHAZADA";
-
-            //Enviar correo a la persona notificando que fue recibido su justificativo
+            $postulanteBecario->borrarDocumentos();
+            //Enviar correo a la persona notificando que fue rechazado
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
             $mail->isSMTP();
@@ -252,26 +280,31 @@ class CompartidoDirecCoordController extends Controller
 
     public function listarPostulantesBecarios($data)
     {
-        if($data==0)
+
+        if($data===0)
         {
             //Lista los aprobados para entrevisa
+
             $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',$data)->get();
             return view('sisbeca.postulaciones.entrevistas')->with('becarios',$becarios)->with('becarios',$becarios);
         }
-        if($data==2) //todos los postulantes
+        if($data==="todos") //2todos los postulantes
         {
             $usuario=User::where('rol','=','postulante_becario')->get();
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios);
 
         }
-        else if(($data==1)) //no se usa
+        if($data==="rechazados") //Lista todos los rechazados
         {
-            $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();
-            return view('sisbeca.postulaciones.verModificarEntrevistas')->with('becarios',$becarios)->with('becarios',$becarios);
+            //$postulantes = Becario::query()->where('status','=','rechazado')->get();
+            $postulantes = Rechazado::all();
+           // dd($postulantes);
+            return view('sisbeca.postulaciones.postulantesRechazados')->with('postulantes',$postulantes);
+
 
         }
-        else if($data==3) //todos lo que Aprobaron la entrevista o fueron aprobados como becario
+       if($data=="entrevistaAprobada") //todos lo que Aprobaron la entrevista o fueron aprobados como becario
         {
             $rechazados = Becario::where('status','=','rechazado')->get();
             $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
@@ -703,41 +736,55 @@ class CompartidoDirecCoordController extends Controller
         return redirect()->route('gestionSolicitudes.listar');
     }
 
-    public function eliminarpostulante($id)
+    public function eliminarpostulante($cedula)
     {
-        $usuario = User::find($id);
-        $becario = Becario::find($id);
-        //Elimino la foto de perfil
-        $img_perfil = Imagen::where('user_id','=',$id)->where('titulo','=','img_perfil')->first();
-        if($img_perfil)
-        {
-            if($img_perfil->url!=null)
-            {
-                File::delete(substr($img_perfil->url,1));
+    $usuario = User::where('cedula', '=', $cedula)->first();
+    
+        if($usuario!=NULL){ //si consigue usuario
+            $becario = Becario::find($usuario->id);//entonces busca el becario
+            //Elimino la foto de perfil
+            if($becario->status==='rechazado'){ //si el becario es rechazado entonces lo puede eliminar
+                $img_perfil = Imagen::where('user_id','=',$usuario->id)->where('titulo','=','img_perfil')->first();
+                if($img_perfil)
+                {
+                    if($img_perfil->url!=null)
+                    {
+                        File::delete(substr($img_perfil->url,1));
+                    }
+                    $img_perfil->delete();
+                }
+                //Eliminio el documeto final entrevista
+                if($becario->documento_final_entrevista!=null)
+                {
+                    File::delete($becario->documento_final_entrevista);
+                }
+                //Eliminado el documento que subió cada entrevistador
+                $entrevistadores = BecarioEntrevistador::paraBecario($usuario->id)->get();
+                foreach ($entrevistadores as $entrevistador)
+                {
+                    if($entrevistador->documento!=null)
+                    {
+                        File::delete($entrevistador->documento);
+                    }
+                    $entrevistador->delete();
+                }
+                //Elimino el usuario  y el becario
+                $becario->delete();
+                $usuario->delete();
+                $rechazado = Rechazado::where('cedula', '=', $cedula)->first();
+                $rechazado->datos='borrados';
+                $rechazado->save();
+                flash('Los datos de este postulante fueron eliminados exitosamente.',"success");
             }
-            $img_perfil->delete();
-        }
-
-        //Eliminio el documeto final entrevista
-        if($becario->documento_final_entrevista!=null)
-        {
-            File::delete($becario->documento_final_entrevista);
-        }
-
-        //Eliminado el documento que subió cada entrevistador
-        $entrevistadores = BecarioEntrevistador::paraBecario($id)->get();
-        foreach ($entrevistadores as $entrevistador)
-        {
-            if($entrevistador->documento!=null)
-            {
-                File::delete($entrevistador->documento);
+            else{
+                flash('Este Postulante está nuevamente en proceso de Postulación y sus datos no pueden ser eliminados.',"danger");
             }
-            $entrevistador->delete();
         }
-        //Elimino el usuario  y el becario
-        $becario->delete();
-        $usuario->delete();
+        else{
+            flash('La data de este postulante ya fue eliminada anteriormente.',"danger");
 
-        return response()->json(['success'=>'El postulante ha sido eliminado exitosamente.']);
+        }
+        return  redirect()->route('listarPostulantesBecarios',"rechazados");
+       // return response()->json(['success'=>'El postulante ha sido eliminado exitosamente.']);
     }
 }
