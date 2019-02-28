@@ -191,7 +191,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::post('/becario/{id}/guardar-voluntariado', 'VoluntariadoController@guardar')->name('voluntariados.guardar');
         Route::get('/voluntariado/{id}/editar-voluntariado', 'VoluntariadoController@editar')->name('voluntariados.editar');
         Route::post('/voluntariado/{id}/actualizar-voluntariado', 'VoluntariadoController@actualizar')->name('voluntariados.actualizar');
-         Route::get('/voluntariado/{id}/eliminar-curso/', 'VoluntariadoController@eliminar')->name('voluntariados.eliminar');
+        Route::get('/voluntariado/{id}/eliminar-curso/', 'VoluntariadoController@eliminar')->name('voluntariados.eliminar');
         Route::get('/voluntariado/{id}/eliminar-servicio/', 'VoluntariadoController@eliminarservicio')->name('voluntariados.eliminarservicio');
 
 
@@ -199,6 +199,20 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
+        //Rutas para cargar actividades becarias de becarios viejos y/o existentes
+        Route::get('/becarios/cargar-actividades/', 'ActividadesBecariasController@becarioslistar')->name('becarios.listar.cargar');
+
+        Route::get('/becario/{id}/curso/crear/', 'ActividadesBecariasController@crearcurso')->name('crear.curso');
+        Route::post('/becario/{id}/curso/guardar/', 'ActividadesBecariasController@guardarcurso')->name('guardar.curso');
+        
+        Route::get('/becario/{id}/voluntariado/crear/', 'ActividadesBecariasController@crearvoluntariado')->name('crear.voluntariado');
+        Route::post('/becario/{id}/voluntariado/guardar/', 'ActividadesBecariasController@guardarvoluntariado')->name('guardar.voluntariado');
+
+        Route::get('/becario/{id}/periodo/crear/', 'ActividadesBecariasController@crearperiodo')->name('crear.periodo');
+        Route::post('/becario/{id}/periodo/guardar/', 'ActividadesBecariasController@guardarperiodo')->name('guardar.periodo');
+
+        
+
         //Eliminar a postulantne
         Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
         //Segimiento
