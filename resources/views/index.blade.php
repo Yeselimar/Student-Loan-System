@@ -112,7 +112,7 @@
 
                      <div class="col-lg-12">
                         <br>
-                        <p data-mh="text-programas" class="h" align="justify">Propuesta educativa que promueve la formación integral de jóvenes venezolanos de medianos o bajos recursos económicos durante los cinco años de carrera universitaria.</p>
+                        <p data-mh="text-programas" class="h" align="justify">Propuesta educativa que promueve la formación integral de jóvenes con potencial de liderazgo y probada sensibilidad social durante los cinco años de carrera universitaria.</p>
                      </div>
 
                   </div>
@@ -147,15 +147,12 @@
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
                      <h2 class="title-programas " data-mh="programa-titulo"><img class="img-responsive" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  /> Educanada</h2>
-
                      <img src="{{asset('info_sitio/img/testimonial/educanada.png')}}" alt="Asesorias educativas" data-mh="img-programas" class="img-responsive img-fluid w-100" />
 
                      <div class="col-lg-12">
                         <br>
-                        <
                         <p data-mh="text-programas" class="h" align="justify">El servicio de atención a interesados en cursar estudios en Estados Unidos o Canadá, prestado como centro oficial de asesorías de las embajadas de estos países.</p>
                      </div>
-
                   </div>
                   <hr>
                <!--     <div class="plan-button">
@@ -168,7 +165,6 @@
    </section>
    <!-- Fin Programas -->
 
-
    <div class="linea-sobra" id="miembros-institucionales"></div>
    <!-- Aliados -->
    <section class="section">
@@ -180,71 +176,68 @@
             </div>
          <div class="row">
             <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
-            <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Organizaciones </h2>
-               @if($organizaciones->count()==0)
-               <div class="col-lg-12">
-                     <img  class="img-responsive img-fluid" src="/images/aliados/organizaciones.png" style="border:1px solid #eee "/>
+               <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Organizaciones </h2>
+               <div class="" style="border:1px solid #fff">
+                  <div class="carousel-empresas owl-carousel owl-theme">
+                  @if($organizaciones->count()==0)
+                     <div class="col-lg-12">
+                           <img  class="img-responsive img-fluid" src="/images/aliados/organizaciones.png" style="border:1px solid #eee "/>
+                     </div>
+                  @else
+                     @foreach($organizaciones as $organizacion)
+                        <div class="col-lg-12" >
+                           <a class="miembro-enlace" href="{{$organizacion->url}}">
+                              <img  class="img-responsive img-fluid" src="{{asset($organizacion->imagen)}}" alt="{{$organizacion->titulo}}" style="border:1px solid #eee "/>
+                              <p class="title-miembros-institucionales pt-2">{{$organizacion->titulo}}</p>
+                           </a>
+                        </div>
+                     @endforeach
+                  @endif
                   </div>
-               @else
-                  <div class="" style="border:1px solid #fff">
-                     <div class="carousel-empresas owl-carousel owl-theme">
-                        @foreach($organizaciones as $organizacion)
+               </div>
+            </div>
+            <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
+               <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Empresas </h2>
+               <div class="" style="border:1px solid #fff">
+                  <div class="carousel-empresas owl-carousel owl-theme">
+                     @if($empresas->count()==0)
+                     <div class="col-lg-12" >
+                           <img  class="img-responsive img-fluid" src="/images/aliados/empresas.png" style="border:1px solid #eee "/>
+                     </div>
+                     @else
+                        @foreach($empresas as $empresa)
                            <div class="col-lg-12" >
-                              <a class="miembro-enlace" href="{{$organizacion->url}}">
-                                 <img  class="img-responsive img-fluid" src="{{asset($organizacion->imagen)}}" alt="{{$organizacion->titulo}}" style="border:1px solid #eee "/>
-                                 <p class="title-miembros-institucionales pt-2">{{$organizacion->titulo}}</p>
+                              <a class="miembro-enlace" target="_blank" href="{{$empresa->url}}">
+                                 <img  class="img-responsive img-fluid" src="{{asset($empresa->imagen)}}" alt="{{$empresa->titulo}}" style="border:1px solid #eee "/>
+                                 <p class="title-miembros-institucionales pt-2">{{$empresa->titulo}}</p>
                               </a>
                            </div>
                         @endforeach
-                     </div>
+                     @endif
                   </div>
-               @endif
+               </div>
             </div>
-            <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
-            <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Empresas </h2>
-                  @if($empresas->count()==0)
-                  <div class="col-lg-12" >
-                        <img  class="img-responsive img-fluid" src="/images/aliados/empresas.png" style="border:1px solid #eee "/>
-                     </div>
-                  @else
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Instituciones </h2>
                      <div class="" style="border:1px solid #fff">
                         <div class="carousel-empresas owl-carousel owl-theme">
-                           @foreach($empresas as $empresa)
-
-                              <div class="col-lg-12" >
-                                 <a class="miembro-enlace" target="_blank" href="{{$empresa->url}}">
-                                    <img  class="img-responsive img-fluid" src="{{asset($empresa->imagen)}}" alt="{{$empresa->titulo}}" style="border:1px solid #eee "/>
-                                    <p class="title-miembros-institucionales pt-2">{{$empresa->titulo}}</p>
-                                 </a>
-                              </div>
-                           @endforeach
+                           @if($instituciones->count()==0)
+                           <div class="col-lg-12">
+                                 <img  class="img-responsive img-fluid" src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
+                           </div>
+                           @else
+                              @foreach($instituciones as $institucion)
+                                 <div class="col-lg-12" >
+                                    <a class="miembro-enlace" href="{{$instituciones->url}}">
+                                       <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
+                                       <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
+                                    </a>
+                                 </div>
+                              @endforeach
+                           @endif
                         </div>
                      </div>
-                  @endif
                </div>
-               <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-               <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Instituciones </h2>
-
-
-                        <div class="" style="border:1px solid #fff">
-                           <div class="carousel-empresas owl-carousel owl-theme">
-                              @if($instituciones->count()==0)
-                              <div class="col-lg-12">
-                                    <img  class="img-responsive img-fluid" src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
-                              </div>
-                              @else
-                                 @foreach($instituciones as $institucion)
-                                    <div class="col-lg-12" >
-                                       <a class="miembro-enlace" href="{{$instituciones->url}}">
-                                          <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
-                                          <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
-                                       </a>
-                                    </div>
-                                 @endforeach
-                              @endif
-                           </div>
-                        </div>
-                  </div>
          </div>
       </div>
    </section>
