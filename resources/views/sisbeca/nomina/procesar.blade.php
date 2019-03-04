@@ -20,13 +20,14 @@
 				Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
 			</div>
 <div class="mt-4" v-if="seccionS">
-
+<button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()
+" v-b-popover.hover="'Generar Nomina con la lista de becarios sugeridos'" class="btn sisbeca-btn-primary">
+		Generar Nomina <i class="fa fa-clone"></i>
+	</button>
  <div class="accordion row" id="accordionExample">
 		<div class="card col-12">
 			<div id="heading" data-toggle="collapse" class="cursor" @click="collapse=!collapse" data-target="#collapseOne" aria-expanded="1" aria-controls="collapseOne">
-					<h4 class="success">Listado de becarios sugeridos a entrar en Nomina @{{fecha}} <i v-if="!collapse" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i> <button v-if="itemsS.length" @click.prevent.stop="generarNomina" v-b-popover.hover="'Generar Nomina con la lista de becarios sugeridos'" class="btn sisbeca-btn-primary">
-		Generar Nomina <i class="fa fa-clone"></i>
-	</button></h4>
+					<h4 class="success">Listado de becarios sugeridos a entrar en Nomina @{{fecha}} <i v-if="!collapse" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i> </h4>
 					<hr/>
 			</div>
 			<div id="collapseOne" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample">
@@ -476,6 +477,14 @@
       </div>
     </section>
 
+		<b-modal id="nominaGeneradaID" hide-header-close ref="nominaGeneradaRef" :title="'Generar Nomina '+mes+'/'+year" >
+	  	¿Estas Seguro que desea generar la Nomina correspondiente al @{{mes}}/@{{year}} con los registros seleccionados ?
+	  <template slot="modal-footer">
+				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaGeneradaRef.hide()'> No</b-btn>
+				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="generarNomina" variant="sisbeca-btn-primary" > Si </b-btn>
+	   </template>	
+    </b-modal>
+
 </div>
 @endsection
 
@@ -650,6 +659,7 @@ const app = new Vue({
 		methods:
 		{
 			generarNomina() {
+				this.$refs.nominaGeneradaRef.hide()
 				var url = "{{route('generarNomina.api')}}";
 				this.isLoading = true
 				let facturasAll = []
@@ -657,7 +667,8 @@ const app = new Vue({
 				let data = JSON.stringify({
                 mes: parseInt(this.mes),
                 year: parseInt(this.year),
-								nomina: this.itemsS
+								nomina: this.itemsS,
+								nominaBorrador: this.itemsNS
             });
 				axios.post(url,data,{
 				headers:
@@ -816,7 +827,7 @@ const app = new Vue({
 				let aux = {...item}
 				aux.id =  this.itemsNS.length
 				aux.selected = false
-				aux._rowVariant = aux.isSugerido ? 'success' : ''
+				aux._rowVariant = aux.is_sugerido ? 'success' : ''
 				if( this.itemsNS.length)
 				{
 					aux.id =   this.itemsNS[this.itemsNS.length-1].id + 1
@@ -897,7 +908,7 @@ const app = new Vue({
 				let aux = {...item}
 				aux.id =  this.itemsS.length
 				aux.selected = false
-				aux._rowVariant = aux.isSugerido ? '' : 'warning'
+				aux._rowVariant = aux.is_sugerido ? '' : 'warning'
 				if( this.itemsS.length)
 				{
 					aux.id =   this.itemsS[this.itemsS.length-1].id + 1

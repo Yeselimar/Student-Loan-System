@@ -66,15 +66,29 @@
 					</span>
 
 				</template>
+				<template slot="fecha_pago" slot-scope="row">
+					<span v-if="row.item.fecha_pago">
+						@{{ fechaformatear(row.item.fecha_pago) }}
+					</span>
+					<span v-else class="label label-default">
+						Sin fecha de pago
+					</span>
+
+				</template>
 				
 				
 				<template slot="actions" slot-scope="row">
 						
+				
+					<a v-if="row.item.status === 'generado' && row.item.url_edit" v-b-popover.hover.bottom="'Editar Nomina'" :href="row.item.url_edit" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary">
+						<i class="fa fa-pencil"></i>
+					</a>
+
 					<a v-b-popover.hover.bottom="'Generar Nómina en PDF'" target="_blank" :href="row.item.url_pdf" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary">
 						<i class="fa fa-file-pdf-o"></i>
 					</a>
 
-					<a v-b-popover.hover.bottom="'Generar Nómina en Excel'" :href="generarExcel(row.item.mes,row.item.year)"  class="btn btn-xs sisbeca-btn-primary">
+					<a v-b-popover.hover.bottom="'Generar Nómina en Excel'" :href="row.item.url_excel"  class="btn btn-xs sisbeca-btn-primary">
 							<i class="fa fa-file-excel-o"></i>
 					</a>
 
@@ -82,7 +96,7 @@
 							<i class="fa fa-eye"></i>
 					</a>
 					
-					<a v-b-popover.hover.bottom="'Pagar Nómina'"  @click.stop="nominaPagada(row.item.mes,row.item.year,row.item.url_pagar)" class="btn btn-xs sisbeca-btn-primary">
+					<a v-b-popover.hover.bottom="'Pagar Nómina'" :disabled="row.item.url_pagar == null"  @click.stop="nominaPagada(row.item.mes,row.item.year,row.item.url_pagar)" class="btn btn-xs sisbeca-btn-primary">
 							<i class="fa fa-plus"></i>
 					</a>
 						
@@ -102,16 +116,16 @@
 	  	¿Estas Seguro que desea pagar la Nomina correspondiente al @{{mes}}/@{{year}} ?
 	  <template slot="modal-footer">
 				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaPagadaRef.hide()'> No</b-btn>
-				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="pagarNomina(mes,year)" variant="sisbeca-btn-primary" > Si </b-btn>
+				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="pagarNomina(mes,year,url_pago)" variant="sisbeca-btn-primary" > Si </b-btn>
 	   </template>	
     </b-modal>
 	<!-- Cargando.. -->
-	<section class="loading" id="preloader">
-		<div>
-			<svg class="circular" viewBox="25 25 50 50">
-				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
-		</div>
-	</section>
+	<section v-if="isLoading" class="loading" id="preloader">
+      <div>
+          <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+      </div>
+    </section>
 	<!-- Cargando.. -->
 
 </div>
@@ -135,6 +149,7 @@ const app = new Vue({
 		{ key: 'sueldo_base', label: 'Estipendio Base', sortable: true, 'class': 'text-center' },
 		{ key: 'total_pagado', label: 'Total a Pagar', sortable: true, 'class': 'text-center' },
 		{ key: 'fecha_generada', label: 'Fecha Generada', sortable: true, 'class': 'text-center' },
+		{ key: 'fecha_pago', label: 'Fecha Pagada', sortable: true, 'class': 'text-center' },
 		{ key: 'actions', label: 'Acciones', 'class': 'text-center' }
 		],
 		currentPage: 1,
@@ -147,6 +162,7 @@ const app = new Vue({
 		filter: null,
 		mes: '',
 		year: '',
+		url_pago : ''
 	},
 	computed:
 	{
@@ -167,20 +183,36 @@ const app = new Vue({
 	{
 		resetModal() {
         	this.mes = ''
-			this.year = ''
+					this.year = ''
+					this.url_pago= ''
 		  },
 		nominaPagada(mes,year,url) {
-			this.mes = mes
-			this.year = year
-			this.$refs.nominaPagadaRef.show()
+			if(url !== null)
+			{
+				this.url_pago=url
+				this.mes = mes
+				this.year = year
+				this.$refs.nominaPagadaRef.show()
+			}
+
 		},
-		pagarNomina(mes,year){
-			//aqui se paga
-			
+		pagarNomina(mes,year,url){
+			this.$refs.nominaPagadaRef.hide()
+			this.isLoading = true
+			axios.get(url).then(response => 
+			{
+				if(response.data.res){
+					this.getListarNominas()
+					toastr.success('La nomina del '+mes+'/'+year+' ha sido pagada exitosamente!');
+				}
+			}).catch( error => {
+				$("#preloader").hide();
+				toastr.error('Ha ocurrido un error inesperado');
+				this.isLoading = false
+			});
 			this.mes = ''
 			this.year = ''
-			this.$refs.nominaPagadaRef.hide()
-
+			this.url_pago = ''
 		},
 		onFiltered (filteredItems)
 		{
@@ -216,7 +248,6 @@ const app = new Vue({
 					this.items = response.data.nominas
 					this.items.forEach(function(nomina,i)
 					{
-						console.log('nomonia',nomina)
 						let url_d = "{{ route('nomina.listar.ver',array('mes'=>':m','anho'=>':y')) }}" 
 						url_d=url_d.replace(':m',nomina.mes)
 						url_d=url_d.replace(':y',nomina.year)
@@ -225,11 +256,41 @@ const app = new Vue({
 						url_d=url_d.replace(':m',nomina.mes)
 						url_d=url_d.replace(':y',nomina.year)
 						nomina.url_pdf = url_d
+						url_d = "{{ route('nomina.generada.excel',array('mes'=>':m','anho'=>':y')) }}"
+						url_d=url_d.replace(':m',nomina.mes)
+						url_d=url_d.replace(':y',nomina.year)
+						nomina.url_excel = url_d
 						url_d = "{{ route('nomina.pagar',array('mes'=>':m','anho'=>':y')) }}"
 						url_d=url_d.replace(':m',nomina.mes)
 						url_d=url_d.replace(':y',nomina.year)
 						nomina.url_pagar = url_d
+						url_d = "{{ route('consultar.nomina.edit',array('mes'=>':m','anho'=>':y')) }}"
+						url_d=url_d.replace(':m',nomina.mes)
+						url_d=url_d.replace(':y',nomina.year)
+						nomina.url_edit = url_d
 					},this)
+					let nominaP = response.data.nominasPagadas
+					nominaP.forEach(function(nomina,i)
+					{
+						let url_d = "{{ route('nomina.listar.pagadas',array('mes'=>':m','anho'=>':y')) }}" 
+						url_d=url_d.replace(':m',nomina.mes)
+						url_d=url_d.replace(':y',nomina.year)
+						nomina.url_detalle = url_d
+						url_d = "{{ route('nomina.pagado.pdf',array('mes'=>':m','anho'=>':y')) }}"
+						url_d=url_d.replace(':m',nomina.mes)
+						url_d=url_d.replace(':y',nomina.year)
+						nomina.url_pdf = url_d
+						url_d = "{{ route('nomina.pagada.excel',array('mes'=>':m','anho'=>':y')) }}"
+						url_d=url_d.replace(':m',nomina.mes)
+						url_d=url_d.replace(':y',nomina.year)
+						nomina.url_excel = url_d
+
+						nomina.url_pagar = null
+						nomina.url_edit = null
+
+						this.items.push(nomina)
+					},this)
+
 					
 				}
 				else

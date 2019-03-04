@@ -408,7 +408,7 @@ class CompartidoDirecCoordController extends Controller
 
             if($solicitud->titulo==='desincorporacion temporal')
             {
-                $instancia->status='inactivo';
+                //$instancia->status='inactivo';
                 if($solicitud->user->rol==='becario')
                 {
                     $instancia->fecha_inactivo= date('Y-m-d');
@@ -419,7 +419,7 @@ class CompartidoDirecCoordController extends Controller
                     $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
                     foreach ($becariosT as $becario)
                     {
-                        //$becario->mentor_id= Mentor::first()->user_id;
+                        $becario->mentor_id= null;
                         $becario->save();
                     }
                 }
@@ -429,7 +429,7 @@ class CompartidoDirecCoordController extends Controller
             {
                 if($solicitud->titulo==='desincorporacion definitiva')
                 {
-                    $instancia->status='desincorporado';
+                    //$instancia->status='desincorporado';
                     if($solicitud->user->rol==='becario')
                     {
                         $instancia->mentor_id = null;
