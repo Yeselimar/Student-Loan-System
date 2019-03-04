@@ -98,7 +98,6 @@ class VoluntariadoController extends Controller
 		$aval->save();
 
 		$voluntariado = new Voluntariado;
-		$voluntariado->nombre = $request->get('nombre');
 		$voluntariado->institucion = $request->get('institucion');
         $voluntariado->responsable = $request->get('responsable');
         $voluntariado->observacion = $request->get('observacion');
@@ -158,7 +157,6 @@ class VoluntariadoController extends Controller
             $aval->extension = ($archivo->getClientOriginalExtension()=="jpg" or $archivo->getClientOriginalExtension()=="jpeg"or $archivo->getClientOriginalExtension()=="png") ? "imagen":"pdf";
             $aval->save();
         }
-        $voluntariado->nombre = $request->get('nombre');
         $voluntariado->institucion = $request->get('institucion');
         $voluntariado->responsable = $request->get('responsable');
         $voluntariado->observacion = $request->get('observacion');

@@ -14,7 +14,6 @@ class VoluntariadoRequest extends FormRequest
     public static function rulesCreate()
     {
         return [
-            'nombre'       => 'required',
             'institucion'    => 'required',
             'responsable'  => 'required',
             'observacion'  => 'required',
@@ -28,7 +27,6 @@ class VoluntariadoRequest extends FormRequest
     public static function rulesUpdate()
     {
         return [
-            'nombre'       => 'required',
             'institucion'    => 'required',
             'responsable'  => 'required',
             'observacion'  => 'required',
@@ -41,7 +39,6 @@ class VoluntariadoRequest extends FormRequest
     public static function rulesCarga()
     {
         return [
-            'nombre'       => 'required',
             'institucion'    => 'required',
             'responsable'  => 'required',
             'observacion'  => 'required',

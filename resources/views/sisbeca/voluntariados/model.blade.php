@@ -35,11 +35,13 @@
                         {{ Form::text('fecha', ($model=='crear') ? null : date("d/m/Y", strtotime($voluntariado->fecha)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fecha",'autocomplete'=>'off'])}}
                         <span class="errors" >{{ $errors->first('fecha') }}</span>
                     </div>
+                    <!--
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Nombre</label>
                         {{ Form::text('nombre', ($model=='crear') ? null : $voluntariado->nombre , ['class' => 'sisbeca-input', 'placeholder'=>'Voluntariado en Caracas', 'id'=>"fechafin",'autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('nombre') }}</span>
                     </div>
+                    -->
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Institución</label>
                         {{ Form::text('institucion', ($model=='crear') ? null : $voluntariado->institucion , ['class' => 'sisbeca-input', 'placeholder'=>'Venacham','autocomplete'=>'off'])}}
