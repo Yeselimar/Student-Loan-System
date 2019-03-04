@@ -8,8 +8,11 @@
    <div class="linea-sobra "></div>
 
    <div class="container-cabecera">
-     <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="cabecera-imagen">
+     <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="d-sm-none d-md-block d-none cabecera-imagen">
+     <img src="{{asset("info_sitio/img/cabeceras/membresia.png")}}" alt="AVAA - AVAA" class=" d-block d-sm-block d-md-none cabecera-imagen">
+
    <div class="cabecera-titulo">
+
          <p class="h1"> AVAA Asociación Venezolano Americana de Amistad</p>
    </div>
 
@@ -99,13 +102,13 @@
             <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">La Asociación Venezolano Americana de Amistad desarrolla tres programas sociales en el área educativa.</p>
          </div>
          <div class="d-flex flex-sm-column flex-md-row programas-flex letrasResponsive">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
 
                      <h2 class="title-programas " data-mh="programa-titulo">PROEXCELENCIA AVAA</h2>
 
-                     <img src="{{asset('info_sitio/img/testimonial/proexcelencia.jpg')}}" alt="ProExcelencia AVAA" / style="min-width: 100%;height: auto">
+                     <img src="{{asset('info_sitio/img/testimonial/proexcelencia.jpg')}}" alt="ProExcelencia AVAA" data-mh="img-programas" class="img-responsive img-fluid">
 
                      <div class="col-lg-12">
                         <br>
@@ -119,28 +122,45 @@
                   </div>
                </div>
             </div>
-
-            <div class="col-lg-6 col-sm-12 col-md-6 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                <div class="programa-table" data-mh="programa">
                   <div class="programa-details">
-                     <h2 class="title-programas align-items-center d-flex justify-content-around " data-mh="programa-titulo">
-                     <img class="img-responsive" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height: 50px"  />
-                     ASESORÍAS EDUCATIVAS
-                     <img class="img-responsive" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  />
-                  </h2>
 
-                     <img src="{{asset('info_sitio/img/testimonial/asesorias.jpg')}}" alt="Asesorias educativas" style="width: 100%;height: auto"  />
+                     <h2 class="title-programas " data-mh="programa-titulo"><img class="img-responsive" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  /> EducationUSA</h2>
+
+                     <img src="{{asset('info_sitio/img/testimonial/educationusa.png')}}" alt="ProExcelencia AVAA" data-mh="img-programas" class="img-responsive img-fluid">
+
+                    <div class="col-lg-12">
+                        <br>
+
+                        <p data-mh="text-programas" class="h" align="justify">Propuesta educativa que promueve la formación integral de jóvenes venezolanos de medianos o bajos recursos económicos durante los cinco años de carrera universitaria.</p>
+                     </div>
+
+                  </div>
+                  <hr>
+                 <!--  <div class="xxxx-button">
+                     <a href="{{asset(route('programas'))}}#ProExcelencia" title="Mas Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Mas Información</span></a>
+                  </div>-->
+               </div>
+            </div>
+            <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
+               <div class="programa-table" data-mh="programa">
+                  <div class="programa-details">
+                     <h2 class="title-programas " data-mh="programa-titulo"><img class="img-responsive" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  /> Educanada</h2>
+
+                     <img src="{{asset('info_sitio/img/testimonial/educanada.png')}}" alt="Asesorias educativas" data-mh="img-programas" class="img-responsive img-fluid w-100" />
 
                      <div class="col-lg-12">
                         <br>
+                        <
                         <p data-mh="text-programas" class="h" align="justify">El servicio de atención a interesados en cursar estudios en Estados Unidos o Canadá, prestado como centro oficial de asesorías de las embajadas de estos países.</p>
                      </div>
 
                   </div>
                   <hr>
-                  <div class="plan-button">
+               <!--     <div class="plan-button">
                      <a target="_blank" href="{{asset(route('programas'))}}#asesoria-educativa" title="Mas Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Mas Información</span></a>
-                  </div>
+                  </div>  -->
                </div>
             </div>
          </div>
