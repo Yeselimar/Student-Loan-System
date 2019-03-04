@@ -89,7 +89,7 @@ class DirectivoController extends Controller
              return redirect()->route('seb');
         }
     }
-//viejo
+//viejo no se usa
     public function asignacionEntrevistas(Request $request)
     {
         $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',false)->get();
@@ -124,7 +124,7 @@ class DirectivoController extends Controller
         }
         return  redirect()->route('listarPostulantesBecarios',"0");
     }
-//viejo
+//viejo no se usa
     public function modificarEntrevistas(Request $request)
     {
         $becarios = Becario::query()->where('status','=','entrevista')->where('acepto_terminos','=',true)->get();

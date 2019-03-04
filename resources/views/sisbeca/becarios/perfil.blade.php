@@ -3,12 +3,12 @@
 	@section('title','Becario:'.$becario->user->nombreyapellido())
 @else
 	@if(Auth::user()->rol=='postulante_becario')
-		@section('title','Postulante Becario: '.$becario->user->nombreyapellido())
+		@section('title','Postulante a Becario: '.$becario->user->nombreyapellido())
 	@else
 			@if($becario->status== 'activo' || $becario->status== 'probatorio1' || $becario->status=='probatorio2' || $becario->status=='inactivo' 	|| $becario->status == 'desincorporado' || $becario->status == 'egresado')
 				@section('title','Becario:'.$becario->user->nombreyapellido())
 			@else
-				@section('title','Postulante Becario:'.$becario->user->nombreyapellido())
+				@section('title','Postulante a Becario:'.$becario->user->nombreyapellido())
 			@endif
 	@endif
 @endif
@@ -20,7 +20,7 @@
 			</div>
 	<div class="card card-body bg-light border border-info p-2">
 		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-12">
-		<p class="text-left"><strong>Perfil de {{$becario->user->name.' '.$becario->user->last_name}}</strong></p>
+
 				<div class="row">
 					<div class="col xs-6 col-md-8 col-lg-4 offset-md-5  offset-lg-0 p-t-20 text-center">
 							@if(!is_null($img_perfil))
@@ -33,7 +33,8 @@
 										@endif
 							@endif
 							<br>
-						<span class="label label-inverse">
+							<h4 class="m-t-10"> {{$becario->user->name}} {{$becario->user->last_name }}</h4>
+						<!-- <span class="label label-inverse">
 						@if($becario->user->rol == 'postulante_becario')
 						Postulante Becario
 							@else
@@ -43,13 +44,13 @@
 									{{ucwords($becario->user->rol)}}
 								@endif
 						@endif
-						</span>
-					<br/>
+						</span> -->
+
 					</div>
 					<div class="offset-md-5 offset-lg-0 col-md-12 col-lg-8 p-4">
 						<strong>Datos Básicos:</strong>
 						<br/>
-						<h4> {{$becario->user->name}} {{$becario->user->last_name }}</h4>
+						<!-- <h4> {{$becario->user->name}} {{$becario->user->last_name }}</h4> -->
 						<p>
 							<i class="fa fa-envelope"> &nbsp;</i><strong>Email:</strong> {{$becario->user->email}}
 							<br />
@@ -59,17 +60,27 @@
 							<br/>
 							<i class="fa fa-birthday-cake">&nbsp; </i><strong>Fecha de nacimiento: </strong>{{ date("d/m/Y", strtotime($becario->user->fecha_nacimiento)) }}
 							<br/>
-							<strong>Status Actual:</strong>
+							<strong>Estatus Actual:</strong><br>
 							@if($becario->status==='activo')
 								<span class="label label-success"><strong>{{strtoupper( $becario->status )}}</strong></span>
 							@else
 								@if($becario->status==='probatorio1' || $becario->status==='inactivo' )
-								<span class="label label-warning"><strong>{{strtoupper( $becario->status )}}</strong></span>
-									@elseif($becario->status === 'egresado')
-										<span class="label label-info"><strong>{{strtoupper( $becario->status )}}</strong></span>
-										@else
-											<span class="label label-danger"><strong>{{strtoupper( $becario->status )}}</strong></span>
-									@endif
+									<span class="label label-warning"><strong>{{strtoupper( $becario->status )}}</strong></span>
+								@elseif($becario->status === 'egresado')
+									<span class="label label-inverse"><strong>{{strtoupper( $becario->status )}}</strong></span>
+								@elseif($becario->status==='entrevista')
+								<span class="label label-inverse"><strong>{{strtoupper('Aprobado para ir a Entrevista' )}}</strong></span>
+								@elseif($becario->status==='entrevistado')
+								<span class="label label-success"><strong>{{strtoupper('Entrevista Aprobada' )}}</strong></span>
+								@elseif($becario->status==='rechazado')
+								<span class="label label-danger"><strong>{{strtoupper('No Seleccionado' )}}</strong></span>
+								@elseif($becario->status==='postulante')
+								<span class="label label-inverse"><strong>{{strtoupper('Postulante' )}}</strong></span>
+								@elseif($becario->status==='prepostulante')
+								<span class="label label-inverse"><strong>{{strtoupper('Pre-Postulante' )}}</strong></span>
+								@else
+									<span class="label label-danger"><strong>{{strtoupper( $becario->status )}}</strong></span>
+								@endif
 							@endif
 							@if($becario->status==='inactivo')
 								<br/>
@@ -336,7 +347,7 @@
 													<td class="text-left"><strong>Periódo Académico</strong></td>
 													<td class="text-left">{{ $becario->periodo_academico }}</td>
 												</tr>
-			
+
 											</tbody>
 										</table>
 									</div>

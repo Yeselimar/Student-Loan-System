@@ -16,9 +16,6 @@
       <li class="nav-item">
         <a class="nav-link" href="#foto-perfil" role="tab" data-toggle="tab">Foto Perfil</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#contrasena" role="tab" data-toggle="tab">Contraseña</a>
-      </li>
 	</ul>
 	
 	<div class="tab-content">
@@ -51,7 +48,7 @@
           </div>
 
           <div class="col-lg-4 col-md-4 col-sm-6">
-              <label class="control-label">Sexo</label>
+              <label class="control-label">*Sexo</label>
              	<select v-model="sexo" class="sisbeca-input">
                 <option disabled value="">Sexo</option>
                 <option>femenino</option>
@@ -60,7 +57,7 @@
              	<span v-if="errores.sexo" :class="['label label-danger']">@{{ errores.sexo[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6">
-            <label class="control-label">Fecha Nacimiento</label>
+            <label class="control-label">*Fecha Nacimiento</label>
             <date-picker class="sisbeca-input" name="fecha_nacimiento" v-model="fecha_nacimiento" placeholder="DD/MM/AAAA" :config="{ enableTime: false , dateFormat: 'd/m/Y'}"></date-picker>
             <span v-if="errores.fecha_nacimiento" :class="['label label-danger']">@{{ errores.fecha_nacimiento[0] }}</span>
           </div>
@@ -69,7 +66,7 @@
         <hr>
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-12">
-            <label class="control-label">Dirección Permanente</label>
+            <label class="control-label">*Dirección Permanente</label>
             <input type="text" name="direccion_permanente" class="sisbeca-input" v-model="direccion_permanente" placeholder="EJ: Urb. Las Quintas, Naguanagua, Carabobo">
               <span v-if="errores.direccion_permanente" :class="['label label-danger']">@{{ errores.direccion_permanente[0] }}</span>
           </div>
@@ -82,17 +79,17 @@
         <hr>
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-12">
-            <label class="control-label">Teléfono Celular</label>
+            <label class="control-label">*Teléfono Celular</label>
             <input type="text" name="celular" class="sisbeca-input" v-model="celular" placeholder="EJ: 04247778822">
               <span v-if="errores.celular" :class="['label label-danger']">@{{ errores.celular[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-12">
-            <label class="control-label">Teléfono Habitación</label>
+            <label class="control-label">*Teléfono Habitación</label>
             <input type="text" name="telefono_habitacion" class="sisbeca-input" v-model="telefono_habitacion" placeholder="EJ: 02415556600">
               <span v-if="errores.telefono_habitacion" :class="['label label-danger']">@{{ errores.telefono_habitacion[0] }}</span>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-12">
-            <label class="control-label">Teléfono Pariente</label>
+            <label class="control-label">*Teléfono Pariente</label>
             <input type="text" name="telefono_pariente" class="sisbeca-input" v-model="telefono_pariente" placeholder="EJ: 04129996600">
               <span v-if="errores.telefono_pariente" :class="['label label-danger']">@{{ errores.telefono_pariente[0] }}</span>
           </div>
@@ -197,6 +194,7 @@
               <select v-model="becario_estatus" class="sisbeca-input">
                 <option disabled value="">Estatus Becario</option>
                 <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
                 <option value="probatorio1">Probatorio 1</option>
                 <option value="probatorio2">Probatorio 2</option>
               </select>
@@ -232,14 +230,39 @@
 
     <div class="tab-pane" id="foto-perfil">
       <br>
-      <div class="row">
-        <div class="col-lg-6">
-          <img src="#" alt="">
+      <form id="formulario" @submit.prevent="guardarfoto">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <label class="control-label">Foto Actual</label>
+                <img :src="urlFotoPerfil()" alt="Foto de Perfil" class="img-responsive" style="border:1px solid #eee">
+            </div>
+            <div class="col-lg-4"></div>
+          </div>
         </div>
-        <div class="col-lg-6">
-          
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <label class="control-label">Actualizar Foto</label>
+              <input type="file" name="foto" class="sisbeca-input" accept="image/*" @change="cargafoto">
+            </div>
+            <div class="col-lg-4"></div>
+          </div>
         </div>
-      </div>
+        
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <button class="btn sisbeca-btn-primary pull-right" type="submit">Guardar</button>
+            </div>
+            <div class="col-lg-4"></div>
+          </div>
+        </div>
+      </form>
+      
     </div>
 
     <div class="tab-pane" id="contrasena">
@@ -247,11 +270,6 @@
 
       <div class="form-group" style="border: 1px solid #eee; padding: 10px; border-radius: 5px;">
         <div class="row">
-          <div class="col-lg-4 col-md-4 col-sm-6">
-              <label class="control-label">Contraseña Actual</label>
-              <input type="password" name="contrasena_actual" class="sisbeca-input" v-model="contrasena_actual">
-              <span v-if="errores.contrasena_actual" :class="['label label-danger']">@{{ errores.contrasena_actual[0] }}</span>
-          </div>
           <div class="col-lg-4 col-md-4 col-sm-6">
               <label class="control-label">Contraseña Nueva</label>
               <input type="password" name="contrasena_nueva" class="sisbeca-input" v-model="contrasena_nueva">
@@ -298,6 +316,8 @@
     el: '#app',
     data:
     {
+      img_perfil:'',
+      foto: null,
       becario_estatus:'',
       usuario_estatus:'',
       regimen:'',
@@ -342,43 +362,44 @@
     		var id = "{{$becario->user_id}}";
     		var url = '{{route('becarios.obtener.datos',':id')}}';
     		url = url.replace(':id', id);
-            axios.get(url).then(response => 
+        axios.get(url).then(response => 
+        {
+           	this.becario = response.data.becario;
+           	this.usuario = response.data.usuario;
+            this.img_perfil = response.data.img_perfil;
+            this.usuario_estatus = this.usuario.estatus;
+            this.becario_estatus = this.becario.status;
+           	this.name = this.usuario.name;
+           	this.last_name = this.usuario.last_name;
+           	this.cedula = this.usuario.cedula;
+           	this.sexo = this.usuario.sexo;
+           	this.email = this.usuario.email;
+            this.direccion_permanente = this.becario.direccion_permanente;
+            this.direccion_temporal = this.becario.direccion_temporal;
+            this.celular = this.becario.celular;
+            this.telefono_habitacion = this.becario.telefono_habitacion;
+            this.telefono_pariente = this.becario.telefono_pariente;
+            this.trabaja = this.becario.trabaja;
+            if(this.trabaja==null)
             {
-               	this.becario = response.data.becario;
-               	this.usuario = response.data.usuario;
-                this.usuario_estatus = this.usuario.estatus;
-                this.becario_estatus = this.becario.status;
-               	this.name = this.usuario.name;
-               	this.last_name = this.usuario.last_name;
-               	this.cedula = this.usuario.cedula;
-               	this.sexo = this.usuario.sexo;
-               	this.email = this.usuario.email;
-                this.direccion_permanente = this.becario.direccion_permanente;
-                this.direccion_temporal = this.becario.direccion_temporal;
-                this.celular = this.becario.celular;
-                this.telefono_habitacion = this.becario.telefono_habitacion;
-                this.telefono_pariente = this.becario.telefono_pariente;
-                this.trabaja = this.becario.trabaja;
-                if(this.trabaja==null)
-                {
-                  this.trabaja=0;
-                }
-                this.lugar_trabajo = this.becario.lugar_trabajo;
-                this.cargo_trabajo = this.becario.cargo_trabajo;
-                this.horas_trabajo = this.becario.horas_trabajo;
-                this.nombre_universidad = this.becario.nombre_universidad;
-                this.carrera_universidad = this.becario.carrera_universidad;
-                this.promedio_universidad = this.becario.promedio_universidad;
-                this.regimen = this.becario.regimen;
-                var dia = new Date (this.becario.inicio_universidad);
-                this.inicio_universidad = moment(dia).format('DD/MM/YYYY');
-               	var dia = new Date (this.usuario.fecha_nacimiento);
-                this.fecha_nacimiento = moment(dia).format('DD/MM/YYYY');
-            	 $("#preloader").hide();
-			}).catch( error => {
-				console.log(error);
-				$("#preloader").hide();
-			});
+              this.trabaja=0;
+            }
+            this.lugar_trabajo = this.becario.lugar_trabajo;
+            this.cargo_trabajo = this.becario.cargo_trabajo;
+            this.horas_trabajo = this.becario.horas_trabajo;
+            this.nombre_universidad = this.becario.nombre_universidad;
+            this.carrera_universidad = this.becario.carrera_universidad;
+            this.promedio_universidad = this.becario.promedio_universidad;
+            this.regimen = this.becario.regimen;
+            var dia = new Date (this.becario.inicio_universidad);
+            this.inicio_universidad = moment(dia).format('DD/MM/YYYY');
+           	var dia = new Date (this.usuario.fecha_nacimiento);
+            this.fecha_nacimiento = moment(dia).format('DD/MM/YYYY');
+        	 $("#preloader").hide();
+	      }).catch( error => {
+  				console.log(error);
+  				$("#preloader").hide();
+			  });
     	},
     	guardar()
     	{
@@ -403,7 +424,7 @@
           $("#preloader").hide();
         	this.errores=[];
         	toastr.success(response.data.success);
-          
+          this.obtenerdatosbecario();
         }).catch( error =>
         {
           $("#preloader").hide();
@@ -429,6 +450,7 @@
           $("#preloader").hide();
           this.errores=[];
           toastr.success(response.data.success);
+          this.obtenerdatosbecario();
         }).catch( error =>
         {
           $("#preloader").hide();
@@ -444,12 +466,13 @@
         url = url.replace(':id', id);
         var dataform = new FormData();
         dataform.append('becario_estatus', this.becario_estatus);
-        dataform.append('usuario_estatus.', this.usuario_estatus);
+        dataform.append('usuario_estatus', this.usuario_estatus);
         axios.post(url,dataform).then(response => 
         {
           $("#preloader").hide();
           this.errores=[];
           toastr.success(response.data.success);
+          this.obtenerdatosbecario();
         }).catch( error =>
         {
           $("#preloader").hide();
@@ -466,20 +489,64 @@
         var dataform = new FormData();
         dataform.append('contrasena_actual', this.contrasena_actual);
         dataform.append('contrasena_nueva', this.contrasena_nueva);
-        dataform.append('contrase_repite', this.contrase_repite);
+        dataform.append('contrasena_repite', this.contrase_repite);
         axios.post(url,dataform).then(response => 
         {
           $("#preloader").hide();
           this.errores=[];
-          console.log(response.data);
-          //toastr.success(response.data.success);
+          toastr.success(response.data.success);
         }).catch( error =>
         {
           $("#preloader").hide();
           console.log(error);
-          //this.errores = error.response.data.errors;
-          //toastr.error("Disculpe, verifique el formulario");
+          this.errores = error.response.data.errors;
+          toastr.error("Disculpe, verifique el formulario");
         });
+      },
+      cargafoto(event)
+      {
+        this.foto = event.target.files[0];
+      },
+      guardarfoto(event)
+      {
+        $("#preloader").show();
+        var id = '{{$becario->user_id}}';
+        var url = "{{ route('becarios.actualizar.foto',':id' ) }}";
+        url = url.replace(':id', id);
+        var dataform = new FormData();
+        dataform.append('foto', this.foto);
+        axios.post(url,dataform).then(response => 
+        {
+          this.obtenerdatosbecario();
+          $("#preloader").hide();
+          toastr.success(response.data.success);
+        }).catch( error =>
+        {
+          $("#preloader").hide();
+          console.log(error);
+        });
+        event.target.reset();
+      },
+      urlFotoPerfil()
+      {
+        if(this.img_perfil==null)
+        {
+          if(this.usuario.sexo=='masculino')
+          {
+            var slug='images/perfil/masculino.png';
+          }
+          else
+          {
+            var slug='images/perfil/femenino.png';
+          }
+        }
+        else
+        {
+          var slug=this.img_perfil.url;
+        }
+        var url = "{{url(':slug')}}";
+        url = url.replace(':slug', slug);
+        return url;
       },
     }
 

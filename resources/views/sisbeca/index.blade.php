@@ -201,6 +201,7 @@
 						</a>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
+						<!-- route('modulo.facturas.pendientes')-->
 						<a href="{{route('modulo.facturas.pendientes')}}">
 							<div class="col-lg-12 reporte-caja">
 								<div data-mh="reporte-contenido" class="repote-contenido">

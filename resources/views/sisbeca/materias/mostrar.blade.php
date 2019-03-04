@@ -7,7 +7,11 @@
 			<a href="#" class="btn btn-sm sisbeca-btn-primary" @click.prevent="mostrarAnadir">Añadir Materia</a>
 		</template>
 		<template v-else>
-			<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Añadir Materia</a>
+			@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
+				<a href="#" class="btn btn-sm sisbeca-btn-primary" @click.prevent="mostrarAnadir">Añadir Materia</a>
+			@else
+				<a href="#" class="btn btn-sm sisbeca-btn-primary" disabled="disabled">Añadir Materia</a>
+			@endif
 		</template>
 		@if(Auth::user()->esBecario())
 			<a href="{{route('periodos.index')}}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>

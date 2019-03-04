@@ -138,9 +138,10 @@
                         <ul aria-expanded="false" class="collapse">
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
-                                    <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"todos")}}">Ver Postulantes</a></li>
                                     <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
-                                    <li><a href="{{route('listarPostulantesBecarios',"3")}}">Asignar Nuevo Ingreso</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"entrevistaAprobada")}}">Asignar Nuevo Ingreso</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"rechazados")}}">Ver Rechazados</a></li>
                                 </ul>
                             </li>
                             <li><a href="{{ route('listarPostulantesMentores')}}">Mentores</a></li>
@@ -177,8 +178,9 @@
                         <ul aria-expanded="false" class="collapse">
                             <li> <a class="has-arrow" href="#" aria-expanded="false">Becarios</a>
                                 <ul aria-expanded="false" class="collapse">
-                                    <li><a href="{{route('listarPostulantesBecarios',"2")}}">Listar Postulantes</a></li>
+                                <li><a href="{{route('listarPostulantesBecarios',"todos")}}">Ver Postulantes</a></li>
                                     <li><a href="{{route('entrevistador.asignar')}}">Gestionar Entrevistas</a></li>
+                                    <li><a href="{{route('listarPostulantesBecarios',"rechazados")}}">Ver Rechazados</a></li>
 
                                 </ul>
                             </li>
@@ -217,6 +219,7 @@
                         </ul>
                     </li>
                     <li>
+                        <!-- route('modulo.facturas.pendientes')-->
                         <a href="{{route('modulo.facturas.pendientes')}}" aria-expanded="false">
                             <i class="fa  fa-file-text-o"></i>
                             <span class="hide-menu">Fact. Libros</span>
@@ -227,7 +230,7 @@
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Becarios</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{ route('becarios.listar') }}">Listar</a></li>
-                       {{--     <li><a href="#">Reportes de Notas</a></li>
+                            {{--     <li><a href="#">Reportes de Notas</a></li>
                             <li><a href="#">Consultar Mejor Promedio</a></li> --}}
                         </ul>
                     </li>

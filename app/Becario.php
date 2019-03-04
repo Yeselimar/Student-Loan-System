@@ -402,7 +402,6 @@ class Becario extends Model
     }
     public function borrarDocumentos(){
         //borrar documentos
-
         $id = $this->user->id;
         $postulanteBecario=Becario::find($id);
         $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
@@ -422,7 +421,6 @@ class Becario extends Model
             $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
             $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
             $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-
             File::delete(substr($fotografia->url,1));
             File::delete(substr($cedula->url,1));
             File::delete(substr($constancia_cnu->url,1));
@@ -436,7 +434,6 @@ class Becario extends Model
             File::delete(substr($referencia_profesor1->url,1));
             File::delete(substr($referencia_profesor2->url,1));
             File::delete(substr($ensayo->url,1));
-
             $fotografia->delete();
             $cedula->delete();
             $constancia_cnu->delete();

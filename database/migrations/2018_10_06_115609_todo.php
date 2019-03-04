@@ -118,7 +118,7 @@ class Todo extends Migration
             $table->boolean('informacion_adicional')->default(false);
             $table->boolean('documentos')->default(false);
             $table->text('link_video')->nullable();
-            
+
             //
             $table->enum('tipo',['nuevo','viejo'])->default('nuevo');
             $table->enum('regimen',['anual','semestral','trimestral'])->default('anual');
@@ -186,7 +186,7 @@ class Todo extends Migration
             $table->unsignedInteger('entrevistador_id');
             $table->foreign('entrevistador_id')->references('id')->on('users')->onDelete('cascade');
             $table->text('documento')->nullable();
-            
+
             $table->boolean('oculto')->default(0);
 
             $table->timestamps();
@@ -465,7 +465,7 @@ class Todo extends Migration
         Schema::create('tiposcursos', function (Blueprint $table)
         {
             $table->increments('id');
-            
+
             $table->text('nombre');
 
             $table->timestamps();
@@ -622,9 +622,15 @@ class Todo extends Migration
         Schema::create('rechazados', function (Blueprint $table)
         {
             $table->increments('id');
+            $table->string('name');
+            $table->string('last_name');
+            $table->enum('etapa',['antes','durante','despues'])->default('antes');
+            $table->enum('datos',['borrados','sinborrar'])->default('sinborrar');
+            $table->enum('visibilidad',['oculto','visible'])->default('visible');
+            $table->string('intentos')->nullable();
+            $table->string('telefono')->nullable();
             $table->datetime('fecha_de_participacion')->nullable();
             $table->string('cedula',15);
-
             $table->timestamps();
         });
 
