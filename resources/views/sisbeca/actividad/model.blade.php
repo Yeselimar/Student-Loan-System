@@ -30,7 +30,7 @@
 
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <label class="control-label">*Nombre</label>
-                    {{ Form::text('nombre', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: The Last Game','v-model'=>'nombre'])}}
+                    {{ Form::text('nombre', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: The Last Game','v-model'=>'nombre','autocomplete'=>'off'])}}
                     <span v-if="errores.nombre" :class="['label label-danger']">@{{ errores.nombre[0] }}</span>
                 </div>
 
@@ -50,7 +50,7 @@
                         <div class="col-lg-8 col-md-8 col-sm-6">
                             <label class="control-label">*Nombre y Apellido @{{index+1}}</label>
                             <div class="input-group">
-                                <input type="text" v-model="input.nombre" class="sisbeca-input form-control" placeholder="John Doe">
+                                <input type="text" v-model="input.nombre" class="sisbeca-input form-control" placeholder="John Doe" autocomplete="off">
                                 <div class="input-group-append">
                                     <template v-if="inputs.length!=1">
                                         <button @click="eliminar(index)" class="btn sisbeca-btn-default-especial" type="button"><i class="fa fa-trash"></i></button>
@@ -82,7 +82,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-6">
                             <label class="control-label">*Horas Facilitador @{{index+1}}</label>
                             <div class="input-group">
-                                <input type="text" class="sisbeca-input form-control" placeholder="1" v-model="input.horas">
+                                <input type="text" class="sisbeca-input form-control" placeholder="1" v-model="input.horas" autocomplete="off">
                                 <div class="input-group-append">
                                     <template v-if="inputs.length!=1">
                                         <button @click="eliminar(index)" class="btn sisbeca-btn-default-especial" type="button"><i class="fa fa-trash"></i></button>
@@ -126,7 +126,7 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">Año académico</label>
-                    {{ Form::text('anho_academico', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 3er Año','v-model'=>'anho_academico'])}}
+                    {{ Form::text('anho_academico', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 3er Año','v-model'=>'anho_academico','autocomplete'=>'off'])}}
                     <span v-if="errores.anho_academico" :class="['label label-danger']">@{{ errores.anho_academico[0] }}</span>
                 </div>
 
@@ -150,12 +150,12 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Límite participantes</label>
-                    {{ Form::text('limite_participantes', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'limite_participantes'])}}
+                    {{ Form::text('limite_participantes', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2','v-model'=>'limite_participantes','autocomplete'=>'off'])}}
                     <span v-if="errores.limite" :class="['label label-danger']">@{{ errores.limite[0] }}</span>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <label class="control-label">*Descripción</label>
-                    {{ Form::text('descripcion', ($model=='crear') ? null : $actividad->descripcion , ['class' => 'sisbeca-input', 'placeholder'=>'Ingrese descripción','v-model'=>'descripcion'])}}
+                    {{ Form::text('descripcion', ($model=='crear') ? null : $actividad->descripcion , ['class' => 'sisbeca-input', 'placeholder'=>'Ingrese descripción','v-model'=>'descripcion','autocomplete'=>'off'])}}
                     <span v-if="errores.descripcion" :class="['label label-danger']">@{{ errores.descripcion[0] }}</span>
                 </div>
                 

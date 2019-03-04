@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use avaa\Becario;
 use avaa\Nomina;
+use avaa\NomBorrador;
+use avaa\BecarioNomBorrador;
 use avaa\Costo;
 use avaa\User;
 use avaa\BecarioNomina;
@@ -189,7 +191,116 @@ class NominaController extends Controller
        
         return response()->json(['nominas'=>$nominasfiltro]);
     }
+    public function updateNominaApi(Request $request)
+    {
+        $mes = $request->mes;
+        $year = $request->year;
+        $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
+        $hoy = date('Y-m-d H:m:s');
 
+        if(count($nominasaux))
+        {
+    
+            Nomina::where('mes',$mes)->where('year',$year)->where('status','generado')->delete();
+            foreach($request->nomina as $n)
+            {
+                $nomina = new Nomina();
+                $nomina->retroactivo = $n['nomina']['retroactivo'];
+                $nomina->datos_nombres= $n['nomina']['datos_nombres'];
+                $nomina->datos_apellidos = $n['nomina']['datos_apellidos'];
+                $nomina->datos_cedula =  $n['nomina']['datos_cedula'];
+                $nomina->datos_email = $n['nomina']['datos_email'];
+                $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
+                $nomina->datos_id= $n['nomina']['datos_id'];
+                $nomina->sueldo_base = $n['nomina']['sueldo_base'];
+                $nomina->datos_status = $n['status_becario']; 
+                $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
+                $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
+                $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
+                foreach($n['facturas'] as $factlibro)
+                {
+                    $factura = FactLibro::find($factlibro['factura']['id']);
+                    if($factlibro['factura']['status'] == 'por procesar' )
+                    {
+                        $factura->status = 'procesada';
+                        $factura->mes = $mes;
+                        $factura->year = $year;
+                        $factura->fecha_procesada = $hoy;
+                    }
+                    else
+                    {
+                        if($factlibro['factura']['status'] == 'rechazada')
+                        {
+                            $factura->fecha_procesada = $hoy;
+                        }
+                        $factura->status= $factlibro['factura']['status'];
+                    }
+                    $factura->save();
+                }
+                $nomina->monto_libros = $n['nomina']['monto_libros'];
+                $nomina->cva = $n['nomina']['cva'];
+                $nomina->total = $n['nomina']['sueldo_base'] + $n['nomina']['retroactivo'] + $n['nomina']['monto_libros'] + $n['nomina']['cva'];
+                $nomina->mes = $mes;
+                $nomina->year = $year;
+                $nomina->status = 'generado';
+                $nomina->fecha_pago = null;
+                $nomina->fecha_generada = $n['nomina']['fecha_generada'];
+                $nomina->save();
+
+                $bn = new BecarioNomina();
+                $bn->user_id = $nomina->datos_id;//--becario_id
+                $bn->nomina_id = $nomina->id;
+                $bn->save();
+                
+            }
+
+             $nominaBorrador=NomBorrador::where('mes',$mes)->where('year',$year)->where('status','generado')->get(); 
+            if(count($nominaBorrador)){
+                NomBorrador::where('mes',$mes)->where('year',$year)->where('status','generado')->delete();
+
+            }
+            foreach($request->nominaBorrador as $n)
+            {
+                $nomina = new NomBorrador();
+                $nomina->retroactivo = $n['nomina']['retroactivo'];
+                $nomina->datos_nombres= $n['nomina']['datos_nombres'];
+                $nomina->datos_apellidos = $n['nomina']['datos_apellidos'];
+                $nomina->datos_cedula =  $n['nomina']['datos_cedula'];
+                $nomina->datos_email = $n['nomina']['datos_email'];
+                $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
+                $nomina->datos_id= $n['nomina']['datos_id'];
+                $nomina->sueldo_base = $n['nomina']['sueldo_base'] ;
+                $nomina->datos_status = $n['status_becario']; 
+                $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
+                $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
+                $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
+
+                $nomina->monto_libros = 0;
+                $nomina->cva = 0;
+                $nomina->total = $n['nomina']['sueldo_base'] + 0 + 0 + 0;
+                $nomina->mes = $mes;
+                $nomina->year = $year;
+                $nomina->status = 'generado';
+                $nomina->fecha_pago = null;
+                $nomina->fecha_generada = $n['nomina']['fecha_generada'];
+                $nomina->save();
+
+                $bn = new BecarioNomBorrador();
+                $bn->user_id = $nomina->datos_id;//--becario_id
+                $bn->nomborrador_id = $nomina->id;
+                $bn->save();
+                
+            }
+
+
+            return response()->json(['res'=>1]);
+        }
+        else
+        {
+            return response()->json(['res'=>0]);
+        }
+
+   }
     public function generarNominaApi(Request $request)
     {
         $mes = $request->mes;
@@ -210,12 +321,18 @@ class NominaController extends Controller
                 $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
                 $nomina->datos_id= $n['nomina']['datos_id'];
                 $nomina->sueldo_base = $n['nomina']['sueldo_base'];
+                $nomina->datos_status = $n['status_becario']; 
+                $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
+                $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
+                $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
                 foreach($n['facturas'] as $factlibro)
                 {
                     $factura = FactLibro::find($factlibro['factura']['id']);
                     if($factlibro['factura']['status'] == 'por procesar' )
                     {
                         $factura->status = 'procesada';
+                        $factura->mes = $mes;
+                        $factura->year = $year;
                         $factura->fecha_procesada = $hoy;
                     }
                     else
@@ -244,6 +361,44 @@ class NominaController extends Controller
                 $bn->save();
                 
             }
+
+             $nominaBorrador=NomBorrador::where('mes',$mes)->where('year',$year)->get(); 
+            if(count($nominaBorrador) == 0){
+                foreach($request->nominaBorrador as $n)
+                {
+                    $nomina = new NomBorrador();
+                    $nomina->retroactivo = $n['nomina']['retroactivo'];
+                    $nomina->datos_nombres= $n['nomina']['datos_nombres'];
+                    $nomina->datos_apellidos = $n['nomina']['datos_apellidos'];
+                    $nomina->datos_cedula =  $n['nomina']['datos_cedula'];
+                    $nomina->datos_email = $n['nomina']['datos_email'];
+                    $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
+                    $nomina->datos_id= $n['nomina']['datos_id'];
+                    $nomina->sueldo_base = $n['nomina']['sueldo_base'] ;
+                    $nomina->datos_status = $n['status_becario']; 
+                    $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
+                    $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
+                    $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
+  
+                    $nomina->monto_libros = 0;
+                    $nomina->cva = 0;
+                    $nomina->total = $n['nomina']['sueldo_base'] + 0 + 0 + 0;
+                    $nomina->mes = $mes;
+                    $nomina->year = $year;
+                    $nomina->status = 'generado';
+                    $nomina->fecha_pago = null;
+                    $nomina->fecha_generada = $hoy;
+                    $nomina->save();
+    
+                    $bn = new BecarioNomBorrador();
+                    $bn->user_id = $nomina->datos_id;//--becario_id
+                    $bn->nomborrador_id = $nomina->id;
+                    $bn->save();
+                    
+                }
+            }
+
+
             return response()->json(['res'=>1]);
         }
         else
@@ -251,6 +406,142 @@ class NominaController extends Controller
             return response()->json(['res'=>0]);
         }
 
+   }
+   public function getEditarNominaApi($mes, $year)
+   {
+
+       $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
+       if(count($nominasaux))
+       {
+           $sugeridos = collect();
+           $noSugeridos = collect();
+           foreach($nominasaux as $nominaEdit)
+           {
+               $nomina = new Nomina();
+               $nomina->retroactivo = $nominaEdit->retroactivo;
+               $nomina->cva = $nominaEdit->cva;
+               $nomina->datos_nombres= $nominaEdit->datos_nombres;
+               $nomina->datos_apellidos = $nominaEdit->datos_apellidos;
+               $nomina->datos_cedula = $nominaEdit->datos_cedula;
+               $nomina->datos_email = $nominaEdit->datos_email;
+               $nomina->datos_cuenta = $nominaEdit->datos_cuenta;
+               $nomina->datos_id= $nominaEdit->datos_id;
+               $nomina->sueldo_base = $nominaEdit->sueldo_base;
+               $nomina->datos_status = $nominaEdit->datos_status; 
+               $nomina->datos_fecha_ingreso = $nominaEdit->datos_fecha_ingreso;
+               $nomina->datos_final_carga_academica = $nominaEdit->datos_final_carga_academica;
+               $nomina->datos_fecha_bienvenida = $nominaEdit->datos_fecha_bienvenida;
+               $total = 0;
+               $facturas = collect();
+               $becario = Becario::find($nomina->datos_id);
+
+               foreach($becario->factlibros as $factlibro)
+               {
+                   if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
+                   {
+                       if($factlibro->status === 'por procesar')
+                       {
+                           $total = $total + $factlibro->costo;
+                       }
+                       $facturas->push(array(
+                          "id" => count($facturas),
+                          "factura" => $factlibro,
+                          'selected' => false
+                       ));
+                  }
+      
+               }
+               $nomina->monto_libros = $nominaEdit->monto_libros;
+               $nomina->total = $nominaEdit->total;
+               $nomina->mes = $nominaEdit->mes;
+               $nomina->year = $nominaEdit->year;
+               $nomina->status =  $nominaEdit->status;
+               $nomina->fecha_pago =  $nominaEdit->fecha_pago;
+               $nomina->fecha_generada =  $nominaEdit->fecha_generada;
+
+                 $sugeridos->push(array(
+                   "id" => count($sugeridos),
+                   "nomina" => $nomina,
+                   "facturas" => $facturas,
+                   "is_sugerido" => true,
+                   "status_becario" => $nomina->datos_status,
+                   'final_carga_academica' => $nomina->datos_final_carga_academica,
+                   'fecha_bienvenida' => $nomina->datos_fecha_bienvenida,
+                   'fecha_ingreso' => $nomina->datos_fecha_ingreso,
+                   'selected' => false
+
+                   ));
+
+
+           }
+
+           $nominasaux = NomBorrador::where('mes',$mes)->where('year',$year)->get();
+            if(count($nominasaux))
+            {
+                foreach($nominasaux as $nominaEdit)
+                {
+                    $nomina = new NomBorrador();
+                    $nomina->retroactivo = $nominaEdit->retroactivo;
+                    $nomina->cva = $nominaEdit->cva;
+                    $nomina->datos_nombres= $nominaEdit->datos_nombres;
+                    $nomina->datos_apellidos = $nominaEdit->datos_apellidos;
+                    $nomina->datos_cedula = $nominaEdit->datos_cedula;
+                    $nomina->datos_email = $nominaEdit->datos_email;
+                    $nomina->datos_cuenta = $nominaEdit->datos_cuenta;
+                    $nomina->datos_id= $nominaEdit->datos_id;
+                    $nomina->sueldo_base = $nominaEdit->sueldo_base;
+                    $nomina->datos_status = $nominaEdit->datos_status; 
+                    $nomina->datos_fecha_ingreso = $nominaEdit->datos_fecha_ingreso;
+                    $nomina->datos_final_carga_academica = $nominaEdit->datos_final_carga_academica;
+                    $nomina->datos_fecha_bienvenida = $nominaEdit->datos_fecha_bienvenida;
+                    $total = 0;
+                    $facturas = collect();
+                    $becario = Becario::find($nomina->datos_id);
+
+                    foreach($becario->factlibros as $factlibro)
+                    {
+                        if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
+                        {
+                            if($factlibro->status === 'por procesar')
+                            {
+                                $total = $total + $factlibro->costo;
+                            }
+                            $facturas->push(array(
+                                "id" => count($facturas),
+                                "factura" => $factlibro,
+                                'selected' => false
+                            ));
+                        }
+            
+                    }
+                    $nomina->monto_libros = $nominaEdit->monto_libros;
+                    $nomina->total = $nominaEdit->total;
+                    $nomina->mes = $nominaEdit->mes;
+                    $nomina->year = $nominaEdit->year;
+                    $nomina->status =  $nominaEdit->status;
+                    $nomina->fecha_pago =  $nominaEdit->fecha_pago;
+                    $nomina->fecha_generada =  $nominaEdit->fecha_generada;
+
+                    $noSugeridos->push(array(
+                        "id" => count($noSugeridos),
+                        "nomina" => $nomina,
+                        "facturas" => $facturas,
+                        "is_sugerido" => false,
+                        "status_becario" => $nomina->datos_status,
+                        'final_carga_academica' => $nomina->datos_final_carga_academica,
+                        'fecha_bienvenida' => $nomina->datos_fecha_bienvenida,
+                        'fecha_ingreso' => $nomina->datos_fecha_ingreso,
+                        'selected' => false
+                    ));
+                }
+            }
+           return response()->json(['sugeridos'=>$sugeridos,'noSugeridos'=>$noSugeridos,'res'=> 2]);
+
+       }
+       else
+       {
+           return response()->json(['res'=> 0]);
+       }
    }
     public function getConsultarNominaApi($mes, $year)
     {
@@ -398,9 +689,14 @@ class NominaController extends Controller
          ->where('status','=','generado')
          ->groupBy('mes','year')
          ->orderby('mes','desc')->orderby('year','desc')->get();
-        if(count($nominas)>0)
+         $nominasPagadas = DB::table('nominas')
+                     ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,fecha_generada, fecha_pago,sueldo_base, status, id'))
+                     ->where('status','=','pagado')
+                     ->groupBy('mes','year')
+                     ->orderby('mes','desc')->orderby('year','desc')->get();
+        if(count($nominas)>0 || count($nominasPagadas)>0)
         {
-            return response()->json(['nominas'=>$nominas,'res'=> 1]);
+            return response()->json(['nominas'=>$nominas,'nominasPagadas'=>$nominasPagadas,'res'=> 1]);
 
         }
         else
@@ -697,15 +993,18 @@ class NominaController extends Controller
             {
                 $becario->retroactivo = 0.0;
                 $becario->save();
-                $factlibros = FactLibro::where('becario_id', '=', $nomina->becarios[0]->user->id)->where('status', '=', 'revisada')->where('mes', '=', $mes)->where('year', '=', $anho)->get();
+                $factlibros = FactLibro::where('becario_id', '=', $nomina->becarios[0]->user->id)->where('status', '=', 'procesada')->where('mes', '=', $mes)->where('year', '=', $anho)->get();
                 foreach ($factlibros as $factura)
                 {
                     $factura->status = 'pagada';
+                    $factura->fecha_pagada = date('Y-m-d H:m:s');
                     $factura->save();
                 }
             }
         }
-        return redirect()->route('nomina.pagadas');
+        //return redirect()->route('nomina.pagadas');
+        return response()->json(['res'=> 1]);
+
     }
 
     public function pagadas()

@@ -183,7 +183,7 @@
             <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Organizaciones </h2>
                @if($organizaciones->count()==0)
                <div class="col-lg-12">
-                     <img  class="img-responsive " src="/images/aliados/organizaciones.png" style="border:1px solid #eee "/>
+                     <img  class="img-responsive img-fluid" src="/images/aliados/organizaciones.png" style="border:1px solid #eee "/>
                   </div>
                @else
                   <div class="" style="border:1px solid #fff">
@@ -191,7 +191,7 @@
                         @foreach($organizaciones as $organizacion)
                            <div class="col-lg-12" >
                               <a class="miembro-enlace" href="{{$organizacion->url}}">
-                                 <img  class="img-responsive " src="{{asset($organizacion->imagen)}}" alt="{{$organizacion->titulo}}" style="border:1px solid #eee "/>
+                                 <img  class="img-responsive img-fluid" src="{{asset($organizacion->imagen)}}" alt="{{$organizacion->titulo}}" style="border:1px solid #eee "/>
                                  <p class="title-miembros-institucionales pt-2">{{$organizacion->titulo}}</p>
                               </a>
                            </div>
@@ -203,8 +203,8 @@
             <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
             <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Empresas </h2>
                   @if($empresas->count()==0)
-                  <div class="col-lg-12">
-                        <img  class="img-responsive " src="/images/aliados/empresas.png" style="border:1px solid #eee "/>
+                  <div class="col-lg-12" >
+                        <img  class="img-responsive img-fluid" src="/images/aliados/empresas.png" style="border:1px solid #eee "/>
                      </div>
                   @else
                      <div class="" style="border:1px solid #fff">
@@ -213,7 +213,7 @@
 
                               <div class="col-lg-12" >
                                  <a class="miembro-enlace" target="_blank" href="{{$empresa->url}}">
-                                    <img  class="img-responsive " src="{{asset($empresa->imagen)}}" alt="{{$empresa->titulo}}" style="border:1px solid #eee "/>
+                                    <img  class="img-responsive img-fluid" src="{{asset($empresa->imagen)}}" alt="{{$empresa->titulo}}" style="border:1px solid #eee "/>
                                     <p class="title-miembros-institucionales pt-2">{{$empresa->titulo}}</p>
                                  </a>
                               </div>
@@ -230,13 +230,13 @@
                            <div class="carousel-empresas owl-carousel owl-theme">
                               @if($instituciones->count()==0)
                               <div class="col-lg-12">
-                                    <img  class="img-responsive " src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
+                                    <img  class="img-responsive img-fluid" src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
                               </div>
                               @else
                                  @foreach($instituciones as $institucion)
                                     <div class="col-lg-12" >
                                        <a class="miembro-enlace" href="{{$instituciones->url}}">
-                                          <img  class="img-responsive " src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
+                                          <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
                                           <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
                                        </a>
                                     </div>

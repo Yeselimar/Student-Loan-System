@@ -34,34 +34,34 @@
                     {{ Form::hidden('tipocurso_id', 1) }}
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Tipo</label>
-                        {{ Form::select('tipocurso_id', $tipocurso,1,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled']) }}
+                        {{ Form::select('tipocurso_id', $tipocurso,1,['class' =>'sisbeca-input sisbeca-disabled', 'disabled'=>'disabled','autocomplete'=>'off']) }}
                         <span class="errors" style="color:#red">{{ $errors->first('tipocurso_id') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Modo</label>
-                        {{ Form::select('modo', array('sabatino'=>'sabatino','interdiario'=>'interdiario','diario'=>'diario','intensivo'=>'intensivo'),($model=='crear') ? 'sabatino' : $curso->modo,['class' =>'sisbeca-input']) }}
+                        {{ Form::select('modo', array('sabatino'=>'sabatino','interdiario'=>'interdiario','diario'=>'diario','intensivo'=>'intensivo'),($model=='crear') ? 'sabatino' : $curso->modo,['class' =>'sisbeca-input','autocomplete'=>'off']) }}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Nivel</label>
-                        {{ Form::select('nivel', array('basico'=>'basico','intermedio'=>'intermedio','avanzado'=>'avanzado'),($model=='crear') ? 'basico' : $curso->nivel,['class' =>'sisbeca-input']) }}
+                        {{ Form::select('nivel', array('basico'=>'basico','intermedio'=>'intermedio','avanzado'=>'avanzado'),($model=='crear') ? 'basico' : $curso->nivel,['class' =>'sisbeca-input','autocomplete'=>'off']) }}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Módulo</label>
-                        {{ Form::select('modulo', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18'),($model=='crear') ? 1 : $curso->modulo,['class' =>'sisbeca-input']) }}
+                        {{ Form::select('modulo', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18'),($model=='crear') ? 1 : $curso->modulo,['class' =>'sisbeca-input','autocomplete'=>'off']) }}
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Nota</label>
-                        {{ Form::text('nota', ($model=='crear') ? null : $curso->nota, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 50'])}}
+                        {{ Form::text('nota', ($model=='crear') ? null : $curso->nota, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 50','autocomplete'=>'off'])}}
                         <span class="errors" style="color:#red">{{ $errors->first('nota') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Fecha Inicio</label>
-                        {{ Form::text('fecha_inicio', ($model=='crear') ? null : date("d/m/Y", strtotime($curso->fecha_inicio)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechainicio"])}}
+                        {{ Form::text('fecha_inicio', ($model=='crear') ? null : date("d/m/Y", strtotime($curso->fecha_inicio)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechainicio",'autocomplete'=>'off'])}}
                         <span class="errors" >{{ $errors->first('fecha_inicio') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Fecha Fin</label>
-                        {{ Form::text('fecha_fin', ($model=='crear') ? null : date("d/m/Y", strtotime($curso->fecha_fin)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechafin"])}}
+                        {{ Form::text('fecha_fin', ($model=='crear') ? null : date("d/m/Y", strtotime($curso->fecha_fin)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechafin",'autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('fecha_fin') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">

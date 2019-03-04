@@ -216,7 +216,6 @@
                             <li><a href="{{ route('nomina.procesar') }}">Consultar Nómina</a>
                             </li>
                             <li><a href="{{ route('nomina.listar') }}">Nóminas Generadas</a></li>
-                            <li><a href="{{ route('nomina.pagadas') }}">Nóminas Pagadas</a></li>
                         </ul>
                     </li>
                     <li>

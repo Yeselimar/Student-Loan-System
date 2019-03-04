@@ -32,22 +32,24 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Fecha</label>
-                        {{ Form::text('fecha', ($model=='crear') ? null : date("d/m/Y", strtotime($voluntariado->fecha)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fecha"])}}
+                        {{ Form::text('fecha', ($model=='crear') ? null : date("d/m/Y", strtotime($voluntariado->fecha)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fecha",'autocomplete'=>'off'])}}
                         <span class="errors" >{{ $errors->first('fecha') }}</span>
                     </div>
+                    <!--
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Nombre</label>
-                        {{ Form::text('nombre', ($model=='crear') ? null : $voluntariado->nombre , ['class' => 'sisbeca-input', 'placeholder'=>'Voluntariado en Caracas', 'id'=>"fechafin"])}}
+                        {{ Form::text('nombre', ($model=='crear') ? null : $voluntariado->nombre , ['class' => 'sisbeca-input', 'placeholder'=>'Voluntariado en Caracas', 'id'=>"fechafin",'autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('nombre') }}</span>
                     </div>
+                    -->
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Institución</label>
-                        {{ Form::text('institucion', ($model=='crear') ? null : $voluntariado->institucion , ['class' => 'sisbeca-input', 'placeholder'=>'Venacham'])}}
+                        {{ Form::text('institucion', ($model=='crear') ? null : $voluntariado->institucion , ['class' => 'sisbeca-input', 'placeholder'=>'Venacham','autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('institucion') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Responsable</label>
-                        {{ Form::text('responsable', ($model=='crear') ? null : $voluntariado->responsable , ['class' => 'sisbeca-input', 'placeholder'=>'John Doe'])}}
+                        {{ Form::text('responsable', ($model=='crear') ? null : $voluntariado->responsable , ['class' => 'sisbeca-input', 'placeholder'=>'John Doe','autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('responsable') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -57,17 +59,17 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label class="control-label">*Observación</label>
-                        {{ Form::textarea('observacion', ($model=='crear') ? null : $voluntariado->observacion , ['class' => 'sisbeca-input sisbeca-textarea', 'placeholder'=>'Ingrese observación'])}}
+                        {{ Form::textarea('observacion', ($model=='crear') ? null : $voluntariado->observacion , ['class' => 'sisbeca-input sisbeca-textarea', 'placeholder'=>'Ingrese observación','autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('observacion') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Lugar</label>
-                        {{ Form::text('lugar', ($model=='crear') ? null : $voluntariado->lugar , ['class' => 'sisbeca-input', 'placeholder'=>'Los Ruices, Caracas', 'id'=>"fechafin"])}}
+                        {{ Form::text('lugar', ($model=='crear') ? null : $voluntariado->lugar , ['class' => 'sisbeca-input', 'placeholder'=>'Los Ruices, Caracas', 'id'=>"fechafin",'autocomplete'=>'off'])}}
                         <span class="errors" >{{ $errors->first('lugar') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <label class="control-label">*Horas</label>
-                        {{ Form::text('horas', ($model=='crear') ? null : $voluntariado->horas , ['class' => 'sisbeca-input', 'placeholder'=>'17', 'id'=>"horas"])}}
+                        {{ Form::text('horas', ($model=='crear') ? null : $voluntariado->horas , ['class' => 'sisbeca-input', 'placeholder'=>'17', 'id'=>"horas",'autocomplete'=>'off'])}}
                         <span class="errors">{{ $errors->first('horas') }}</span>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">

@@ -18,7 +18,7 @@
 		<table class="table table-hover table-bordered" id="voluntariados">
 			<thead>
 				<tr>
-					<th>Nombre</th>
+					<th>Institución</th>
 					<th>Fecha</th>
 					<th>Tipo</th>
 					<th class="text-center">Horas</th>
@@ -31,7 +31,7 @@
 				@foreach($voluntariados as $voluntariado)
 				<tr>
 					<td>
-						{{$voluntariado->nombre}}
+						{{$voluntariado->institucion}}
 					</td>
 					<td>{{$voluntariado->getFecha()}}</td>
 					<td>{{$voluntariado->tipo}}</td>
