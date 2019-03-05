@@ -225,6 +225,12 @@
                             <span class="hide-menu">Fact. Libros</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('receso.decembrino.index') }}" aria-expanded="false">
+                            <i class="fa  fa-calendar"></i>
+                            Receso Decembrino
+                        </a>
+                    </li>
 
                     <li class="nav-label">Consultas y Reportes</li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Becarios</span></a>
@@ -255,7 +261,10 @@
                                 <li><a href="{{route('listar.becariosDesincorporados')}}">Desincorporados</a></li>
                             </ul>
                         </li>
-                        @endif
+                    @endif
+                    
+                    
+
                 @endif
                 {{--Fin d Vista Compartida Coordinador/Directivo --}}
 
@@ -451,7 +460,13 @@
                         <li><a href="{{route('voluntariados.todos')}}">Listar Voluntariados</a></li>
                     </ul>
                 </li>
-
+                <li>
+                    <a href="{{route('becarios.listar.cargar') }}" aria-expanded="false">
+                        <i class="fa  fa-cloud-upload"></i>
+                        <span class="hide-menu">Pre-Cargar Act.</span>
+                    </a>
+                    
+                </li>
                 @endif
 
                 <!-- Rutas para entrevistadores -->

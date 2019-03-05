@@ -33,7 +33,10 @@
         ],
         "psr-4": {
             "avaa\\": "app/"
-        }
+        },
+        "files": [
+            "app/Helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

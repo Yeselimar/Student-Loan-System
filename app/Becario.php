@@ -463,26 +463,5 @@ class Becario extends Model
         return $total;
     }
 
-    public function getRecesoDecembrino()
-    {
-        $fecha_actual = strtotime(date("d-m-Y 00:00:00"));
-        $fecha_inicio = strtotime("01-03-2019 00:00:00");
-        $fecha_fin = strtotime("05-03-2019 00:00:00");
-
-        if($fecha_actual >= $fecha_entrada and $fecha_actual <= $fecha_entrada)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public function getRecesoDecembrinoActivo()
-    {
-        return true;
-    }
-
-    public function getRecesoDecembrinoPermitido()
-    {
-        return true;
-    }
+    
 }
