@@ -1,8 +1,8 @@
 <?php
 
-function getRecesoDecembrino()
+function getReceso()
 {
-	if(getRecesoDecembrinoActivo())
+	if(getRecesoActivo() and getRecesoVisible())
 	{
 		$fecha_actual = strtotime(date("d-m-Y 00:00:00"));
 	    $fecha_inicio = strtotime(avaa\RecesoDecembrino::first()->fecha_inicio);
@@ -16,7 +16,7 @@ function getRecesoDecembrino()
     return false;
 }
 
-function getRecesoDecembrinoActivo()
+function getRecesoActivo()
 {
 	if(avaa\RecesoDecembrino::count() == 0)
 	{
@@ -30,4 +30,13 @@ function getRecesoDecembrinoActivo()
 	{
 		return true;
 	}
+}
+
+function getRecesoVisible()
+{
+	if(Auth::user()->esBecario())
+	{
+		return true;
+	}
+	return false;
 }
