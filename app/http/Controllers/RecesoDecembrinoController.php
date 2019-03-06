@@ -26,7 +26,7 @@ class RecesoDecembrinoController extends Controller
     	$receso->fecha_inicio = DateTime::createFromFormat('d/m/Y', $request->fecha_inicio )->format('Y-m-d');
     	$receso->fecha_fin = DateTime::createFromFormat('d/m/Y', $request->fecha_fin )->format('Y-m-d');
     	$receso->save();
-    	return response()->json(['success'=>'El receso fue guardado exitosamente.']);
+    	return response()->json(['success'=>'El receso fue actualizado exitosamente.']);
     }
 
     public function cambiar()
@@ -41,6 +41,6 @@ class RecesoDecembrinoController extends Controller
     		$receso->activo = 0;
     	}
     	$receso->save();
-    	return response()->json(['success'=>'El receso fue guardado exitosamente.']);
+    	return response()->json(['success'=>'El receso fue actualizado exitosamente.']);
     }
 }
