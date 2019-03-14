@@ -20,9 +20,9 @@
 	
 	<div class="tab-content">
 	  <div class="tab-pane active" id="datos">
-
+      
 			<br>
-
+      
 			<div class="form-group" style="border: 1px solid #eee; padding: 10px; border-radius: 5px;">
 				
         <div class="row">

@@ -39,15 +39,15 @@
                </div>
             </div>
          </div>
-            
+
          </div>
          -->
       </div>
    </section>
-   <!-- Fin Seccion Principal -->  
+   <!-- Fin Seccion Principal -->
 
    <div class="linea-sobra"></div>
-  
+
    <div class="container-cabecera">
       <img src="{{asset("info_sitio/img/cabeceras/programa.png")}}" alt="AVAA - Programas" class="cabecera-imagen">
       <div class="cabecera-titulo">
@@ -88,7 +88,7 @@
                               <ul class="list-group">
                                  <li class="list-group-item">
                                     <br/>
-                                    <p> El Programa Excelencia AVAA promueve la educación y formación integral de jóvenes venezolanos de medianos o bajos recursos económicos durante los cinco años de carrera universitaria.</p>
+                                    <p> El Programa Excelencia AVAA promueve la educación y formación integral de jóvenes venezolanos con potencial de liderazgo y probada sensibilidad social durante los cinco años de carrera universitaria.</p>
                                     <p>Además de apoyar a los estudiantes beneficiarios a completar su carrera con los más altos índices académicos, ProExcelencia AVAA desarrolla una serie de componentes que permiten formarlos con valores asociados al progreso, con capacidades profesionales y personales.</p>
                                     <p>Actualmente, el programa tiene a 250 beneficiarios de alto índice académico, vocación social y potencial de liderazgo; todos cursantes de carreras de 5 años en universidades públicas o privadas en la Gran Caracas.</p>
                                  </li>
@@ -97,26 +97,15 @@
                            <div class="contenidoDeList tab-pane fade" id="componentes" role="tabpanel" >
                               <li class="list-group-item">
                                  <br/>
-                              <ul>
-                                    <li><p >Aporte económico mensual.</p></li>
-                                 <li>  <p><strong>Formación en inglés: </strong></p>
-                                    <ul>
-                                        <li>      <p >Apoyo de un mentor, con mínimo 10 años de experiencia profesional, como modelo de vida y guía profesional.</p></li>
-
-                                        <li>     <p >Curso completo de inglés en el Centro Venezolano Americano.</p></li>
-
-                                       <li>      <p >Participación en el programa Práctica de Conversación en Inglés. </p></li>
-
-                                        <li>       <p >Oportunidad de ganar una beca de inglés en USA o Canadá para los becarios con el rendimiento más destacado.</p></li>
-                                    </ul>
-                                 </li>
-
-
-                                 <li>  <p>Formación en áreas extracurriculares y competencias organizacionales.</p></li>
-                                 <li>  <p>Refuerzo de consciencia social y ciudadana con la participación en actividades de voluntariado. </p></li>
-                              </ul>
+                                 <ul>
+                                    <li><p>Formación en áreas de competencias blandas y competencias organizacionales.</p></li>
+                                    <li><p>Curso completo de inglés en el Centro Venezolano Americano.</p></li>
+                                    <li><p>Participación en Conversación en inglés o chatclub. </p></li>
+                                    <li><p>Refuerzo de consciencia social y ciudadana con la participación en actividades de voluntariado. </p></li>
+                                    <li><p>Apoyo de un mentor, con mínimo 10 años de experiencia profesional, como modelo de vida y guía profesional.</p></li>
+                                    <li><p>Estipendio Mensual.</p></li>
+                                 </ul>
                               </li>
-
                            </div>
                            <div  class="contenidoDeList tab-pane fade" id="requisitos" role="tabpanel">
                               <li class="list-group-item">
@@ -151,7 +140,7 @@
                            <i class="fa fa-file-pdf-o icon-programas"></i>
                         </span>
                         <div class="text letra-programas">
-                           <p>Descargar Planilla</p>
+                           <p>Proceso de Postulación</p>
                         </div>
                      </a>
                   </div>
@@ -173,7 +162,7 @@
    <!--fin ProExelencia AVAA -->
 
    <div class="linea-sobra" id="asesoria-educativa"></div>
-   
+
    <!--Inicio Asesorias Educativas -->
    <section  class="section">
       <div class="container">
@@ -318,7 +307,7 @@
                                     </div>
                                  @endif
                               </div>
-                              
+
                            </div>
                         </div>
                      </div>
@@ -350,6 +339,6 @@
    </section>
    <!--Fin Asesorias Educativas -->
 
-   
+
 
 @endsection

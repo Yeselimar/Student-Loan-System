@@ -688,6 +688,15 @@ class Todo extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('receso_decembrino', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->datetime('fecha_inicio');
+            $table->datetime('fecha_fin');
+            $table->boolean('activo')->default('0');
+            $table->timestamps();
+        });
     }
 
     public function down()

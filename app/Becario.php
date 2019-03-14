@@ -449,6 +449,7 @@ class Becario extends Model
             $ensayo->delete();
         }
     }
+
     public function getTotalFacturasPendientes()
     {
         $total = 0;
@@ -461,4 +462,6 @@ class Becario extends Model
         }
         return $total;
     }
+
+    
 }

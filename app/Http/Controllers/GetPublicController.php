@@ -26,6 +26,7 @@ use avaa\Solicitud;
 use avaa\Imagen;
 use avaa\Ticket;
 use avaa\Alerta;
+use avaa\RecesoDecembrino;
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -97,6 +98,12 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $fullusername = getRecesoDecembrino();
+        //return getRecesoDecembrino();
+        $receso = RecesoDecembrino::first();
+        $receso->fecha_inicio = DateTime::createFromFormat('d/m/Y', '01/01/2019')->format('Y-m-d');
+        $receso->save();
+        return "gg";
         //return Auth::user()->id;
         //Genero una alerta para el postulante becario}
         $becario  = Becario::find(6);

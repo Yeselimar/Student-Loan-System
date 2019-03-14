@@ -200,6 +200,11 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
+        //Receso Decembrino 
+        Route::get('/receso/decembrino/', 'RecesoDecembrinoController@index')->name('receso.decembrino.index');
+        Route::get('/receso/decembrino/servicio', 'RecesoDecembrinoController@obtener')->name('receso.decembrino.servicio');
+        Route::post('/receso/decembrino/guardar', 'RecesoDecembrinoController@guardar')->name('receso.decembrino.guardar');
+        Route::get('/receso/decembrino/cambiar', 'RecesoDecembrinoController@cambiar')->name('receso.decembrino.cambiar');
         //Rutas para cargar actividades becarias de becarios viejos y/o existentes
         Route::get('/becarios/cargar-actividades/', 'ActividadesBecariasController@becarioslistar')->name('becarios.listar.cargar');
 

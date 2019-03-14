@@ -16,6 +16,11 @@
         <a href="{{ URL::previous() }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
     </div>
 	<br>
+    @if(getReceso())
+    <div class="alert alert-danger" role="alert">
+        El sistema está deshabilitado desde <strong>{{avaa\RecesoDecembrino::first()->getFechaInicio()}}</strong> hasta el <strong>{{avaa\RecesoDecembrino::first()->getFechaFin()}}</strong> para cargar periodos.
+    </div>
+    @endif
 	<div class="col sisbeca-container-formulario">
 
 		@if($model=='crear')
@@ -36,7 +41,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Año Lectivo</label>
-                    {{ Form::text('anho_lectivo', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2-2018'])}}
+                    {{ Form::text('anho_lectivo', null, ['class' => 'sisbeca-input', 'placeholder'=>'EJ: 2-2018','autocomplete'=>'off'])}}
                     <span class="errors" style="color:#red">{{ $errors->first('anho_lectivo') }}</span>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
@@ -65,12 +70,12 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Fecha Inicio</label>
-                    {{ Form::text('fecha_inicio', ($model=='crear') ? null : date("d/m/Y", strtotime($periodo->fecha_inicio)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechainicio"])}}
+                    {{ Form::text('fecha_inicio', ($model=='crear') ? null : date("d/m/Y", strtotime($periodo->fecha_inicio)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechainicio",'autocomplete'=>'off'])}}
                     <span class="errors" >{{ $errors->first('fecha_inicio') }}</span>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <label class="control-label">*Fecha Fin</label>
-                    {{ Form::text('fecha_fin', ($model=='crear') ? null : date("d/m/Y", strtotime($periodo->fecha_fin)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechafin"])}}
+                    {{ Form::text('fecha_fin', ($model=='crear') ? null : date("d/m/Y", strtotime($periodo->fecha_fin)) , ['class' => 'sisbeca-input', 'placeholder'=>'DD/MM/AAAA', 'id'=>"fechafin",'autocomplete'=>'off'])}}
                     <span class="errors">{{ $errors->first('fecha_fin') }}</span>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
@@ -120,7 +125,11 @@
                             <button class="btn sisbeca-btn-primary" type="submit" disabled="disabled">Guardar</button>
                         @endif
                     @else
-                        <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                        @if(getReceso())
+                            <button class="btn sisbeca-btn-primary" disabled="disabled">Guardar</button>
+                        @else
+                            <button class="btn sisbeca-btn-primary" type="submit" >Guardar</button>
+                        @endif
                     @endif
 				</div>
 			</div>

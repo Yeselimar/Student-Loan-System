@@ -39,7 +39,11 @@
       </footer>
       <div class="container-fluid footer-creditos" >
          <div class="container text-center">
-            <p ><i class="fa fa-copyright"></i>&nbsp;&nbsp;Desarrollado por <strong><a href="#" style="color:#fff">AFODI</a></strong></p>
+            <p><i class="fa fa-copyright"></i>&nbsp;&nbsp;Copyright 2019 AVAA<br>Desarrollado Por:<br>
+            <a title="Agencia Forma Digital C.A" href="https://wwww.afodi.net" target="_blank"><img src="{{asset('info_sitio/img/afodi-logo.png')}}" alt="Agencia Forma Digital C.A" class="img-responsive img-fluid"></a></p>
+         </div>
+         <div class="container text-center d-xl-none">
+            <p>&nbsp;</p>
          </div>
       </div>
       <!-- Footer Section End -->
