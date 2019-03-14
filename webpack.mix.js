@@ -13,5 +13,6 @@ let mix = require("laravel-mix");
 
 mix.js("resources/assets/js/app.js", "public/js");
 mix.js("resources/assets/js/vue/mentorias/relacionBecarioMentor.vue", "public/js");
+mix.js("resources/assets/js/vue/editor/editorNoti.vue", "public/js");
 mix.js("resources/assets/js/components/loading.vue", "public/js");
 

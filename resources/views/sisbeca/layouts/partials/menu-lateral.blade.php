@@ -99,6 +99,8 @@
 
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{route('noticia.index')}}">Listar publicaciones</a></li>
+                            <li><a href="{{route('todas.publicaciones')}}">Publicaciones</a></li>
+
                             <li><a href="{{route('noticia.create')}}">Crear publicación</a></li>
                             @if(\Request::route()->getName()==='mantenimientoNoticia.create')
                                 <li class="opcion-menu-oculta"><a href="{{route('mantenimientoNoticia.create')}}"></a></li>
@@ -208,9 +210,6 @@
                         </ul>
                     </li>
                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa  fa-file-excel-o"></i><span class="hide-menu">Nómina
-                                @if($numNominas>0)
-                                    <span class="label label-rouded label-danger pull-center">{{$numNominas}}</span>
-                                @endif
                             </span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="{{ route('nomina.procesar') }}">Consultar Nómina</a>

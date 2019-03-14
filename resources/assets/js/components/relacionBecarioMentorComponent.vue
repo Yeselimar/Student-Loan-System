@@ -276,8 +276,6 @@ export default {
       this.currentPage = 1;
     },
     edit(index, row,e) {
-      console.log('event ',e);
-      console.log('row ', row);
       //this.editItems.splice(index, 1, !this.editItems[index]);
       this.selected = row.item.mentor;
       if(row.item.mentor.id != null) {
@@ -299,8 +297,6 @@ export default {
       this.idShow= 0;
     },
     save(index, row) {
-      console.log("becario: ", row.item.becario);
-      console.log("nuevo Mentor: ", this.selected);
       if(this.selected==null){
         this.selected = {
           id: null,
@@ -391,7 +387,6 @@ export default {
               name: mentor.name
             });
           }, this);
-          console.log("mentores ",this.mentores);
         })
         .catch(err => {
           console.error("error reject", err);

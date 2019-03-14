@@ -324,6 +324,20 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'MantenimientoNoticiaController@destroy',
             'as' => 'noticia.destroy'
         ]);
+        Route::get('api/get/publicaciones', [
+            'uses' => 'MantenimientoNoticiaController@getPublicaciones',
+            'as' => 'get.publicaciones'
+        ]);
+        Route::post('api/create/publicacion','MantenimientoNoticiaController@createApiPublicacion')->name('create.publicacion.api');
+        Route::post('api/edit/{id}/publicacion','MantenimientoNoticiaController@editApiPublicacion')->name('edit.publicacion.api');
+        Route::get('api/delete/{id}/publicacion','MantenimientoNoticiaController@deleteApiPublicacion')->name('delete.publicacion.api');
+
+
+
+        Route::get('publicaciones', function(){
+            return view('sisbeca.noticias.publicaciones');
+        
+        })->name('todas.publicaciones');
 
         //costos
         Route::get('costos', [
