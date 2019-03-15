@@ -5,16 +5,16 @@
   <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
       <div class="container">
-         
-         
+
+
       </div>
   </section>
   <!-- Fin Principal -->
 
   <div class="linea-sobra"></div>
-  
+
   <div class="container-cabecera">
-    <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - Noticias" class="cabecera-imagen">
+    <img src="{{asset("info_sitio/img/cabeceras/noticias.png")}}" alt="AVAA - Noticias" class="cabecera-imagen">
     <div class="cabecera-titulo">
       <p class="h1">Noticias</p>
     </div>
@@ -61,11 +61,11 @@
             </a>
           </div>
 
-          
+
           <div class="col-lg-12 mt-4">
             <p style="color:#424242" class="text-right">@{{ noticiasC.length }}  noticia(s)</p>
           </div>
-          <div class="pt-3"> 
+          <div class="pt-3">
             <ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-end">
                 <li role="none presentation" class="page-item"  :class="[currentPageMovil === 0 ? 'disabled-page' : 'cursor']" @click="prevPage()" aria-hidden="true">
                     <span class="page-link page-link-seb" :class="[currentPageMovil === 0 ? 'disabled-page' : 'cursor']">
@@ -75,7 +75,7 @@
                   <span class="page-link page-link-seb" :class="[isMax ? 'disabled-page' : 'cursor']">
                   <img :src="url_img.replace('reemplazar-img-url','info_sitio/img/recursos/right.png')"></span>
               </li>
-            
+
             </ul>
 
            </div>
@@ -105,7 +105,7 @@ const app = new Vue({
      perPageMovil:6,
      totalRowsMovil: 0,
 
-      
+
    },
    computed: {
     noticiasC: function() {
@@ -134,7 +134,7 @@ const app = new Vue({
     obtenerperiodosapi: function()
 		{
 			var url = api_noticias;
-			axios.get(url).then(response => 
+			axios.get(url).then(response =>
 			{
 				this.noticias = response.data.noticias;
         this.noticias.forEach(function(element,i) {

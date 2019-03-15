@@ -9,7 +9,7 @@
 
    <div class="container-cabecera">
      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="d-sm-none d-md-block d-none cabecera-imagen">
-     <img src="{{asset("info_sitio/img/cabeceras/membresia.png")}}" alt="AVAA - AVAA" class=" d-block d-sm-block d-md-none cabecera-imagen">
+     <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class=" d-block d-sm-block d-md-none cabecera-imagen">
 
    <div class="cabecera-titulo">
 
@@ -103,7 +103,7 @@
          </div>
          <div class="d-flex flex-sm-column flex-md-row programas-flex letrasResponsive">
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-               <div class="programa-table" data-mh="programa">
+               <div class="programa-table">
                   <div class="programa-details">
 
                      <h2 class="title-programas " data-mh="programa-titulo">PROEXCELENCIA AVAA</h2>
@@ -123,7 +123,7 @@
                </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-               <div class="programa-table" data-mh="programa">
+               <div class="programa-table">
                   <div class="programa-details">
 
                      <h2 class="title-programas " data-mh="programa-titulo"><img class="img-responsive" src="{{asset('info_sitio/img/usa-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  /> EducationUSA</h2>
@@ -144,7 +144,7 @@
                </div>
             </div>
             <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
-               <div class="programa-table" data-mh="programa">
+               <div class="programa-table">
                   <div class="programa-details">
                      <h2 class="title-programas " data-mh="programa-titulo"><img class="img-responsive" src="{{asset('info_sitio/img/canada-ico.png')}}" alt="Asesorias educativas" style="width: 50px;height:50px"  /> Educanada</h2>
                      <img src="{{asset('info_sitio/img/testimonial/educanada.png')}}" alt="Asesorias educativas" data-mh="img-programas" class="img-responsive img-fluid w-100" />

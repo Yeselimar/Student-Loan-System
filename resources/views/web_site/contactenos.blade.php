@@ -2,13 +2,13 @@
 @extends('web_site.layouts.main')
 @section('title', "Contáctenos")
 @section('content')
-   
+
    <!-- Principal -->
    <section id="x" class="x" data-stellar-background-ratio="0.2">
       <br/><br/><br/>
       <div class="container">
-         
-         
+
+
       </div>
    </section>
    <!-- Fi Principal -->
@@ -16,7 +16,7 @@
    <div class="linea-sobra"></div>
 
    <div class="container-cabecera">
-      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - Contáctecnos" class="cabecera-imagen">
+      <img src="{{asset("info_sitio/img/cabeceras/contacto.png")}}" alt="AVAA - Contáctecnos" class="cabecera-imagen">
       <div class="cabecera-titulo">
          <p class="h1">Contáctanos</p>
       </div>
@@ -40,7 +40,7 @@
                   <div class="row">
                      <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
                         <div class="contact-us">
-                           
+
 
                            <h6><strong>Llámanos</strong></h6>
                            <div>
@@ -119,7 +119,7 @@
                                     </a>
                                     &nbsp;&nbsp;
                                     <a target="_blank" href="https://www.youtube.com/channel/UCf6ZTtj7ZXSUVqnOBj-k-wA">AVAA TV</a>
-                                 </li>                              
+                                 </li>
                               </ul>
                            </div>
                         </div>
@@ -155,7 +155,7 @@
                                     <div class="form-group">
                                        <textarea class="form-control contacto-formulario" placeholder="Ingrese su mensaje" rows="8" v-model="mensaje"></textarea>
                                     </div>
-                                    
+
                                  </div>
                                  <div class="col-lg-12">
                                     <div class=" text-right">
@@ -178,14 +178,14 @@
    <!-- Fin Contactenos -->
 
    <!-- Ubicación -->
-   
+
       <div class="section-header">
          <div class="container">
          <h2 class="section-title wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">Ubicación</h2>
          <hr class="lines wow zoomIn" data-wow-delay="0.3s">
          <p class="section-subtitle wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">
           <strong> Av. Francisco de Miranda esquina con Av. Diego Cisneros, Edif Centro Empresarial Miranda, piso 1 Ofic. D
-            Los Ruíces, Caracas. </strong> 
+            Los Ruíces, Caracas. </strong>
          </p>
       </div>
    </div>
@@ -194,7 +194,7 @@
       <iframe src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d125539.70418857712!2d-66.89954866626132!3d10.491540235005452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e6!4m0!4m3!3m2!1d10.491145999999999!2d-66.829323!5e0!3m2!1sen!2sve!4v1519795372218" frameborder="0" style="border: 1px solid #eee;width: 100%;height: 400px" allowfullscreen>
       </iframe>-->
    </div>
-      
+
    <!-- Fin Ubicación -->
 
 @endsection
@@ -202,7 +202,7 @@
 
 @section('personaljs')
 <script>
-   
+
 const app = new Vue({
 
    el: '#app',

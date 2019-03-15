@@ -7,6 +7,9 @@
         <i class="fa fa-calendar"></i> Asignar Fecha de Bienvenida
     </button>
     <br>
+    <div v-if="showflash" class="mt-3 alert  alert-danger alert-important" role="alert">
+        El postulante seleccionado ha sido rechazado exitosamente, sus datos ahora <b>sólo estan disponibles</b> en el menú lateral izquierdo en el apartado <b>Postulaciones> Becarios> Ver Rechazados.</b>
+    </div>
     <h3 class="letras-verdes">Postulantes Candidatos a Becario:</h3>
 
     <div class="table-responsive">
@@ -72,7 +75,7 @@
                         </template>
                     </td>
                     <td>
-                    <template v-if="(postulante.status==='activo')||(postulante.status==='rechazado')">
+                    <template v-if="(postulante.status==='activo')">
                         <button class="btn btn-xs sisbeca-btn-success disabled">
                         <i class="fa fa-check" data-target="modal-asignar"></i>
                         </button>
@@ -106,7 +109,7 @@
                 </tr>
                 <tr v-if="postulantes.length==0">
                     <td colspan="7" class="text-center">
-                        No hay <strong>postulantes con entrevista asignada</strong>
+                        No hay <strong>postulantes con entrevista Aprobada</strong>
                     </td>
                 </tr>
             </tbody>
@@ -114,64 +117,6 @@
     </div>
     <div class="linea"></div>
     <br>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="panel-group Material-default-accordion" id="Material-accordion3" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-default-accordion mb-3">
-        <div class="panel-accordion" role="tab" id="heading2">
-            <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#Material-accordion3" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                Ver Postulantes Rechazados
-                </a>
-            </h4>
-        </div>
-        <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
-            <div align="justify" class="panel-body">
-                <h3 class="letras-rojas">Postulantes Rechazados:</h3>
-                <!--Postulantes Rechazados-->
-                        <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-
-                        <thead>
-                            <tr>
-                                <th class="text-center">Estatus</th>
-                                <th class="text-center">Postulante</th>
-                                <th class="text-center">Cédula</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="rechazado in rechazados">
-                                <td class="text-center">
-                                    <template>
-                                        <span class="label label-danger">Rechazado</span>
-                                    </template>
-                                </td>
-                                <td class="text-center">@{{rechazado.name}} @{{rechazado.last_name}} </td>
-                                <td class="text-center">@{{rechazado.cedula}}</td>
-                                <td class="text-center">
-                                    <template v-if="rechazado.datos=='sinborrar'">
-                                        <a :href="getRutaVerPerfilRechazado(rechazado.cedula)" class="btn btn-xs sisbeca-btn-primary"> <i class="fa fa-eye" ></i></a>
-                                    </template>
-
-                                </td>
-                            </tr>
-                            <tr v-if="rechazados.length==0">
-                                <td colspan="7" class="text-center">
-                                    No hay <strong>postulantes Rechazados</strong>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        </div>
-
-    </div>
-</div>
-
-
 
    <br>
 
@@ -366,6 +311,7 @@
             postulantes:[],
             rechazados:[],
             contador:0,
+            showflash: false,
         },
         methods:
         {
@@ -404,7 +350,16 @@
                     funcion:this.funcion
                     }).then(response=>{
                     this.obtenerpostulantes();
+
                     $("#preloader").hide();
+                    console.log(this.funcion)
+                    if(this.funcion=='Rechazar'){
+                    this.showflash=true
+                    }
+                    if(this.funcion=='Aprobar'){
+                     this.showflash=false
+                    }
+
                     toastr.success(response.data.success);
                 });
             },
