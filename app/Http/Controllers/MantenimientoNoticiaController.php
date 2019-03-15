@@ -22,6 +22,21 @@ class MantenimientoNoticiaController extends Controller
         $this->middleware('editor');
     }
 
+    public function getPublicaciones()
+    {
+        $publicaciones = Noticia::all();
+        $paux = collect();
+
+        foreach($publicaciones as $p){
+
+            $paux->push(array(
+                "publicacion" => $p,
+                "editor" => $p->editor->nombreyapellido(),
+                "fecha_actualizacion" => $p->fechaActualizacion()
+                ));
+        }
+        return response()->json(['publicaciones'=>$paux]);
+    }
     public function index(Request $request)
     {
         $noticias = Noticia::all();
@@ -32,7 +47,105 @@ class MantenimientoNoticiaController extends Controller
     {
         return view('sisbeca.noticias.crearNoticia');
     }
+    public function editApiPublicacion(Request $request,$id){
+        $noticia = Noticia::find($id);
+        $notice = json_decode($request->notice);
+        $noticiaAux = $notice->notice;
+        $file = $request->file_img;
+        if($file && is_file($file)) {
+            $es_archivo=is_file(public_path() .$noticia->url_imagen);
+            if($es_archivo)
+            {
+                unlink(public_path() .$noticia->url_imagen);
+            }
+            $name = 'noticiasAVAA_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path() . '/images/noticias/';
+            $file->move($path, $name);
+            $noticia->url_imagen = '/images/noticias/'.$name;
 
+        }
+        $noticia->titulo = $noticiaAux->titulo;
+        $noticia->tipo = $noticiaAux->tipo;
+        $noticia->informacion_contacto = $noticiaAux->informacion_contacto;
+        $noticia->slug = Noticia::getSlug($noticia->titulo);
+        $noticia->contenido = $noticiaAux->contenido;
+        if($noticia->tipo === 'noticia'){
+            $noticia->al_carrousel = ($noticiaAux->al_carrousel=='1') ? 1 : 0;
+        }else {
+            $noticia->email_contacto = $noticiaAux->email_contacto;
+            $noticia->url_articulo = $noticiaAux->url_articulo;
+            $noticia->telefono_contacto = $noticiaAux->telefono_contacto;
+        }
+
+        $tipo= ( 'noticia' === $noticia->tipo ) ? 'Noticia' : 'Miembro Institucional';
+        $noticia->save();
+        $msg = 'La publicación tipo: '.$tipo.' fue actualizada exitosamente.';
+
+        return response()->json(['msg'=>$msg,'res'=> 1]);
+
+        
+    }
+    public function deleteApiPublicacion($id){
+        $noticia= Noticia::find($id);
+        if(is_null($noticia))
+        {
+            $msg='Disculpe, el archivo solicitado no ha sido encontrado.';
+            $res=0;
+        }
+        if($noticia->delete())
+        {
+            $es_archivo=file_exists(public_path() .$noticia->url_imagen);
+            if($es_archivo)
+                     unlink(public_path() .$noticia->url_imagen);
+            $msg = 'La publicación con titulo '.$noticia->titulo.' tipo: '.$noticia->tipo.' fue eliminada exitosamente.';
+            $res= 1;
+        }
+        else
+        {
+            $msg='Disculpe, ha ocurrido un error al eliminar publicación.';
+            $res=0;
+        }
+        return response()->json(['msg'=>$msg,'res'=> $res]);
+    }
+    public function createApiPublicacion(Request $request){
+        $notice = json_decode($request->notice);
+        $noticiaAux = $notice->notice;
+        $file = $request->file_img;
+        if($file && is_file($file)) {
+            $noticia = new Noticia();
+            $name = 'noticiasAVAA_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path() . '/images/noticias/';
+            $file->move($path, $name);
+            $noticia->url_imagen = '/images/noticias/'.$name;
+            $noticia->titulo = $noticiaAux->titulo;
+            $noticia->tipo = $noticiaAux->tipo;
+            $noticia->informacion_contacto = $noticiaAux->informacion_contacto;
+            $noticia->slug = Noticia::getSlug($noticia->titulo);
+            $noticia->user_id = \Auth::user()->id;
+            $noticia->contenido = $noticiaAux->contenido;
+            if($noticia->tipo === 'noticia'){
+                $noticia->al_carrousel = ($noticiaAux->al_carrousel=='1') ? 1 : 0;
+            }else {
+                $noticia->email_contacto = $noticiaAux->email_contacto;
+                $noticia->url_articulo = $noticiaAux->url_articulo;
+                $noticia->telefono_contacto = $noticiaAux->telefono_contacto;
+            }
+    
+            $tipo= ( 'noticia' === $noticia->tipo ) ? 'Noticia' : 'Miembro Institucional';
+            $noticia->save();
+            $msg = 'La publicación tipo: '.$tipo.' fue registrada exitosamente.';
+            return response()->json(['msg'=>$msg,'res'=> 1]);
+
+        } else {
+            $msg = "Ocurrio un error con la imagen principal";
+            return response()->json(['msg'=>$msg,'res'=> 0]);
+
+        }
+       
+
+
+        
+    }
     public function store(NoticiaRequest $request)
     {
         $file= $request->file('url_imagen');

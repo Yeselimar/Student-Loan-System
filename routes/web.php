@@ -200,6 +200,11 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
+        //Receso Decembrino 
+        Route::get('/receso/decembrino/', 'RecesoDecembrinoController@index')->name('receso.decembrino.index');
+        Route::get('/receso/decembrino/servicio', 'RecesoDecembrinoController@obtener')->name('receso.decembrino.servicio');
+        Route::post('/receso/decembrino/guardar', 'RecesoDecembrinoController@guardar')->name('receso.decembrino.guardar');
+        Route::get('/receso/decembrino/cambiar', 'RecesoDecembrinoController@cambiar')->name('receso.decembrino.cambiar');
         //Rutas para cargar actividades becarias de becarios viejos y/o existentes
         Route::get('/becarios/cargar-actividades/', 'ActividadesBecariasController@becarioslistar')->name('becarios.listar.cargar');
 
@@ -324,6 +329,20 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'uses' => 'MantenimientoNoticiaController@destroy',
             'as' => 'noticia.destroy'
         ]);
+        Route::get('api/get/publicaciones', [
+            'uses' => 'MantenimientoNoticiaController@getPublicaciones',
+            'as' => 'get.publicaciones'
+        ]);
+        Route::post('api/create/publicacion','MantenimientoNoticiaController@createApiPublicacion')->name('create.publicacion.api');
+        Route::post('api/edit/{id}/publicacion','MantenimientoNoticiaController@editApiPublicacion')->name('edit.publicacion.api');
+        Route::get('api/delete/{id}/publicacion','MantenimientoNoticiaController@deleteApiPublicacion')->name('delete.publicacion.api');
+
+
+
+        Route::get('publicaciones', function(){
+            return view('sisbeca.noticias.publicaciones');
+        
+        })->name('todas.publicaciones');
 
         //costos
         Route::get('costos', [

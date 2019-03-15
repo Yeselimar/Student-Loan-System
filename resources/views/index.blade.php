@@ -41,7 +41,7 @@
 </div>
 @endif
 <!--fin banner-->
-<div class="linea-sobra" id="programasAVAA"></div>
+   <div class="linea-sobra" id="programasAVAA"></div>
    <!-- Noticias -->
    <div class="container">
     	<div class="row">
@@ -118,7 +118,7 @@
                   </div>
                   <hr>
                   <div class="xxxx-button">
-                     <a href="{{asset(route('programas'))}}#ProExcelencia" title="Mas Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Mas Información</span></a>
+                     <a href="{{asset(route('programas'))}}#ProExcelencia" title="Más Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Más Información</span></a>
                   </div>
                </div>
             </div>
@@ -218,26 +218,26 @@
                </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Instituciones </h2>
-                     <div class="" style="border:1px solid #fff">
-                        <div class="carousel-empresas owl-carousel owl-theme">
-                           @if($instituciones->count()==0)
-                           <div class="col-lg-12">
-                                 <img  class="img-responsive img-fluid" src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
-                           </div>
-                           @else
-                              @foreach($instituciones as $institucion)
-                                 <div class="col-lg-12" >
-                                    <a class="miembro-enlace" href="{{$instituciones->url}}">
-                                       <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
-                                       <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
-                                    </a>
-                                 </div>
-                              @endforeach
-                           @endif
-                        </div>
+               <h2 class="title-programas" data-wow-duration="1000ms" data-wow-delay="0.3s"> Instituciones </h2>
+               <div class="" style="border:1px solid #fff">
+                  <div class="carousel-empresas owl-carousel owl-theme">
+                     @if($instituciones->count()==0)
+                     <div class="col-lg-12">
+                           <img  class="img-responsive img-fluid" src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
                      </div>
+                     @else
+                        @foreach($instituciones as $institucion)
+                           <div class="col-lg-12" >
+                              <a class="miembro-enlace" href="{{$instituciones->url}}">
+                                 <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
+                                 <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
+                              </a>
+                           </div>
+                        @endforeach
+                     @endif
+                  </div>
                </div>
+            </div>
          </div>
       </div>
    </section>
@@ -245,7 +245,6 @@
    <div class="linea-sobra"></div>
 
    <!-- Fin Aliados -->
-      <div class="linea-sobra"></div>
 @endsection
 
 @section('personaljs')

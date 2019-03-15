@@ -4468,7 +4468,7 @@ panel-default>.panel-heading {
 }
 [contenteditable]:hover,
 [contenteditable]:focus {
-  background: #93b5ff;
+  background: rgb(251, 255, 254);
 }
 .control-bar {
   position: relative;

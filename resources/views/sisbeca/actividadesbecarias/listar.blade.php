@@ -41,6 +41,7 @@
 
 					<td class="text-center">
 						
+
 						
 						@if(Auth::user()->esDirectivo() or Auth::user()->esCoordinador())
 						<a href="{{route('crear.periodo',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Nota">
@@ -50,6 +51,18 @@
 							<i class="fa fa-book"></i>
 						</a>
 						<a href="{{route('crear.voluntariado',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="top" title="Cargar Voluntariado">
+							<i class="fa fa-star"></i>
+						</a>
+
+						|
+
+						<a href="{{route('actividades.becario',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="top" title="Ver Notas Académicas">
+							<i class="fa fa-sticky-note-o"></i>
+						</a>
+						<a href="{{route('periodos.becario',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="top" title="Ver CVA">
+							<i class="fa fa-book"></i>
+						</a>
+						<a href="{{route('voluntariados.becario',$becario->user_id)}}" class="btn btn-xs sisbeca-btn-default" data-toggle="tooltip" data-placement="top" title="Ver Voluntariados">
 							<i class="fa fa-star"></i>
 						</a>
 						@endif

@@ -12,6 +12,11 @@
             <a href="{{ URL::previous() }}" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
         </div>
 		<br>
+        @if(getReceso())
+        <div class="alert alert-danger" role="alert">
+            El sistema está deshabilitado desde <strong>{{avaa\RecesoDecembrino::first()->getFechaInicio()}}</strong> hasta el <strong>{{avaa\RecesoDecembrino::first()->getFechaFin()}}</strong> para cargar voluntariados.
+        </div>
+        @endif
 		<div class="col sisbeca-container-formulario">
 
 			@if($model=='crear')
@@ -120,7 +125,11 @@
                                 <button class="btn sisbeca-btn-primary" type="submit" disabled="disabled">Guardar</button>
                             @endif
                         @else
-                            <button class="btn sisbeca-btn-primary" type="submit">Guardar</button>
+                            @if(getReceso())
+                                <button class="btn sisbeca-btn-primary" disabled="disabled">Guardar</button>
+                            @else
+                                <button class="btn sisbeca-btn-primary" type="submit" >Guardar</button>
+                            @endif
                         @endif
 					</div>
 				</div>
