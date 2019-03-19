@@ -12,9 +12,12 @@
     @endif
     <a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
 </div>
+@if($mentor)
 <div class="container-fluid">
+	
 	<div class="card card-body bg-light border border-info p-2">
 		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-12">
+
 		<p class="text-left"><strong>Perfil de {{$mentor->user->name.' '.$mentor->user->last_name}}</strong></p>
 				<div class="row">
 					<div class="col xs-6 col-md-8 col-lg-4 offset-md-5  offset-lg-0 p-t-20 text-center">
@@ -84,133 +87,140 @@
 					</div>
 
 				</div>
-
+		
 		</div>
 	</div>
-
 </div>
+@else
+	<div class="container">
+		<div class="alert alert-danger">
+		 	Disculpe, ud. no tiene mentor asignado.
+		</div>
+	</div>
+@endif
+
+@if($mentor)
+<!-- Mentor -->
+<div class="col-lg-12">
+    <div class="card">
+        <!-- Nav tabs -->
+        <ul class=" nav nav-tabs profile-tab" role="tablist">
+            <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datospersonales" role="tab">Datos Personales</a> </li>
+            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#informacionadicional" role="tab">Información Adicional</a> </li>
+            @if($mentor->numeroBecarios() > 0 && ((Auth::user()->rol==='directivo' || Auth::user()->rol==='coordinador' || Auth::user()->rol==='mentor')))
+            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#becarios" role="tab">Becarios Asignados</a> </li>
+            @endif
 
 
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="datospersonales" role="tabpanel">
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td class="text-left"><strong>Nombres</strong></td>
+								<td class="text-left">{{ $mentor->user->name }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Apellidos</strong></td>
+								<td class="text-left">{{ $mentor->user->last_name }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Fecha Nacimiento</strong></td>
+								<td class="text-left">{{ $mentor->user->getFechaNacimiento() }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Lugar de Nacimiento</strong></td>
+								<td class="text-left">{{ $mentor->user->lugar_nacimiento }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Edad</strong></td>
+								<td class="text-left">{{ $mentor->user->getEdad() }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Sexo</strong></td>
+								<td class="text-left">{{ $mentor->user->sexo }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Cédula</strong></td>
+								<td class="text-left">{{ $mentor->user->cedula }}</td>
+							</tr>
+							<tr>
+								<td class="text-left"><strong>Correo Electrónico</strong></td>
+								<td class="text-left">{{ $mentor->user->email }}</td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+            </div>
 
-                    <!-- Column -->
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <!-- Nav tabs -->
-                            <ul class=" nav nav-tabs profile-tab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datospersonales" role="tab">Datos Personales</a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#informacionadicional" role="tab">Información Adicional</a> </li>
-                                @if($mentor->numeroBecarios() > 0 && ((Auth::user()->rol==='directivo' || Auth::user()->rol==='coordinador' || Auth::user()->rol==='mentor')))
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#becarios" role="tab">Becarios Asignados</a> </li>
-                                @endif
+			<div class="tab-pane" id="informacionadicional" role="tabpanel">
+				<div class="table-responsive">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td class="text-left"><strong>Profesión</strong></td>
+									<td class="text-left">{{ $mentor->profesion }}</td>
+								</tr>
+								<tr>
+									<td class="text-left"><strong>Empresa</strong></td>
+									<td class="text-left">{{ $mentor->empresa}}</td>
+								</tr>
+								<tr>
+									<td class="text-left"><strong>Cargo Actual</strong></td>
+									<td class="text-left">{{ $mentor->cargo_actual}}</td>
+                                </tr>
+                                <tr>
+									<td class="text-left"><strong>Area de Interes</strong></td>
+									<td class="text-left">{{ $mentor->area_de_interes}}</td>
+                                </tr>
+                                <tr>
+									<td class="text-left"><strong>Fecha Ingreso Empresa</strong></td>
+									<td class="text-left">{{ date("d/m/Y", strtotime($mentor->fecha_ingreso_empresa)) }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
-
-                            </ul>
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="datospersonales" role="tabpanel">
-									<div class="table-responsive">
-										<table class="table table-bordered">
-											<tbody>
-												<tr>
-													<td class="text-left"><strong>Nombres</strong></td>
-													<td class="text-left">{{ $mentor->user->name }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Apellidos</strong></td>
-													<td class="text-left">{{ $mentor->user->last_name }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Fecha Nacimiento</strong></td>
-													<td class="text-left">{{ $mentor->user->getFechaNacimiento() }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Lugar de Nacimiento</strong></td>
-													<td class="text-left">{{ $mentor->user->lugar_nacimiento }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Edad</strong></td>
-													<td class="text-left">{{ $mentor->user->getEdad() }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Sexo</strong></td>
-													<td class="text-left">{{ $mentor->user->sexo }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Cédula</strong></td>
-													<td class="text-left">{{ $mentor->user->cedula }}</td>
-												</tr>
-												<tr>
-													<td class="text-left"><strong>Correo Electrónico</strong></td>
-													<td class="text-left">{{ $mentor->user->email }}</td>
-												</tr>
-												
-											</tbody>
-										</table>
-									</div>
-                                </div>
-
-								<div class="tab-pane" id="informacionadicional" role="tabpanel">
-									<div class="table-responsive">
-											<table class="table table-bordered">
-												<tbody>
-													<tr>
-														<td class="text-left"><strong>Profesión</strong></td>
-														<td class="text-left">{{ $mentor->profesion }}</td>
-													</tr>
-													<tr>
-														<td class="text-left"><strong>Empresa</strong></td>
-														<td class="text-left">{{ $mentor->empresa}}</td>
-													</tr>
-													<tr>
-														<td class="text-left"><strong>Cargo Actual</strong></td>
-														<td class="text-left">{{ $mentor->cargo_actual}}</td>
-                                                    </tr>
-                                                    <tr>
-														<td class="text-left"><strong>Area de Interes</strong></td>
-														<td class="text-left">{{ $mentor->area_de_interes}}</td>
-                                                    </tr>
-                                                    <tr>
-														<td class="text-left"><strong>Fecha Ingreso Empresa</strong></td>
-														<td class="text-left">{{ date("d/m/Y", strtotime($mentor->fecha_ingreso_empresa)) }}</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-
-                                </div>
-                                
-                                @if($mentor->numeroBecarios() > 0 && ((Auth::user()->rol==='directivo' || Auth::user()->rol==='coordinador' || Auth::user()->rol==='mentor')))
-                                    <div class="tab-pane" id="becarios" role="tabpanel">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-center">Nombre y Apellido</th>
-                                                            <th class="text-center">Email</th>
-                                                            <th class="text-center">Cedula</th>
-                                                            <th class="text-center">Edad</th>
-                                                            <th class="text-center">Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach($mentor->becarios as $becario)
-
-                                                        <tr>
-                                                            <td scope="row" class="text-center">{{$becario->user->name.' '.$becario->user->last_name}}</td>
-                                                            <td class="text-center">{{$becario->user->email}}</td>
-                                                            <td class="text-center">{{$becario->user->cedula}}</td>
-                                                            <td class="text-center">{{$becario->user->edad}}</td>
-                                                            <td class="text-center">{{$becario->status}}</td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+            </div>
             
-                                                </div>
-                                    </div>
-                                @endif
+            @if($mentor->numeroBecarios() > 0 && ((Auth::user()->rol==='directivo' || Auth::user()->rol==='coordinador' || Auth::user()->rol==='mentor')))
+                <div class="tab-pane" id="becarios" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Nombre y Apellido</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Cedula</th>
+                                        <th class="text-center">Edad</th>
+                                        <th class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($mentor->becarios as $becario)
+
+                                    <tr>
+                                        <td scope="row" class="text-center">{{$becario->user->name.' '.$becario->user->last_name}}</td>
+                                        <td class="text-center">{{$becario->user->email}}</td>
+                                        <td class="text-center">{{$becario->user->cedula}}</td>
+                                        <td class="text-center">{{$becario->user->edad}}</td>
+                                        <td class="text-center">{{$becario->status}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
                             </div>
-                        </div>
-                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+<!-- Mentor -->
+@endif
 
 @endsection
