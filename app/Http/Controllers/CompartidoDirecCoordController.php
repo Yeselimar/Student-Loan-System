@@ -293,20 +293,18 @@ class CompartidoDirecCoordController extends Controller
             $usuario=User::where('rol','=','postulante_becario')->get();
             $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios);
-
         }
         if($data==="rechazados") //Lista todos los rechazados
         {
-            //$postulantes = Becario::query()->where('status','=','rechazado')->get();
+           //$postulantes = Becario::query()->where('status','=','rechazado')->get();
             $postulantes = Rechazado::all();
            // dd($postulantes);
             return view('sisbeca.postulaciones.postulantesRechazados')->with('postulantes',$postulantes);
-
-
         }
        if($data=="entrevistaAprobada") //todos lo que Aprobaron la entrevista o fueron aprobados como becario
         {
             $rechazados = Becario::where('status','=','rechazado')->get();
+           // dd($rechazados);
             $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados);
         }
@@ -430,7 +428,7 @@ class CompartidoDirecCoordController extends Controller
 
         if($request->get('valor')==='1')
         {
-            flash('La solicitud de '.$solicitud->user->nombreyapellido().' ha sido aprobada exitosamente','success')->important();
+            flash('La solicitud de '.$solicitud->user->name.' ha sido aprobada exitosamente','success')->important();
 
             if($solicitud->user->rol==='becario')
                 $instancia= Becario::query()->select()->where('user_id','=',$solicitud->user_id)->first();
@@ -441,7 +439,7 @@ class CompartidoDirecCoordController extends Controller
 
             if($solicitud->titulo==='desincorporacion temporal')
             {
-                //$instancia->status='inactivo';
+                $instancia->status='inactivo';
                 if($solicitud->user->rol==='becario')
                 {
                     $instancia->fecha_inactivo= date('Y-m-d');
@@ -452,17 +450,17 @@ class CompartidoDirecCoordController extends Controller
                     $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
                     foreach ($becariosT as $becario)
                     {
-                        $becario->mentor_id= null;
+                        //$becario->mentor_id= Mentor::first()->user_id;
                         $becario->save();
                     }
                 }
-                flash($instancia->user->nombreyapellido().' Ha sido desincorporado temporalmente en el sistema','info')->important();
+                flash($instancia->user->name.' Ha sido desincorporado temporalmente en el sistema','info')->important();
             }
             else
             {
                 if($solicitud->titulo==='desincorporacion definitiva')
                 {
-                    //$instancia->status='desincorporado';
+                    $instancia->status='desincorporado';
                     if($solicitud->user->rol==='becario')
                     {
                         $instancia->mentor_id = null;
@@ -523,7 +521,7 @@ class CompartidoDirecCoordController extends Controller
                     if($solicitud->titulo==='reincorporacion')
                     {
                         $instancia->status='activo';
-                        flash($instancia->user->nombreyapellido().' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
+                        flash($instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
 
                     }
                 }
@@ -536,7 +534,7 @@ class CompartidoDirecCoordController extends Controller
         else
         {
             $solicitud->status='rechazada';
-            flash('La solicitud de '.$solicitud->user->nombreyapellido().' ha sido rechazada','info')->important();
+            flash('La solicitud de '.$solicitud->user->name.' ha sido rechazada','info')->important();
         }
 
 
@@ -739,7 +737,7 @@ class CompartidoDirecCoordController extends Controller
     public function eliminarpostulante($cedula)
     {
     $usuario = User::where('cedula', '=', $cedula)->first();
-    
+
         if($usuario!=NULL){ //si consigue usuario
             $becario = Becario::find($usuario->id);//entonces busca el becario
             //Elimino la foto de perfil

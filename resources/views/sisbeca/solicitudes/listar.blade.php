@@ -51,14 +51,15 @@
                         <a href="{{route('solicitud.show',$solicitud->id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="tooltip" data-placement="bottom" data-toggle="tooltip" data-placement="bottom" title="Ver solicitud">
                             <i class='fa fa-eye'></i>
                         </a>
+                        
                         @if(Auth::user()->esMentor() or Auth::user()->esBecario())
-                        <a href="{{route('solicitud.ocultar.usuario',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
-                            <i class="fa fa-eye-slash"></i>
-                        </a>
-                            @if($solicitud->status==='enviada')
-                            <a href="{{route('solicitud.cancelar',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Cancelar solicitud">
-                                <i class="fa fa-cancel"></i>
+                            <a href="{{route('solicitud.ocultar.usuario',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
+                                <i class="fa fa-eye-slash"></i>
                             </a>
+                            @if($solicitud->status==='enviada')
+                                <a href="{{route('solicitud.cancelar',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Cancelar solicitud">
+                                    <i class="fa fa-remove"></i>
+                                </a>
                             @endif
                         @endif
 

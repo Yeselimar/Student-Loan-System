@@ -8,9 +8,8 @@
    <!-- Fin Seccion Principal -->
 
    <div class="linea-sobra"></div>
-  
    <div class="container-cabecera position-relative">
-      <img src="{{asset('info_sitio/img/cabeceras/membresia.png')}}" alt="AVAA - Donaciones" class="cabecera-imagen">
+      <img src="{{asset('info_sitio/img/cabeceras/donaciones.png')}}" alt="AVAA - Donaciones" class="cabecera-imagen">
       <div class="cabecera-titulo">
       <p class="h1">Donaciones</p>
     </div>
@@ -131,7 +130,7 @@
                      <p  >Mención pública de reconocimiento en eventos de la AVAA.</p>
                   </li>
                   <li  >
-                     <p >Copia digital del anuario del Programa Excelencia. 
+                     <p >Copia digital del anuario del Programa Excelencia.
                         Otros servicios.
                      </p>
                   </li>

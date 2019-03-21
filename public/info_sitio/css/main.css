@@ -36,6 +36,9 @@
   color: black !important;
   font-weight: bold;
 }
+.dropdown-item:hover{
+  background-color: #dae6f7 !important;
+  }
 .facebookb {
   background: #3B5998;
   color: white;
@@ -766,6 +769,7 @@ height: 20px;
 .navbar-expand-lg .navbar-nav li a:focus
 {
   color: #003865;
+
 }
 
 .dropdown-item.active, .dropdown-item:active{
