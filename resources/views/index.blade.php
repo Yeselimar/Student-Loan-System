@@ -7,7 +7,7 @@
    </section>
    <div class="linea-sobra "></div>
 
-   <div class="container-cabecera">
+   <div class="container-cabecera position-relative">
      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="d-sm-none d-md-block d-none cabecera-imagen">
      <img src="{{asset("info_sitio/img/cabeceras/membresia.png")}}" alt="AVAA - AVAA" class=" d-block d-sm-block d-md-none cabecera-imagen">
 

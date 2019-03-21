@@ -48,7 +48,7 @@
 
    <div class="linea-sobra"></div>
 
-   <div class="container-cabecera">
+   <div class="container-cabecera position-relative">
       <img src="{{asset("info_sitio/img/cabeceras/programa.png")}}" alt="AVAA - Programas" class="cabecera-imagen">
       <div class="cabecera-titulo">
          <p class="h1">Programas</p>

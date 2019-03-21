@@ -1,4 +1,4 @@
-<style scoped>
+<style  lang="scss" scoped>
 .loading {
   position: fixed;
   top: 0;
@@ -8,11 +8,16 @@
   z-index: 1050;
   background-color: rgba(0, 0, 0, 0.2);
 }
+.overflowM {
+    overflow: hidden !important;
+  }
 </style>
 <template>
     <div>
       <create-publicaciones v-if="newP" @close="close" :idEdit="idEdit" :notice="notice" :route="route" :rimg="route_img" @save="save"></create-publicaciones>
       <div  class="col-lg-12"  v-if="listar">
+        <view-notice v-if="showModal" @close2="closeM" :title="notice.titulo" :content2="notice.contenido"></view-notice>
+
       <div class="table-responsive">
          <div class="text-right">
             <a @click="newPublicacion" class="btn btn-sm sisbeca-btn-primary">Crear publicación</a>
@@ -30,7 +35,7 @@
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_filter pull-right">
                  <b-input-group-append>
-                <label>Buscar:<input type="search" v-model="filter" class="form-control form-control-sm" placeholder="" ><b-btn :disabled="!filter" @click="filter = ''">Limpiar</b-btn>
+                <label>Buscar:<input type="search" v-model="filter" class="form-control form-control-sm" placeholder="" >
                     
                 </label>
                 </b-input-group-append>
@@ -77,7 +82,10 @@
 					</span>
 				</template>
                 <template slot="actions" slot-scope="row">
-                    <a v-b-popover.hover.bottom="'Editar Publicación'" @click.stop="editPublicacion(row.item.publicacion, row.item.publicacion.id)" class="btn btn-xs sisbeca-btn-primary">
+                  <a v-b-popover.hover.bottom="'Vista Previa'" @click="showPublicacion(row.item.publicacion, row.item.publicacion.id)" class="btn btn-xs sisbeca-btn-primary">
+                            <i class="fa fa-eye"></i>
+                    </a>
+                    <a v-b-popover.hover.bottom="'Editar Publicación'" @click="isLoading = true;editPublicacion(row.item.publicacion, row.item.publicacion.id)" class="btn btn-xs sisbeca-btn-primary">
                             <i class="fa fa-pencil"></i>
                     </a>
                     <a v-b-popover.hover.bottom="'Eliminar Publicación'" @click.stop="modalDelete(row.item.publicacion,row.item.publicacion.id)" class="btn btn-xs sisbeca-btn-primary">
@@ -94,12 +102,7 @@
 				</div>
        </div>
             
-           <section v-if="isLoading" class="loading" id="preloader">
-            <div>
-                <svg class="circular" viewBox="25 25 50 50">
-                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
-            </div>
-          </section>
+           
           <b-modal id="deletePID" hide-header-close ref="deletePRef" @hide="resetModal" :title="'Eliminar Publicación: '+notice.titulo" >
               ¿Estas Seguro que desea eliminar la publicación de "{{notice.titulo}}" ?
             <template slot="modal-footer">
@@ -108,13 +111,20 @@
             </template>	
           </b-modal>
       </div>
-      
+      <section v-if="isLoading" class="loading" id="preloader">
+            <div>
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+            </div>
+      </section>
 
   </div>
 </template>
 
 <script>
 import createPublicaciones from "../components/newPublicacionComponent.vue";
+import ViewNotice from "../components/viewNoticeComponent.vue";
+
 
 export default {
   props: {
@@ -144,7 +154,8 @@ export default {
     }
   },
   components: {
-    createPublicaciones
+    createPublicaciones,
+    ViewNotice
   },
   data() {
     return {
@@ -176,13 +187,62 @@ export default {
       sortBy: null,
       sortDesc: false,
       sortDirection: "asc",
-      filter: null
+      filter: null,
+      showModal: false
     };
   },
   create() {
     this.isLoading = true;
   },
   mounted() {
+    /*document.getElementById("myBtn").addEventListener("click", function(){
+      alert("The paragraph was clicked.");
+    });*/
+    document.getElementById("myBtn").addEventListener("click", function(event){
+        event.preventDefault()
+        var cond = $('#mydrop').hasClass('show')
+        var element = document.getElementById("mydrop")
+        if(cond){
+          element.classList.remove('show')
+
+        } else {
+          if($('#myAlert').hasClass('show')){
+            document.getElementById("myAlert").classList.remove('show')
+          }
+          element.classList.add('show')
+        }
+    });
+    document.getElementById("myBtnAlert").addEventListener("click", function(event){
+        event.preventDefault()
+        var cond = $('#myAlert').hasClass('show')
+        var element = document.getElementById("myAlert")
+        if(cond){
+          element.classList.remove('show')
+
+        } else {
+          if($('#mydrop').hasClass('show')){
+            document.getElementById("mydrop").classList.remove('show')
+          }
+          element.classList.add('show')
+
+        }
+    });
+       window.addEventListener("click",(e) => {
+            var cond = $('#mydrop').hasClass('show')
+            var element = document.getElementById("mydrop")
+            if(cond){
+              element.classList.remove('show')
+
+            } 
+            var cond = $('#myAlert').hasClass('show')
+            var element = document.getElementById("myAlert")
+            if(cond){
+              element.classList.remove('show')
+
+            }
+        });
+
+    
     this.getDataTable();
   },
   computed: {
@@ -194,15 +254,32 @@ export default {
     }
   },
   methods: {
+    closeM(){
+        var cond = $('#main_body').hasClass('overflowM')
+        var element = document.getElementById("main_body")
+        if(cond) {
+            element.classList.remove('overflowM')
+        }
+        this.showModal = false
+    },
+    showPublicacion(publicacion,id){
+      this.notice = publicacion
+      this.showModal = true
+    },
     editPublicacion(publicacion,id){
+          this.isLoading = true
           let url = this.editN
           this.route = url.replace(':id_edit',parseInt(id))
           this.idEdit = id
           this.notice = publicacion
           url = this.getimage
           this.route_img = url.replace(':id_img',publicacion.url_imagen.replace('/','',1))
-          this.listar=false;
-          this.newP=true
+          setTimeout(e => { 
+            this.isLoading = false;
+            this.listar=false;
+            this.newP=true;
+          },1)
+
     },
     modalDelete(publicacion,id){
       let url = this.deleteN

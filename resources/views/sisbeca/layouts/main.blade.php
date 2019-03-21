@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="fix-header fix-sidebar">
+<body class="fix-header fix-sidebar" id="main_body">
     <!-- Preloader - style you can find in spinners.css -->
     <div class="preloader">
         <svg class="circular" viewBox="25 25 50 50">

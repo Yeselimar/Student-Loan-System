@@ -3,15 +3,10 @@
 @section('content')
     <!-- Principal -->
     <section id="x" class="x" data-stellar-background-ratio="0.2">
-        <br/><br/><br/>
         <div class="container">
-         
-         
         </div>
     </section>
     <!-- Fin Principal -->
-
-    <div style="height: 50px" id="noticias" style="border: 1px solid red"></div>
 
     <section class="section-princip-noticia" data-stellar-background-ratio="0.2">
 
@@ -19,10 +14,10 @@
         <section id="Noticia" class="section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-noticia wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">{{$noticia->titulo}}</h2>
+                    <h1 class="font-black wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">{{$noticia->titulo}}</h1>
                     <hr class="lines wow zoomIn" data-wow-delay="0.3s">
                 </div>
-                <div id="portfolio" class="row">
+                <!--<div id="portfolio" class="row">
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 mix development print">&nbsp;</div>
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 mix design print">
                         <div class="portfolio-item">
@@ -34,11 +29,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <hr class="lines">
 
-                <p style="color:#424242">
+                <p style="color:#424242;margin-bottom:0px">
                 <i class="fa fa-user"></i> <strong>{{$noticia->informacion_contacto}}</strong> - 
                 
                 <i class="fa fa-calendar"></i> <strong>{{$noticia->fechaActualizacion()}}</strong>
@@ -47,7 +42,7 @@
 
                 <div class="container">
                     <div class="row">
-                        <div style=" text-align: justify;">
+                        <div id="notice-responsive" style="width: -webkit-fill-available; !important" >
                             <p class="h5">{!! $noticia->contenido !!}</p>
                         </div>
                     
@@ -93,4 +88,14 @@
 
     </section>
 
+@endsection
+@section('personaljs')
+<script>
+   $(document).ready(function()
+   { 
+        for (let i = 0; i < document.getElementsByTagName("img").length; i++) {
+            document.getElementsByTagName("img")[i].classList.add('img-fluid')
+        }
+   })
+</script>
 @endsection

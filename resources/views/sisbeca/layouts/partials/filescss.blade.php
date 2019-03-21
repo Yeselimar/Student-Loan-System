@@ -2,6 +2,7 @@
     <!-- Styles -->
     <!--Boostrap Full Calendar -->
     <link href="{{asset('public_sisbeca/css/lib/bootstrap/bootstrap.min.css')}}" rel="stylesheet"/> <!-- Boostrap v4.0.1-->
+
     <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet"/>--> <!-- Boostrap v4.1.1-->
     
     <!--<link href="{{asset('public_sisbeca/css/lib/calendar2/pignose.calendar.min.css')}}" rel="stylesheet"/>-->
@@ -41,6 +42,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/datatable-bootstrap/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/sweetalert/sweetalert2.min.css')}}"/> 
+
 
      
     <link href="{{asset('plugins/datetimepicker-bootstrap/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet"/>

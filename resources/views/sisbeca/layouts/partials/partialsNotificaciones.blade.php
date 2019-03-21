@@ -1,11 +1,11 @@
 <!-- Comment -->
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle text-muted text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell"></i>
+    <a class="nav-link dropdown-toggle text-muted text-muted  "  id="myBtnAlert" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell"></i>
       @if($cantNotif>0)
         <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
           @endif
     </a>
-    <div class="dropdown-menu dropdown-menu-right mailbox animated zoomIn">
+    <div class="dropdown-menu dropdown-menu-right mailbox animated zoomIn" id="myAlert">
         <ul>
             <li>
                 <div class="drop-title">Notificaciones</div>

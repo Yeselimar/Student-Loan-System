@@ -40,23 +40,23 @@
             <!-- Profile -->
             <li class="nav-item dropdown">
                 @if($image_perfil->count()>0)
-                    <a class="nav-link dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-muted"  id="myBtn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="{{asset($image_perfil[0]->url)}}" alt="user" class="profile-pic" />
                     </a>
                 @else
 
                     @if(Auth::user()->sexo==='femenino')
-                        <a class="nav-link dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-muted" id="myBtn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{asset('images/perfil/femenino.png')}}" alt="user" class="profile-pic" />
                         </a>
                     @else
-                        <a class="nav-link dropdown-toggle text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-muted" id="myBtn"  href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{asset('images/perfil/masculino.png')}}" alt="user" class="profile-pic" />
                         </a>
                     @endif
                 @endif
 
-                <div class="dropdown-menu dropdown-menu-right animated zoomIn">
+                <div id="mydrop" class="dropdown-menu dropdown-menu-right animated zoomIn">
                     <ul class="dropdown-user">
                         <li>
                             <a>
@@ -116,3 +116,4 @@
     </div>
     @endguest
  </nav>
+

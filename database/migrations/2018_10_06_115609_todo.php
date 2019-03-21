@@ -262,7 +262,7 @@ class Todo extends Migration
             $table->increments('id');
             $table->string('titulo');
             $table->string('slug');
-            $table->text('contenido');
+            $table->longText('contenido');
             $table->string('url_imagen');
             $table->enum('tipo',['noticia','miembroins'])->default('noticia');
             $table->string('informacion_contacto');

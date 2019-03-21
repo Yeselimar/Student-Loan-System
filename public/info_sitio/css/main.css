@@ -32,7 +32,10 @@
    2. GENERAL
    ========================================================================== */
 /* Fixed/sticky icon bar (vertically aligned 50% from the top of the screen) */
-
+.font-black {
+  color: black !important;
+  font-weight: bold;
+}
 .facebookb {
   background: #3B5998;
   color: white;
@@ -2721,10 +2724,11 @@ table#tablaUnica
 .cabecera-titulo
 {
 
-    background:#003865;
+    background:rgba(0, 56, 101, .4);
 
     text-shadow: 1px 2px 2px #000;
-   /*  position: absolute; */
+    position: absolute;
+    bottom: 0;
     width: 100vw;
     left: auto;
     right: auto;
@@ -2736,7 +2740,7 @@ table#tablaUnica
 {
   width: auto;
   color: #fff;
-  padding: 4px 15px 4px 15px !important;
+  /*padding: 4px 15px 4px 15px !important;*/
  /*  font-size: 30px; */
   text-align: center !important;
 }

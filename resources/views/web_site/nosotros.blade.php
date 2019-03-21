@@ -13,7 +13,7 @@
 
    <div class="linea-sobra"></div>
 
-   <div class="container-cabecera">
+   <div class="container-cabecera position-relative">
       <img src="{{asset("info_sitio/img/cabeceras/nosotros.png")}}" alt="AVAA - Nosotros" class="cabecera-imagen">
       <div class="cabecera-titulo">
          <p class="h1">Nosotros</p>
@@ -100,20 +100,16 @@
                   <div class="col-lg-12">
                      <div class="Material-tab">
                         <!-- Nav tabs -->
-                        <ul class="nav nav-tabs justify-content-left" id="myTab" role="tablist">
-                           <li class="nav-item">
-                              <a class="nav-link active" data-toggle="tab" href="#staff" role="tab"><i class="mdi mdi-account-multiple-outline"></i><br/><strong>Staff</strong></a>
-                           </li>
-                        </ul>
+                        
                         <!-- Tab panes -->
                         <div class="tab-content">
 
-                           <div  align="justify" class="tab-pane fade show active" id="staff" role="tabpanel">
+                           <div  align="justify" class="wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s" id="staff" >
                               <br/>
                               <div class="container">
                                  <div class="row">
                                     <div class="col-md-6 nosotros-team">
-                                       <div class="blockquote-box animated fadeInLeft clearfix animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                       <div class="blockquote-box animated fadeInLeft clearfix wow" data-wow-delay="0.2s" style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:claudia.gonzalez@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
@@ -122,7 +118,7 @@
                                           </h6>
                                           <p>Email: <a  style="color:#3d91d6;" href="mailto:claudia.gonzalez@avaa.org"><strong>claudia.gonzalez@avaa.org</strong></a></p>
                                        </div>
-                                       <div class="blockquote-box animated fadeInLeft clearfix animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                       <div class="blockquote-box animated fadeInLeft clearfix animated wow" data-wow-delay="0.4s"  style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:coordinadora.proexcelencia@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
@@ -131,7 +127,7 @@
                                           </h6>
                                           <p>Email: <a  style="color:#3d91d6;" href="mailto:coordinadora.proexcelencia@avaa.org"><strong>coordinadora.proexcelencia@avaa.org</strong></a></p>
                                        </div>
-                                       <div class="blockquote-box animated fadeInLeft clearfix animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                       <div class="blockquote-box animated fadeInLeft clearfix animated wow" data-wow-delay="0.6s"  style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:yvonne.abogado@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
@@ -141,7 +137,7 @@
                                           <p>Email: <a style="color:#3d91d6;" href="mailto:yvonne.abogado@avaa.org.com"><strong>yvonne.abogado@avaa.org</strong></a></p>
                                        </div>
  
-                                       <div class="blockquote-box animated fadeInLeft clearfix animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                       <div class="blockquote-box animated fadeInLeft clearfix animated wow" data-wow-delay="0.8s"  style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:cbt@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
@@ -152,7 +148,7 @@
                                        </div>
                                     </div>
                                     <div class="col-md-6 nosotros-team">
-                                       <div class="blockquote-box animated fadeInRight clearfix animated" style="visibility: visible; animation-name: fadeInRight;">
+                                       <div class="blockquote-box animated fadeInRight clearfix animated wow" data-wow-delay="1s"  style="visibility: visible; animation-name: fadeInRight;">
                                           <div class="square pull-left">
                                              <a href="mailto:gerencia.proexcelencia@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
@@ -161,7 +157,7 @@
                                           </h6>
                                           <p>Email: <a  style="color:#3d91d6;" href="mailto:gerencia.proexcelencia@avaa.org"><strong>gerencia.proexcelencia@avaa.org</strong></a></p>
                                        </div>
-                                       <div class="blockquote-box animated fadeInRight clearfix animated" style="visibility: visible; animation-name: fadeInRight;">
+                                       <div class="blockquote-box animated fadeInRight clearfix animated wow" data-wow-delay="1.2s"  style="visibility: visible; animation-name: fadeInRight;">
                                           <div class="square pull-left">
                                              <a href="mailto:programa.proexcelencia@gmail.com">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
@@ -170,7 +166,7 @@
                                           </h6>
                                           <p>Email: <a style="color:#3d91d6;" href="mailto:programa.proexcelencia@gmail.com"><strong> programa.proexcelencia@gmail.com</strong></a></p>
                                        </div>
-                                       <div class="blockquote-box animated fadeInRight clearfix animated" style="visibility: visible; animation-name: fadeInRight;">
+                                       <div class="blockquote-box animated fadeInRight clearfix animated wow" data-wow-delay="1.4s"  style="visibility: visible; animation-name: fadeInRight;">
                                           <div class="square pull-left">
                                              <a href="mailto:martha.aguilar@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="50" width="60"></a>
                                           </div>
