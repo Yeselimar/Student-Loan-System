@@ -65,6 +65,9 @@
   .overflowM {
     overflow: hidden !important;
   }
+  .z-indexFull {
+    z-index: 2000 !important;
+  }
 
 </style>
 <template>
@@ -299,6 +302,21 @@ export default {
 
     }
     this.isLoading2 =false
+    window.addEventListener("click",(e) => {
+       if(document.getElementsByClassName("fullscreen").length){
+         var element = document.getElementsByClassName("note-popover popover")
+         for (let i = 0; i < element.length; i++) {
+            element[i].classList.add('z-indexFull')
+        }
+       }else {
+         var element = document.getElementsByClassName("note-popover popover")
+         for (let i = 0; i < element.length; i++) {
+            element[i].classList.remove('z-indexFull')
+        }
+       }
+
+    });
+
   },
   watch: {
     content: function() {

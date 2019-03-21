@@ -14269,7 +14269,7 @@ exports = module.exports = __webpack_require__(7)(false);
 
 
 // module
-exports.push([module.i, "\n.loading {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  background-color: rgba(0, 0, 0, 0.2);\n}\np.error {\n  position: absolute;\n  right: 16px;\n  color: red;\n  top: 16px;\n  font-size: 12px;\n}\n.bred {\n  border-color: red;\n}\n.error-content {\n  border: 1px solid red !important;\n}\n.errorc {\n  top: -16px !important;\n}\n.hw-200 {\n  height: 200px;\n  width: 200px;\n}\n.border-img {\n  border: 1px solid turquoise;\n}\n.fa-plus::before {\n  font-size: 200%;\n  color: turquoise;\n}\n.cursor {\n  cursor: pointer;\n}\n.f-wrap {\n  flex-wrap: wrap;\n}\n.balimg {\n  max-height: 280px;\n}\n.balimg .img {\n  width: 100%;\n  height: 280px;\n  /* antes 200 */\n}\n.panel-heading {\n  background-color: #dddddd !important;\n  background: linear-gradient(to bottom right, #dddddd, #dddddd) !important;\n}\n.note-popover .popover-content .dropdown-menu, .panel-heading.note-toolbar .dropdown-menu {\n  min-width: 175px;\n}\n.note-toolbar {\n  z-index: 48;\n}\n.note-popover.popover {\n  z-index: 49;\n}\n.overflowM {\n  overflow: hidden !important;\n}\n", ""]);
+exports.push([module.i, "\n.loading {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  background-color: rgba(0, 0, 0, 0.2);\n}\np.error {\n  position: absolute;\n  right: 16px;\n  color: red;\n  top: 16px;\n  font-size: 12px;\n}\n.bred {\n  border-color: red;\n}\n.error-content {\n  border: 1px solid red !important;\n}\n.errorc {\n  top: -16px !important;\n}\n.hw-200 {\n  height: 200px;\n  width: 200px;\n}\n.border-img {\n  border: 1px solid turquoise;\n}\n.fa-plus::before {\n  font-size: 200%;\n  color: turquoise;\n}\n.cursor {\n  cursor: pointer;\n}\n.f-wrap {\n  flex-wrap: wrap;\n}\n.balimg {\n  max-height: 280px;\n}\n.balimg .img {\n  width: 100%;\n  height: 280px;\n  /* antes 200 */\n}\n.panel-heading {\n  background-color: #dddddd !important;\n  background: linear-gradient(to bottom right, #dddddd, #dddddd) !important;\n}\n.note-popover .popover-content .dropdown-menu, .panel-heading.note-toolbar .dropdown-menu {\n  min-width: 175px;\n}\n.note-toolbar {\n  z-index: 48;\n}\n.note-popover.popover {\n  z-index: 49;\n}\n.overflowM {\n  overflow: hidden !important;\n}\n.z-indexFull {\n  z-index: 2000 !important;\n}\n", ""]);
 
 // exports
 
@@ -14295,6 +14295,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_viewNoticeComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_viewNoticeComponent_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
 //
 //
 //
@@ -14594,6 +14597,19 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_carousel___default.a);
       __WEBPACK_IMPORTED_MODULE_0_jquery___default()('.summernote').summernote('code', this.content);
     }
     this.isLoading2 = false;
+    window.addEventListener("click", function (e) {
+      if (document.getElementsByClassName("fullscreen").length) {
+        var element = document.getElementsByClassName("note-popover popover");
+        for (var i = 0; i < element.length; i++) {
+          element[i].classList.add('z-indexFull');
+        }
+      } else {
+        var element = document.getElementsByClassName("note-popover popover");
+        for (var _i = 0; _i < element.length; _i++) {
+          element[_i].classList.remove('z-indexFull');
+        }
+      }
+    });
   },
 
   watch: {
@@ -30264,7 +30280,7 @@ exports = module.exports = __webpack_require__(7)(false);
 
 
 // module
-exports.push([module.i, "\n.absolute-title[data-v-d0c95b4e] {\n  position: relative;\n  top: 70px;\n}\n.bg-light[data-v-d0c95b4e] {\n  background-color: rgba(0, 0, 0, 0.4) !important;\n}\n.fondo[data-v-d0c95b4e] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background-color: rgba(0, 0, 0, 0.7);\n  z-index: 10001;\n  overflow: auto;\n}\n.f-24[data-v-d0c95b4e] {\n  font-size: 24px;\n  color: white;\n}\n.pab[data-v-d0c95b4e] {\n  background-color: white;\n  padding-top: 6em;\n  margin-top: 1em;\n  margin-bottom: 1em;\n  min-height: -webkit-fill-available;\n  width: -webkit-fill-available !important;\n}\n.cerrar[data-v-d0c95b4e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  z-index: 100;\n}\n.position[data-v-d0c95b4e] {\n  top: 50%;\n}\n", ""]);
+exports.push([module.i, "\n.absolute-title[data-v-d0c95b4e] {\n  position: relative;\n  top: 70px;\n}\n.bg-light[data-v-d0c95b4e] {\n  background-color: rgba(0, 0, 0, 0.01) !important;\n}\n.fondo[data-v-d0c95b4e] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background-color: rgba(0, 0, 0, 0.7);\n  z-index: 10001;\n  overflow: auto;\n}\n.f-24[data-v-d0c95b4e] {\n  font-size: 24px;\n  color: white;\n}\n.pab[data-v-d0c95b4e] {\n  background-color: white;\n  padding-top: 6em;\n  margin-top: 1em;\n  margin-bottom: 1em;\n  min-height: -webkit-fill-available;\n  width: -webkit-fill-available !important;\n}\n.cerrar[data-v-d0c95b4e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  z-index: 100;\n}\n.position[data-v-d0c95b4e] {\n  top: 50%;\n}\n", ""]);
 
 // exports
 
@@ -30380,7 +30396,7 @@ var render = function() {
             { staticClass: "w-100 bg-light rounded position-relative" },
             [
               _vm.title
-                ? _c("h1", { staticClass: "pt-5 text-center absolute-title" }, [
+                ? _c("h1", { staticClass: "text-center absolute-title" }, [
                     _vm._v(_vm._s(_vm.title))
                   ])
                 : _vm._e(),
