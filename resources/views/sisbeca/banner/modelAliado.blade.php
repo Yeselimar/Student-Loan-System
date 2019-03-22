@@ -23,7 +23,7 @@
 
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <label for="titulo" class="control-label">*Nombre</label>
-                    {{ Form::text('titulo', ($model=='crear') ? null : $banner->titulo, ['class' => 'sisbeca-input', 'placeholder'=>'Feria Internacional de Becas'])}}
+                    {{ Form::text('titulo', ($model=='crear') ? null : $banner->titulo, ['class' => 'sisbeca-input', 'placeholder'=>'Venamcham'])}}
                     <span class="errors" style="color:#red">{{ $errors->first('titulo') }}</span>
                 </div>
 
