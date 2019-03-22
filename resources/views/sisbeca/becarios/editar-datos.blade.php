@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Editar Becario: '.$becario->user->nombreyapellido())
+@section('title','Editar Perfil: '.$becario->user->nombreyapellido())
 @section('content')
 <div class="col-lg-12" id="app">
 	
@@ -235,7 +235,7 @@
 
   	</div>
     @endif
-    
+
     <div class="tab-pane" id="foto-perfil">
       <br>
       <form id="formulario" @submit.prevent="guardarfoto">
