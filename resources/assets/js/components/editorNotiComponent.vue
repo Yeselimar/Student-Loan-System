@@ -14,7 +14,7 @@
 </style>
 <template>
     <div>
-      <create-publicaciones v-if="newP" @close="close" :idEdit="idEdit" :notice="notice" :route="route" :rimg="route_img" @save="save"></create-publicaciones>
+      <create-publicaciones v-if="newP" @close="close" :idEdit="idEdit" :notice="notice" :route="route" :rimg="route_img" :urlInsertImg="routeinsertimg" :storagedelete="storagedelete" :getimage="getimage" @save="save"></create-publicaciones>
       <div  class="col-lg-12"  v-if="listar">
         <view-notice v-if="showModal" @close2="closeM" :title="notice.titulo" :content2="notice.contenido"></view-notice>
 
@@ -151,7 +151,15 @@ export default {
     getimage: {
         type: String,
         required: false
-    }
+    },
+    routeinsertimg: {
+        type: String,
+        required: false
+    },
+    storagedelete:{
+        type: String,
+        required: false,
+    },
   },
   components: {
     createPublicaciones,
@@ -198,6 +206,7 @@ export default {
     /*document.getElementById("myBtn").addEventListener("click", function(){
       alert("The paragraph was clicked.");
     });*/
+    this.deleteStorage(-1)
     document.getElementById("myBtn").addEventListener("click", function(event){
         event.preventDefault()
         var cond = $('#mydrop').hasClass('show')
@@ -254,6 +263,22 @@ export default {
     }
   },
   methods: {
+  deleteStorage(notice){
+        this.isLoading2 = true
+        var data = new FormData();
+        data.append('id_noticia',notice);
+        axios.post(this.storagedelete,data,{
+          headers:
+          {
+              'Content-Type': 'application/json',
+          }
+        }).then(response =>
+        {
+          this.isLoading2 = false
+        }).catch( error => {
+            this.isLoading2 = false
+        }); 
+    },
     closeM(){
         var cond = $('#main_body').hasClass('overflowM')
         var element = document.getElementById("main_body")
@@ -284,7 +309,7 @@ export default {
     modalDelete(publicacion,id){
       let url = this.deleteN
       this.route = url.replace(':id_delete',parseInt(id))
-      //this.idEdit = id
+      this.idEdit = id
       this.notice = publicacion
       this.$refs.deletePRef.show()
 
@@ -301,6 +326,7 @@ export default {
         .then(response => {
           
           if(response.data.res){
+            this.deleteStorage(idEdit)
             toastr.success(response.data.msg);
             this.getDataTable();
           } else {

@@ -3,6 +3,8 @@
 namespace avaa\Http\Controllers;
 
 use avaa\Noticia;
+use avaa\Storage;
+use Auth;
 use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use Redirect;
@@ -40,12 +42,71 @@ class MantenimientoNoticiaController extends Controller
     public function index(Request $request)
     {
         $noticias = Noticia::all();
+        dd('hola');
         return view('sisbeca.noticias.mantenimientoNoticia')->with(compact('noticias'));
     }
 
     public function create(Request $request)
     {
         return view('sisbeca.noticias.crearNoticia');
+    }
+    public function deleteStoragePublicacion(Request $request){ 
+        $raiz= \Request::root();
+
+        if($request->id_noticia == -1 || $request->id_noticia == '-1'){
+            $publicaciones = Storage :: where('noticia_id','=',null)->where('user_id','=',Auth::user()->id)->get();
+            foreach($publicaciones as $p){
+                $es_archivo=file_exists(public_path() .$p->url);
+                if($es_archivo){
+                    unlink(public_path().$p->url);
+                }
+            }
+            Storage::where('noticia_id','=',null)->where('user_id','=',Auth::user()->id)->delete();
+        }else
+        {
+            $publicaciones = Storage :: where('noticia_id','=',$request->id_noticia)->where('user_id','=',Auth::user()->id)->get();
+            foreach($publicaciones as $p){
+                    $es_archivo=file_exists(public_path() .$p->url);
+                    if($es_archivo){
+                        unlink(public_path().$p->url);
+                    }
+                }
+            Storage::where('noticia_id','=',$request->id_noticia)->where('user_id','=',Auth::user()->id)->delete();
+        }
+
+        return response()->json(['res'=>1]);
+
+    }
+    public function insertImgApi(Request $request){
+        $file = $request->file;
+        if($file && is_file($file)) {
+            
+            if ($file->getSize() > 5 * pow(1024, 2)) {
+                return response()->json(['msg'=>'Error al subir: Archivo excede de 5 MB.','res'=> 0,'url'=> '']);
+            }
+            $extensions = array(
+                'png', 'jpg', 'jpeg', 'jpe', 'svg', 'bmp', 'tif', 'tiff', 'ico','avi', 'mpeg', 'mpg', 'mpe', 'mp4'
+            );
+            if (!in_array(strtolower($file->getClientOriginalExtension()), $extensions)) {
+                return response()->json(['msg'=>'Error al subir: Extension de archivo no permitida','res'=> 0,'url'=> '']);
+            }
+            $name = 'noticiasAVAA_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path() . '/storage/noticias/img';
+            $file->move($path, $name);
+            $url = '/storage/noticias/img/'.$name;
+            $imagen = new Storage();
+            $imagen->name = $name;
+            $imagen->url = $url;
+            $imagen->in_noticia = false;
+            $imagen->user_id = \Auth::user()->id; 
+            $imagen->save();
+
+            return response()->json(['msg'=>'Imagen subida exitosament','res'=> 1,'url'=>$url]);
+
+        }else {
+            return response()->json(['msg'=>'Error al subir imagen','res'=> 0,'url'=> '']);
+        }
+
     }
     public function editApiPublicacion(Request $request,$id){
         $noticia = Noticia::find($id);

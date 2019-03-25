@@ -170,7 +170,6 @@ export default {
       asignarRelacionBM : this.$props.asignarrbm,
       getMentores: this.$props.getm,
       getBecarios: this.$props.getb,
-      datedarwin: null,
       msgBody: "",
       msgTitle: "",
       idShow: 0,

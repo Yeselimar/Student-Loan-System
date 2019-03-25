@@ -75,7 +75,7 @@ class GetPublicController extends Controller
                 $mail->addAddress("delgadorafael2011@gmail.com", "Rafael Delgado");
             //}
             //$mail->addBCC('darwin@gmail.com');
-            $mail->send();
+            //$mail->send();
         }
         catch (phpmailerException $e)
         {
@@ -156,7 +156,7 @@ class GetPublicController extends Controller
         $body = view("emails.tickets.ticket-respuesta")->with(compact("ticket"));
         $mail->MsgHTML($body);
         $mail->addAddress($ticket->usuariogenero->email);
-        $mail->send();
+        //$mail->send();
         return "exitoo:)";
         return Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
         $id = 17;
@@ -196,7 +196,7 @@ class GetPublicController extends Controller
             $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
             $mail->MsgHTML($body);
             $mail->addAddress($entrevistador->email);
-            //$mail->send();
+            ////$mail->send();
         }
         return "correos enviados";
         $ticket = Ticket::find(1);
@@ -242,7 +242,7 @@ class GetPublicController extends Controller
         $body = view("emails.postulanteMentor.notificar-estatus-postulacion")->with(compact("usuario","estatus"));
         $mail->MsgHTML($body);
         $mail->addAddress($usuario->email);
-        $mail->send();
+        //$mail->send();
         return "Correo enviado";
         if (Auth::attempt(['email' => 'rafael1delgado@hotmail.com', 'password' => '123456']))
         {
@@ -647,7 +647,7 @@ class GetPublicController extends Controller
         $body = view("emails.voluntariados.notificacion-comprobante-estatus")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return "exitoooVoluntariado";
         */
 
@@ -681,7 +681,7 @@ class GetPublicController extends Controller
         $body = view("emails.cursos.notificacion-nota-estatus")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return "exito";*/
 
         /*PARA PERIODOS*/
@@ -714,7 +714,7 @@ class GetPublicController extends Controller
         $body = view("emails.periodos.notificacion-constancia-estatus")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return "Exitoo";
 
         */
@@ -754,7 +754,7 @@ class GetPublicController extends Controller
         $body = view("emails.actividades.notificacion-justificativo-aceptada")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 
         return "bien";*/
         //$client = new Client();
@@ -874,7 +874,7 @@ class GetPublicController extends Controller
         $body = view("emails.actividades.notificacion-eliminar-inscripcion")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress("delgadorafael2011@gmail.com");
-        $mail->send();
+        //$mail->send();
         /*Mail::send('emails.contacto.gracias', ['data' => $data], function($message) use ($data)
         {
             $message->from( 'not-reply@sisbeca.com', 'Sisbeca');
@@ -910,7 +910,7 @@ class GetPublicController extends Controller
                 $mail->addAddress("delgadorafael2011@gmail.com", "Rafael Delgado");
             //}
             //$mail->addBCC('darwin@gmail.com');
-            $mail->send();
+            //$mail->send();
             return "asasas";*/
         /*}
         catch (phpmailerException $e)

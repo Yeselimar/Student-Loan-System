@@ -83,7 +83,7 @@ class FactLibrosController extends Controller
             $body = view("emails.facturas.notificacion-recibido")->with(compact("factura","becario"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
             flash('La factura fue cargada exitosamente.','success')->important();
 
 
@@ -154,7 +154,7 @@ class FactLibrosController extends Controller
         $body = view("emails.facturas.notificacion-estatus")->with(compact("factura","becario"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return response()->json(['success'=>'La factura de '.$becario->user->nombreyapellido().' fue actualizada exitosamente.']);
     }
 }

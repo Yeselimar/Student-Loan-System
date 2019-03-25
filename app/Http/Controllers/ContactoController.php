@@ -65,7 +65,7 @@ class ContactoController extends Controller
         $body = view("emails.contacto.gracias");
         $mail->MsgHTML($body);
         $mail->addAddress($contacto->correo);
-        $mail->send();
+        //$mail->send();
         
         //Enviar correo al administrador del sistema: Bapssy
         $mail = new PHPMailer(true);
@@ -83,7 +83,7 @@ class ContactoController extends Controller
         $body = view("emails.contacto.info")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress("rafael1delgado@hotmail.com");
-        $mail->send();
+        //$mail->send();
 
         return response()->json(['success'=>'¡Gracias por escribirnos, en breve te contactarémos!']);
         

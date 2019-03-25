@@ -217,7 +217,7 @@ class DirectivoController extends Controller
             $body = view("emails.postulantementor.notificar-estatus-postulacion")->with(compact("usuario","estatus"));
             $mail->MsgHTML($body);
             $mail->addAddress($usuario->email);
-            $mail->send();
+            //$mail->send();
         }
         return  redirect()->route('listarPostulantesMentores');
     }

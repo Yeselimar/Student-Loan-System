@@ -697,6 +697,21 @@ class Todo extends Migration
             $table->boolean('activo')->default('0');
             $table->timestamps();
         });
+       
+        Schema::create('storages', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('url');
+            $table->boolean('in_noticia');
+
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('noticia_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->timestamps();
+        });
     }
 
     public function down()
@@ -732,6 +747,6 @@ class Todo extends Migration
         Schema::dropIfExists('alertas');
         Schema::dropIfExists('becarios');
         Schema::dropIfExists('mentores');
-        /*Schema::dropIfExists('coordinadores');*/
+        Schema::dropIfExists('storages');
     }
 }

@@ -17,7 +17,7 @@
                     <h1 class="font-black wow fadeIn" data-wow-duration="1000ms" data-wow-delay="0.3s">{{$noticia->titulo}}</h1>
                     <hr class="lines wow zoomIn" data-wow-delay="0.3s">
                 </div>
-                <!--<div id="portfolio" class="row">
+                <div id="portfolio" class="row">
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 mix development print">&nbsp;</div>
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 mix design print">
                         <div class="portfolio-item">
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
 
                 <hr class="lines">
 

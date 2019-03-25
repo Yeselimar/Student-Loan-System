@@ -198,7 +198,7 @@ class ActividadController extends Controller
         $body = view("emails.actividades.notificacion-justificativo-cargado")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 
         flash("El justificativo del becario ".$becario->user->nombreyapellido()." al ".$actividad->tipo." ".$actividad->nombre." fue cargado.",'success');
         return redirect()->route('actividad.detalles',$actividad->id);
@@ -270,7 +270,7 @@ class ActividadController extends Controller
         $body = view("emails.actividades.notificacion-justificativo-actualizado")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 
         flash("El justificativo del becario ".$becario->user->nombreyapellido()." al ".$actividad->tipo." ".$actividad->nombre." fue actualizado.",'success');
         return redirect()->route('actividad.editarjustificacion',array('actividad_id'=>$actividad->id,'becario_id'=>$becario->user_id));
@@ -369,7 +369,7 @@ class ActividadController extends Controller
                     $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
                     $mail->MsgHTML($body);
                     $mail->addAddress($becario->user->email);
-                    $mail->send();
+                    //$mail->send();
 
                     return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito en la LISTA DE ESPERA del '.$actividad->tipo.' '.$actividad->nombre.'.']);
                 }
@@ -405,7 +405,7 @@ class ActividadController extends Controller
                     $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
                     $mail->MsgHTML($body);
                     $mail->addAddress($becario->user->email);
-                    $mail->send();
+                    //$mail->send();
 
                     return response()->json(['tipo'=>'success','mensaje'=>'Ud. '.$becario->user->nombreyapellido().' fue inscrito al '.$actividad->tipo.' '.$actividad->nombre.'.']);
                 }
@@ -486,7 +486,7 @@ class ActividadController extends Controller
                 $body = view("emails.actividades.notificacion-inscripcion")->with(compact("data"));
                 $mail->MsgHTML($body);
                 $mail->addAddress($becario->user->email);
-                $mail->send();
+                //$mail->send();
 
                 $ab->save();
                 return redirect()->route('actividad.detalles',$id);
@@ -533,7 +533,7 @@ class ActividadController extends Controller
             $body = view("emails.actividades.notificacion-paso-a-asistio")->with(compact("usuario","actividad"));
             $mail->MsgHTML($body);
             $mail->addAddress($usuario->email);
-            $mail->send();
+            //$mail->send();
         }
         //if( $actividad->inscribionabierta() )
         //{
@@ -579,7 +579,7 @@ class ActividadController extends Controller
             $body = view("emails.actividades.notificacion-eliminar-inscripcion")->with(compact("data"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
             return response()->json(['tipo'=>'success','mensaje'=>'El becario '.$becario->user->nombreyapellido().' fue eliminado del '.$actividad->tipo.'.']);
         //}
         //else
@@ -809,7 +809,7 @@ class ActividadController extends Controller
         $body = view("emails.actividades.notificacion-asistio")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como ASISTIÓ.']);
     }
 
@@ -851,7 +851,7 @@ class ActividadController extends Controller
         $body = view("emails.actividades.notificacion-no-asistio")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return response()->json(['success'=>'El becario '.$becario->user->nombreyapellido().' fue colocado como NO ASISTIÓ.']);
     }
 
