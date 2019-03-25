@@ -228,7 +228,7 @@
                      @else
                         @foreach($instituciones as $institucion)
                            <div class="col-lg-12" >
-                              <a class="miembro-enlace" href="{{$instituciones->url}}">
+                              <a class="miembro-enlace" href="{{$institucion->url}}">
                                  <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
                                  <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
                               </a>

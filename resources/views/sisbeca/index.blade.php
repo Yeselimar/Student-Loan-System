@@ -44,11 +44,11 @@
 				@else
 					@if(Auth::user()->esEditor())
 						<p class="text-center" style="color:#1b1b1b"> Bienvenido al Panel de Administración Web </p>
-						<div class="col-lg-4"></div>
-						<div class="col-lg-4">
-							<img src="{{asset('info_sitio/logo3.png')}}" class="img-responsive">
+						<div class="col-lg-3"></div>
+						<div class="col-lg-6">
+							<img src="{{asset('info_sitio/logo_nuevo.png')}}" class="img-responsive">
 						</div>
-						<div class="col-lg-4"></div>
+						<div class="col-lg-3"></div>
 					@else
 						<p class="text-center" style="color:#1b1b1b"> Bienvenido al Sistema de Becarios AVAA </p>
 						<div class="col-lg-4"></div>

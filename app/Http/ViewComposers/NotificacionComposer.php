@@ -123,9 +123,15 @@ class NotificacionComposer{
             }
             else
             {
+
+                if(Auth::user()->esCoordinador())
+                {
+                    $alertas = Alerta::where('leido', '=', false)->where('tipo','<>','nomina')
+                    ->where('tipo','=','solicitud')->get();
+
+                    //dd($alertas);
+                }
                 
-                $alertas = Alerta::where('leido', '=', false)->where('tipo','<>','nomina')
-                ->where('status','=','enviada')->whereIn('user_id',$principal)->orWhere('user_id','=',Auth::user()->id);
             }
 
         }
