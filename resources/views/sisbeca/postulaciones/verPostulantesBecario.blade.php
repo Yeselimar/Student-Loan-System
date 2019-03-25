@@ -23,7 +23,7 @@
                             <tr>
                                 @if($becario->status=='entrevista')
                                 <td class="text-center">
-                                    <span class="label label-inverse">Por entrevistar</span>
+                                    <span class="label label-warning">Por entrevistar</span>
                                 </td>
                                 @elseif($becario->status=='rechazado' && $becario->fecha_entrevista==NULL)
                                 <td class="text-center">
@@ -31,7 +31,7 @@
                                 </td>
                                 @elseif($becario->status=='rechazado' && $becario->fecha_entrevista!=NULL)
                                 <td class="text-center">
-                                    <span class="label label-danger">E.Rechazada</span>
+                                    <span class="label label-danger">Rechazado</span>
                                 </td>
                                 @elseif($becario->status=='activo')
                                 <td class="text-center">
@@ -39,7 +39,7 @@
                                 </td>
                                 @elseif($becario->status=='entrevistado')
                                 <td class="text-center">
-                                    <span class="label label-success">E.Aprobada</span>
+                                    <span class="label label-inverse">E.Aprobada</span>
                                 </td>
                                 @else
                                 <td class="text-center">
@@ -68,17 +68,17 @@
         </form>
     </div>
     <br>
-    <div class="alert  alert-success alert-important" role="alert">
-    <a class="label label-success letras-blancas">E.Aprobada</a> Postulantes que Aprobaron la Entrevista.
+    <div class="alert  alert-warning alert-important" role="alert">
+    <a class="label label-warning">Por Entrevistar</a> Postulantes que fueron seleccionados para ir a Entrevista.
+    </div>
+    <div class="alert  alert-info alert-important" role="alert">
+    <a class="label label-inverse letras-blancas ">E.Aprobada</a> Postulantes que Aprobaron la Entrevista.
     </div>
     <div class="alert  alert-success alert-important" role="alert">
     <a class="label label-success letras-blancas">Aprobado</a> Postulantes que fueron Aprobados como becario y aún no han iniciado actividades.
     </div>
     <div class="alert  alert-danger alert-important" role="alert">
-       <a class="label label-danger letras-blancas">E.Rechazada</a> Postulantes que fueron rechazados en el proceso de Entrevista.
-    </div>
-    <div class="alert  alert-danger alert-important" role="alert">
-    <a class="label label-danger letras-blancas">Rechazado</a> Postulantes que fueron Rechazados para ir a la Entrevista.
+    <a class="label label-danger letras-blancas">Rechazado</a> Postulantes que fueron Rechazados durante el proceso.
     </div>
 
 </div>

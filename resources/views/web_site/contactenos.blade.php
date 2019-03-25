@@ -166,6 +166,12 @@
                                  </div>
                               </div>
                            </form>
+                           <section v-if="isLoading" id="preloader" class="loading">
+                                 <div class="spinner">
+                                    <div class="double-bounce1"></div>
+                                    <div class="double-bounce2"></div>
+                                 </div>
+                           </section>
                         </div>
                      </div>
                   </div>
@@ -194,6 +200,7 @@
       <iframe src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d125539.70418857712!2d-66.89954866626132!3d10.491540235005452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e6!4m0!4m3!3m2!1d10.491145999999999!2d-66.829323!5e0!3m2!1sen!2sve!4v1519795372218" frameborder="0" style="border: 1px solid #eee;width: 100%;height: 400px" allowfullscreen>
       </iframe>-->
    </div>
+ 
 
    <!-- Fin Ubicación -->
 
@@ -216,11 +223,13 @@ const app = new Vue({
       mensaje:'',
       errores:[],
       aviso:'',
+      isLoading: false,
    },
    methods:
    {
       guardar: function()
       {
+         this.isLoading = true
          var dataform = new FormData();
          dataform.append('nombre_completo', this.nombre_completo);
          dataform.append('correo', this.correo);
@@ -244,11 +253,13 @@ const app = new Vue({
             this.mensaje = '';
             this.errores = [];
             this.aviso = '';
+            this.isLoading  = false
             toastr.success(response.data.success);
          }).catch( error =>
          {
+            this.isLoading  = false
             this.errores = error.response.data.errors;
-            //console.log(error.response.data);
+            console.log(error.response.data);
             if(this.errores.nombre_completo)
             {
                this.aviso = this.errores.nombre_completo[0];
@@ -286,7 +297,7 @@ const app = new Vue({
                }
             }
             toastr.error(this.aviso);
-            //console.log(this.aviso);
+           console.log(this.aviso);
          });
       }
    }

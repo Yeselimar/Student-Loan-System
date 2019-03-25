@@ -152,7 +152,7 @@ class CoordinadorController extends Controller
             $body = view("emails.becarios.notificacion-nuevo-mentor")->with(compact("becario"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
             //Notificar al Mentor
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
@@ -169,7 +169,7 @@ class CoordinadorController extends Controller
             $body = view("emails.mentor.notificacion-nuevo-becario")->with(compact("becario"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->mentor->user->email);
-            $mail->send();
+            //$mail->send();
             return response()->json(['success'=>'El mentor fue asignado al becario exitosamente.']);
         }
         else
@@ -204,7 +204,7 @@ class CoordinadorController extends Controller
             $body = view("emails.becarios.notificacion-eliminacion-mentor")->with(compact("becario","mentor"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
             //Notificar al Mentor
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
@@ -221,7 +221,7 @@ class CoordinadorController extends Controller
             $body = view("emails.mentor.notificacion-eliminacion-becario")->with(compact("becario","mentor"));
             $mail->MsgHTML($body);
             $mail->addAddress($mentor->user->email);
-            $mail->send();
+            //$mail->send();
             return response()->json(['success'=>'El mentor fue removido exitosamente.']);
         }
 

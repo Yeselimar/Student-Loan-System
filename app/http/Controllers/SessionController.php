@@ -41,7 +41,7 @@ class SessionController extends Controller
 	        $mail->Subject = "Restablecimiento de contraseña";
 	        $mail->MsgHTML($body);
 	        $mail->addAddress($user->email);
-	        $mail->send();
+	        //$mail->send();
 
 			flash("Hemos enviamos a su correo un enlace para restablecer su contraseña.",'success');
 
@@ -107,7 +107,7 @@ class SessionController extends Controller
 		        $mail->Subject = "Restablecida su contraseña";
 		        $mail->MsgHTML($body);
 		        $mail->addAddress($user->email);
-		        $mail->send();
+		        //$mail->send();
 
 				flash("Su contraseña fue restablecida exitosamente.",'success');
 				return redirect('/login');

@@ -38,6 +38,11 @@
   .cursor {
     cursor: pointer;
   }
+  .note-btn.active {
+    color: #333 !important;
+    background-color: #bebebe !important;
+    border-color: #c0bdbd !important;
+  }
   .f-wrap {
         flex-wrap: wrap;
   }
@@ -50,8 +55,9 @@
     
   }
   .panel-heading {
-    background-color: #dddddd !important;
-    background: linear-gradient(to bottom right, #dddddd , #dddddd ) !important; 
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    background: linear-gradient(to bottom right, #f5f5f5 , #f5f5f5 ) !important; 
   }
   .note-popover .popover-content .dropdown-menu, .panel-heading.note-toolbar .dropdown-menu {
     min-width: 175px;
@@ -76,7 +82,7 @@
       <div  class="col-lg-12">
           <div class="d-flex justify-content-between">
             <h3 v-if="isEdit">Editar Publicación</h3><h3 v-else>Nueva Publicación</h3>
-            <a @click="$emit('close')" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            <a @click="atras" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
           </div>
           <div class="col sisbeca-container-formulario"  id="formulario">
               <div class="row">
@@ -171,8 +177,10 @@
 
                 <div class="form-group pt-3">
                     <label for="contenido" class="control-label">*Contenido</label>
-                    <div class="position-relative" v-if=summer>
-                     <textarea  class="summernote" ref="noticia_content" v-model="content"  name="summernoteInput" :class="{'error-content':error_content || error_content_required}"  ></textarea>
+                    <div class="position-relative" >
+                     <!--<textarea  class="summernote" ref="noticia_content" v-model="content"  name="summernoteInput" :class="{'error-content':error_content || error_content_required}"  ></textarea> -->
+                     <vue-editor v-model="content" :editorToolbar="editorToolbar"  :class="{'error-content':error_content || error_content_required}" ></vue-editor>
+
                     <p
                       class="error errorc"
                        v-if="error_content_required"
@@ -207,7 +215,7 @@
 </script>
 <script>
 
-
+/*
 import $ from 'jquery' // summernote needs it
 import Popper from 'popper.js'
 import 'popper.js'
@@ -215,14 +223,17 @@ import 'bootstrap'
 require('summernote/dist/summernote.js');
 require('summernote/dist/summernote.css');
 require('summernote');
+*/
 
 import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
 import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo);
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 import ViewNotice from "../components/viewNoticeComponent.vue";
+import { VueEditor } from 'vue2-editor'
+
 
 export default {
   props: {
@@ -244,13 +255,36 @@ export default {
     rimg: {
       type: String,
       required: false,
+    },
+    urlInsertImg: {
+      type:String,
+      required: false
+    },
+    getimage: {
+      type: String,
+      required: false
+    },
+    storagedelete: {
+      type: String,
+      required: false
     }
   },
  components: {
-    ViewNotice
+    ViewNotice,
+    VueEditor,
+
   },
   data() {
     return {
+        editorToolbar: [
+          [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
+          ['blockquote'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'color': [] }],
+          ['link'],
+        ],
         isLoading2: false,
         newImagenUrl: '',
         showNoticeModal: false,
@@ -291,14 +325,47 @@ export default {
   mounted(){
     this.summer = true
     setTimeout(e => { 
-      $('.summernote').summernote();
+     /* $('.summernote').summernote({
+        lang: 'es-ES',
+        placeholder: 'Redacta la noticia aqui',
+        codemirror: {
+					"theme": "ambiance"
+				},
+        dialogsInBody: true,
+        disableDragAndDrop: false,
+        dialogsFade: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['style']],
+          ['font', ['fontname']],
+          ['font', ['fontsize', 'color']],
+          ['font', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['insert', ['hr','table','link','picture','video', 'doc']], // image and doc are customized buttons
+          ['misc', ['undo','redo','fullscreen']]
+        ],
+        height: 500,
+        callbacks: {
+            onImageUpload : (files) => {
+              for(var i = 0; i < files.length; i++)
+              {
+                this.sendFile(files[i]);
+              }
+            },
+            //onMediaDelete : (target) => {
+             //   this.deleteStorage(target[0].src);
+            //},
+       }
+      }); */
     },1)
     if(this.idEdit !== -1){
       this.isEdit = 1
       this.newImagenUrl = this.rimg
       this.noticeObj = this.noticeEdit
       this.content =this.noticeObj.contenido
-       $('.summernote').summernote('code',this.content)
+       //$('.summernote').summernote('code',this.content)
 
     }
     this.isLoading2 =false
@@ -335,8 +402,38 @@ export default {
     }
   },
   methods: {
+    /*sendFile(file) {
+     if(file.type.includes('image'))
+      {
+        var name = file.name.split(".");
+        name = name[0];
+        var data = new FormData();
+        data.append('file', file);
+        this.isLoading2 = true
+        axios.post(this.urlInsertImg,data,{
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                }
+        }).then(response =>
+        {
+          if(response.data.res){
+             let url = this.getimage
+             url = url.replace(':id_img',response.data.url.replace('/','',1))
+             $('.summernote').summernote('insertImage', response.data.url, name);
+          }else {
+            toastr.warning('Hubo un error al subir Imagen');
+          }
+          this.isLoading2 = false
+        }).catch( error => {
+            toastr.error('Ocurrio un error inesperado al guardar Publicación')
+            this.isLoading2 = false
+        });  
+      }
+      
+    },*/
     viewPreview() {
-      this.content = $('.summernote').summernote('code')
+      //this.content = $('.summernote').summernote('code')
       if(this.content.length > 60)
       {
         this.showNoticeModal = true
@@ -345,7 +442,7 @@ export default {
       }
     },
     save() {
-        this.content = $('.summernote').summernote('code')
+        //this.content = $('.summernote').summernote('code')
         this.$validator.validateAll("form-user").then(resp => {
             if (resp && this.content.length && !this.error_content && !this.error_content_required) {
               if (this.newImagenUrl && (this.newImagen || this.isEdit))
@@ -372,6 +469,8 @@ export default {
                     toastr.success(response.data.msg);
                     this.isLoading2 = false;
                     setTimeout(e => { 
+                      // $('.summernote').summernote("destroy");
+                      this.deleteStorage();
                       this.$emit('save')
                     },1000)
 
@@ -409,6 +508,22 @@ export default {
         });
 
     },
+    deleteStorage(){
+        this.isLoading2 = true
+        var data = new FormData();
+        data.append('id_noticia',-1);
+        axios.post(this.storagedelete,data,{
+          headers:
+          {
+              'Content-Type': 'application/json',
+          }
+        }).then(response =>
+        {
+          this.isLoading2 = false
+        }).catch( error => {
+            this.isLoading2 = false
+        }); 
+    },
     close2(){
         var cond = $('#main_body').hasClass('overflowM')
         var element = document.getElementById("main_body")
@@ -416,6 +531,11 @@ export default {
             element.classList.remove('overflowM')
         }
         this.showNoticeModal=false
+    },
+    atras(){
+      //$('.summernote').summernote("destroy");
+      this.deleteStorage();
+      this.$emit('close')
     },
     openInputFile () {
       let elem = this.$refs.imagenInput
@@ -433,7 +553,7 @@ export default {
       this.$refs.editGalleryModal.open()
     },
     changeAttachment (event) {
-      if (event.target.files[0].size / 1024 <= 1024 && event.target.files[0].type.split('/')[0] === 'image') {
+      if (event.target.files[0].size / (1024*3) <= (1024*3) && event.target.files[0].type.split('/')[0] === 'image') {
         this.newImagen = event.target.files[0]
         var reader = new FileReader()
         reader.readAsDataURL(event.target.files[0])
@@ -445,10 +565,12 @@ export default {
         }
       } else {
         console.log('errooor')
+        toastr.error('Error. La imagen supera los 3 Mb.')
+
       }
     },
     addAttachment (event) {
-      if (event.target.files[0].size / 1024 <= 1024 && event.target.files[0].type.split('/')[0] === 'image') {
+      if (event.target.files[0].size / (1024*3) <= (1024*3) && event.target.files[0].type.split('/')[0] === 'image') {
         let image= event.target.files[0]
         let url = ''
         var reader = new FileReader()
@@ -465,6 +587,8 @@ export default {
         }
       } else {
         console.log('errooor')
+        toastr.error('Error. La imagen supera los 3 Mb.')
+
       }
     }
   }

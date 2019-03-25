@@ -31,4 +31,9 @@ class Editor extends Model
     {
         return $this->hasMany('avaa\Institucion','editor_id','user_id');
     }
+
+    public function storages()
+    {
+        return $this->hasMany('avaa\Storage','editor_id','user_id');
+    }
 }

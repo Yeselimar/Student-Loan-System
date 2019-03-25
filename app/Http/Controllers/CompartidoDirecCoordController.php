@@ -68,7 +68,7 @@ class CompartidoDirecCoordController extends Controller
         $body = view("emails.becarios.notificacion-fecha-bienvenida")->with(compact("becario"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
         return response()->json(['success'=>'La fecha bienvenida para el becario '.$becario->user->nombreyapellido()." fue asignada exitosamente."]);
     }
     //Agregar Observacion a un Becario
@@ -188,7 +188,7 @@ class CompartidoDirecCoordController extends Controller
             $body = view("emails.postulantebecario.aprobado-proexcelencia")->with(compact("postulanteBecario","decision"));
             $mail->MsgHTML($body);
             $mail->addAddress($postulanteBecario->user->email);
-            $mail->send();
+            //$mail->send();
             return response()->json(['success'=>'El Postulante ha sido Aprobado Exitosamente']);
         }
         else
@@ -223,7 +223,7 @@ class CompartidoDirecCoordController extends Controller
             $body = view("emails.postulantebecario.rechazado-proexcelencia")->with(compact("postulanteBecario","decision"));
             $mail->MsgHTML($body);
             $mail->addAddress($postulanteBecario->user->email);
-            $mail->send();
+            //$mail->send();
 
             //borrar documentos
 /*
@@ -561,7 +561,7 @@ class CompartidoDirecCoordController extends Controller
         $body = view("emails.solicitudes.notificacion-estatus")->with(compact("solicitud"));
         $mail->MsgHTML($body);
         $mail->addAddress($solicitud->user->email);
-        $mail->send();
+        //$mail->send();
 
         event(new SolicitudesAlerts($solicitud));
         Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
