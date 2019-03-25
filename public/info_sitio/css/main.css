@@ -609,7 +609,10 @@ height: 20px;
 
 .back-to-top i
 {
-  display: block;
+  /*display: block; */
+  position: absolute;
+  right: 20px;
+  bottom:  0px;
   width: 36px;
   height: 36px;
   line-height: 36px;
@@ -624,7 +627,7 @@ height: 20px;
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
 
-  margin-left: 95%;
+  /*margin-left: 95%; */
 
 
 }

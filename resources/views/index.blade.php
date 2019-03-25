@@ -259,6 +259,8 @@
       autoplay: true,
       autoplayTimeout: 8000,
       autoplayHoverPause: true,
+      mouseDrag: false,
+      touchDrag: true,
 
       });
 
@@ -269,6 +271,8 @@
       autoplay: true,
       autoplayTimeout: 4000,
       autoplayHoverPause: true,
+      mouseDrag: false,
+      touchDrag: true,
 
       });
 
@@ -279,12 +283,16 @@
          autoplay: true,
          autoplayTimeout: 4000,
          autoplayHoverPause: true,
+         mouseDrag: false,
+         touchDrag: true,
       });
 
       $('.carousel-organizaciones').owlCarousel({
       loop: true,
       margin: 10,
       autoplay: true,
+      mouseDrag: false,
+      touchDrag: true,
       responsive:
       {
          0:
@@ -293,18 +301,24 @@
             nav:false,
             dots:true,
             dotsEach: true,
+            mouseDrag: false,
+            touchDrag: true
          },
          600:
          {
             items:3,
             nav:false,
             dots:true,
+            mouseDrag: false,
+            touchDrag: true
          },
          1000:
          {
             items:3,
             nav:false,
             dots:true,
+            mouseDrag: false,
+            touchDrag: true
          }
       },
       autoplayTimeout: 4000,
