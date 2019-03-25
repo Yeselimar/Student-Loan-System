@@ -226,7 +226,7 @@ require('summernote');
 */
 
 import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
 import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo);
 import VueCarousel from 'vue-carousel';

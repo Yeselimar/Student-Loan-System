@@ -11601,7 +11601,7 @@ require('summernote');
 */
 
 
-Vue.use(__WEBPACK_IMPORTED_MODULE_0_vee_validate__["a" /* default */]);
+Vue.use(__WEBPACK_IMPORTED_MODULE_0_vee_validate__["a" /* default */], { fieldsBagName: 'veeFields' });
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_scrollto___default.a);
 
@@ -11910,7 +11910,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_carousel___default.a);
       this.$refs.editGalleryModal.open();
     },
     changeAttachment: function changeAttachment(event) {
-      if (event.target.files[0].size / 1024 <= 1024 && event.target.files[0].type.split('/')[0] === 'image') {
+      if (event.target.files[0].size / (1024 * 3) <= 1024 * 3 && event.target.files[0].type.split('/')[0] === 'image') {
         this.newImagen = event.target.files[0];
         var reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
@@ -11922,10 +11922,11 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_carousel___default.a);
         };
       } else {
         console.log('errooor');
+        toastr.error('Error. La imagen supera los 3 Mb.');
       }
     },
     addAttachment: function addAttachment(event) {
-      if (event.target.files[0].size / 1024 <= 1024 && event.target.files[0].type.split('/')[0] === 'image') {
+      if (event.target.files[0].size / (1024 * 3) <= 1024 * 3 && event.target.files[0].type.split('/')[0] === 'image') {
         var image = event.target.files[0];
         var url = '';
         var reader = new FileReader();
@@ -11942,6 +11943,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_carousel___default.a);
         };
       } else {
         console.log('errooor');
+        toastr.error('Error. La imagen supera los 3 Mb.');
       }
     }
   }
