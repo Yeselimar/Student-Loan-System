@@ -81,3 +81,13 @@ public/images/banners/
 public/images/charlas/
 
 public/images/aliados/
+
+increments\('id'\)
+
+datetime\('fecha_fin'\)
+
+datetime\('fecha_inicio'\)
+
+default\('0'\)
+
+timestamps\(\)
