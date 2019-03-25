@@ -248,7 +248,7 @@ const app = new Vue({
          }).catch( error =>
          {
             this.errores = error.response.data.errors;
-            //console.log(error.response.data);
+            console.log(error.response.data);
             if(this.errores.nombre_completo)
             {
                this.aviso = this.errores.nombre_completo[0];
@@ -286,7 +286,7 @@ const app = new Vue({
                }
             }
             toastr.error(this.aviso);
-            //console.log(this.aviso);
+           console.log(this.aviso);
          });
       }
    }
