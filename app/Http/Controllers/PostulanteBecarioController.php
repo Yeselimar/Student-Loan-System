@@ -80,7 +80,7 @@ return redirect()->route('seb');
             $body = view("emails.postulantebecario.postulacion-enviada")->with(compact("solicitud","becario"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
 
             return redirect()->route('seb');
 

@@ -57,7 +57,7 @@ class AvalController extends Controller
             $body = view("emails.periodos.notificacion-constancia-estatus")->with(compact("data"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
         }
         //Para los CVA el aval es tipo NOTA
         if($aval->tipo=="nota")
@@ -88,7 +88,7 @@ class AvalController extends Controller
             $body = view("emails.cursos.notificacion-nota-estatus")->with(compact("data"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
         }
         //Para los VOLUNTARIADOS el aval es tipo COMPROBANTE
         if($aval->tipo=="comprobante")
@@ -118,7 +118,7 @@ class AvalController extends Controller
             $body = view("emails.voluntariados.notificacion-comprobante-estatus")->with(compact("data"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
         }
 
 		return response()->json(['success'=>'El estatus fue actualizado exitosamente.']);
@@ -161,7 +161,7 @@ class AvalController extends Controller
         $body = view("emails.actividades.notificacion-justificativo-aceptada")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 
 		return response()->json(['success'=>'La justificación fue aceptada exitosamente.']);
 	}
@@ -202,7 +202,7 @@ class AvalController extends Controller
         $body = view("emails.actividades.notificacion-justificativo-devuelto")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 		
 		return response()->json(['success'=>'La justificación fue devuelta exitosamente.']);
 	}
@@ -244,7 +244,7 @@ class AvalController extends Controller
         $body = view("emails.actividades.notificacion-justificativo-negada")->with(compact("data"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 
 		return response()->json(['success'=>'La justificación fue negada exitosamente.']);
 	}
@@ -315,7 +315,7 @@ class AvalController extends Controller
             $body = view("emails.actividades.notificacion-justificativo-estatus")->with(compact("actividad","becario","estatus_actividad","estatus_justificativo","aval"));
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
-            $mail->send();
+            //$mail->send();
         }
 
         return response()->json(['success'=>'La justificación fue actualizada exitosamente.']);

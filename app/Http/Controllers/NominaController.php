@@ -303,7 +303,7 @@ class NominaController extends Controller
    }
     public function generarNominaApi(Request $request)
     {
-        dd($request);
+        
         $mes = $request->mes;
         $year = $request->year;
         $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();

@@ -38,6 +38,11 @@
   .cursor {
     cursor: pointer;
   }
+  .note-btn.active {
+    color: #333 !important;
+    background-color: #bebebe !important;
+    border-color: #c0bdbd !important;
+  }
   .f-wrap {
         flex-wrap: wrap;
   }
@@ -49,19 +54,40 @@
     height: 280px; /* antes 200 */
     
   }
+  .panel-heading {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    background: linear-gradient(to bottom right, #f5f5f5 , #f5f5f5 ) !important; 
+  }
+  .note-popover .popover-content .dropdown-menu, .panel-heading.note-toolbar .dropdown-menu {
+    min-width: 175px;
+  }
+ .note-toolbar {
+    z-index: 48;
+  }
+  .note-popover.popover {
+    z-index: 49;
+  }
+  .overflowM {
+    overflow: hidden !important;
+  }
+  .z-indexFull {
+    z-index: 2000 !important;
+  }
 
 </style>
 <template>
     <div>
+      <view-notice v-if="showNoticeModal" @close2="close2" :title="noticeObj.titulo" :content2="content"></view-notice>
       <div  class="col-lg-12">
           <div class="d-flex justify-content-between">
             <h3 v-if="isEdit">Editar Publicación</h3><h3 v-else>Nueva Publicación</h3>
-            <a @click="$emit('close')" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
+            <a @click="atras" class="btn btn-sm sisbeca-btn-primary">Atrás</a>
           </div>
           <div class="col sisbeca-container-formulario"  id="formulario">
               <div class="row">
                 <div class="align-items-center d-flex flex-column justify-content-center w-100 pb-2" style="background-color: #f5f9fd;">
-                    <div><label for="image" class="control-label">*Imagen Principal</label></div>
+                    <div><label for="image" class="control-label">*Imagen Destacada</label></div>
                     <div class="align-items-center d-flex flex-column justify-content-center">    
                         <img class="img-fluid py-2" v-if="newImagenUrl != null && newImagenUrl != '' && newImagenUrl!='image'" :src="newImagenUrl" width="300" height="300">
                         <button class="btn btn-micro sisbeca-btn-primary" v-if="newImagenUrl == '' &&  newImagen == ''" @click="openInputFile()">Subir</button>
@@ -151,8 +177,10 @@
 
                 <div class="form-group pt-3">
                     <label for="contenido" class="control-label">*Contenido</label>
-                    <div class="position-relative">
-                    <vue-editor v-model="content" :class="{'error-content':error_content || error_content_required}" :editorToolbar="editorToolbar"></vue-editor>
+                    <div class="position-relative" >
+                     <!--<textarea  class="summernote" ref="noticia_content" v-model="content"  name="summernoteInput" :class="{'error-content':error_content || error_content_required}"  ></textarea> -->
+                     <vue-editor v-model="content" :editorToolbar="editorToolbar"  :class="{'error-content':error_content || error_content_required}" ></vue-editor>
+
                     <p
                       class="error errorc"
                        v-if="error_content_required"
@@ -164,48 +192,15 @@
                       </div>
                 </div>
                 <hr>
-                <div class="row">
-                <div class="align-items-center d-flex flex-column justify-content-center w-100 pb-2" style="background-color: #f5f9fd;">
-                    <div><label for="image" class="control-label">Galeria de la Noticia</label></div>
-                    <div class="align-items-start d-flex flex-row f-wrap justify-content-start w-100">
-                      <!--
-                      <carousel
-                      :perPage="3"
-                      paginationColor="#777777"
-                      :scrollPerPage="true"
-                      paginationActiveColor="#A0112A"
-                      :navigationEnabled="false"
-                      :paginationEnabled="true"
-                          >
-                            <slide class='width-33' v-for="(k,j) in 12" :key="j">
-                              <div class="services-great col pr-0 pl-0" id="blogCarousel">
-                                <div class="contenedor">
-                                  <div class="balimg">
-                                    <img
-                                      src="./becarios.jpg"
-                                      class="img-fluid"
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </slide>
-                          </carousel> 
-                          -->
-                        <!-- <div class="ml-3 mb-3 align-items-center border-img d-flex hw-200 justify-content-center cursor" @click.stop.prevent="openInputGaleria"> 
-                          <i class="fa fa-plus"></i>
-                        </div>
-                        <input accept="image/*" class="d-none" type="file" ref="galeriaInput" @change="addAttachment($event)"> -->
-                        
-                    </div>
-                </div>
-                </div>
+                
                 <div class="form-group text-right">
+                    <a @click="viewPreview" class="btn btn-sm sisbeca-btn-primary">Vista Previa</a>
                     <a @click="save" class="btn btn-sm sisbeca-btn-primary">Guardar</a>
                 </div>
 
         </div>
       </div>
-    <section v-if="isLoading" class="loading" id="preloader">
+    <section v-if="isLoading2" class="loading" id="preloader">
             <div>
                 <svg class="circular" viewBox="25 25 50 50">
                     <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
@@ -215,15 +210,30 @@
 
   </div>
 </template>
-
 <script>
-import { VueEditor } from 'vue2-editor';
+
+</script>
+<script>
+
+/*
+import $ from 'jquery' // summernote needs it
+import Popper from 'popper.js'
+import 'popper.js'
+import 'bootstrap'
+require('summernote/dist/summernote.js');
+require('summernote/dist/summernote.css');
+require('summernote');
+*/
+
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo);
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
+import ViewNotice from "../components/viewNoticeComponent.vue";
+import { VueEditor } from 'vue2-editor'
+
 
 export default {
   props: {
@@ -245,16 +255,40 @@ export default {
     rimg: {
       type: String,
       required: false,
+    },
+    urlInsertImg: {
+      type:String,
+      required: false
+    },
+    getimage: {
+      type: String,
+      required: false
+    },
+    storagedelete: {
+      type: String,
+      required: false
     }
   },
  components: {
+    ViewNotice,
     VueEditor,
-    
+
   },
   data() {
     return {
-        isLoading: false,
+        editorToolbar: [
+          [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
+          ['blockquote'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'color': [] }],
+          ['link'],
+        ],
+        isLoading2: false,
         newImagenUrl: '',
+        showNoticeModal: false,
+        summer: false,
         editGallery: [],
         newImagen: '',
         destacada: '',
@@ -283,25 +317,76 @@ export default {
         imagesSelectedEdit: [],
         isEdit: 0,
         galeria: [],
-        editorToolbar: [
-      ]
     };
   },
   created(){
-    this.isLoading = true
+    this.isLoading2 = true
   },
   mounted(){
+    this.summer = true
+    setTimeout(e => { 
+     /* $('.summernote').summernote({
+        lang: 'es-ES',
+        placeholder: 'Redacta la noticia aqui',
+        codemirror: {
+					"theme": "ambiance"
+				},
+        dialogsInBody: true,
+        disableDragAndDrop: false,
+        dialogsFade: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['style']],
+          ['font', ['fontname']],
+          ['font', ['fontsize', 'color']],
+          ['font', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['insert', ['hr','table','link','picture','video', 'doc']], // image and doc are customized buttons
+          ['misc', ['undo','redo','fullscreen']]
+        ],
+        height: 500,
+        callbacks: {
+            onImageUpload : (files) => {
+              for(var i = 0; i < files.length; i++)
+              {
+                this.sendFile(files[i]);
+              }
+            },
+            //onMediaDelete : (target) => {
+             //   this.deleteStorage(target[0].src);
+            //},
+       }
+      }); */
+    },1)
     if(this.idEdit !== -1){
       this.isEdit = 1
       this.newImagenUrl = this.rimg
       this.noticeObj = this.noticeEdit
       this.content =this.noticeObj.contenido
+       //$('.summernote').summernote('code',this.content)
+
     }
-    this.isLoading =false
+    this.isLoading2 =false
+    window.addEventListener("click",(e) => {
+       if(document.getElementsByClassName("fullscreen").length){
+         var element = document.getElementsByClassName("note-popover popover")
+         for (let i = 0; i < element.length; i++) {
+            element[i].classList.add('z-indexFull')
+        }
+       }else {
+         var element = document.getElementsByClassName("note-popover popover")
+         for (let i = 0; i < element.length; i++) {
+            element[i].classList.remove('z-indexFull')
+        }
+       }
+
+    });
+
   },
   watch: {
     content: function() {
-      console.log('hello darwin')
       if(this.content.length>0 && this.content.length<60)
       {
         this.error_content_required = false
@@ -317,13 +402,53 @@ export default {
     }
   },
   methods: {
+    /*sendFile(file) {
+     if(file.type.includes('image'))
+      {
+        var name = file.name.split(".");
+        name = name[0];
+        var data = new FormData();
+        data.append('file', file);
+        this.isLoading2 = true
+        axios.post(this.urlInsertImg,data,{
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                }
+        }).then(response =>
+        {
+          if(response.data.res){
+             let url = this.getimage
+             url = url.replace(':id_img',response.data.url.replace('/','',1))
+             $('.summernote').summernote('insertImage', response.data.url, name);
+          }else {
+            toastr.warning('Hubo un error al subir Imagen');
+          }
+          this.isLoading2 = false
+        }).catch( error => {
+            toastr.error('Ocurrio un error inesperado al guardar Publicación')
+            this.isLoading2 = false
+        });  
+      }
+      
+    },*/
+    viewPreview() {
+      //this.content = $('.summernote').summernote('code')
+      if(this.content.length > 60)
+      {
+        this.showNoticeModal = true
+      } else {
+         toastr.warning('El contenido de la noticia debe ser mayor a 60 caracteres');
+      }
+    },
     save() {
+        //this.content = $('.summernote').summernote('code')
         this.$validator.validateAll("form-user").then(resp => {
             if (resp && this.content.length && !this.error_content && !this.error_content_required) {
               if (this.newImagenUrl && (this.newImagen || this.isEdit))
               {
                 this.noticeObj.contenido = this.content
-                this.isLoading = true
+                this.isLoading2 = true
                 let url = this.route
                 var dataform = new FormData();
 
@@ -342,18 +467,20 @@ export default {
                 {
                   if(response.data.res){
                     toastr.success(response.data.msg);
-                    this.isLoading = false;
+                    this.isLoading2 = false;
                     setTimeout(e => { 
+                      // $('.summernote').summernote("destroy");
+                      this.deleteStorage();
                       this.$emit('save')
                     },1000)
 
                   }else {
                     toastr.warning('Hubo un error al guardar');
                   }
-                  this.isLoading = false
+                  this.isLoading2 = false
                 }).catch( error => {
                     toastr.error('Ocurrio un error inesperado al guardar Publicación')
-                    this.isLoading = false
+                    this.isLoading2 = false
                 });
               }
               else{
@@ -381,6 +508,35 @@ export default {
         });
 
     },
+    deleteStorage(){
+        this.isLoading2 = true
+        var data = new FormData();
+        data.append('id_noticia',-1);
+        axios.post(this.storagedelete,data,{
+          headers:
+          {
+              'Content-Type': 'application/json',
+          }
+        }).then(response =>
+        {
+          this.isLoading2 = false
+        }).catch( error => {
+            this.isLoading2 = false
+        }); 
+    },
+    close2(){
+        var cond = $('#main_body').hasClass('overflowM')
+        var element = document.getElementById("main_body")
+        if(cond) {
+            element.classList.remove('overflowM')
+        }
+        this.showNoticeModal=false
+    },
+    atras(){
+      //$('.summernote').summernote("destroy");
+      this.deleteStorage();
+      this.$emit('close')
+    },
     openInputFile () {
       let elem = this.$refs.imagenInput
       elem.click()
@@ -397,9 +553,8 @@ export default {
       this.$refs.editGalleryModal.open()
     },
     changeAttachment (event) {
-      if (event.target.files[0].size / 1024 <= 1024 && event.target.files[0].type.split('/')[0] === 'image') {
+      if (event.target.files[0].size / (1024*3) <= (1024*3) && event.target.files[0].type.split('/')[0] === 'image') {
         this.newImagen = event.target.files[0]
-        console.log('aaa',this.newImagen)
         var reader = new FileReader()
         reader.readAsDataURL(event.target.files[0])
         reader.onload = function () {
@@ -410,10 +565,12 @@ export default {
         }
       } else {
         console.log('errooor')
+        toastr.error('Error. La imagen supera los 3 Mb.')
+
       }
     },
     addAttachment (event) {
-      if (event.target.files[0].size / 1024 <= 1024 && event.target.files[0].type.split('/')[0] === 'image') {
+      if (event.target.files[0].size / (1024*3) <= (1024*3) && event.target.files[0].type.split('/')[0] === 'image') {
         let image= event.target.files[0]
         let url = ''
         var reader = new FileReader()
@@ -430,6 +587,8 @@ export default {
         }
       } else {
         console.log('errooor')
+        toastr.error('Error. La imagen supera los 3 Mb.')
+
       }
     }
   }

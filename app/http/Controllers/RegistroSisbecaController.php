@@ -84,7 +84,7 @@ class RegistroSisbecaController extends Controller
             $body = view('emails.postulantementor.bienvenida-prepostulantementor')->with(compact('usuario'));
             $mail->MsgHTML($body);
             $mail->addAddress($user->email);
-            $mail->send();
+            //$mail->send();
 
             flash("Gracias por registrarte. Ahora puedes iniciar sesión para culminar el proceso de postulación.",'success');
         }
@@ -155,7 +155,7 @@ class RegistroSisbecaController extends Controller
             $body = view('emails.postulantebecario.bienvenida-prepostulantebecario')->with(compact('usuario'));
             $mail->MsgHTML($body);
             $mail->addAddress($user->email);
-            $mail->send();
+            //$mail->send();
 
             flash("Gracias por registrarte en ProExcelencia. Ahora puedes iniciar sesión para comenzar el proceso de postulación.",'success');
         }

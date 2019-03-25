@@ -87,13 +87,12 @@
                     <li class="nav-label">Inicio</li>
 
                     <li>
-                        <a class="has-arrow " href="{{route('costos.index')}}" aria-expanded="false">
-                        <i class="fa fa-usd"></i><span class="hide-menu">Costos</span></a>
-                        </a>
+                    <li> <a class="has-arrow none-list" href="{{route('costos.index')}}" aria-expanded="false"><i class="fa fa-usd"></i><span class="hide-menu">Costos</span></a>
                     </li>
 
                     <li>
-                        <a class="has-arrow " href="{{route('noticia.index')}}" aria-expanded="false">
+                        <a class="has-arrow none-list" href="{{route('todas.publicaciones')}}" aria-expanded="false"><i class="fa fa-list-alt"></i><span class="hide-menu">Publicaciones</span></a>
+                       {{-- <a class="has-arrow " href="{{route('noticia.index')}}" aria-expanded="false">
                             <i class="fa fa-list-alt"></i><span class="hide-menu">Publicaciones</span>
                         </a>
 
@@ -102,28 +101,23 @@
                             <li><a href="{{route('todas.publicaciones')}}">Publicaciones</a></li>
 
                             <li><a href="{{route('noticia.create')}}">Crear publicación</a></li>
-                            @if(\Request::route()->getName()==='mantenimientoNoticia.create')
-                                <li class="opcion-menu-oculta"><a href="{{route('mantenimientoNoticia.create')}}"></a></li>
-                            @endif
-                            @if(\Request::route()->getName()==='mantenimientoNoticia.edit')
-                                <li class="opcion-menu-oculta"><a href="{{route(\Request::route()->getName(),$noticia->id)}}"></a></li>
-                            @endif
+                           
                         </ul>
+                        --}}
                     </li>
 
-                    <li> <a class="has-arrow " href="{{route('contacto.index')}}" aria-expanded="false"><i class="fa fa-envelope-o">
-                        </i><span class="hide-menu">Contactos</span></a>
+                    <li> <a class="has-arrow none-list" href="{{route('contacto.index')}}" aria-expanded="false"><i class="fa fa-envelope-o"></i><span class="hide-menu">Contactos</span></a>
                     </li>
 
-                    <li> <a class="has-arrow " href="{{route('charla.index')}}" aria-expanded="false"><i class="fa fa-comments-o">
-                        </i><span class="hide-menu">Calendario Charlas</span></a>
+                    <li> <a class="has-arrow none-list" href="{{route('charla.index')}}" aria-expanded="false"><i class="fa fa-comments-o"></i><span class="hide-menu">Calendario Charlas</span></a> 
+                        
                     </li>
 
-                    <li> <a class="has-arrow " href="{{route('banner.index')}}" aria-expanded="false"><i class="fa fa-picture-o">
-                        </i><span class="hide-menu">Banner</span></a>
+                    <li> <a class="has-arrow none-list"  href="{{route('banner.index')}}" aria-expanded="false"><i class="fa fa-picture-o"></i><span class="hide-menu">Banner</span></a> 
+                       
                     </li>
-                    <li> <a class="has-arrow " href="{{route('aliados.index')}}" aria-expanded="false"><i class="fa fa-users">
-                    </i><span class="hide-menu">Aliados</span></a>
+                    <li> <a class="has-arrow none-list"href="{{route('aliados.index')}}" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Aliados</span></a> 
+            
                     </li>
                 @endif
                 {{--Fin de Vistas del Coordinador Educativo es decir el Editor--}}

@@ -12,6 +12,12 @@
 td, th, tr{
   vertical-align: middle !important;
 }
+.overflowM {
+  overflow: hidden !important;
+}
+.cursor {
+  cursor: pointer;
+}
 .loading
 {
   position: fixed;
@@ -874,15 +880,15 @@ button:hover {
   text-decoration: none!important;
 }
 ul {
-  padding: 0;
-  margin: 0;
+  /*padding: 0;
+  margin: 0;*/
 }
 li {
-  list-style: none;
+  /*list-style: none;*/
 }
 p {
   font-family: Verdana, Geneva, sans-serif;
-  color: #676767;
+  /*color: #676767;*/
 }
 .h2,
 .h3,
@@ -895,7 +901,7 @@ h3,
 h4,
 h5,
 h6.h1 {
-  color: #455a64;
+  /*color: #455a64;*/
 }
 .dib {
   display: inline-block;

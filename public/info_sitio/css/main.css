@@ -32,6 +32,10 @@
    2. GENERAL
    ========================================================================== */
 /* Fixed/sticky icon bar (vertically aligned 50% from the top of the screen) */
+.font-black {
+  color: black !important;
+  font-weight: bold;
+}
 .dropdown-item:hover{
   background-color: #dae6f7 !important;
   }
@@ -605,7 +609,10 @@ height: 20px;
 
 .back-to-top i
 {
-  display: block;
+  /*display: block; */
+  position: absolute;
+  right: 20px;
+  bottom:  0px;
   width: 36px;
   height: 36px;
   line-height: 36px;
@@ -620,7 +627,7 @@ height: 20px;
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
 
-  margin-left: 95%;
+  /*margin-left: 95%; */
 
 
 }
@@ -2724,10 +2731,11 @@ table#tablaUnica
 .cabecera-titulo
 {
 
-    background:#003865;
+    background:rgba(0, 56, 101, .4);
 
     text-shadow: 1px 2px 2px #000;
-   /*  position: absolute; */
+    position: absolute;
+    bottom: 0;
     width: 100vw;
     left: auto;
     right: auto;
@@ -2739,7 +2747,7 @@ table#tablaUnica
 {
   width: auto;
   color: #fff;
-  padding: 4px 15px 4px 15px !important;
+  /*padding: 4px 15px 4px 15px !important;*/
  /*  font-size: 30px; */
   text-align: center !important;
 }
@@ -2750,3 +2758,12 @@ table#tablaUnica
     height: 60vh;
 }
 /*Cabecera para las seccioens de la página*/
+.loading{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.7);
+}

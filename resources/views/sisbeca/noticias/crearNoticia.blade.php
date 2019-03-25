@@ -1,4 +1,15 @@
 @extends('sisbeca.layouts.main')
+@section('personaljs')
+<script src="{{asset('public_sisbeca/js/summernote.js')}}"></script>  
+
+<link src="{{asset('public_sisbeca/css/summernote.css')}}"/>
+
+<script>
+        $(document).ready(function() {
+            $('.summernote').summernote();
+        });
+</script>
+@endsection
 @section('title','Crear publicación')
 @section('content')
 
@@ -72,9 +83,10 @@
 
             <div class="form-group">
                 <label for="contenido" class="control-label">*Contenido</label>
-                <textarea class="textarea" placeholder="Ingrese el contenido" name="contenido" id="contenido" style="width: 100%; height: 400px;" required>
+                <textarea name="summernoteInput" class="summernote">
                     {{old('contenido')}}
                 </textarea>
+                
                 <span class="errors" style="color:red">{{ $errors->first('contenido') }}</span>
             </div>
             <hr>
@@ -89,6 +101,8 @@
 @endsection
 
 @section('personaljs')
+
+<!-- include summernote css/js-->
 
 <script>
 
@@ -141,12 +155,6 @@
     });
 
 </script>
-<script >
-    $(document).ready(function()
-    {
-        textboxio.replace('textarea');
 
-    });
-</script>
 @endsection
 

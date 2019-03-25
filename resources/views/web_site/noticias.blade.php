@@ -12,8 +12,7 @@
   <!-- Fin Principal -->
 
   <div class="linea-sobra"></div>
-
-  <div class="container-cabecera">
+  <div class="container-cabecera position-relative">
     <img src="{{asset("info_sitio/img/cabeceras/noticias.png")}}" alt="AVAA - Noticias" class="cabecera-imagen">
     <div class="cabecera-titulo">
       <p class="h1">Noticias</p>

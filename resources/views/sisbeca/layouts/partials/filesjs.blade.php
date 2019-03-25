@@ -1,9 +1,11 @@
     <!-- All Jquery -->
     <!--<script src="{{asset('public_sisbeca/js/lib/jquery/jquery.min.js')}}"></script>-->
     <!-- Bootstrap tether Core JavaScript -->
-    
+   <!--<script src="{{asset('public_sisbeca/js/lib/bootstrap/js/popper.min.js')}}"></script> -->
+
+    <script src="{{asset('js/app.js')}}"></script>
+
     <script src="{{asset('js/jquery.min.js')}}"></script><!-- Jquery v3.3.1-->
-    <script src="{{asset('public_sisbeca/js/lib/bootstrap/js/popper.min.js')}}"></script>
     <script src="{{asset('public_sisbeca/js/lib/bootstrap/js/bootstrap.min.js')}}"></script><!-- Bootstrap v4.0.0-->
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="{{asset('public_sisbeca/js/jquery.slimscroll.js')}}"></script>
@@ -47,7 +49,7 @@
     <script src="{{asset('plugins/datepickerbootstrap/js/bootstrap-datepicker.min.js')}}"></script> <!-- Bootstrap Datepicker v1.7.1-->
      <script src="{{asset('plugins/datepickerbootstrap/locales/bootstrap-datepicker.es.min.js')}}"></script><!-- Datepicker Bootstrap v1.7.1-->
 
-    <script src="{{asset('js/app.js')}}"></script>
+    
     <script src="{{asset('plugins/sweetalert/sweetalert2.all.min.js')}}"></script> 
     
     <script src="{{asset('js/axios.js')}}"></script>

@@ -1,5 +1,5 @@
 @extends('sisbeca.layouts.main')
-@section('title','Editar Becario: '.$becario->user->nombreyapellido())
+@section('title','Editar Perfil: '.$becario->user->nombreyapellido())
 @section('content')
 <div class="col-lg-12" id="app">
 	
@@ -10,12 +10,18 @@
 	  	<li class="nav-item">
 	    	<a class="nav-link" href="#universidad" role="tab" data-toggle="tab">Estudios Universitarios</a>
 	  	</li>
+
+      @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
 	  	<li class="nav-item">
 	    	<a class="nav-link" href="#estatus" role="tab" data-toggle="tab">Estatus Becarios</a>
 	  	</li>
+      @endif
+
       <li class="nav-item">
         <a class="nav-link" href="#foto-perfil" role="tab" data-toggle="tab">Foto Perfil</a>
       </li>
+
+
 	</ul>
 	
 	<div class="tab-content">
@@ -184,6 +190,7 @@
 
   	</div>
 
+    @if(Auth::user()->esBecario())
   	<div class="tab-pane" id="estatus">
   		<br>
 
@@ -227,6 +234,7 @@
       </div>
 
   	</div>
+    @endif
 
     <div class="tab-pane" id="foto-perfil">
       <br>

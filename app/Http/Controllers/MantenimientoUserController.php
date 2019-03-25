@@ -104,7 +104,7 @@ class MantenimientoUserController extends Controller
         $body = view("emails.usuarios.mensaje-usuario-creado")->with(compact("usuario"));
         $mail->MsgHTML($body);
         $mail->addAddress($usuario->email);
-        $mail->send();
+        //$mail->send();
 
         flash('El usuario fue creado exitosamente.','success')->important();
 

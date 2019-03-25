@@ -7,7 +7,7 @@
    </section>
    <div class="linea-sobra "></div>
 
-   <div class="container-cabecera">
+   <div class="container-cabecera position-relative">
      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class="d-sm-none d-md-block d-none cabecera-imagen">
      <img src="{{asset("info_sitio/img/cabeceras/inicio.png")}}" alt="AVAA - AVAA" class=" d-block d-sm-block d-md-none cabecera-imagen">
 
@@ -228,7 +228,7 @@
                      @else
                         @foreach($instituciones as $institucion)
                            <div class="col-lg-12" >
-                              <a class="miembro-enlace" href="{{$instituciones->url}}">
+                              <a class="miembro-enlace" href="{{$institucion->url}}">
                                  <img  class="img-responsive img-fluid" src="{{asset($institucion->imagen)}}" alt="{{$institucion->titulo}}" style="border:1px solid #eee "/>
                                  <p class="title-miembros-institucionales pt-2">{{$institucion->titulo}}</p>
                               </a>
@@ -259,6 +259,8 @@
       autoplay: true,
       autoplayTimeout: 8000,
       autoplayHoverPause: true,
+      mouseDrag: false,
+      touchDrag: true,
 
       });
 
@@ -269,6 +271,8 @@
       autoplay: true,
       autoplayTimeout: 4000,
       autoplayHoverPause: true,
+      mouseDrag: false,
+      touchDrag: true,
 
       });
 
@@ -279,12 +283,16 @@
          autoplay: true,
          autoplayTimeout: 4000,
          autoplayHoverPause: true,
+         mouseDrag: false,
+         touchDrag: true,
       });
 
       $('.carousel-organizaciones').owlCarousel({
       loop: true,
       margin: 10,
       autoplay: true,
+      mouseDrag: false,
+      touchDrag: true,
       responsive:
       {
          0:
@@ -293,18 +301,24 @@
             nav:false,
             dots:true,
             dotsEach: true,
+            mouseDrag: false,
+            touchDrag: true
          },
          600:
          {
             items:3,
             nav:false,
             dots:true,
+            mouseDrag: false,
+            touchDrag: true
          },
          1000:
          {
             items:3,
             nav:false,
             dots:true,
+            mouseDrag: false,
+            touchDrag: true
          }
       },
       autoplayTimeout: 4000,

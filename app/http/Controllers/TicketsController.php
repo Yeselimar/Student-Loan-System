@@ -166,7 +166,7 @@ class TicketsController extends Controller
         $mail->addAddress('ilimar.vasquez@gmail.com');
         $mail->addAddress('darniw@gmail.com');
         $mail->addAddress('delgadorafael2011@gmail.com');
-        $mail->send();
+        //$mail->send();
 
         flash("El ticket fue cargado exitosamente.",'success');
         return redirect()->route('ticket.index',Auth::user()->id);
@@ -262,7 +262,7 @@ class TicketsController extends Controller
         $body = view("emails.tickets.ticket-respuesta")->with(compact("ticket"));
         $mail->MsgHTML($body);
         $mail->addAddress($ticket->usuariogenero->email);
-        $mail->send();
+        //$mail->send();
         return response()->json(['success'=>'El correo de notificación de respuesta fue enviado exitosamente.']);
     }
 

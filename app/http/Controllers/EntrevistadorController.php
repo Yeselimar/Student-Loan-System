@@ -222,7 +222,7 @@ class EntrevistadorController extends Controller
         $body = view("emails.becarios.notificacion-entrevista")->with(compact("becario"));
         $mail->MsgHTML($body);
         $mail->addAddress($becario->user->email);
-        $mail->send();
+        //$mail->send();
 
         //Enviar correo a los entrevistadores
         foreach ($becario->entrevistadores as $item)
@@ -243,7 +243,7 @@ class EntrevistadorController extends Controller
             $body = view("emails.entrevistadores.notificacion-entrevista")->with(compact("becario","entrevistador"));
             $mail->MsgHTML($body);
             $mail->addAddress($entrevistador->email);
-            $mail->send();
+            //$mail->send();
         }
 
         //Genero una alerta para el postulante becario

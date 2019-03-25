@@ -334,7 +334,9 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'as' => 'get.publicaciones'
         ]);
         Route::post('api/create/publicacion','MantenimientoNoticiaController@createApiPublicacion')->name('create.publicacion.api');
+        Route::post('api/insert/img','MantenimientoNoticiaController@insertImgApi')->name('insert.img.noticia');
         Route::post('api/edit/{id}/publicacion','MantenimientoNoticiaController@editApiPublicacion')->name('edit.publicacion.api');
+        Route::post('delete/storage/publicacion','MantenimientoNoticiaController@deleteStoragePublicacion')->name('delete.storage.api');
         Route::get('api/delete/{id}/publicacion','MantenimientoNoticiaController@deleteApiPublicacion')->name('delete.publicacion.api');
 
 
