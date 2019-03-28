@@ -22,8 +22,7 @@
                             @endif
 							<br>
 						<span class="label label-inverse">
-						    Postulante Becario
-
+						    Postulante a Becario
 						</span>
 					<br/>
 					</div>
@@ -47,9 +46,9 @@
                             <span class="label label-default">Sin Revisar</span>
                             @else
                                 @if($postulante->status==='entrevista')
-                                    <span class="label label-inverse">Aprobado para Entrevista</span>
+                                    <span class="label label-warning">Entrevista</span>
                                 @elseif($postulante->status==='entrevistado')
-                                    <span class="label label-warning">Entrevistado</span>
+                                    <span class="label label-inverse">E.Aprobada</span>
                                 @elseif($postulante->status==='no_entrevista')
                                 <span class="label label-danger">Rechazado</span>
                                 @elseif($postulante->status==='rechazado')
@@ -77,13 +76,14 @@
 
 				</div>
                 @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
-                <hr/>
-
-                <div align="center">
-                <h3>Rechazar / Aprobar a {{$postulante->user->nombreyapellido()}} para la <b>Entrevista</b>
-                      <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
-                      <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
-                </div>
+                    @if($postulante->status==='postulante')
+                        <hr/>
+                        <div align="center">
+                        <h3>Rechazar / Aprobar a {{$postulante->user->nombreyapellido()}} para la <b>Entrevista</b>
+                            <button type='button' title="Rechazar" class="btn btn-sm sisbeca-btn-default" data-toggle='modal' data-target='#modal-default' > <i class="fa fa-times" data-target="modal-asignar"></i></button>
+                            <button type='button' title="Aprobar" class="btn btn-sm sisbeca-btn-success" data-toggle='modal' data-target='#modal' ><i class="fa fa-check" data-target="modal-asignar"></i></button>&nbsp;&nbsp;</h3>
+                        </div>
+                    @endif
                 @endif
 		</div>
 	</div>
@@ -320,7 +320,7 @@
                                                     <td class="text-left"><strong>Periódo Académico</strong></td>
                                                     <td class="text-left">{{ $postulante->periodo_academico }}</td>
                                                     </tr>
-                        
+
                                                 </tbody>
                                                 </table>
 									</div>
@@ -489,7 +489,7 @@
                                                     <div class="table-responsive">
                                                             <table class="table table-bordered">
                                                                     <tbody>
-                                    
+
                                                                     @foreach($postulante->entrevistadores as $entrevistador)
                                                                     <tr>
                                                                             <td class="text-left"><strong> {{$entrevistador->nombreyapellido()}}</strong></td>
@@ -520,18 +520,18 @@
 
                     <form method="POST" action="{{route('agregarObservacion',$postulante->user_id)}}" accept-charset="UTF-8">
                             {{csrf_field()}}
-        
+
                     <div class="form-group">
                         <div class="col-lg-12">
                             <label for="exampleFormControlTextarea1">Observaciones: </label>
                             <textarea  class="sisbeca-input" id="observaciones" for="observaciones" name="observaciones" style="height: 100px;" >{{$postulante->observacion}}</textarea>
-                            
-                            
+
+
                             <button type='submit' title="Guardar" class='btn sisbeca-btn-primary pull-right'>Guardar</button>
                         </div>
                     </div>
             </form>
-        
+
             <!-- Modal para aprobar -->
             <div class="modal fade" id="modal">
                 <div class="modal-dialog">
@@ -540,11 +540,11 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"> &times;</span>
                         </button>
-        
+
                         <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
-        
+
                     </div>
-        
+
                     <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
@@ -564,27 +564,27 @@
                                         <div><b>Edad:</b>{{$postulante->user->edad}}</div>
                                         <div><b>Promedio Universitario:</b>{{$postulante->promedio_universidad}}</div>
                                         <div><b>Observación:</b>{{$postulante->observacion}}</div>
-        
+
                                 </div>
                             </div>
                         </div>
-        
+
                             <br>
                             ¿Está seguro que desea <strong class="letras-verdes">Seleccionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
                         </div>
-        
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
                         <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right">Sí</button>
-        
+
                     </div>
-        
+
                     </form>
                     </div>
                 </div>
             </div>
             <!-- Modal para aprobar -->
-        
+
             <!-- Modal para rechazar -->
             <div class="modal fade" id="modal-default">
             <div class="modal-dialog">
@@ -608,7 +608,7 @@
                                             <div><b>Edad:</b>{{$postulante->user->edad}}</div>
                                             <div><b>Promedio Universitario:</b>{{$postulante->promedio_universidad}}</div>
                                             <div><b>Observación:</b>{{$postulante->observacion}}</div>
-        
+
                                     </div>
                                 </div>
                             </div>
@@ -616,27 +616,27 @@
                     ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
                 </div>
                 <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
-        
+
                     {{csrf_field()}}
                     {{method_field('PUT')}}
-        
+
                     <input type="hidden" id='valor' name="valor"  value="0">
-        
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm sisbeca-btn-default pull-right" data-dismiss="modal">No</button>
                         <button type="submit" class="btn btn-sm sisbeca-btn-primary pull-right" >Si</button>
                     </div>
-        
+
                 </form>
                 </div>
 
             </div>
-        
+
             </div>
-        
+
         @endsection
-        
-        
+
+
         @section('personaljs')
             <script type="text/javascript">
             function aprobar(){
@@ -644,6 +644,5 @@
                 alert("Debe Aceptar los Terminos y Condiciones");
             }
             </script>
-        
+
         @endsection
- 

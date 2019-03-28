@@ -13,7 +13,7 @@
                         <th class="text-center">Cédula</th>
                         <th class="text-center">Teléfono</th>
                         <th class="text-center">P. Bachiller</th>
-                        <th class="text-center">Ver Perfil</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,7 +23,7 @@
                             <tr>
                                 @if($becario->status=='entrevista')
                                 <td class="text-center">
-                                    <span class="label label-warning">Por entrevistar</span>
+                                    <span class="label label-warning">Entrevista</span>
                                 </td>
                                 @elseif($becario->status=='rechazado' && $becario->fecha_entrevista==NULL)
                                 <td class="text-center">
@@ -54,6 +54,15 @@
                                     <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-primary' data-toggle="popover" data-trigger="hover" data-content="Ver Perfil" data-placement="left" >
                                         <i class='fa fa-eye' ></i>
                                     </a>
+                                    @if($becario->status=='rechazado')
+                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-default' data-toggle="popover" data-trigger="hover" data-content="Ver Perfil" data-placement="left" >
+                                        <i class='fa fa-trash' ></i>
+                                    </a>
+                                    @else
+                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-default disabled' data-toggle="popover" data-trigger="hover" data-content="Ver Perfil" data-placement="left" >
+                                        <i class='fa fa-trash' ></i>
+                                    </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endif
@@ -69,7 +78,7 @@
     </div>
     <br>
     <div class="alert  alert-warning alert-important" role="alert">
-    <a class="label label-warning">Por Entrevistar</a> Postulantes que fueron seleccionados para ir a Entrevista.
+    <a class="label label-warning letras-blancas">Entrevista</a> Postulantes que fueron seleccionados para ir a Entrevista.
     </div>
     <div class="alert  alert-info alert-important" role="alert">
     <a class="label label-inverse letras-blancas ">E.Aprobada</a> Postulantes que Aprobaron la Entrevista.

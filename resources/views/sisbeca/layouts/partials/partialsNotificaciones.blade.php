@@ -104,7 +104,9 @@
 <!--Mensajes-->
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle text-muted  " href="#" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-envelope"></i>
-        <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+        <div class="notify"> <span class="heartbit"></span> <span class="point"></span> <p class="num-msj">4</p></div>
+
+      <!-- <span class="num-msj label label-danger ">4</span> -->
     </a>
     <div class="dropdown-menu dropdown-menu-right mailbox animated zoomIn" aria-labelledby="2">
         <ul>
@@ -116,6 +118,12 @@
                     <!-- Message -->
                     <a href="#">
                         <div class="user-img"> <i class="fa fa-envelope"></i><span class="profile-status busy pull-right"></span> </div>
+                        <div class="mail-contnet">
+                            <b><h5><b>John Doe</b></h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span></b>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="user-img"> <i class="fa fa-envelope-open"></i><span class="profile-status online pull-right"></span> </div>
                         <div class="mail-contnet">
                             <h5>John Doe</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span>
                         </div>
