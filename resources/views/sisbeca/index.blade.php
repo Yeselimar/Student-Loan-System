@@ -17,12 +17,12 @@
 
 @section('content')
 
-	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
+	<div class="container">
 		<h3 class="text-center" >
-			<strong>!Hola, {{ Auth::user()->nombreyapellido()}}!</strong>
+			<strong>!Bienvenid@, {{ Auth::user()->nombreyapellido()}}!</strong>
 		</h3>
 	</div>
-	<br>
+
 	<div class="container">
 		<div class="row">
 			<div class='col-sm-12' align="center" >
@@ -50,24 +50,27 @@
 						</div>
 						<div class="col-lg-3"></div>
 					@else
-						<p class="text-center" style="color:#1b1b1b"> Bienvenido al Sistema de Becarios AVAA </p>
-						<div class="col-lg-4"></div>
-						<div class="col-lg-4">
-							<img src="{{asset('images/becarios.jpg')}}" class="img-responsive">
+						<!-- <p class="text-center" style="color:#1b1b1b"> Bienvenido al Sistema de Becarios AVAA </p> -->
+
+						<div class="header-seb">
+							<img src="{{asset('images/becarios.png')}}" class="img-responsive">
 						</div>
-						<div class="col-lg-4"></div>
+
+
 					@endif
 				@endif
 			</div>
 		</div>
 	</div>
-	<br>
+
 	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
-	<div class="container" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
+	<div style="background:#efefef; margin-left: 15px; margin-right: 15px;">
+
 		<div class="row">
 			<div class='col-sm-12'>
 				<h3 class="text-center">
 					Próximas Actividades
+					
 				</h3>
 			</div>
 		</div>
@@ -89,7 +92,7 @@
 					        @endif
 					        {{$actividad->getModalidad()}}
 						</div>
-						{{ucwords($actividad->tipo)}}: {{$actividad->nombre}} 
+						{{ucwords($actividad->tipo)}}: {{$actividad->nombre}}
 						@if($actividad->status=='disponible')
 						<span class="label label-success">
 							Disponible</span>
@@ -216,7 +219,7 @@
 							</div>
 						</a>
 					</div>
-					
+
 				</div>
 			</div>
 		@endif
@@ -229,7 +232,7 @@
 <style>
     .repote-contenido
     {
-    	padding-top:15px; 
+    	padding-top:15px;
     	height: 55px;
     }
 	.reporte-contenedor
@@ -245,7 +248,7 @@
 	    border: 0;
 	    border-top: 1px solid #dc3545 !important;
 	    margin: 1em 0;
-	    padding: 0; 
+	    padding: 0;
 	}
 	.reporte-caja
 	{
@@ -262,7 +265,7 @@
 	{
 		color:#212121 !important;
 	}
-	
+
 	.caja-subtitulo
 	{
 		padding-bottom: 5px;

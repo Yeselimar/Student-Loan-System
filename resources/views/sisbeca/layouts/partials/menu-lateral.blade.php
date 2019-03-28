@@ -101,7 +101,7 @@
                             <li><a href="{{route('todas.publicaciones')}}">Publicaciones</a></li>
 
                             <li><a href="{{route('noticia.create')}}">Crear publicación</a></li>
-                           
+
                         </ul>
                         --}}
                     </li>
@@ -109,15 +109,15 @@
                     <li> <a class="has-arrow none-list" href="{{route('contacto.index')}}" aria-expanded="false"><i class="fa fa-envelope-o"></i><span class="hide-menu">Contactos</span></a>
                     </li>
 
-                    <li> <a class="has-arrow none-list" href="{{route('charla.index')}}" aria-expanded="false"><i class="fa fa-comments-o"></i><span class="hide-menu">Calendario Charlas</span></a> 
-                        
+                    <li> <a class="has-arrow none-list" href="{{route('charla.index')}}" aria-expanded="false"><i class="fa fa-comments-o"></i><span class="hide-menu">Calendario Charlas</span></a>
+
                     </li>
 
-                    <li> <a class="has-arrow none-list"  href="{{route('banner.index')}}" aria-expanded="false"><i class="fa fa-picture-o"></i><span class="hide-menu">Banner</span></a> 
-                       
+                    <li> <a class="has-arrow none-list"  href="{{route('banner.index')}}" aria-expanded="false"><i class="fa fa-picture-o"></i><span class="hide-menu">Banner</span></a>
+
                     </li>
-                    <li> <a class="has-arrow none-list"href="{{route('aliados.index')}}" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Aliados</span></a> 
-            
+                    <li> <a class="has-arrow none-list"href="{{route('aliados.index')}}" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Aliados</span></a>
+
                     </li>
                 @endif
                 {{--Fin de Vistas del Coordinador Educativo es decir el Editor--}}
@@ -127,7 +127,7 @@
                 <li class="nav-label">Inicio</li>
                      <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Postulaciones
                                 @if($numT>0)
-                                    <span class="label label-rouded label-danger pull-center">L-{{$numT}}</span>
+                                    <span class="label label-rouded label-danger pull-center">{{$numT}}</span>
                                 @endif
                         </span></a>
 
@@ -145,7 +145,7 @@
                     </li>
                     <li class="nav-label">Gestionar</li>
                     <li> <a class="has-arrow none-list" href="{{route('estipendioBecario')}}" aria-expanded="false"><i class="fa fa-usd"></i><span class="hide-menu">Estipendio</span></a></li>
-                    
+
                    <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-user-times"></i><span class="hide-menu">Desincorporaciones
                                 @if($numdesincorporaciones>0)
                                     <span class="label label-rouded label-danger pull-center">{{$numdesincorporaciones}}</span>
@@ -255,8 +255,8 @@
                             </ul>
                         </li>
                     @endif
-                    
-                    
+
+
 
                 @endif
                 {{--Fin d Vista Compartida Coordinador/Directivo --}}
@@ -458,7 +458,7 @@
                         <i class="fa  fa-cloud-upload"></i>
                         <span class="hide-menu">Pre-Cargar Act.</span>
                     </a>
-                    
+
                 </li>
                 @endif
 

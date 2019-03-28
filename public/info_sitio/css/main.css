@@ -32,6 +32,10 @@
    2. GENERAL
    ========================================================================== */
 /* Fixed/sticky icon bar (vertically aligned 50% from the top of the screen) */
+.text-email{
+  font-size: 14px !important;
+  color:#3d91d6;
+}
 .font-black {
   color: black !important;
   font-weight: bold;
@@ -717,7 +721,7 @@ height: 20px;
   background: #fff;
   z-index: 999999;
   top: 0px !important;
-  padding: 0;
+ /*  padding: 0; */
   box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 0.06);
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -1808,7 +1812,18 @@ height: 20px;
   } */
 }
 @media(max-width: 767px){
+  .linea-sobra
+  {
 
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(20%, rgba(255,255,255,1)), color-stop(47%, rgba(255,255,255,1)), color-stop(100%, rgba(247,247,247,1)));
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
+  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
+  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 47%, rgba(247,247,247,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f7f7f7', GradientType=0 );
+  height: 0px;
+  }
   .cabecera-titulo
   {
 
@@ -2394,7 +2409,13 @@ p.email span.icon a:hover
 
 .glyphicon-lg{font-size:3em}
 .blockquote-box{border-right:5px solid #E6E6E6;margin-bottom:75px}
-.blockquote-box .square{width:80px;height: 90px;min-height:50px;margin-right:22px;text-align:center!important;background-color:#E6E6E6;padding:20px 0}
+.blockquote-box .square{width: 90px;
+  height: 100px;
+  min-height: 50px;
+  margin-right: 22px;
+  text-align: center!important;
+  background-color: #E6E6E6;
+  padding: 14px 0;}
 .blockquote-box.blockquote-primary{border-color:#357EBD}
 .blockquote-box.blockquote-primary .square{background-color:#428BCA;color:#FFF}
 .blockquote-box.blockquote-success{border-color:#4CAE4C}
@@ -2603,6 +2624,13 @@ p.email span.icon a:hover
       width: 100% !important;
       /* height: auto; */
       height: 40vh !important;
+  }
+}
+
+@media (max-width: 350px){
+  .text-email{
+    font-size: 10px !important;
+    color:#3d91d6;
   }
 }
 

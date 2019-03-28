@@ -7,7 +7,29 @@
 @import url(../icons/material-design-iconic-font/css/materialdesignicons.min.css);
 @import url(spinners.css);
 @import url(animate.css);
-/*Estilos personalizados sisbeca */
+/*Estilos personalizados seb */
+.header-seb{
+ 
+  padding-right: 0px !important;
+ padding-left: 0px !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+.num-msj{
+  /* position: absolute;
+  top: 11px;
+  left: 23px;
+  text-align: center;
+  font-size: 9px !important;
+  padding: 1px 5px !important; */
+  position: absolute;
+  bottom: -28px !important;
+  left: 2px;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+
+}
 
 td, th, tr{
   vertical-align: middle !important;
@@ -1489,15 +1511,15 @@ h6.h1 {
   animation-iteration-count: infinite;
 }
 .notify .point {
-  width: 6px;
-  height: 6px;
+  width: 14px;
+  height: 13px;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
   background-color: #ef5350;
   position: absolute;
-  right: 6px;
-  top: -10px;
+  right: 2px;
+  top: -14px;
 }
 .fileupload {
   overflow: hidden;
@@ -1657,6 +1679,7 @@ textarea {
   white-space: nowrap;
 }
 @media (min-width: 768px) {
+
   .navbar-header {
     width: 240px;
     -webkit-flex-shrink: 0;
@@ -2117,8 +2140,8 @@ textarea {
   background-color: #1976d2;
 }
 .label-warning {
-  color: #212529;
-  background-color: #ffc107;
+  color: #fff;
+  background-color: #ff9007;
 }
 .label-danger {
   background-color: #dc3545;
@@ -5098,13 +5121,86 @@ footer p {
     Responsive
 =================================================
 */
+/*Media para el tamaño de los label*/
+@media (max-width: 940px){
+  .label {
+    padding: 1px 8px;
+    line-height: 13px;
+    color: #fff;
+    font-weight: 400;
+    border-radius: 1.25em;
+    font-size: 58%;
+    font-weight: 700;
+  }
+}
+@media (max-width: 800px){
+  .label {
+    padding: 1px 8px;
+    line-height: 13px;
+    color: #fff;
+    font-weight: 400;
+    border-radius: 1.25em;
+    font-size: 58%;
+    font-weight: 700;
+  }
+}
 @media (max-width: 768px) {
   .card {
     display: inline-block;
     width: 100%;
   }
+  .num-msj{
+    position: absolute;
+    bottom: -28px !important;
+    left: 2px;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+
+  }
+
+}
+@media (max-width: 360px) and (max-width:359px) {
+  .notify .heartbit {
+    position: absolute;
+    top: -16px;
+    right: -3px;
+    height: 22px;
+    width: 22px;
+    z-index: 10;
+    border: 5px solid #ef5350;
+    border-radius: 70px;
+    -moz-animation: heartbit 1s ease-out;
+    -moz-animation-iteration-count: infinite;
+    -o-animation: heartbit 1s ease-out;
+    -o-animation-iteration-count: infinite;
+    -webkit-animation: heartbit 1s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+  .num-msj{
+    position: absolute;
+    bottom: -31px !important;
+    left: 1px;
+    color: white;
+    font-size: 9px !important;
+    font-weight: 500
+
+  }
+  .notify .point {
+    width: 10px;
+    height: 10px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    background-color: #ef5350;
+    position: absolute;
+    right: 3px;
+    top: -10px;
+}
 }
 @media (max-width: 360px) {
+
   .stat-widget-five .stat-heading {
     padding-left: 0;
   }
@@ -7453,6 +7549,28 @@ tbody tr td:last-child {
 ---------------------------------------------------------------------- */
 /*  10 - media screen and (max-width: 320px)
 ---------------------------------------------------------------------- */
+@media (max-width:269px){
+  .num-msj{
+    position: absolute;
+    bottom: -31px !important;
+    left: 4px;
+    color: white;
+    font-size: 9px !important;
+    font-weight: 500
+
+  }
+  .notify .point {
+    width: 10px;
+    height: 10px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    background-color: #ef5350;
+    position: absolute;
+    right: 3px;
+    top: -10px;
+  }
+}
 @media (min-width: 270px) and (max-width: 359px) {
   body,a,p{
     font-size: 12px !important;
