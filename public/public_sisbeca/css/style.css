@@ -9,7 +9,7 @@
 @import url(animate.css);
 /*Estilos personalizados seb */
 .header-seb{
- 
+
   padding-right: 0px !important;
  padding-left: 0px !important;
   margin-right: auto;
@@ -5126,7 +5126,7 @@ footer p {
   .label {
     padding: 1px 8px;
     line-height: 13px;
-    color: #fff;
+
     font-weight: 400;
     border-radius: 1.25em;
     font-size: 58%;
@@ -5137,7 +5137,7 @@ footer p {
   .label {
     padding: 1px 8px;
     line-height: 13px;
-    color: #fff;
+
     font-weight: 400;
     border-radius: 1.25em;
     font-size: 58%;

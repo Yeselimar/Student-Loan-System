@@ -181,7 +181,7 @@
                   <div class="carousel-empresas owl-carousel owl-theme">
                   @if($organizaciones->count()==0)
                      <div class="col-lg-12">
-                           <img  class="img-responsive img-fluid" src="/images/aliados/organizaciones.png" style="border:1px solid #eee "/>
+                           <img  class="img-responsive img-fluid" src="{{asset('/images/aliados/organizaciones.png')}}" style="border:1px solid #eee "/>
                      </div>
                   @else
                      @foreach($organizaciones as $organizacion)
@@ -202,7 +202,7 @@
                   <div class="carousel-empresas owl-carousel owl-theme">
                      @if($empresas->count()==0)
                      <div class="col-lg-12" >
-                           <img  class="img-responsive img-fluid" src="/images/aliados/empresas.png" style="border:1px solid #eee "/>
+                           <img  class="img-responsive img-fluid" src="{{asset('/images/aliados/empresas.png')}}" style="border:1px solid #eee "/>
                      </div>
                      @else
                         @foreach($empresas as $empresa)
@@ -223,7 +223,7 @@
                   <div class="carousel-empresas owl-carousel owl-theme">
                      @if($instituciones->count()==0)
                      <div class="col-lg-12">
-                           <img  class="img-responsive img-fluid" src="/images/aliados/instituciones.png" style="border:1px solid #eee"/>
+                           <img  class="img-responsive img-fluid" src="{{asset('/images/aliados/instituciones.png')}}" style="border:1px solid #eee"/>
                      </div>
                      @else
                         @foreach($instituciones as $institucion)
