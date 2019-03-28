@@ -42,6 +42,11 @@ class CompartidoMentorBecarioController extends Controller
     {
        // $becario = Auth::user()->becario;
         $status=null;
+        $request->validate([
+            'titulo' 			 	=> 'required',
+            'descripcion'				 	=> 'required',
+        ]);
+
         if(Auth::user()->rol==='becario')
         {
             $status=Auth::user()->becario->status;
@@ -51,10 +56,12 @@ class CompartidoMentorBecarioController extends Controller
             $status=Auth::user()->mentor->status;
         }
 
-        if(($status!=='inactivo') &&($request->get('titulo')==='reincorporacion'))
+        if(($status!=='inactivo') &&($request->titulo==='reincorporacion'))
         {
+            $msg = "Disculpe, no puede solicitar reincorporacion ya que actualmente se encuentra en el programa";
             flash('Disculpe, no puede solicitar reincorporacion ya que actualmente se encuentra en el programa','danger')->important();
-            return redirect()->route('solicitud.listar');
+            return response()->json(['res' => 0,'msg'=>$msg]);
+            //return redirect()->route('solicitud.listar');
         }
         $controlQuery = Solicitud::query()->select('titulo')->where('user_id','=',Auth::user()->id)->where('status','=','enviada')
             ->whereIn('titulo',['desincorporacion temporal','desincorporacion definitiva','reincorporacion'])->get();
@@ -65,7 +72,42 @@ class CompartidoMentorBecarioController extends Controller
         if(!is_bool($clave))
         {
             flash('Disculpe, actualmente usted ya hizo una solicitud tipo '.$request->get('titulo').' la cual se encuentra en estado enviada','danger')->important();
-            return redirect()->route('solicitud.listar');
+            $msg = 'Disculpe, actualmente usted ya hizo una solicitud tipo '.$request->get('titulo').' la cual se encuentra en estado enviada';
+            return response()->json(['res' => 0,'msg'=>$msg]);
+
+            //return redirect()->route('solicitud.listar');
+        }else {
+            if(Auth::user()->rol==='becario')
+            {
+                if(($request->get('titulo')==='desincorporacion temporal') && Auth::user()->becario->fecha_inactivo !== null) {
+                    flash('Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva','danger')->important();
+                    $msg = 'Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva';
+                    return response()->json(['res' => 0,'msg'=>$msg]);
+                    //return redirect()->route('solicitud.listar');
+                } else {
+                    if(($request->get('titulo')==='desincorporacion definitiva') && Auth::user()->becario->fecha_desincorporado !== null) {
+                        flash('Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva','danger')->important();
+                         $msg = 'Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva';
+                        return response()->json(['res' => 0,'msg'=>$msg]);
+                        //return redirect()->route('solicitud.listar');
+                    }
+                }
+
+            } else {
+                if(($request->get('titulo')==='desincorporacion temporal') && Auth::user()->mentor->fecha_inactivo !== null) {
+                    flash('Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva','danger')->important();
+                    $msg = 'Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva';
+                        return response()->json(['res' => 0,'msg'=>$msg]);
+                    //return redirect()->route('solicitud.listar');
+                } else {
+                    if(($request->get('titulo')==='desincorporacion definitiva') && Auth::user()->mentor->fecha_desincorporado !== null) {
+                        flash('Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva','danger')->important();
+                        $msg = 'Disculpe no puede continuar con este tipo de solicitud, usted se encuentra a la espera de un cambio de status por parte de la directiva';
+                        return response()->json(['res' => 0,'msg'=>$msg]);
+                        //return redirect()->route('solicitud.listar');
+                    }
+                }
+            }
         }
 
         $solicitud= new Solicitud($request->all());
@@ -73,11 +115,17 @@ class CompartidoMentorBecarioController extends Controller
         if($solicitud->titulo==='desincorporacion definitiva')
         {
           $solicitud->fecha_desincorporacion=  DateTime::createFromFormat('d/m/Y H:i:s', $request->get('fecha_desincorporacion').' 00:00:00');
+          $request->validate([
+            'fecha_desincorporacion' 			 	=> 'required',
+            ]);
         }
         else
         {
             if($solicitud->titulo==='desincorporacion temporal')
             {
+                $request->validate([
+                    'fecha_inactividad' 			 	=> 'required',
+                ]);
                 $solicitud->fecha_inactividad=  DateTime::createFromFormat('d/m/Y H:i:s', $request->get('fecha_inactividad').' 00:00:00');
             }
         }
@@ -111,7 +159,10 @@ class CompartidoMentorBecarioController extends Controller
         {
             flash('Ha ocurrido un error al enviar solicitud','danger')->important();
         }
-        return redirect()->route('solicitud.listar');
+
+        return response()->json(['res' => 1,'msg'=> 'Su solicitud fue enviada exitosamente']);
+
+        //return redirect()->route('solicitud.listar');
 
     }
 

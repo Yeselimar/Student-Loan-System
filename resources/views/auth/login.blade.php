@@ -39,30 +39,36 @@
                     <div class="panel-heading" align="center">
                       <h2 style="color:white"> Iniciar Sesión</h2>
                     </div>
-                    <div class="login-form panel-body" style="padding-top: 0px!important">
+                    <div class="login-form panel-body" style="padding-top: 0px!important" id="app">
+                          <!-- Cargando.. -->
+                          <section v-if="isLoading" class="loading" id="preloader">
+                            <div>
+                                <svg class="circular" viewBox="25 25 50 50">
+                                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+                            </div>
+                          </section>
+                        <!-- Cargando.. -->
                       @include('flash::message')
+                      <div v-if="res" class="alert alert-danger alert-dismissible">
+                        <strong>@{{msg}}</strong> 
+                      </div>
                       <!-- Antes estaba la ruta 'login', Att. Rafael -->
                       <form class="" method="POST" action="{{ route('post.login') }}" >
                         {{ csrf_field() }}
                           <!--<div class=" {{ $errors->has('email') ? ' has-error' : '' }}">-->
+                          <div class='pb-1'>
                              <label for="email" class="control-label">Correo Electrónico</label>
-                                <input id="email" type="email" class="sisbeca-input" required name="email" value="{{ old('email') }}" >
+                                <input id="email" type="email" class="sisbeca-input" v-model="email" required name="email" value="{{ old('email') }}" >
+                                <span v-if="errores.email" :class="['label label-danger']">@{{ errores.email[0] }}</span>
+                          </div>
 
-                                @if ($errors->has('email'))
-                                  <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                  </span>
-                                @endif
                           <!--</div>-->
                           <!--<div class="{{ $errors->has('password') ? ' has-error' : '' }}">-->
+                          <div class='pb-1'>
                               <label for="password" class="control-label">Contraseña</label>
-                              <input id="password" required type="password" class="sisbeca-input" name="password">
-
-                                @if ($errors->has('password'))
-                                  <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                  </span>
-                                @endif
+                              <input id="password" required v-model="password" type="password" class="sisbeca-input" name="password">
+                              <span v-if="errores.password" :class="['label label-danger']">@{{ errores.password[0] }}</span>
+                          </div>
                           <!--</div>-->
                           
                           <div class="row">
@@ -73,7 +79,7 @@
                             </div>
                             
                             <div class="col-lg-6">
-                              <button type="submit" class="btn sisbeca-btn-default btn-block pull-right">Ingresar</button>
+                              <button type="submit" @click.stop.prevent="login" class="btn sisbeca-btn-default btn-block pull-right">Ingresar</button>
                             </div>
                           </div>
                           <hr>
@@ -100,13 +106,56 @@
               </div>
             </div>
           </div>
+          
        </div>
+ 
 
    </div>
+
    <!-- End Wrapper -->
    <!-- All Jquery -->
 
    @include('sisbeca.layouts.partials.filesjs')
+   <script>
+  const app = new Vue({
+    el: '#app',
+    data:
+    {
+      isLoading: false,
+      password: '',
+      email: '',
+      res: false,
+      errores: []
+    },
+    methods: {
+      login() {
+        this.isLoading = true
+        var dataform = new FormData();
+        dataform.append('password', this.password);
+        dataform.append('email',this.email);
+				var url = "{{route('post.login')}}";
+				axios.post(url,dataform).then(response => 
+				{
+
+          if(response.data.res){
+            this.res = true
+            this.msg = response.data.msg
+            this.isLoading= false
+          } else {
+            let url = "{{route('seb')}}"
+						location.replace(url)
+          }
+				}).catch( error =>
+            {
+              console.clear()
+              this.errores = error.response.data.errors;
+              this.isLoading= false
+              toastr.error("Disculpe, verifique el formulario");               
+            });
+      }
+    }
+  })
+  </script>
 
 </body>
 

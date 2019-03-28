@@ -66,7 +66,7 @@
                                 <i class='fa fa-eye'></i>
                             </a>
 
-                            @if(Auth::user()->esDirectivo())
+                            @if(Auth::user()->esDirectivo() && $solicitud->status!=='enviada')
                             <a href="{{route('solicitud.ocultar.admin',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
                                 <i class="fa fa-eye-slash"></i>
                             </a>

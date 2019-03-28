@@ -420,11 +420,7 @@ class CompartidoDirecCoordController extends Controller
         $mentoresAsignados = Mentor::query()->whereIn('user_id', $listMentoresA)->get();
         $listaMentoresA = $mentoresAsignados->pluck('user_id')->toArray();
         $clave1 = array_search($solicitud->user_id, $listaMentoresA); // me devuelve falso si  no encontro elemento
-        /*if (is_bool($clave) && is_bool($clave1))
-        {
-            flash('Error el archivo solicitado no existe**', 'danger')->important();
-            return back();
-        } */
+
 
         if($request->get('valor')==='1')
         {
@@ -439,81 +435,33 @@ class CompartidoDirecCoordController extends Controller
 
             if($solicitud->titulo==='desincorporacion temporal')
             {
-                $instancia->status='inactivo';
                 if($solicitud->user->rol==='becario')
                 {
-                    $instancia->fecha_inactivo= date('Y-m-d');
+                    $instancia->fecha_inactivo= $solicitud->fecha_inactividad;
                     $instancia->observacion_inactivo= 'Usuario Solicitud: '.$solicitud->descripcion.' Respuesta a Solicitud: '.$request->get('observacion');
                 }
                 else
                 {
-                    $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
-                    foreach ($becariosT as $becario)
-                    {
-                        //$becario->mentor_id= Mentor::first()->user_id;
-                        $becario->save();
-                    }
+                    $instancia->fecha_inactivo= $solicitud->fecha_inactividad;
+                    $instancia->observacion_inactivo= 'Usuario Solicitud: '.$solicitud->descripcion.' Respuesta a Solicitud: '.$request->get('observacion');
+
                 }
-                flash($instancia->user->name.' Ha sido desincorporado temporalmente en el sistema','info')->important();
             }
             else
             {
                 if($solicitud->titulo==='desincorporacion definitiva')
                 {
-                    $instancia->status='desincorporado';
                     if($solicitud->user->rol==='becario')
                     {
-                        $instancia->mentor_id = null;
-                        $instancia->fecha_desincorporado= date('Y-m-d');
+                        $instancia->fecha_desincorporado=$solicitud->fecha_desincorporacion;
                         $instancia->observacion_desincorporado= 'Descripción Solicitud=> '.$solicitud->descripcion.' Respuesta a Solicitud=> '.$request->get('observacion');
                     }
                     else
                     {
-                        $becariosT= Becario::query()->where('mentor_id','=',$instancia->user_id)->get();
-
-                        foreach ($becariosT as $becario)
-                        {
-                            $becario->mentor_id= null;
-                            $becario->save();
-                        }
+                        $instancia->fecha_desincorporado=$solicitud->fecha_desincorporacion;
+                        $instancia->observacion_desincorporado= 'Descripción Solicitud=> '.$solicitud->descripcion.' Respuesta a Solicitud=> '.$request->get('observacion');
                     }
-                    $desincorporacion= new Desincorporacion();
-
-                    $desincorporacion->tipo='solicitud';
-                    $desincorporacion->observacion= 'El motivo de la gestion de desincorporacion radica en que el usuario: '.$instancia->user->name.' '.$instancia->user->last_name.' solicito dicha desincorporación la cual fue evaluada y aceptada por el consejo.';
-                    $desincorporacion->user_id= $instancia->user->id;
-                    $desincorporacion->datos_nombres= $instancia->user->name;
-                    $desincorporacion->datos_apellidos= $instancia->user->last_name;
-                    $desincorporacion->datos_email= $instancia->user->email;
-                    $desincorporacion->datos_cedula= $instancia->user->cedula;
-                    $desincorporacion->datos_rol= $instancia->user->rol;
-                    $desincorporacion->gestionada_por= Auth::user()->id;
-                    $desincorporacion->fecha_gestionada= date('Y-m-d');
-                    $desincorporacion->save();
-
-                    /*Enviar Alerta al directivo */
-
-                    //primero veo si la alerta existe
-                    /*
-                    $alerta= Alerta::query()->where('user_id','=', Coordinador::first()->user_id)->where('titulo','=','Desincorporacion(es) pendiente(s) por procesar')->where('status','=','enviada')->first();
-
-                    if(!is_null($alerta))
-                    {
-                        $alerta->leido=false;
-                        $alerta->save();
-                    }
-                    else
-                    {
-                        $alerta = new  Alerta();
-
-                        $alerta->titulo= 'Desincorporacion(es) pendiente(s) por procesar';
-                        $alerta->Descripcion= 'Tiene Desincorporacion(es) pendiente(s) por procesar, se le aconseja procesar las desincorporaciones que tiene pendiente en el Menu de Desincorporaciones->Desincorporacion';
-                        $alerta->user_id= Coordinador::first()->user_id;
-                        $alerta->nivel='alto';
-                        $alerta->save();
-                    }
-                    flash($instancia->user->name.' Ha sido enviado para desincorporacion definitiva en el sistema','info')->important();
-                    */
+                   
 
                 }
                 else
@@ -521,6 +469,10 @@ class CompartidoDirecCoordController extends Controller
                     if($solicitud->titulo==='reincorporacion')
                     {
                         $instancia->status='activo';
+                        $instancia->fecha_inactivo = null;
+                        $instancia->fecha_desincorporado = null;
+                        $instancia->observacion_inactivo = null;
+                        $instancia->observacion_desincorporado = null;
                         flash($instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
 
                     }
@@ -625,7 +577,7 @@ class CompartidoDirecCoordController extends Controller
     public function formularioReporteSolicitudes()
     {
         $users= User::query()->whereIn('rol',['mentor','becario'])->get();
-        return view('sisbeca.solicitudes.formularioReporteSolicitudes')->with('users',$users);
+        return view('sisbeca.solicitudes.formularioReporteSolicitudes')->with('users',$users)->with('user_id',0);
     }
     public function solicitudespdf(Request $request)
     {
@@ -635,7 +587,8 @@ class CompartidoDirecCoordController extends Controller
         $fechaHasta= Carbon::createFromDate($data[2],$data[1],$data[0])->format('Y-m-d');
 
         $user= $request->get('user_id');
-
+        $fechaD = $request->get('fechaDesde');
+        $fechaH = $request->get('fechaHasta');
         if($user==0)
         {
             $solicitudes = Solicitud::query()->whereDate('updated_at','>=',$fechaDesde)->whereDate('updated_at','<=',$fechaHasta)->get();
@@ -646,7 +599,8 @@ class CompartidoDirecCoordController extends Controller
 
         if($solicitudes->count()==0){
             flash('No existe data con los parametros establecidos para generar el reporte','danger')->important();
-            return redirect()->route('formularioReporte.solicitudes');
+            $users= User::query()->whereIn('rol',['mentor','becario'])->get();
+            return  view('sisbeca.solicitudes.formularioReporteSolicitudes')->with('users',$users)->with('fechaD',$fechaD)->with('fechaH',$fechaH)->with('user_id',$user);
         }
         else
         {
@@ -655,7 +609,7 @@ class CompartidoDirecCoordController extends Controller
         }
 
         $users= User::query()->whereIn('rol',['mentor','becario'])->get();
-        return view('sisbeca.solicitudes.formularioReporteSolicitudes')->with('users',$users)->with('user_id',$user)->with('fechaDesde',$fechaDesde)->with('fechaHasta',$fechaHasta);
+        return view('sisbeca.solicitudes.formularioReporteSolicitudes')->with('users',$users)->with('fechaD',$fechaD)->with('fechaH',$fechaH)->with('user_id',$user)->with('fechaDesde',$fechaDesde)->with('fechaHasta',$fechaHasta)->with('pdf',true);
 
     }
 
@@ -784,5 +738,134 @@ class CompartidoDirecCoordController extends Controller
         }
         return  redirect()->route('listarPostulantesBecarios',"rechazados");
        // return response()->json(['success'=>'El postulante ha sido eliminado exitosamente.']);
+    }
+    public function cambiarStatusPendiente(Request $request){
+        $user = json_decode($request->data);
+        $user = $user->items;
+        
+        if($user->rol == 'becario'){
+            $becario = Becario::find($user->id);
+            if ($user->statusAprobar == 'inactivo' && $becario && $becario->fecha_inactivo !== null){
+                $becario->mentor_id = null;
+                $becario->status = 'inactivo';
+                $becario->save();
+                return response()->json(['msg'=>'El cambio de status ha sido autorizado exitosamente','res'=> 1]);
+
+            } else if($user->statusAprobar == 'desincorporado'  && $becario && $becario->fecha_desincorporado !== null){
+                $becario->mentor_id = null;
+                $becario->status = 'desincorporado';
+                $desincorporacion= new Desincorporacion();
+                $desincorporacion->tipo='solicitud';
+                $desincorporacion->observacion= 'El motivo de la gestion de desincorporacion radica en que el usuario: '.$becario->user->name.' '.$becario->user->last_name.' solicito dicha desincorporación la cual fue evaluada y aceptada por el consejo.';
+                $desincorporacion->user_id= $becario->user->id;
+                $desincorporacion->datos_nombres= $becario->user->name;
+                $desincorporacion->datos_apellidos= $becario->user->last_name;
+                $desincorporacion->datos_email= $becario->user->email;
+                $desincorporacion->datos_cedula= $becario->user->cedula;
+                $desincorporacion->datos_rol= $becario->user->rol;
+                $desincorporacion->gestionada_por= Auth::user()->id;
+                $desincorporacion->fecha_gestionada= date('Y-m-d');
+                $desincorporacion->save();
+                $becario->save();
+                return response()->json(['msg'=>'El cambio de status ha sido autorizado exitosamente','res'=> 1]);
+
+
+            }
+        } else if($user->rol == 'mentor'){
+            $mentor = Mentor::find($user->id);
+            if ($user->statusAprobar == 'inactivo' && $mentor && $mentor->fecha_inactivo !== null){
+                $mentor->status = 'inactivo';
+                $becariosT= Becario::query()->where('mentor_id','=',$user->id)->get();
+                foreach ($becariosT as $becario)
+                {
+                    $becario->mentor_id= null;
+                    $becario->save();
+                }
+                $mentor->save();
+                return response()->json(['msg'=>'El cambio de status ha sido autorizado exitosamente','res'=> 1]);
+
+
+            } else if($user->statusAprobar == 'desincorporado'  && $mentor && $mentor->fecha_desincorporado !== null){
+                 $mentor->status = 'desincorpordo';
+                $becariosT= Becario::query()->where('mentor_id','=',$user->id)->get();
+                foreach ($becariosT as $becario)
+                {
+                    $becario->mentor_id= null;
+                    $becario->save();
+                }
+                $mentor->save();
+                return response()->json(['msg'=>'El cambio de status ha sido autorizado exitosamente','res'=> 1]);
+
+
+            }
+        }
+        return response()->json(['msg'=>'El cambio de status no pudo ser autorizado correctamente. Por favor intentelo de nuevo','res'=> 0]);
+
+    }
+    public function getSolicitudesPendientes(){
+
+        $hoy = new DateTime();
+        //inactivos
+        $becariosInactivos = Becario::where('fecha_inactivo', '!=', null)->where('status','!=','inactivo')->where('fecha_inactivo','<=',$hoy)->get();
+        $becariosDesincorporados = Becario::where('fecha_desincorporado', '!=', null)->where('status','!=','desincorporado')->where('fecha_desincorporado','<=',$hoy)->get();
+        $mentoresInactivos = Mentor::where('fecha_inactivo', '!=', null)->where('status','!=','inactivo')->where('fecha_inactivo','<=',$hoy)->get();
+        $mentoresDesincorporados = Mentor::where('fecha_desincorporado', '!=', null)->where('status','!=','desincorporado')->where('fecha_desincorporado','<=',$hoy)->get();
+        $items = collect();
+        if(count($becariosInactivos) || count($becariosDesincorporados) || count($mentoresInactivos) || count($mentoresDesincorporados))
+        {
+            foreach($becariosInactivos as $becariosIn){
+                $items->push(array(
+                    "id" => $becariosIn->user_id,
+                    "nombre" => $becariosIn->user->name,
+                    "apellido" =>$becariosIn->user->last_name,
+                    "cedula" =>$becariosIn->user->cedula,
+                    "rol" => $becariosIn->user->rol,
+                    "status" =>$becariosIn->status,
+                    "statusAprobar" => 'inactivo',
+                    "fechaAprocesar" => $becariosIn->fecha_inactivo
+                ));
+            }
+            foreach($becariosDesincorporados as $becariosD){
+                $items->push(array(
+                    "id" => $becariosD->user_id,
+                    "nombre" => $becariosD->user->name,
+                    "apellido" =>$becariosD->user->last_name,
+                    "cedula" =>$becariosD->user->cedula,
+                    "rol" => $becariosD->user->rol,
+                    "status" =>$becariosD->status,
+                    "statusAprobar" => 'desincorporado',
+                    "fechaAprocesar" => $becariosD->fecha_desincorporado
+                ));
+            }
+            foreach($mentoresInactivos as $mentoresIn){
+                $items->push(array(
+                    "id" =>$mentoresIn->user_id,
+                    "nombre" => $mentoresIn->user->name,
+                    "apellido" =>$mentoresIn->user->last_name,
+                    "cedula" =>$mentoresIn->user->cedula,
+                    "rol" => $mentoresIn->user->rol,
+                    "status" =>$mentoresIn->status,
+                    "statusAprobar" => 'inactivo',
+                    "fechaAprocesar" => $mentoresIn->fecha_inactivo
+                ));
+            }
+            foreach($mentoresDesincorporados as $mentoresD){
+                $items->push(array(
+                    "id" => $mentoresD->user_id,
+                    "nombre" => $mentoresD->user->name,
+                    "apellido" =>$mentoresD->user->last_name,
+                    "cedula" =>$mentoresD->user->cedula,
+                    "rol" => $mentoresD->user->rol,
+                    "status" =>$mentoresD->status,
+                    "statusAprobar" => 'desincorporado',
+                    "fechaAprocesar" => $mentoresD->fecha_desincorporado
+                ));
+            }
+            return response()->json(['items'=>$items,'res'=> count($items)]);
+
+        } else {
+            return response()->json(['items'=>$items,'res'=> 0]);
+        }
+
     }
 }
