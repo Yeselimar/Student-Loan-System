@@ -190,7 +190,7 @@
 
   	</div>
 
-    @if(Auth::user()->esBecario())
+    @if(Auth::user()->esCoordinador() or Auth::user()->esDirectivo())
   	<div class="tab-pane" id="estatus">
   		<br>
 
@@ -200,6 +200,7 @@
               <label class="control-label">Becario Estatus</label>
               <select v-model="becario_estatus" class="sisbeca-input">
                 <option disabled value="">Estatus Becario</option>
+                <option value="desincorporado">Desincorporado</option>
                 <option value="activo">Activo</option>
                 <option value="inactivo">Inactivo</option>
                 <option value="probatorio1">Probatorio 1</option>
@@ -241,32 +242,32 @@
       <form id="formulario" @submit.prevent="guardarfoto">
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <label class="control-label">Foto Actual</label>
                 <img :src="urlFotoPerfil()" alt="Foto de Perfil" class="img-responsive" style="border:1px solid #eee">
             </div>
-            <div class="col-lg-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <label class="control-label">Actualizar Foto</label>
               <input type="file" name="foto" class="sisbeca-input" accept="image/*" @change="cargafoto">
             </div>
-            <div class="col-lg-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
           </div>
         </div>
         
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <button class="btn sisbeca-btn-primary pull-right" type="submit">Guardar</button>
             </div>
-            <div class="col-lg-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
           </div>
         </div>
       </form>
