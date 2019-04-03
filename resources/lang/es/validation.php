@@ -173,5 +173,7 @@ return [
     'recibo_pago'           => 'recibo de pago de un servicio',
     'referencia_profesor1' => 'carta de referencia del profesor 1',
     'referencia_profesor2' => 'carta de referencia del profesor 2',
+    'descripcion' => 'descripción',
+    'titulo' =>  'título',
     ],
 ];

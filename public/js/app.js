@@ -19698,9 +19698,10 @@ DatePicker2 = __webpack_require__(76);
 BootstrapVue = __webpack_require__(77);
 DatePicker = __webpack_require__(191);
 
-Vue.config.devtools = false;
-Vue.config.debug = false;
-Vue.config.silent = true;
+/*Vue.config.devtools = false
+Vue.config.debug = false
+Vue.config.silent = true
+*/
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

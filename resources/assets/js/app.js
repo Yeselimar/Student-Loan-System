@@ -9,9 +9,10 @@ DatePicker2 = require('vue2-datepicker');
 BootstrapVue = require('bootstrap-vue');
 DatePicker= require('vue-bulma-datepicker');
 
-Vue.config.devtools = false
+/*Vue.config.devtools = false
 Vue.config.debug = false
 Vue.config.silent = true
+*/
 
 
 

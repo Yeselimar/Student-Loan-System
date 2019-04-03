@@ -48,9 +48,13 @@ class FactLibrosController extends Controller
     {
         $becario = Auth::user()->becario;
         //$becario= Becario::find(Auth::user()->id);
-
-        if ($becario->status == 'activo')
+        $hoy = new DateTime();
+        if ($becario->status == 'activo' || $becario->status == 'probatorio1' || $becario->status == 'probatorio2')
         {
+            if(Auth::user()->becario->fecha_inactivo !== null || Auth::user()->becario->fecha_desincorporado <= $hoy) {
+                flash('Disculpe no puede continuar con este proceso, usted se encuentra a la espera de un cambio de status por parte de la directiva','danger')->important();
+                return redirect()->route('facturas.listar');
+            }
             $file= $request->file('url_factura');
             $name = 'fact_'.Auth::user()->cedula . time() . '.' . $file->getClientOriginalExtension();
             $path = public_path() . '/documentos/facturas/';

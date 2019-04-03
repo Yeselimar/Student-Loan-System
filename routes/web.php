@@ -868,6 +868,13 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     });
     Route::group(['middleware'=>'compartido_direc_coord'],function ()
     {
+        //rutas para el manejo de las solicitudes de desincorporación
+        Route::get('/get/solicitudes/pendientes', 'CompartidoDirecCoordController@getSolicitudesPendientes')->name('get.solicitudes.pendientes');
+        Route::post('/cambiar/status/pendientes', 'CompartidoDirecCoordController@cambiarStatusPendiente')->name('cambiar.status.pendiente');
+        Route::get('SolicitudesPendientes/CambioDeStatus', function(){
+            return view('sisbeca.gestionSolicitudes.solicitudesPendientes');
+        
+        })->name('solicitudes.pendientes');
         //Para que los directivos y coordinadores pueden ver las actividades del becario
         Route::get('/becario/{id}/periodos', 'PeriodosController@periodosbecario')->name('periodos.becario');
         Route::get('/becario/{id}/cursos', 'CursoController@cursosbecario')->name('cursos.becario');
