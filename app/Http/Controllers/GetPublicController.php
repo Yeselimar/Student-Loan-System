@@ -27,6 +27,8 @@ use avaa\Imagen;
 use avaa\Ticket;
 use avaa\Alerta;
 use avaa\RecesoDecembrino;
+use avaa\Mensaje;
+
 use Illuminate\Support\Facades\DB;
 use Redirect;
 use Yajra\Datatables\Datatables;
@@ -98,6 +100,8 @@ class GetPublicController extends Controller
 
     public function prueba()
     {
+        $mensaje = Mensaje::find(1);
+        return $mensaje;
         $fullusername = getRecesoDecembrino();
         //return getRecesoDecembrino();
         $receso = RecesoDecembrino::first();

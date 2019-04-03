@@ -88,10 +88,16 @@ class FactLibrosController extends Controller
             $mail->MsgHTML($body);
             $mail->addAddress($becario->user->email);
             //$mail->send();
+
+            //Generar un mensaje
+            $mensaje = new Mensajes();
+            
             flash('La factura fue cargada exitosamente.','success')->important();
 
 
-        } else {
+        }
+        else
+        {
             flash('Disculpe, actualmente su status es: '.$becario->status.' no puede cargar facturas con su status actual')->error()->important();
         }
 
