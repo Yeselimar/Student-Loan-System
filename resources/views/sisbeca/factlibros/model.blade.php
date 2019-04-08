@@ -40,7 +40,7 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-12 text-right" >
-                        <button type="submit" @click="isLoading=true" class="btn sisbeca-btn-primary">
+                        <button type="submit" class="btn sisbeca-btn-primary">
                             Cargar Factura
                         </button>
                     </div>
@@ -61,6 +61,14 @@
 
 @section('personaljs')
 <script>
+$(window).on('load', function() {
+	/*------------------
+		Preloder
+	--------------------*/
+	console.log('hola como estas')
+
+});
+
     function handleNumber(event, mask)
     {
         /* numeric mask with pre, post, minus sign, dots and comma as decimal separator

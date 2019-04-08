@@ -1,7 +1,10 @@
+@section('personalcss')
+ <script src="{{asset('public_sisbeca/js/lib/bootstrap/js/popper.min.js')}}"></script> 
+@endsection
 @extends('sisbeca.layouts.main')
 @section('title','Solicitudes/Reclamos')
 @section('content')
-<div class="col-lg-12">
+<div class="col-lg-12" >
     <div class="table-responsive">
 
         <table class="table table-bordered table-hover" id="solicitudes" style="border: 1px solid #eee">

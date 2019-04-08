@@ -946,7 +946,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
             'as' => 'solicitud.revisar'
         ]);
 
-        Route::put('gestionSolicitud/updated/{id}', [
+        Route::post('gestionSolicitud/updated/{id}', [
             'uses' => 'CompartidoDirecCoordController@gestionSolicitudUpdate',
             'as' => 'gestionSolicitud.update'
         ]);

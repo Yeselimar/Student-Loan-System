@@ -75,8 +75,8 @@
 
     <div align="center">
             @if($solicitud->status==='enviada')
-                <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>
-                <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
+                <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' @click="observacion=''" >Aprobar</button>
+                <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default'  @click="observacion=''"  >Rechazar</button>
             @endif
     </div>
 </div>
@@ -103,24 +103,26 @@
                         </span></p>
                     @endif
             @endif
-            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8">
+            <form >
 
-                {{csrf_field()}}
-                {{method_field('PUT')}}
-                <input type="hidden" id='valor' name="valor" value="1">
+                <input type="hidden" id='valor' v-model="valor" name="valor" value="1">
                 <div class="container-fluid">
                     <textarea
                     class="sisbeca-input sisbeca-textarea"
                     name="observacion"
                     id="observacion"
+                    v-model="observacion"
                     rows="15"
                     placeholder="Ingrese observación de la solicitud"
                     required
                     ></textarea>
+                    <span v-if="errores.observacion" :class="['label label-danger']">@{{ errores.observacion[0] }}</span>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-sm sisbeca-btn-primary"  @click="isLoading=true">Sí</button>
+                    <button type="submit" class="btn btn-sm sisbeca-btn-primary"  @click.stop.prevent="responseSolicitud('1',observacion)">Sí</button>
                 </div>
 
             </form>
@@ -141,13 +143,11 @@
             <br>
             <p class="text-center">¿Esta seguro que desea <strong>rechazar</strong> la solicitud de {{$solicitud->user->name}}?</p>
 
-            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8">
-
-                {{csrf_field()}}
-                {{method_field('PUT')}}
-                <input type="hidden" id='valor2' name="valor"  value="0">
+            <form>
+                <input type="hidden" id='valor2' v-model="valor" name="valor"  value="0">
                 <div class="container-fluid">
                         <textarea
+                        v-model="observacion"
                         class="sisbeca-input sisbeca-textarea"
                         name="observacion"
                         id="observacion"
@@ -155,11 +155,14 @@
                         placeholder="Ingrese observación de la solicitud"
                         required
                         ></textarea>
+                        <span v-if="errores.observacion" :class="['label label-danger']">@{{ errores.observacion[0] }}</span>
+
+
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-sm sisbeca-btn-primary" @click="isLoading=true" >Sí</button>
+                    <button type="submit" class="btn btn-sm sisbeca-btn-primary" @click.stop.prevent="responseSolicitud('0',observacion)" >Sí</button>
                 </div>
 
             </form>
@@ -190,8 +193,37 @@ const app = new Vue({
 	el: '#app',
 	data:
 	{
-		isLoading: false,
-	}
+        isLoading: false,
+        observacion: '',
+        valor: '',
+        errores: []
+    },
+    methods: {
+       responseSolicitud(val,obs) {
+        
+        this.isLoading = true
+        var url = "{{route('gestionSolicitud.update',$solicitud->id)}}";
+        var dataform = new FormData();
+        dataform.append('observacion', obs);
+        dataform.append('valor',val);
+        axios.post(url,dataform).then(response => 
+        {
+          if(!response.data.res){
+            this.isLoading= false
+            toastr.warning(response.data.msg);               
+          } else {
+            let url = "{{route('gestionSolicitudes.listar')}}"
+			location.replace(url)
+          }
+		}).catch( error =>
+        {
+            console.clear()
+            this.errores = error.response.data.errors;
+            this.isLoading= false
+            toastr.error("Disculpe, verifique el formulario");               
+        });
+      }
+    }
 })
 </script>
 <script>

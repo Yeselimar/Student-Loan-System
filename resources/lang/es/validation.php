@@ -175,5 +175,6 @@ return [
     'referencia_profesor2' => 'carta de referencia del profesor 2',
     'descripcion' => 'descripción',
     'titulo' =>  'título',
+    'observacion' => 'observación',
     ],
 ];

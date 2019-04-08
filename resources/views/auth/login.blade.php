@@ -53,8 +53,7 @@
                         <strong>@{{msg}}</strong> 
                       </div>
                       <!-- Antes estaba la ruta 'login', Att. Rafael -->
-                      <form class="" method="POST" action="{{ route('post.login') }}" >
-                        {{ csrf_field() }}
+
                           <!--<div class=" {{ $errors->has('email') ? ' has-error' : '' }}">-->
                           <div class='pb-1'>
                              <label for="email" class="control-label">Correo Electrónico</label>
@@ -79,7 +78,7 @@
                             </div>
                             
                             <div class="col-lg-6">
-                              <button type="submit" @click.stop.prevent="login" class="btn sisbeca-btn-default btn-block pull-right">Ingresar</button>
+                              <button  @click.stop.prevent="login" class="btn sisbeca-btn-default btn-block pull-right">Ingresar</button>
                             </div>
                           </div>
                           <hr>
@@ -100,7 +99,6 @@
                           @include('flash::message')
                           {{--  <p>¿No estas Registrado? <a href="{{ route('register') }}"> Registrate Aqui!</a></p> --}}
 
-                      </form>
                     </div>
                   </div>
               </div>

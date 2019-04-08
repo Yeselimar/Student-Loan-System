@@ -400,6 +400,13 @@ class CompartidoDirecCoordController extends Controller
     {
         $solicitud = Solicitud::find($id);
 
+        $request->validate([
+            'observacion' 			 	=> 'required',
+        ]);
+        $msg = '';
+        if($solicitud->status !== 'enviada'){
+            return response()->json(['res' => 0,'msg'=>'Disculpe, esta solicitud ya ha sido respondida anteriormente']);
+        }
         if(Auth::user()->rol==='directivo' or Auth::user()->rol==='coordinador')
         {
             $becariosAsignados = Becario::query()->where('acepto_terminos', '=', true)->whereIn('status', ['probatorio1', 'probatorio2', 'activo','inactivo'])->get();
@@ -425,6 +432,7 @@ class CompartidoDirecCoordController extends Controller
         if($request->get('valor')==='1')
         {
             flash('La solicitud de '.$solicitud->user->name.' ha sido aprobada exitosamente','success')->important();
+            $msg = 'La solicitud de '.$solicitud->user->name.' ha sido aprobada exitosamente';
 
             if($solicitud->user->rol==='becario')
                 $instancia= Becario::query()->select()->where('user_id','=',$solicitud->user_id)->first();
@@ -475,6 +483,7 @@ class CompartidoDirecCoordController extends Controller
                         $instancia->observacion_desincorporado = null;
                         flash($instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA','info')->important();
 
+                        $msg = $instancia->user->name.' Ha sido Reincorporado nuevamente al Programa AVAA';
                     }
                 }
 
@@ -487,6 +496,7 @@ class CompartidoDirecCoordController extends Controller
         {
             $solicitud->status='rechazada';
             flash('La solicitud de '.$solicitud->user->name.' ha sido rechazada','info')->important();
+            $msg = 'La solicitud de '.$solicitud->user->name.' ha sido rechazada';
         }
 
 
@@ -518,7 +528,9 @@ class CompartidoDirecCoordController extends Controller
         event(new SolicitudesAlerts($solicitud));
         Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
 
-        return  redirect()->route('gestionSolicitudes.listar');
+    
+        return response()->json(['res' => 1,'msg'=>$msg]);
+        //return  redirect()->route('gestionSolicitudes.listar');
 
     }
 

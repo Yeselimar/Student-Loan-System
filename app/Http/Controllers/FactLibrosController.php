@@ -8,6 +8,8 @@ use avaa\Becario;
 use Illuminate\Support\Facades\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use DateTime;
+
 
 class FactLibrosController extends Controller
 {

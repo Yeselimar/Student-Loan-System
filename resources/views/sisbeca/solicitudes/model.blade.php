@@ -102,12 +102,14 @@ const app = new Vue({
     },
        methods: {
       sendSolicitud() {
+        this.fecha_inactividad = $('#datepicker1').val()
+        this.fecha_desincorporado = $('#datepicker2').val()
         this.isLoading = true
         var dataform = new FormData();
         dataform.append('titulo', this.titulo);
         dataform.append('descripcion',this.descripcion);
         dataform.append('fecha_desincorporado',this.fecha_desincorporado)
-        dataform.append('fecha_inactivo',this.fecha_inactivo)
+        dataform.append('fecha_inactividad',this.fecha_inactividad)
         var url = "{{route('solicitud.store')}}";
         axios.post(url,dataform).then(response => 
         {
@@ -214,7 +216,7 @@ $('#datepicker1').datepicker({
     language: 'es',
     orientation: 'bottom',
     autoclose: true,
-    minDate: 0,
+    minDate: "0M 0D 0Y",
     maxDate: "+1M +0D",
     orientation: "bottom"
 });
@@ -224,7 +226,7 @@ $('#datepicker2').datepicker({
     language: 'es',
     orientation: 'bottom',
     autoclose: true,
-    minDate: 0,
+    minDate: "0M 0D 0Y",
     maxDate: "+1M +0D",
 });
 
