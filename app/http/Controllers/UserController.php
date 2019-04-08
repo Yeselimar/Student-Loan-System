@@ -112,10 +112,28 @@ class UserController extends Controller
     {
         $becario = Becario::find($id);
         $usuario = User::find($id);
+
         $usuario->estatus = $request->usuario_estatus;
         $usuario->save();
+
         $becario->status = $request->becario_estatus;
+        if($request->becario_estatus=='inactivo')
+        {
+            //Guardo fecha desde el cual entra en inactivo
+            $becario->fecha_inactivo = DateTime::createFromFormat('d/m/Y H:i:s', date('d/m/Y H:i:s') )->format('Y-m-d H:i:s');
+            $becario->observacion_inactivo = "El ".Auth::user()->getRol()." ".Auth::user()->nombreyapellido()." paso al becario a inactivo.";
+        }
+        else
+        {
+            if($request->becario_estatus=='activo')
+            {
+                $becario->fecha_inactivo = null;
+                $becario->observacion_inactivo = null;
+                //Coloco en nulo la fecha de inactivo
+            }
+        }
         $becario->save();
+
         return response()->json(['success'=>'El estatus del becario fue actualizado.']);
     }
 

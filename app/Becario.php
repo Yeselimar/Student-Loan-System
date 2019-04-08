@@ -97,6 +97,11 @@ class Becario extends Model
         return $this->belongsToMany('avaa\Nomina','becarios_nominas','user_id','nomina_id','user_id',null)->withTimestamps();
     }
 
+    public function mensajes()//relacion buena
+    {
+        return $this->hasMany('avaa\Mensaje','receptor_id');
+    }
+
     public function scopeActivos($query)
     {
         return $query->orwhere('status','=','activo');

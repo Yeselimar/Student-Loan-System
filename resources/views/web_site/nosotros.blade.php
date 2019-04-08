@@ -1,5 +1,18 @@
 @extends('web_site.layouts.main')
 @section('title', "Nosotros")
+@section('personalcss')
+<style>
+   .cortar
+   {
+      white-space: pre-line;
+      word-break: break-all;
+   }
+   .blockquote-box  h6
+   {
+      text-align: left;
+   }
+</style>
+@endsection
 @section('content')
 
    <!-- Principal -->
@@ -108,72 +121,87 @@
                               <br/>
                               <div class="container">
                                  <div class="row">
-                                    <div class="col-md-6 nosotros-team">
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 nosotros-team">
                                        <div class="blockquote-box animated fadeInLeft clearfix wow" data-wow-delay="0.2s" style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:claudia.gonzalez@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Claudia González.</strong><br> <span>Directora Ejecutiva</span>
-                                          </h6>
-                                          <a class="text-email" href="mailto:claudia.gonzalez@avaa.org"><strong><i class="fa fa-envelope"></i> claudia.gonzalez@avaa.org</strong></a></div>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Claudia González.</strong> <span>Directora Ejecutiva</span>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:claudia.gonzalez@avaa.org"><strong> claudia.gonzalez@avaa.org</strong></a>
+                                          </div>
+                                       </div>
 
                                        <div class="blockquote-box animated fadeInLeft clearfix animated wow" data-wow-delay="0.4s"  style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:coordinadora.proexcelencia@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Coordinación de Programas Educativos</strong>
-                                          </h6>
-                                          <p>Email: <a  style="color:#3d91d6;" href="mailto:coordinadora.proexcelencia@avaa.org"><strong>coordinadora.proexcelencia@avaa.org</strong></a></p>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Coordinación de Programas Educativos</strong>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:coordinadora.proexcelencia@avaa.org"><strong> coordinadora.proexcelencia@avaa.org</strong></a>
+                                          </div>
                                        </div>
                                        <div class="blockquote-box animated fadeInLeft clearfix animated wow" data-wow-delay="0.6s"  style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:yvonne.abogado@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Yvonne Abogado,</strong> <span>Gerente de Administración y Finanzas</span>
-                                          </h6>
-                                          <p>Email: <a style="color:#3d91d6;" href="mailto:yvonne.abogado@avaa.org.com"><strong>yvonne.abogado@avaa.org</strong></a></p>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Yvonne Abogado,</strong> <span>Gerente de Administración y Finanzas</span>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:yvonne.abogado@avaa.org.com"><strong>  yvonne.abogado@avaa.org.com</strong></a>
+                                          </div>
                                        </div>
 
                                        <div class="blockquote-box animated fadeInLeft clearfix animated wow" data-wow-delay="0.8s"  style="visibility: visible; animation-name: fadeInLeft;">
                                           <div class="square pull-left">
                                              <a href="mailto:cbt@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Miguel Caraballo,</strong> <span>Coordinador de Servicios Generales</span>
-                                          </h6>
-                                          <p>Email: <a style="color:#3d91d6;" href="mailto:cbt@avaa.org"><strong>cbt@avaa.org</strong></a></p>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Miguel Caraballo,</strong> <span>Coordinador de Servicios Generales</span>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:cbt@avaa.org"><strong>  cbt@avaa.org</strong></a>
+                                          </div>
                                        </div>
                                     </div>
-                                    <div class="col-md-6 nosotros-team">
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 nosotros-team">
                                        <div class="blockquote-box animated fadeInRight clearfix animated wow" data-wow-delay="1s"  style="visibility: visible; animation-name: fadeInRight;">
                                           <div class="square pull-left">
                                              <a href="mailto:gerencia.proexcelencia@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Bapssy Meneses,</strong> <span>Gerente de Programas Educativos</span>
-                                          </h6>
-                                          <p>Email: <a  style="color:#3d91d6;" href="mailto:gerencia.proexcelencia@avaa.org"><strong>gerencia.proexcelencia@avaa.org</strong></a></p>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Bapssy Meneses,</strong> <span>Gerente de Programas Educativos</span>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:gerencia.proexcelencia@avaa.org"><strong>  gerencia.proexcelencia@avaa.org</strong></a>
+                                          </div>
                                        </div>
                                        <div class="blockquote-box animated fadeInRight clearfix animated wow" data-wow-delay="1.2s"  style="visibility: visible; animation-name: fadeInRight;">
                                           <div class="square pull-left">
                                              <a href="mailto:programa.proexcelencia@gmail.com">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Bárbara Narbona,</strong> <span>Asistente de Programas Educativos</span>
-                                          </h6>
-                                          <p>Email: <a style="color:#3d91d6;" href="mailto:programa.proexcelencia@gmail.com"><strong> programa.proexcelencia@gmail.com</strong></a></p>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Bárbara Narbona,</strong> <span>Asistente de Programas Educativos</span>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:programa.proexcelencia@gmail.com"><strong>  programa.proexcelencia@gmail.com</strong></a>
+                                          </div>
                                        </div>
                                        <div class="blockquote-box animated fadeInRight clearfix animated wow" data-wow-delay="1.4s"  style="visibility: visible; animation-name: fadeInRight;">
                                           <div class="square pull-left">
                                              <a href="mailto:martha.aguilar@avaa.org">  <img src="{{asset('info_sitio/img/team/default.png')}}" alt="user" height="80" width="80"></a>
                                           </div>
-                                          <h6>
-                                             <strong>Martha Aguilar,</strong> <span>Coordinadora de Administración</span>
-                                          </h6>
-                                          <p>Email: <a style="color:#3d91d6;" href="mailto:martha.aguilar@avaa.org"><strong>martha.aguilar@avaa.org</strong></a></p>
+                                          <div class="blockquote-box-directivo">
+                                             <h6>
+                                                <strong>Martha Aguilar,</strong> <span>Coordinadora de Administración</span>
+                                             </h6>
+                                             <i class="fa fa-envelope"></i> <a class="text-email cortar" href="mailto:martha.aguilar@avaa.org" style="color:#3d91d6;"><strong>  martha.aguilar@avaa.org</strong></a>
+                                          </div>
                                        </div>
 
                                     </div>
