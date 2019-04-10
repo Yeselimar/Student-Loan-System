@@ -1809,7 +1809,7 @@ textarea {
 }
 .scroll-sidebar {
   padding-bottom: 60px;
-    overflow: auto !important;
+   
 }
 .collapse.in {
   display: block;

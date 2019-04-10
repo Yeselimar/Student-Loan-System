@@ -14,7 +14,7 @@
     <link href="{{asset('public_sisbeca/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('public_sisbeca/css/multipleform.css')}}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('public_sisbeca/css/font-awesome/css/font-awesome.min.css')}}"/>
+    <link rel="stylesheet" href="{{asset('public_sisbeca/css/font-awesome2/css/fontawesome.min.css')}}"/>
     <!--Dropzone -->
 
     <!--<link href="{{asset('public_sisbeca/css/lib/dropzone/dropzone.css')}}" rel="stylesheet"/>-->
