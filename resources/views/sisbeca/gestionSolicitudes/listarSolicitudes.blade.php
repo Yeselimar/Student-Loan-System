@@ -1,7 +1,10 @@
+@section('personalcss')
+ <script src="{{asset('public_sisbeca/js/lib/bootstrap/js/popper.min.js')}}"></script> 
+@endsection
 @extends('sisbeca.layouts.main')
 @section('title','Solicitudes/Reclamos')
 @section('content')
-<div class="col-lg-12">
+<div class="col-lg-12" >
     <div class="table-responsive">
 
         <table class="table table-bordered table-hover" id="solicitudes" style="border: 1px solid #eee">
@@ -66,7 +69,7 @@
                                 <i class='fa fa-eye'></i>
                             </a>
 
-                            @if(Auth::user()->esDirectivo())
+                            @if(Auth::user()->esDirectivo() && $solicitud->status!=='enviada')
                             <a href="{{route('solicitud.ocultar.admin',$solicitud->id)}}" class="btn btn-xs sisbeca-btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ocultar solicitud">
                                 <i class="fa fa-eye-slash"></i>
                             </a>

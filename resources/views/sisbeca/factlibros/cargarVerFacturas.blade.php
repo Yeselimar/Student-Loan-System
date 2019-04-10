@@ -20,7 +20,6 @@
             </tr>
             </thead>
             <tbody>
-            @if($facturas->count()>0)
                 @foreach($facturas as $factura)
                     <tr>
                         <td class="text-center">{{$factura->name }}</td>
@@ -64,11 +63,6 @@
                         </td>
                     </tr>
                 @endforeach
-            @else
-            <tr>
-                <td colspan="6" class="text-center">No hay <strong>facturas</strong></td>
-            </tr>
-            @endif
             </tbody>
         </table>
     </div>

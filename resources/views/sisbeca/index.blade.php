@@ -16,14 +16,17 @@
 	@endif
 
 @section('content')
-
-	<div class="container">
+<div class="container-fluid" id="app">
+<div v-if="numSol !== 0" class="alert alert-warning alert-dismissible cursor" @click="viewSol">
+	<strong>Actualmente existen usuarios pendientes por autorizar cambios de status. Haga Click Aqui</strong> 
+</div>
+	<div class="container-fluid" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
 		<h3 class="text-center" >
 			<strong>!Bienvenid@, {{ Auth::user()->nombreyapellido()}}!</strong>
 		</h3>
 	</div>
-
-	<div class="container">
+	<br>
+	<div class="container-fluid">
 		<div class="row">
 			<div class='col-sm-12' align="center" >
 				@if((Auth::user()->rol==='postulante_becario')||(Auth::user()->rol==='postulante_mentor'))
@@ -64,8 +67,7 @@
 	</div>
 
 	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
-	<div style="background:#efefef; margin-left: 15px; margin-right: 15px;">
-
+	<div class="container-fluid" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
 		<div class="row">
 			<div class='col-sm-12'>
 				<h3 class="text-center">
@@ -76,7 +78,7 @@
 		</div>
 	</div>
 	<br>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			@if($actividades->count()!=0)
 				@foreach($actividades as $actividad)
@@ -126,7 +128,15 @@
 	</div>
 	<br>
 		@if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
-			<div class="container">
+			<div class="container-fluid">
+				<!-- Cargando.. -->
+				<section v-if="isLoading" class="loading" id="preloader">
+				<div>
+					<svg class="circular" viewBox="25 25 50 50">
+						<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+				</div>
+				</section>
+
 				<div class="row">
 					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 reporte-contenedor">
 						<a href="{{route('cursos.todos')}}">
@@ -224,12 +234,74 @@
 			</div>
 		@endif
 	@endif
+</div>
 
 @endsection
 @endif
 
+@if(Auth::user()->esDirectivo() || Auth::user()->esCoordinador())
+@section('personaljs')
+<script>
+    const app = new Vue({
+
+    el: '#app',
+    created: function()
+    {
+        this.getSolProcesar();
+
+    },
+    data:
+    {
+        isLoading: false,
+		numSol: 0
+    },
+    methods:
+    {
+        getSolProcesar: function()
+        {
+			this.isLoading = true
+            var url = "{{route('get.solicitudes.pendientes')}}";
+            axios.get(url).then(response => 
+            {
+				this.numSol = response.data.res
+				this.isLoading = false
+			}).catch( error => {
+				console.log(error);
+				this.isLoading = false
+			});
+        },
+		viewSol(){
+			let url = "{{route('solicitudes.pendientes')}}"
+			location.replace(url)
+		}
+    }
+});
+</script>
+@endsection
+@else
+@section('personaljs')
+<script>
+    const app = new Vue({
+    el: '#app',
+    data:
+    {
+		numSol: 0
+    },
+    methods:
+    {
+		viewSol(){
+			
+		}
+    }
+});
+</script>
+@endsection
+@endif
 @section('personalcss')
 <style>
+	.cursor {
+		cursor: pointer;
+	}
     .repote-contenido
     {
     	padding-top:15px;

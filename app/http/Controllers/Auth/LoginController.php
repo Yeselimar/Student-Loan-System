@@ -58,14 +58,30 @@ class LoginController extends Controller
 
     public function postlogin(Request $request)
     {
-
+        $request->validate([
+            'email' 			 	=> 'required|email',
+            'password'				 	=> 'required',
+        ]);
         $user = User::where('email','=',$request->email)->first();
+        
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password,'estatus'=> 1]))
         {
             return redirect()->route('dalepaso');
         }
         else
         {
+            if($user){
+                if($user->estatus == 0){
+                    $msg = "Disculpe, el usuario está inactivo.";
+                } else{
+                    $msg = "Disculpe, correo y/o contraseña incorrecta.";
+                }
+            } else {
+                $msg = "Disculpe, el usuario no existe.";
+            }
+            return response()->json(['res' => 1,'msg'=>$msg]);
+            
+            /*
             if($user)
             {
                 if($user->estatus==0)
@@ -82,7 +98,9 @@ class LoginController extends Controller
                 flash("Disculpe, el usuario no existe.","danger");
             }
             return redirect()->back();   
+            */
         }
+
     }
 
     public function logout()

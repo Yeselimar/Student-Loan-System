@@ -22,7 +22,7 @@
                         </ul>
                     </li>
                 @endif
-                {{--Fin de Vistas del Administrador--}}
+                {{--Fin de Vistas del Admissnistrador--}}
 
                 {{--Inicio de Vistas del Postulante a Becario--}}
                 @if(Auth::user()->rol==='postulante_becario')
@@ -219,8 +219,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('receso.decembrino.index') }}" aria-expanded="false">
+                        <a href="{{ route('receso.decembrino.index') }}" aria-expanded="false" class="has-arrow">
                             <i class="fa  fa-calendar"></i>
+                            <span class="hide-menu">
                             Receso Decembrino
                         </a>
                     </li>

@@ -1,3 +1,6 @@
+@section('personalcss')
+ <script src="{{asset('public_sisbeca/js/lib/bootstrap/js/popper.min.js')}}"></script> 
+@endsection
 @extends('sisbeca.layouts.main')
 @if(!(Auth::user()->rol==='mentor'))
 	@section('title','Becarios')
@@ -54,9 +57,7 @@
 					@if(!(Auth::user()->rol==='mentor'))
 						@if($becario->mentor_id===null)
 							<td class="text-center">
-								<span class="label label-danger">sin asignar</span>
-								<br>
-								<span class="label label-danger">sin correo</span>
+								<span class="label label-danger">Sin asignar</span>
 							</td>
 						@else
 							<td class="text-center">

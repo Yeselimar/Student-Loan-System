@@ -4,7 +4,7 @@
 
 @section('content')
 
-
+<div id="app">
 <div class="container">
         <div class="text-right">
                 <button  onclick="Regresar()" class="btn btn-sm sisbeca-btn-primary">Atrás</button>
@@ -59,15 +59,7 @@
                             <strong>Descripción:</strong> {{$solicitud->descripcion}}
                             <br/>
                             <strong>Fecha de Solicitud:</strong> {{date("d/m/Y h:i:s A", strtotime($solicitud->updated_at))}}<br/>
-                            @if(!is_null($solicitud->fecha_inactividad) && $solicitud->status == 'enviada')
-                            <span class="label label-warning">Esta solicitud puede ser aprobada desde el <strong>{{ date("d/m/Y", strtotime($solicitud->fecha_inactividad))}}</strong></span><br/>
-                            @else
-                                @if(!is_null($solicitud->fecha_desincorporacion) && $solicitud->status == 'enviada')
-                                    <p><span class="label label-warning">
-                                        Esta solicitud puede ser aprobada desde el <strong>{{ date("d/m/Y", strtotime($solicitud->fecha_desincorporacion))}}</strong>
-                                    </span></p>
-                                @endif
-                            @endif
+                            
                             @if($solicitud->observacion)
                             <hr class="w-100"/>
                             <p class="text-left pl-5">
@@ -83,157 +75,13 @@
 
     <div align="center">
             @if($solicitud->status==='enviada')
-
-                @if(!is_null($solicitud->fecha_inactividad))
-                    @if(strtotime(date("Y-m-d", strtotime($solicitud->fecha_inactividad)))<=strtotime(date("Y-m-d",time())))
-
-                        <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>
-
-                    @endif
-                @else
-                    @if(!is_null($solicitud->fecha_desincorporacion))
-                        @if(strtotime(date("Y-m-d", strtotime($solicitud->fecha_desincorporacion)))<=strtotime(date("Y-m-d",time())))
-
-                            <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;
-
-                        @endif
-                    @else
-                        <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>
-                    @endif
-                @endif
-                <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
+                <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' @click="observacion=''" >Aprobar</button>
+                <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default'  @click="observacion=''"  >Rechazar</button>
             @endif
     </div>
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-
-<div class="col-lg-12">
-    <p class="text-left"><strong>Solicitud de {{$solicitud->user->name.' '.$solicitud->user->last_name}}</strong></p>
-
-    <div class="section-ourTeam" style="border:2px solid #eee">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-            <div class="row section-info ourTeam-box text-center">
-                <div class="col-md-12 section1">
-                    @if($img_perfil_postulante->count()>0)
-                        <img src="{{asset($img_perfil_postulante[0]->url)}}" class="image-responsive img-circle img-fluid img-rounded img-thumbnail perfil-img">
-
-                    @else
-                        @if($solicitud->user->sexo==='femenino')
-                            <img src="{{asset('images/perfil/femenino.png')}}" class="image-responsive img-circle img-fluid img-rounded img-thumbnail perfil-img">
-                        @else
-                            <img src="{{asset('images/perfil/masculino.png')}}" class="image-responsive img-circle img-fluid img-rounded img-thumbnail perfil-img">
-
-                        @endif
-                    @endif
-                </div>
-
-                <div class="col-md-12 section2">
-                    <div class="col-md-12">
-                        <strong>Datos del Solicitante:</strong>
-                        <br/>
-
-                        <span class="label label-info">
-                            {{$solicitud->user->name.' '.$solicitud->user->last_name}}
-                        </span>
-                        <br>
-
-                        @if($solicitud->status==='aceptada')
-                            <span class="label label-success"><strong>{{strtoupper( $solicitud->status )}}</strong></span>
-                        @else
-                            @if($solicitud->status==='enviada')
-                            <span class="label label-warning"><strong>POR PROCESAR</strong></span>
-                                @else
-                            <span class="label label-danger"><strong>{{strtoupper( $solicitud->status )}}</strong></span>
-                                @endif
-                        @endif
-
-                        <br/>
-
-
-                        <span class="label label-inverse"> {{ucwords($solicitud->user->rol)}}</span>
-                        <br/>
-
-                        Cédula: {{$solicitud->user->cedula}}
-                        <br/>
-
-                        <i class="icon fa fa-envelope"></i>
-                        {{$solicitud->user->email}}
-                        <br/>
-
-                        <span class=" fa fa-venus-mars"></span> {{ucwords($solicitud->user->sexo)}}
-                        <br/>
-
-                        <span class="fa fa-birthday-cake"></span>  {{ date("d/m/Y", strtotime($solicitud->user->fecha_nacimiento)) }}
-
-                        <div style="border: 2px solid #424242">
-                            <strong>Tipo:</strong> {{strtoupper($solicitud->titulo)}}
-                            <br/>
-                            <strong>Descripción:</strong> {{$solicitud->descripcion}}
-                            <br/>
-                            <strong>Fecha de Solicitud:</strong> {{date("d/m/Y h:i:s A", strtotime($solicitud->updated_at))}}
-                        </div>
-
-                        @if(!is_null($solicitud->fecha_inactividad))
-                            <span class="label label-warning">Esta solicitud puede ser aprobada desde el <strong>{{ date("d/m/Y", strtotime($solicitud->fecha_inactividad))}}</strong></span>
-                        @else
-                            @if(!is_null($solicitud->fecha_desincorporacion))
-                                <span class="label label-warning">
-                                    Esta solicitud puede ser aprobada desde el <strong>{{ date("d/m/Y", strtotime($solicitud->fecha_desincorporacion))}}</strong>
-                                </span>
-                            @endif
-                        @endif
-                    </div>
-                </div>
-
-                <div class="col-lg-12">
-                    <br>
-                    <div class="text-center">
-                        <button onclick="Regresar()" class="btn sisbeca-btn-primary" type="button" >Atrás</button>&nbsp;
-                        @if($solicitud->status==='enviada')
-
-                            @if(!is_null($solicitud->fecha_inactividad))
-                                @if(strtotime(date("Y-m-d", strtotime($solicitud->fecha_inactividad)))<=strtotime(date("Y-m-d",time())))
-
-                                    <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>
-
-                                @endif
-                            @else
-                                @if(!is_null($solicitud->fecha_desincorporacion))
-                                    @if(strtotime(date("Y-m-d", strtotime($solicitud->fecha_desincorporacion)))<=strtotime(date("Y-m-d",time())))
-
-                                        <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>&nbsp;
-
-                                    @endif
-                                @else
-                                    <button type='button' title="Aprobar" class='btn sisbeca-btn-primary' data-toggle='modal' data-target='#modal' >Aprobar</button>
-                                @endif
-                            @endif
-                            <button type='button' title="Rechazar" class='btn sisbeca-btn-default' data-toggle='modal' data-target='#modal-default' >Rechazar</button>
-                        @endif
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>
--->
 
 <!-- Modal para aprobar -->
 <div class="modal fade" id="modal">
@@ -246,25 +94,35 @@
             </div>
             <br>
             <p class="text-center">¿Esta seguro que desea <strong>aprobar</strong> la solicitud de {{$solicitud->user->name}}?</p>
+            @if(!is_null($solicitud->fecha_inactividad) && $solicitud->status == 'enviada')
+                <span class="label label-warning p-2">El cambio de status podrá efectuarse a partir del <strong>{{ date("d/m/Y", strtotime($solicitud->fecha_inactividad))}}</strong></span><br/>
+                @else
+                    @if(!is_null($solicitud->fecha_desincorporacion) && $solicitud->status == 'enviada')
+                        <p><span class="label label-warning p-2">
+                        El cambio de status podrá efectuarse a partir del  <strong>{{ date("d/m/Y", strtotime($solicitud->fecha_desincorporacion))}}</strong>
+                        </span></p>
+                    @endif
+            @endif
+            <form >
 
-            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8">
-
-                {{csrf_field()}}
-                {{method_field('PUT')}}
-                <input type="hidden" id='valor' name="valor" value="1">
+                <input type="hidden" id='valor' v-model="valor" name="valor" value="1">
                 <div class="container-fluid">
                     <textarea
                     class="sisbeca-input sisbeca-textarea"
                     name="observacion"
                     id="observacion"
+                    v-model="observacion"
                     rows="15"
                     placeholder="Ingrese observación de la solicitud"
                     required
                     ></textarea>
+                    <span v-if="errores.observacion" :class="['label label-danger']">@{{ errores.observacion[0] }}</span>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-sm sisbeca-btn-primary">Sí</button>
+                    <button type="submit" class="btn btn-sm sisbeca-btn-primary"  @click.stop.prevent="responseSolicitud('1',observacion)">Sí</button>
                 </div>
 
             </form>
@@ -285,13 +143,11 @@
             <br>
             <p class="text-center">¿Esta seguro que desea <strong>rechazar</strong> la solicitud de {{$solicitud->user->name}}?</p>
 
-            <form method="POST" action={{route('gestionSolicitud.update',$solicitud->id)}} accept-charset="UTF-8">
-
-                {{csrf_field()}}
-                {{method_field('PUT')}}
-                <input type="hidden" id='valor2' name="valor"  value="0">
+            <form>
+                <input type="hidden" id='valor2' v-model="valor" name="valor"  value="0">
                 <div class="container-fluid">
                         <textarea
+                        v-model="observacion"
                         class="sisbeca-input sisbeca-textarea"
                         name="observacion"
                         id="observacion"
@@ -299,11 +155,14 @@
                         placeholder="Ingrese observación de la solicitud"
                         required
                         ></textarea>
+                        <span v-if="errores.observacion" :class="['label label-danger']">@{{ errores.observacion[0] }}</span>
+
+
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm sisbeca-btn-default" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-sm sisbeca-btn-primary" >Sí</button>
+                    <button type="submit" class="btn btn-sm sisbeca-btn-primary" @click.stop.prevent="responseSolicitud('0',observacion)" >Sí</button>
                 </div>
 
             </form>
@@ -312,15 +171,61 @@
 
 
     </div>
-
     <!-- /.modal-content -->
 </div>
 <!-- Modal para rechazar -->
+    <!-- Cargando.. -->
+    <section v-if="isLoading" class="loading" id="preloader">
+      <div>
+          <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+      </div>
+    </section>
+	<!-- Cargando.. -->
+</div>
 
 @endsection
 
 
 @section('personaljs')
+<script>
+const app = new Vue({
+	el: '#app',
+	data:
+	{
+        isLoading: false,
+        observacion: '',
+        valor: '',
+        errores: []
+    },
+    methods: {
+       responseSolicitud(val,obs) {
+        
+        this.isLoading = true
+        var url = "{{route('gestionSolicitud.update',$solicitud->id)}}";
+        var dataform = new FormData();
+        dataform.append('observacion', obs);
+        dataform.append('valor',val);
+        axios.post(url,dataform).then(response => 
+        {
+          if(!response.data.res){
+            this.isLoading= false
+            toastr.warning(response.data.msg);               
+          } else {
+            let url = "{{route('gestionSolicitudes.listar')}}"
+			location.replace(url)
+          }
+		}).catch( error =>
+        {
+            console.clear()
+            this.errores = error.response.data.errors;
+            this.isLoading= false
+            toastr.error("Disculpe, verifique el formulario");               
+        });
+      }
+    }
+})
+</script>
 <script>
 
     function Regresar() {
@@ -333,19 +238,6 @@
     }
 
     function handleNumber(event, mask) {
-        /* numeric mask with pre, post, minus sign, dots and comma as decimal separator
-            {}: positive integer
-            {10}: positive integer max 10 digit
-            {,3}: positive float max 3 decimal
-            {10,3}: positive float max 7 digit and 3 decimal
-            {null,null}: positive integer
-            {10,null}: positive integer max 10 digit
-            {null,3}: positive float max 3 decimal
-            {-}: positive or negative integer
-            {-10}: positive or negative integer max 10 digit
-            {-,3}: positive or negative float max 3 decimal
-            {-10,3}: positive or negative float max 7 digit and 3 decimal
-        */
         with (event) {
             stopPropagation()
             preventDefault()
