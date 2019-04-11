@@ -16,7 +16,7 @@
     <div class="navbar-collapse">
         <ul class="navbar-nav mr-auto mt-md-0">
             <ul class="nav navbar-nav navbar-left">
-                <li><span style="color: white;font-weight: bold"> {{ 'AVAA - Sistema de Administración' }}</span></li>
+                <li><span style="color: white;font-weight: bold"> {{ 'Sistema de Evaluación de Becarios AVAA' }}</span></li>
 
             </ul>
         </ul>
@@ -60,7 +60,7 @@
                     <ul class="dropdown-user">
                         <li>
                             <a>
-                                <i class="fa fa-check"></i> 
+                                <i class="fa fa-check"></i>
                                 <strong>{{Auth::user()->nombreyapellido()}}</strong>
                             </a>
                         </li>
@@ -93,14 +93,14 @@
                                 </a>
                             </li>
                         @endif
-                        
+
                         {{--<li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li> --}}
-                        
+
                         <li>
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                <i class="fa fa-sign-out"></i> 
+                                <i class="fa fa-sign-out"></i>
                                 Cerrar Sesión
                             </a>
 
