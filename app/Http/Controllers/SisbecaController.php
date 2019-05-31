@@ -88,7 +88,7 @@ class SisbecaController extends Controller
                 {
                     $alertas = Alerta::where('user_id', '=', Auth::user()->id)->where('status', '=', 'generada')->get();
                 }
-               
+
 
                 Alerta::where('status', '=', 'generada')->where('user_id', '=', Auth::user()->id)->update(array('leido' => true));
             }
@@ -100,8 +100,8 @@ class SisbecaController extends Controller
     public function perfil($id)
     {
         $becario = Becario::find($id);
-        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or 
-            (Auth::user()->esBecario() and Auth::user()->id==$id) or 
+        if((Auth::user()->esPostulanteBecario() and Auth::user()->id==$id) or
+            (Auth::user()->esBecario() and Auth::user()->id==$id) or
             (Auth::user()->esPostulanteMentor() and Auth::user()->id==$id) or
             (Auth::user()->esMentor() and Auth::user()->id==$becario->mentor_id) or
             Auth::user()->esDirectivo() or Auth::user()->esCoordinador())

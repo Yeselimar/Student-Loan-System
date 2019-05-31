@@ -90,7 +90,9 @@
                     <div><label for="image" class="control-label">*Imagen Destacada</label></div>
                     <div class="align-items-center d-flex flex-column justify-content-center">    
                         <img class="img-fluid py-2" v-if="newImagenUrl != null && newImagenUrl != '' && newImagenUrl!='image'" :src="newImagenUrl" width="300" height="300">
+
                         <button class="btn btn-micro sisbeca-btn-primary" v-if="newImagenUrl == '' &&  newImagen == ''" @click="openInputFile()">Subir</button>
+                        
                         <button v-else class="btn btn-micro sisbeca-btn-default " @click="newImagenUrl='';newImagen=''">Borrar</button>
                         <input accept="image/*" v-if="newImagenUrl == '' &&  newImagen == ''"  class="d-none" type="file" ref="imagenInput" @change="changeAttachment($event)">
                     </div>

@@ -17,10 +17,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                @if($becarios->count() > 0)
+
                     @foreach($becarios as $becario)
-                        @if($becario->status !='pre-postulante')
+
                             <tr>
+
                                 @if($becario->status=='entrevista')
                                 <td class="text-center">
                                     <span class="label label-warning">Entrevista</span>
@@ -55,23 +56,20 @@
                                         <i class='fa fa-eye' ></i>
                                     </a>
                                     @if($becario->status=='rechazado')
-                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-default' data-toggle="popover" data-trigger="hover" data-content="Ver Perfil" data-placement="left" >
-                                        <i class='fa fa-trash' ></i>
+                                    <a href="{{route('ocultarpostulantebecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-default' data-toggle="popover" data-trigger="hover" data-content="Eliminar de esta lista" data-placement="left" >
+                                        <i class='fa fa-eye-slash' ></i>
                                     </a>
                                     @else
-                                    <a href="{{route('perfilPostulanteBecario', $becario->user_id)}}" class='btn btn-xs sisbeca-btn-default disabled' data-toggle="popover" data-trigger="hover" data-content="Ver Perfil" data-placement="left" >
-                                        <i class='fa fa-trash' ></i>
+                                    <a class='btn btn-xs sisbeca-btn-default disabled' data-toggle="popover" data-trigger="hover" data-content="Eliminar de esta lista" data-placement="left" >
+                                        <i class='fa fa-eye-slash' ></i>
                                     </a>
                                     @endif
                                 </td>
+
                             </tr>
-                        @endif
+
                     @endforeach
-                @else
-                    <tr>
-                        <td class="text-center" colspan="5">No hay <strong>postulantes a ProExcelencia</strong>.</td>
-                    </tr>
-                @endif
+
                 </tbody>
             </table>
         </form>
@@ -92,8 +90,11 @@
 
 </div>
 @endsection
-
+@section('personalcss')
+<script src="{{asset('public_sisbeca/js/lib/bootstrap/js/popper.min.js')}}"></script>
+@endsection
 @section('personaljs')
+
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
@@ -105,7 +106,7 @@ $(document).ready(function() {
     $('#postulantes').DataTable({
         "language": {
         "decimal": "",
-        "emptyTable": "No hay información",
+        "emptyTable": "No hay postulantes a ProExcelencia",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
@@ -120,16 +121,14 @@ $(document).ready(function() {
             {
                 "first": "Primero",
                 "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
+                "next": '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
             }
         }
     });
 });
 
-    $( function() {
-        $( "#datepicker" ).datepicker({ minDate: 0, maxDate: "+2M +10D",orientation: "bottom" });
-    } );
+
 </script>
 <script>
 $(document).ready(function(){

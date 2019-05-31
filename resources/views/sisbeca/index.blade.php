@@ -18,14 +18,14 @@
 @section('content')
 <div class="container-fluid" id="app">
 <div v-if="numSol !== 0" class="alert alert-warning alert-dismissible cursor" @click="viewSol">
-	<strong>Actualmente existen usuarios pendientes por autorizar cambios de status. Haga Click Aqui</strong> 
+	<strong>Actualmente existen usuarios pendientes por autorizar cambios de status. Haga Click Aqui</strong>
 </div>
-	<div class="container-fluid" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
+	<div class="container" >
 		<h3 class="text-center" >
 			<strong>!Bienvenid@, {{ Auth::user()->nombreyapellido()}}!</strong>
 		</h3>
 	</div>
-	<br>
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class='col-sm-12' align="center" >
@@ -67,12 +67,12 @@
 	</div>
 
 	@if(Auth::user()->esBecario() or Auth::user()->esDirectivo() or Auth::user()->esCoordinador() )
-	<div class="container-fluid" style="border:1px solid #dedede;padding: 10px;border-radius: 10px;">
+	<div class="container">
 		<div class="row">
 			<div class='col-sm-12'>
 				<h3 class="text-center">
 					Próximas Actividades
-					
+
 				</h3>
 			</div>
 		</div>
@@ -261,7 +261,7 @@
         {
 			this.isLoading = true
             var url = "{{route('get.solicitudes.pendientes')}}";
-            axios.get(url).then(response => 
+            axios.get(url).then(response =>
             {
 				this.numSol = response.data.res
 				this.isLoading = false
@@ -290,7 +290,7 @@
     methods:
     {
 		viewSol(){
-			
+
 		}
     }
 });

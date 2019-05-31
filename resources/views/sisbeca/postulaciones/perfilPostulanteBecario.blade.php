@@ -10,9 +10,9 @@
 		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-12">
 		<p class="text-left"><strong>Perfil de {{$postulante->user->name.' '.$postulante->user->last_name}}</strong></p>
 				<div class="row">
-					<div class="col xs-6 col-md-8 col-lg-4 offset-md-5  offset-lg-0 p-t-20 text-center">
-                            @if($img_perfil->count()>0)
-                                <img src="{{asset($img_perfil[0]->url)}}" class="img-rounded img-responsive w-50">
+					<div class="col xs-6 col-md-8 col-lg-4 offset-md-5  offset-lg-0 p-t-5 text-center">
+                            @if(!is_null($fotografia))
+                                <img src="{{asset($fotografia->url)}}" class="img-rounded img-responsive w-50">
                             @else
                                 @if($postulante->user->sexo==='femenino')
                                     <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive w-50">
@@ -554,10 +554,14 @@
                             <div class="panel-heading"> {{$postulante->user->name}} {{$postulante->user->last_name}}</div>
                             <div class="row panel-body">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    @if(!is_null($fotografia))
-                                    <img class="img-responsive w-50 m-b-20" src="{{asset($fotografia->url)}}">
+                                @if(!is_null($fotografia))
+                                        <img src="{{asset($fotografia->url)}}" class="img-rounded img-responsive w-50">
                                     @else
-                                        <span class="label label-default"><strong>Sin Fotografia</strong></span>
+                                        @if($postulante->user->sexo==='femenino')
+                                            <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive w-50">
+                                        @else
+                                            <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive w-50">
+                                        @endif
                                     @endif
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
@@ -570,7 +574,7 @@
                         </div>
 
                             <br>
-                            ¿Está seguro que desea <strong class="letras-verdes">Seleccionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong>
+                            ¿Está seguro que desea <strong class="letras-verdes">Seleccionar</strong> a {{$postulante->user->name}} {{$postulante->user->last_name}} <strong> para ir a entrevista?</strong><div class="letras-pequenas">(Esta acción no se puede Deshacer)</div>
                         </div>
 
                     <div class="modal-footer">
@@ -598,11 +602,15 @@
                                 <div class="panel-heading"> {{$postulante->user->name}} {{$postulante->user->last_name}}</div>
                                 <div class="row panel-body">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            @if(!is_null($fotografia))
-                                            <img class="img-responsive w-50 m-b-20" src="{{asset($fotografia->url)}}">
+                                    @if(!is_null($fotografia))
+                                            <img src="{{asset($fotografia->url)}}" class="img-rounded img-responsive w-50">
+                                        @else
+                                            @if($postulante->user->sexo==='femenino')
+                                                <img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive w-50">
                                             @else
-                                                <span class="label label-default"><strong>Sin Fotografia</strong></span>
+                                                <img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive w-50">
                                             @endif
+                                        @endif
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
                                             <div><b>Edad:</b>{{$postulante->user->edad}}</div>
@@ -613,7 +621,7 @@
                                 </div>
                             </div>
                     <br>
-                    ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>
+                    ¿Está seguro que desea <strong class="letras-rojas">Descartar</strong> a {{$postulante->user->name}} {{ $postulante->user->last_name}} <strong>para ir a entrevista?</strong>  <div class="letras-pequenas">(Esta acción no se puede Deshacer)</div>
                 </div>
                 <form method="POST" action={{route('aprobarParaEntrevista', $postulante->user_id)}} accept-charset="UTF-8">
 

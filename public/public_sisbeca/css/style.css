@@ -159,6 +159,10 @@ color: #dc3545;
 .letras-blancas{
   color:#fff !important;
 }
+.letras-pequenas{
+  font-size: smaller;
+  color: #dc3545;
+}
 
 
 .sisbeca-container-formulario

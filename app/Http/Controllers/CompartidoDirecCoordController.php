@@ -31,6 +31,14 @@ class CompartidoDirecCoordController extends Controller
         $this->middleware('compartido_direc_coord');
     }
 
+    public function ocultarpostulantebecario(Request $request){
+      $postulante= Becario::find($request->id);
+      $postulante->visible=false;
+      $postulante->save();
+      flash('Se ha ocultado el postulante ' .$postulante->user->name. ' ' .$postulante->user->last_name. ' de la lista ', 'success')->important();
+      return  redirect()->route('listarPostulantesBecarios',"todos");
+    }
+
     //Asignar fecha de bienvenida a todos por Igual
     public function asignarfechabienvenidaparatodos(Request $request){
         $postulantes = Becario::where('status','=','entrevistado')->orwhere('status','=','rechazado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
@@ -113,17 +121,43 @@ class CompartidoDirecCoordController extends Controller
             }
             else
             {
+               $rechazado = Rechazado::where('cedula','=',$postulante->user->cedula)->first();
+                if($rechazado==null){
                 $rechazado=new Rechazado;
                 $rechazado->cedula=$postulante->user->cedula;
                 $rechazado->name=$postulante->user->name;
                 $rechazado->last_name=$postulante->user->last_name;
                 $rechazado->telefono=$postulante->telefono;
+                $rechazado->etapa='antes';
                 $rechazado->fecha_de_participacion=$postulante->user->created_at;
+                $rechazado->intentos++;
                 $rechazado->save();
                 $postulante->status='rechazado';
-                $postulante->acepto_terminos ='0';
+                $postulante->acepto_terminos=0;
+                $postulante->visible=true;
+                $postulante->documentos = 0; //Para indicar que no ha cargado los documentos
+                $postulante->fecha_bienvenida=null;
+                $postulante->fecha_entrevista=null;
+                $postulante->lugar_entrevista=null;
+                $postulante->hora_entrevista=null;
                 $postulante->save();
                 $postulante->borrarDocumentos();
+                }
+                else{
+                    $rechazado->intentos++;
+                    $rechazado->save();
+                    $postulante->status='rechazado';
+                    $postulante->documentos = 0; //Para indicar que no ha cargado los documentos
+                    $postulante->acepto_terminos=0;
+                    $postulante->visible=true;
+                    $postulante->fecha_bienvenida=null;
+                    $postulante->fecha_entrevista=null;
+                    $postulante->lugar_entrevista=null;
+                    $postulante->hora_entrevista=null;
+                    $postulante->save();
+                    $postulante->borrarDocumentos();
+
+                }
                 flash( $postulante->user->name . ' ha sido descartado para ir a entrevista. ', 'danger')->important();
             }
         }
@@ -139,18 +173,44 @@ class CompartidoDirecCoordController extends Controller
                 $postulanteBecario->status= 'entrevistado';
                 $postulanteBecario->save();
                 return response()->json(['success'=>$postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido aprobado durante el proceso de entrevista.']);
-                }
+            }
             else{
-                $rechazado=new Rechazado;
-                $rechazado->cedula=$postulanteBecario->user->cedula;
-                $rechazado->name=$postulanteBecario->user->name;
-                $rechazado->last_name=$postulanteBecario->user->last_name;
-                $rechazado->telefono=$postulanteBecario->telefono;
-                $rechazado->fecha_de_participacion=$postulanteBecario->user->created_at;
-                $rechazado->save();
-                $postulanteBecario->status= 'rechazado';
-                $postulanteBecario->save();
-                $postulanteBecario->borrarDocumentos();
+                $rechazado = Rechazado::where('cedula','=',$postulanteBecario->user->cedula)->first();
+                if($rechazado==null){
+                    $rechazado=new Rechazado;
+                    $rechazado->cedula=$postulanteBecario->user->cedula;
+                    $rechazado->name=$postulanteBecario->user->name;
+                    $rechazado->last_name=$postulanteBecario->user->last_name;
+                    $rechazado->telefono=$postulanteBecario->telefono;
+                    $rechazado->fecha_de_participacion=$postulanteBecario->user->created_at;
+                    $rechazado->etapa='durante';
+                    $rechazado->intentos++;
+                    $rechazado->save();
+                    $postulanteBecario->status= 'rechazado';
+                    $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+                    $postulanteBecario->acepto_terminos= 0;
+                    $postulanteBecario->visible=true;
+                    $postulanteBecario->fecha_bienvenida=null;
+                    $postulanteBecario->fecha_entrevista=null;
+                    $postulanteBecario->lugar_entrevista=null;
+                    $postulanteBecario->hora_entrevista=null;
+                    $postulanteBecario->save();
+                   $postulanteBecario->borrarDocumentos();
+                }
+                else{
+                    $rechazado->intentos++;
+                    $rechazado->save();
+                    $postulanteBecario->status='rechazado';
+                    $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+                    $postulanteBecario->acepto_terminos=0;
+                    $postulanteBecario->visible=true;
+                    $postulanteBecario->fecha_bienvenida=null;
+                    $postulanteBecario->fecha_entrevista=null;
+                    $postulanteBecario->lugar_entrevista=null;
+                    $postulanteBecario->hora_entrevista=null;
+                    $postulanteBecario->save();
+                    $postulanteBecario->borrarDocumentos();
+                }
                 //borrar documentos
                 return response()->json(['success'=>$postulanteBecario->user->name.' '.$postulanteBecario->user->last_name.' ha sido rechazado durante el proceso de entrevista.']);
             }
@@ -164,6 +224,7 @@ class CompartidoDirecCoordController extends Controller
     public function veredictoPostulantesBecarios(Request $request)
     {
         $postulanteBecario = Becario::find($request->id);
+
         if($request->funcion=='Aprobar')
         {
             $postulanteBecario->status='activo';
@@ -193,6 +254,8 @@ class CompartidoDirecCoordController extends Controller
         }
         else
         {
+            $rechazado = Rechazado::where('cedula','=',$postulanteBecario->user->cedula)->first();
+            if($rechazado==null){
             $rechazado=new Rechazado;
             $rechazado->cedula=$postulanteBecario->user->cedula;
             $rechazado->name=$postulanteBecario->user->name;
@@ -200,13 +263,36 @@ class CompartidoDirecCoordController extends Controller
             $rechazado->telefono=$postulanteBecario->telefono;
             $rechazado->fecha_de_participacion=$postulanteBecario->user->created_at;
             $rechazado->etapa='despues';
+            $rechazado->intentos++;
             $rechazado->save();
             $postulanteBecario->status='rechazado';
-            //$postulanteBecario->user->save();
-            $postulanteBecario->acepto_terminos=false;
+            $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+            $postulanteBecario->acepto_terminos=0;
+            $postulanteBecario->visible=true;
+            $postulanteBecario->fecha_bienvenida=null;
+            $postulanteBecario->fecha_entrevista=null;
+            $postulanteBecario->lugar_entrevista=null;
+            $postulanteBecario->hora_entrevista=null;
+            $postulanteBecario->save();
+
             $postulanteBecario->save();
             $decision = "RECHAZADA";
             $postulanteBecario->borrarDocumentos();
+            }
+            else{
+                $rechazado->intentos++;
+                $rechazado->save();
+                $postulanteBecario->status='rechazado';
+                $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
+                $postulanteBecario->acepto_terminos=0;
+                $postulanteBecario->visible=true;
+                $postulanteBecario->fecha_bienvenida=null;
+                $postulanteBecario->fecha_entrevista=null;
+                $postulanteBecario->lugar_entrevista=null;
+                $postulanteBecario->hora_entrevista=null;
+                $postulanteBecario->save();
+                $postulanteBecario->borrarDocumentos();
+            }
             //Enviar correo a la persona notificando que fue rechazado
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
@@ -224,56 +310,6 @@ class CompartidoDirecCoordController extends Controller
             $mail->MsgHTML($body);
             $mail->addAddress($postulanteBecario->user->email);
             //$mail->send();
-
-            //borrar documentos
-/*
-            $id = $postulanteBecario->user->id;
-            $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
-            if($fotografia)
-            {
-                $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
-                $postulanteBecario->save();
-                $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
-                $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
-                $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
-                $constancia_aceptacion = Documento::where('user_id','=',$id)->where('titulo','=','constancia_aceptacion')->first();
-                $constancia_estudios = Documento::where('user_id','=',$id)->where('titulo','=','constancia_estudios')->first();
-                $calificaciones_universidad = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_universidad')->first();
-                $constancia_trabajo = Documento::where('user_id','=',$id)->where('titulo','=','constancia_trabajo')->first();
-                $declaracion_impuestos = Documento::where('user_id','=',$id)->where('titulo','=','declaracion_impuestos')->first();
-                $recibo_pago = Documento::where('user_id','=',$id)->where('titulo','=','recibo_pago')->first();
-                $referencia_profesor1 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor1')->first();
-                $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
-                $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
-
-                File::delete(substr($fotografia->url,1));
-                File::delete(substr($cedula->url,1));
-                File::delete(substr($constancia_cnu->url,1));
-                File::delete(substr($calificaciones_bachillerato->url,1));
-                File::delete(substr($constancia_aceptacion->url,1));
-                File::delete(substr($constancia_estudios->url,1));
-                File::delete(substr($calificaciones_universidad->url,1));
-                File::delete(substr($constancia_trabajo->url,1));
-                File::delete(substr($declaracion_impuestos->url,1));
-                File::delete(substr($recibo_pago->url,1));
-                File::delete(substr($referencia_profesor1->url,1));
-                File::delete(substr($referencia_profesor2->url,1));
-                File::delete(substr($ensayo->url,1));
-
-                $fotografia->delete();
-                $cedula->delete();
-                $constancia_cnu->delete();
-                $calificaciones_bachillerato->delete();
-                $constancia_aceptacion->delete();
-                $constancia_estudios->delete();
-                $calificaciones_universidad->delete();
-                $constancia_trabajo->delete();
-                $declaracion_impuestos->delete();
-                $recibo_pago->delete();
-                $referencia_profesor1->delete();
-                $referencia_profesor2->delete();
-                $ensayo->delete();
-            } */
             return response()->json(['success'=>'El Postulante ha sido rechazado exitosamente.']);
         }
     }
@@ -291,7 +327,8 @@ class CompartidoDirecCoordController extends Controller
         if($data==="todos") //2todos los postulantes
         {
             $usuario=User::where('rol','=','postulante_becario')->get();
-            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+            $becarios= Becario::where('status','=','postulante')->orwhere('status','=','rechazado')->where('visible','=',true)->orwhere('status','=','entrevista')->orwhere('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
+
             return view('sisbeca.postulaciones.verPostulantesBecario')->with('becarios',$becarios);
         }
         if($data==="rechazados") //Lista todos los rechazados
@@ -308,6 +345,7 @@ class CompartidoDirecCoordController extends Controller
             $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
             return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados);
         }
+
     }
 
     public function listarBecarios()
@@ -391,7 +429,7 @@ class CompartidoDirecCoordController extends Controller
         $alerta->leido=true;
         $alerta->save();
 
-        $img_perfil_postulante=Imagen::query()->where('user_id','=',$solicitudes->user_id)->where('titulo','=','img_perfil')->get();
+        $img_perfil_postulante=Imagen::query()->where('user_id','=',$solicitudes->user_id)->where('titulo','=','fotografia')->get();
 
         return view('sisbeca.gestionSolicitudes.procesarSolicitud')->with('solicitud',$solicitudes)->with('img_perfil_postulante',$img_perfil_postulante);
     }
@@ -469,7 +507,7 @@ class CompartidoDirecCoordController extends Controller
                         $instancia->fecha_desincorporado=$solicitud->fecha_desincorporacion;
                         $instancia->observacion_desincorporado= 'Descripción Solicitud=> '.$solicitud->descripcion.' Respuesta a Solicitud=> '.$request->get('observacion');
                     }
-                   
+
 
                 }
                 else
@@ -528,7 +566,7 @@ class CompartidoDirecCoordController extends Controller
         event(new SolicitudesAlerts($solicitud));
         Alerta::where('status', '=', 'enviada')->where('solicitud','=',$solicitud->id)->where('user_id', '=',$solicitud->user_id)->update(array('leido' => true));
 
-    
+
         return response()->json(['res' => 1,'msg'=>$msg]);
         //return  redirect()->route('gestionSolicitudes.listar');
 
@@ -754,7 +792,7 @@ class CompartidoDirecCoordController extends Controller
     public function cambiarStatusPendiente(Request $request){
         $user = json_decode($request->data);
         $user = $user->items;
-        
+
         if($user->rol == 'becario'){
             $becario = Becario::find($user->id);
             if ($user->statusAprobar == 'inactivo' && $becario && $becario->fecha_inactivo !== null){

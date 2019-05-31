@@ -4,7 +4,7 @@
 <style>
     .repote-contenido
     {
-    	padding-top:15px; 
+    	padding-top:15px;
     	height: 55px;
     }
 	.reporte-contenedor
@@ -18,7 +18,7 @@
 	    border: 0;
 	    border-top: 1px solid #dc3545 !important;
 	    margin: 1em 0;
-	    padding: 0; 
+	    padding: 0;
 	}
 	.reporte-caja
 	{
@@ -200,25 +200,25 @@
 	</div>
 	<br>
 	<div style="border:1px solid #003865;border-radius: 5px;padding:10px;text-align: center;">
-		<strong>Tu última participación en las actividades becarias</strong>
+		<strong>Ultima participación en las actividades becarias</strong>
 	</div>
 	<br>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad }">
-				<i class="fa fa-commenting-o"></i> Tu última participación a un <strong>Taller / Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividades}}</strong>
+				<i class="fa fa-commenting-o"></i> Ultima participación a un <strong>Taller / Chat Club</strong> : <strong>@{{tiempo.tiempo_actividades}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_cva }">
-				<i class="fa fa-book"></i> Tu última vez que cargaste <strong>CVA</strong> fue <strong>@{{tiempo.tiempo_cva}}</strong>
+				<i class="fa fa-book"></i> Ultima vez que cargó <strong>CVA</strong> : <strong>@{{tiempo.tiempo_cva}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_voluntariado }">
-				<i class="fa fa-star"></i> Tu última vez que hiciste un <strong>Voluntariado</strong> fue <strong>@{{tiempo.tiempo_voluntariado}}</strong>
+				<i class="fa fa-star"></i> Ultima vez que hizó un <strong>Voluntariado</strong> : <strong>@{{tiempo.tiempo_voluntariado}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_periodo }">
-				<i class="fa fa-graduation-cap"></i> Tu última vez que cargaste <strong>Notas Académicas</strong> fue <strong>@{{tiempo.tiempo_periodos}}</strong>
+				<i class="fa fa-graduation-cap"></i> Ultima vez que cargó <strong>Notas Académicas</strong> : <strong>@{{tiempo.tiempo_periodos}}</strong>
 			</div>
 			<div class="col-lg-12 reporte-notificaciones" :style="{ 'background-color': tiempo.color_actividad_facilitada }">
-				<i class="fa fa-user"></i> Tu última vez que fuiste <strong>Facilitador de un Chat Club</strong> fue <strong>@{{tiempo.tiempo_actividad_facilitada}}</strong>
+				<i class="fa fa-user"></i> Ultima vez que fué <strong>Facilitador de un Chat Club</strong> : <strong>@{{tiempo.tiempo_actividad_facilitada}}</strong>
 			</div>
 		</div>
 	</div>
@@ -262,7 +262,7 @@
 			url = url.replace(':id', id);
 			url = url.replace(':anho', anho);
 			url = url.replace(':mes', mes);
-			axios.get(url).then(response => 
+			axios.get(url).then(response =>
 			{
 				this.becario = response.data.becario;
 				$("#preloader").hide();
@@ -273,7 +273,7 @@
 			console.log(this.becario);
 			url = '{{route('seguimiento.reportetiempo.becario',array('id'=>':id'))}}';
 			url = url.replace(':id', id);
-			axios.get(url).then(response => 
+			axios.get(url).then(response =>
 			{
 				this.tiempo = response.data.becario;
 				console.log(this.tiempo);
@@ -290,7 +290,7 @@
 			url = url.replace(':anho', anho);
 			url = url.replace(':mes', mes);
 			$("#preloader").show();
-			axios.get(url).then(response => 
+			axios.get(url).then(response =>
 			{
 				this.becario = response.data.becario;
 				$("#preloader").hide();

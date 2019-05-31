@@ -82,15 +82,15 @@
 						</template>
 						<template v-else>
 								<template>
-										<button v-b-popover.hover="'Aprobar proceso de entrevista'" class="btn btn-xs sisbeca-btn-success disabled">
-											<i class="fa fa-check" data-target="modal-asignar"></i>
-										</button>
-										</template>
-										<template>
-											<button v-b-popover.hover="'Rechazar proceso de entrevista'" class="btn btn-xs sisbeca-btn-default disabled">
-												<i class="fa fa-times" ></i>
-											</button>
-										</template>
+									<button v-b-popover.hover="'Aprobar proceso de entrevista'" class="btn btn-xs sisbeca-btn-success disabled">
+										<i class="fa fa-check" data-target="modal-asignar"></i>
+									</button>
+								</template>
+								<template>
+									<button v-b-popover.hover="'Rechazar proceso de entrevista'" class="btn btn-xs sisbeca-btn-default disabled">
+										<i class="fa fa-times" ></i>
+									</button>
+								</template>
 						</template>
 
 						<template>
@@ -123,10 +123,15 @@
 									</template>
 						</template>
 
-						<template>
-							<button v-b-popover.hover="'Ocultar de mi lista'" class="btn btn-xs sisbeca-btn-primary" @click="ocultardemilista(postulante)">
+						<template v-if="postulante.becario.status==='entrevistado' || postulante.becario.status==='rechazado'">
+							<button v-b-popover.hover="'Ocultar de mi lista'" class="btn btn-xs sisbeca-btn-default" @click="ocultardemilista(postulante)">
 	                            <i class="fa fa-eye-slash" ></i>
 	                        </button>
+						</template>
+						<template v-else>
+							<button v-b-popover.hover="'Ocultar de mi lista'" class="btn btn-xs sisbeca-btn-default disabled">
+									<i class="fa fa-eye-slash" ></i>
+							</button>
 						</template>
 
 

@@ -110,7 +110,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
     //rutas para Becario, Coordinador y Directivo
     Route::group(['middleware'=>['admin_becario']],function ()
     {
-        //Para  ver las actividades Taller y Chat Club que han participado un becario. 
+        //Para  ver las actividades Taller y Chat Club que han participado un becario.
         Route::get('/becario/{id}/actividades', 'ActividadController@actividadesbecario')->name('actividades.becario');
         //Editar datos del usuario y becario
         Route::get('/becario/{id}/obtener-datos', 'UserController@obtenerdatos')->name('becarios.obtener.datos');
@@ -200,7 +200,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>['coordinador_directivo']],function ()
     {
-        //Receso Decembrino 
+        //Receso Decembrino
         Route::get('/receso/decembrino/', 'RecesoDecembrinoController@index')->name('receso.decembrino.index');
         Route::get('/receso/decembrino/servicio', 'RecesoDecembrinoController@obtener')->name('receso.decembrino.servicio');
         Route::post('/receso/decembrino/guardar', 'RecesoDecembrinoController@guardar')->name('receso.decembrino.guardar');
@@ -210,14 +210,14 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
         Route::get('/becario/{id}/curso/crear/', 'ActividadesBecariasController@crearcurso')->name('crear.curso');
         Route::post('/becario/{id}/curso/guardar/', 'ActividadesBecariasController@guardarcurso')->name('guardar.curso');
-        
+
         Route::get('/becario/{id}/voluntariado/crear/', 'ActividadesBecariasController@crearvoluntariado')->name('crear.voluntariado');
         Route::post('/becario/{id}/voluntariado/guardar/', 'ActividadesBecariasController@guardarvoluntariado')->name('guardar.voluntariado');
 
         Route::get('/becario/{id}/periodo/crear/', 'ActividadesBecariasController@crearperiodo')->name('crear.periodo');
         Route::post('/becario/{id}/periodo/guardar/', 'ActividadesBecariasController@guardarperiodo')->name('guardar.periodo');
 
-        
+
 
         //Eliminar a postulantne
         Route::get('/postulante-becario/{id}/eliminar', 'CompartidoDirecCoordController@eliminarpostulante')->name('postulante.eliminar');
@@ -343,7 +343,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
         Route::get('publicaciones', function(){
             return view('sisbeca.noticias.publicaciones');
-        
+
         })->name('todas.publicaciones');
 
         //costos
@@ -709,7 +709,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
         Route::get('/nomina/edit/{mes}/{year}', function($mes,$year){
             return view('sisbeca.nomina.editarNomina')->with('mes',$mes)->with('year',$year);
-        
+
         })->name('consultar.nomina.edit');
 
         Route::get('nomina/procesar/mes/{mes}/anho/{anho}', [
@@ -873,7 +873,7 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::post('/cambiar/status/pendientes', 'CompartidoDirecCoordController@cambiarStatusPendiente')->name('cambiar.status.pendiente');
         Route::get('SolicitudesPendientes/CambioDeStatus', function(){
             return view('sisbeca.gestionSolicitudes.solicitudesPendientes');
-        
+
         })->name('solicitudes.pendientes');
         //Para que los directivos y coordinadores pueden ver las actividades del becario
         Route::get('/becario/{id}/periodos', 'PeriodosController@periodosbecario')->name('periodos.becario');
@@ -994,6 +994,10 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
         Route::get('perfilPostulanteRechazado/{id}', [
             'uses' => 'CompartidoDirecCoordController@perfilPostulanteRechazado',
             'as' => 'perfilPostulanteRechazado'
+        ]);
+        Route::any('ocultarPostulanteBecario/{id}', [
+            'uses' => 'CompartidoDirecCoordController@ocultarpostulantebecario',
+            'as' => 'ocultarpostulantebecario'
         ]);
         //Otros  reportes de Seguimiento
 

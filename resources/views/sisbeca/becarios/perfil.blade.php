@@ -23,34 +23,22 @@
 
 				<div class="row">
 					<div class="col xs-6 col-md-8 col-lg-4 offset-md-5  offset-lg-0 p-t-20 text-center">
-							@if(!is_null($img_perfil))
-								<img src="{{asset($img_perfil->url)}}" class="image-responsive img-circle img-fluid img-rounded img-thumbnail perfil-img w-50" >
-									@else
-										@if($becario->user->sexo==='femenino')
-											<img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive w-50">
-										@else
-											<img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive w-50">
-										@endif
-							@endif
-							<br>
-							<h4 class="m-t-10"> {{$becario->user->name}} {{$becario->user->last_name }}</h4>
-						<!-- <span class="label label-inverse">
-						@if($becario->user->rol == 'postulante_becario')
-						Postulante Becario
+						@if(!is_null($fotografia))
+								<img src="{{asset($fotografia->url)}}" class="img-rounded img-responsive w-50">
 							@else
-								@if($becario->user->rol=='postulante_mentor')
-									Postulante Mentor
+								@if($becario->user->sexo==='femenino')
+									<img src="{{asset('images/perfil/femenino.png')}}" class="img-rounded img-responsive w-50">
 								@else
-									{{ucwords($becario->user->rol)}}
+									<img src="{{asset('images/perfil/masculino.png')}}" class="img-rounded img-responsive w-50">
 								@endif
 						@endif
-						</span> -->
+							<br>
+							<h4 class="m-t-10"> {{$becario->user->name}} {{$becario->user->last_name }}</h4>
 
 					</div>
 					<div class="offset-md-5 offset-lg-0 col-md-12 col-lg-8 p-4">
 						<strong>Datos Básicos:</strong>
 						<br/>
-						<!-- <h4> {{$becario->user->name}} {{$becario->user->last_name }}</h4> -->
 						<p>
 							<i class="fa fa-envelope"> &nbsp;</i><strong>Email:</strong> {{$becario->user->email}}
 							<br />
@@ -101,6 +89,7 @@
 							<br/>
 							@if($becario->user->rol=="becario")
 							<strong>Mentor Asignado:</strong>
+							<br>
 								@if($becario->mentor)
 									{{$becario->mentor->user->name.' '.$becario->mentor->user->last_name }}|{{$becario->mentor->user->cedula}}|{{$becario->mentor->user->email}}
 									@else

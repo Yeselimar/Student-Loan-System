@@ -92,7 +92,8 @@ class Becarios extends Migration
             $table->boolean('estatus_actividad');
             $table->boolean('estatus_curso');
             $table->boolean('estatus_voluntariado');
-
+            //para ocultar al becario en la lista de postulantes
+            $table->boolean('visible')->nullable()->default(true);
 
 
             /*$table->unsignedInteger('coordinador_id');

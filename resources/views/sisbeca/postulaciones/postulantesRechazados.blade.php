@@ -13,7 +13,7 @@
                         <th class="text-center">Cédula</th>
                         <th class="text-center">Teléfono</th>
                         <th class="text-center">Intentos</th>
-                        <th class="text-center">Acciones</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -27,14 +27,7 @@
                                 <td class="text-center">{{ $postulante->cedula }}</td>
                                 <td class="text-center">{{ $postulante->celular }}</td>
                                 <td class="text-center">{{ $postulante->intentos }}</td>
-                                <td class="text-center">
-                                    <a href="{{route('postulante.eliminar',$postulante->cedula)}}" class='btn btn-xs sisbeca-btn-default' data-toggle="popover" data-trigger="hover" data-content="Borrar Data" data-placement="left" >
-                                        <i class='fa fa-times' ></i>
-                                    </a>
-                                    <a href="{{route('perfilPostulanteBecario', $postulante->user_id)}}" class='btn btn-xs sisbeca-btn-default' data-toggle="popover" data-trigger="hover" data-content="Quitar de esta lista" data-placement="left" >
-                                        <i class='fa fa-trash' ></i>
-                                    </a>
-                                </td>
+
                             </tr>
                     @endforeach
                 @else

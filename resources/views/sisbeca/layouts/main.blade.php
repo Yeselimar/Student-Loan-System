@@ -9,10 +9,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('info_sitio/img/favicon.png')}}" >
-    <title>AVAA - Panel de Administración</title>
+    <title>Sistema de Evaluación de Becarios AVAA</title>
 
     @include('sisbeca.layouts.partials.filescss')
 
@@ -36,7 +36,7 @@
         </div>
         <!-- End header header -->
         @include('sisbeca.layouts.partials.menu-lateral')
-        
+
         <!-- End Left Sidebar  -->
         <!-- Page wrapper  -->
         <div class="page-wrapper">
@@ -47,7 +47,7 @@
             @endif
             <!-- Bread crumb -->
             <div class="row page-titles">
-                
+
                 <div class="col-lg-12 align-self-center">
                     <h3 class="text-primary">@yield('title')</h3>
                 </div>
@@ -73,16 +73,16 @@
             <!-- End PAge Content -->
 
 
-            
+
             <!-- End Container fluid  -->
 
         </div>
         <!-- footer -->
         <footer class="footer">
-        © {{ date('Y') }} Todos los Derechos Reservados. Desarrollado por <strong><a href="#" style="color:#003865">AFODI</a></strong> 
+        © {{ date('Y') }} Todos los Derechos Reservados. Desarrollado por <strong><a href="#" style="color:#003865">AFODI</a></strong>
 
         @if(!Auth::user()->esSoporte())
-        | <a href="{{route('ticket.index',Auth::user()->id)}}" style="color:#003865"> Mis Tickets</a> 
+        | <a href="{{route('ticket.index',Auth::user()->id)}}" style="color:#003865"> Mis Tickets</a>
         @endif
         </footer>
         <!-- End footer -->
@@ -99,7 +99,7 @@
    @yield('personaljs')
 
 
-    
+
 </body>
 
 </html>

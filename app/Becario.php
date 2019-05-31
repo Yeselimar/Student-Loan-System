@@ -410,10 +410,16 @@ class Becario extends Model
         $id = $this->user->id;
         $postulanteBecario=Becario::find($id);
         $fotografia = Imagen::where('user_id','=',$id)->where('titulo','=','fotografia')->first();
+         $entrevistadores = BecarioEntrevistador::ParaBecario($id)->get();
+        foreach ($entrevistadores as $entrevistador)
+        {
+            $entrevistador->delete();
+        }
+
         if($fotografia)
         {
-            $postulanteBecario->documentos = 0; //Para indicar que no ha cargado los documentos
-            $postulanteBecario->save();
+
+
             $cedula = Imagen::where('user_id','=',$id)->where('titulo','=','cedula')->first();
             $constancia_cnu = Documento::where('user_id','=',$id)->where('titulo','=','constancia_cnu')->first();
             $calificaciones_bachillerato = Documento::where('user_id','=',$id)->where('titulo','=','calificaciones_bachillerato')->first();
@@ -468,5 +474,5 @@ class Becario extends Model
         return $total;
     }
 
-    
+
 }
