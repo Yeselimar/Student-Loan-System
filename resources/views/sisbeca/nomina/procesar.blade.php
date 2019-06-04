@@ -1,33 +1,36 @@
 @extends('sisbeca.layouts.main')
-@section('title','Nómina por procesar')
+@section('title','Generar Nómina')
 @section('content')
 
 <div class="col-lg-12" id="app">
+<div class="alert  alert-info alert-important" role="alert">
+	Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
+</div>
+<form v-if="showDate"  @submit.prevent.stop="consultar" class=" d-flex" style="padding:6px; background-color: rgba(169, 169, 169, 0.2);">
 
-<form v-if="showDate"  @submit.prevent.stop="consultar" class="container-fluid mt-3 pt-4 d-flex" style="background-color: rgba(169, 169, 169, 0.2);">
-
-<div class="input-append date col-lg-2 col-sm-4 col-md-3 d-flex" id="dp3" data-date-format="mm/yyyy">
+<!-- <div class="input-append date col-lg-2 col-sm-4 col-md-3 d-flex" id="dp3" data-date-format="mm/yyyy">
   <input class="span2 sisbeca-input input-sm" autocomplete="off" required placeholder="Seleccione fecha" size="16" type="text" id="fecha">
   <span class="add-on"><i class="fa fa-calendar"></i></span>
+</div> -->
+<div class="input-group input-append date" style="flex-basis: 25%; margin-right: 5px" data-date-format="mm/yyyy" id="dp3">
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		<input class="form-control" autocomplete="off" required placeholder="Seleccionar fecha" size="16" type="text" id="fecha" >
 </div>
-	<button v-b-popover.hover="'Consultar Nomina'" @submit.prevent.stop="consultar" class="btn btn-xs sisbeca-btn-primary h-100">
-		Consultar
-	</button>
+<button v-b-popover.hover="'Consultar Nomina'" @submit.prevent.stop="consultar" style="flex-basis: 10%; margin-top: 2px; margin-bottom: 0px !important;" class="btn btn sisbeca-btn-primary h-100">
+	Consultar
+</button>
 
 </form>
-<br/>
-		<div class="alert  alert-warning alert-important" role="alert">
-				Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
-			</div>
+
 <div class="mt-4" v-if="seccionS">
-<button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()
+<!-- <button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()
 " v-b-popover.hover="'Generar Nomina con la lista de becarios sugeridos'" class="btn sisbeca-btn-primary">
 		Generar Nomina <i class="fa fa-clone"></i>
-	</button>
+	</button> -->
  <div class="accordion row" id="accordionExample">
 		<div class="card col-12">
 			<div id="heading" data-toggle="collapse" class="cursor" @click="collapse=!collapse" data-target="#collapseOne" aria-expanded="1" aria-controls="collapseOne">
-					<h4 class="success">Listado de becarios sugeridos a entrar en Nomina @{{fecha}} <i v-if="!collapse" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i> </h4>
+					<h4 class="success">Becarios que Entrarán en la Nómina de @{{fecha}} <i v-if="!collapse" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i> </h4>
 					<hr/>
 			</div>
 			<div id="collapseOne" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample">
@@ -54,8 +57,15 @@
 									</div>
 								</div>
 							</div>
-							<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span v-if="!selectedAllS">Marcar Todos</span><span v-else>Desmarcar Todos</span></b-form-checkbox>
-							<b-btn size="sm" :disabled="!itemsSC" class="float-right sisbeca-btn-primary" variant="sisbeca-btn-primary" @click="quitarSelectedsDeSugeridos"> Quitar Marcados de Sugeridos</b-btn>
+							<div class="d-flex" style="flex-wrap: wrap">
+							<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span style="padding-left: 1.5rem" v-if="!selectedAllS">Marcar Todos</span><span style="padding-left: 1.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
+							<b-btn size="sm" :disabled="!itemsSC" class="btn btn-xs sisbeca-btn-primary" style="height:2%" variant="sisbeca-btn-primary"  @click.stop="quitarSelectedsDeSugeridos"> 	<i v-b-popover.hover.bottom="'Sacar seleccionados de la Nómina'" class="fa fa-minus"></i></b-btn>
+
+								<button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()
+								" v-b-popover.hover="'Generar Nomina con la lista de becarios sugeridos'" class="btn sisbeca-btn-primary ml-auto">
+										Generar Nomina <i class="fa fa-clone"></i>
+									</button>
+							</div>
 
 							<b-table
 							show-empty
@@ -78,17 +88,18 @@
 									<b-form-checkbox v-model="row.item.selected"></b-form-checkbox>
 							</template>
 							<template slot="status" slot-scope="row">
-								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> Probatorio 1</span>
 								<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 							</template>
 							<template slot="becario" slot-scope="row">
 								<span>@{{row.item.nomina.datos_nombres+' '+row.item.nomina.datos_apellidos}}</span><br/><span>CI:@{{row.item.nomina.datos_cedula}}</span>
 							</template>
 
 							<template slot="estipendio" slot-scope="row">
-								<span>@{{formatomoneda(row.item.nomina.sueldo_base)}}</span>
+								<span>@{{formatomoneda(row.item.nomina.sueldo_base)}}</span><a v-b-popover.hover.bottom="'Editar Estipendio Individual'" @click.stop="editEstipendio(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-pencil"></i>
 								</a>
 							</template>
 							<template slot="retroactivo" slot-scope="row">
@@ -103,8 +114,9 @@
 							</template>
 							<template slot="libros" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.monto_libros)}}</span>
-								<a v-b-popover.hover.bottom="'Procesar Facturas'" @click.stop="editFacturas(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
+								<a v-b-popover.hover.bottom="'Procesar Facturas'" @click.stop="editFacturas(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary position-relative">
 										<i class="fa fa-pencil"></i>
+										<div v-if="row.item.num_factura>0" class="circulo-notificacion"><p>@{{row.item.num_factura}}</p></div>
 								</a>
 
 							</template>
@@ -140,10 +152,10 @@
 												<tr>
 													<td class="text-center"> @{{row.item.nomina.datos_nombres }} @{{row.item.nomina.datos_apellidos }}<br/>@{{row.item.nomina.datos_email}}<br/>@{{row.item.nomina.datos_cedula}}<br/> </td>
 													<td class="text-center">
-															<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+															<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning">Probatorio 1</span>
 															<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-															<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-															<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+															<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+															<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 														</td>
 													<td class="text-center"><span>@{{row.item.nomina.datos_cuenta}}</span>
 													</td>
@@ -188,7 +200,7 @@
 	<div class="accordion row" id="accordionExample2">
 		<div class="card col-12">
 			<div id="heading2" data-toggle="collapse" class="cursor" @click="collapse2=!collapse2" data-target="#collapseTwo" aria-expanded="2" aria-controls="collapseTwo">
-					<h4 class="warning">Listado de becarios no sugeridos a entrar en Nomina @{{fecha}} <i v-if="!collapse2" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i></h4>
+					<h4 class="danger">Becarios que no entrarán en la nómina de @{{fecha}} <i v-if="!collapse2" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i></h4>
 					<hr/>
 			</div>
 			<div id="collapseTwo" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample2">
@@ -215,8 +227,11 @@
 									</div>
 								</div>
 							</div>
-							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span v-if="!selectedAllNS">Marcar Todos</span><span v-else>Desmarcar Todos</span></b-form-checkbox>
-							<b-btn :disabled="!itemsNSC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > Agregar Marcados a Sugeridos</b-btn>
+							<div class="d-flex">
+							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span style="padding-left: 1.5rem" v-if="!selectedAllNS">Marcar Todos</span><span style="padding-left: 1.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
+							<b-btn :disabled="!itemsNSC"  size="sm" class="btn btn-xs sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > 	<i v-b-popover.hover.bottom="'Agregar a Sugeridos'" class="fa fa-plus"></i></b-btn>
+							</div>
+
 
 							<b-table
 							show-empty
@@ -239,10 +254,10 @@
 									<b-form-checkbox v-model="row.item.selected"></b-form-checkbox>
 							</template>
 							<template slot="status" slot-scope="row">
-								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning">Probatorio 1</span>
 								<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 							</template>
 							<template slot="becario" slot-scope="row">
 								<span>@{{row.item.nomina.datos_nombres+' '+row.item.nomina.datos_apellidos}}</span><br/><span>CI:@{{row.item.nomina.datos_cedula}}</span>
@@ -293,10 +308,10 @@
 											<tr>
 												<td class="text-center"> @{{row.item.nomina.datos_nombres }} @{{row.item.nomina.datos_apellidos }}<br/>@{{row.item.nomina.datos_email}}<br/>@{{row.item.nomina.datos_cedula}}<br/> </td>
 												<td class="text-center">
-														<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+														<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning">Probatorio 1</span>
 														<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-														<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-														<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+														<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+														<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 													</td>
 												<td class="text-center"><span>@{{row.item.nomina.datos_cuenta}}</span>
 												</td>
@@ -341,7 +356,7 @@
 		</div>
 	</div>
 
-	<!-- Info modal -->
+	<!-- Modal Retroactivo -->
 				<b-modal id="modalEditRetroactivo" hide-header-close ref='modalRetroactivo' @hide="resetModalEditRectroactivo" :title="'Editar Retroactivo'" >
 								<div class="col" style="padding-left: 0px;padding-right: 0px;">
 										<label class="control-label " for="retroactivo">Retroactivo</label>
@@ -350,6 +365,17 @@
 						<template slot="modal-footer">
 								<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.modalRetroactivo.hide()'> Cancelar</b-btn>
 								<b-btn size="sm" class="float-right sisbeca-btn-primary" variant="sisbeca-btn-primary" @click='saveRetroactivo'> Guardar</b-btn>
+						</template>
+				</b-modal>
+<!--Modal Estipendio -->
+				<b-modal id="modalEditEstipendio" hide-header-close ref='modalEstipendio' @hide="resetModalEditEstipendio" :title="'Editar Estipendio Individual'" >
+								<div class="col" style="padding-left: 0px;padding-right: 0px;">
+										<label class="control-label " for="retroactivo">Estipendio</label>
+										<input type="number" name="estipendio" v-model="estipendio"  class="sisbeca-input input-sm" id="estipendio"  style="margin-bottom: 0px">
+								</div>
+						<template slot="modal-footer">
+								<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.modalEstipendio.hide()'> Cancelar</b-btn>
+								<b-btn size="sm" class="float-right sisbeca-btn-primary" variant="sisbeca-btn-primary" @click='saveEstipendio'> Guardar</b-btn>
 						</template>
 				</b-modal>
 
@@ -448,13 +474,8 @@
 											<a v-b-popover.hover.bottom="'Ver Factura'" :href="row.item.link" target="_blank" class="btn btn-xs sisbeca-btn-primary">
 												<i class="fa fa-eye"></i>
 											</a>
-
-
-
 										</template>
-
 									</b-table>
-
 									<b-row class="my-0 pull-right" >
 										<b-pagination :total-rows="totalRowsF" :per-page="parseInt(perPageF)" v-model="currentPageF" class="my-0" />
 									</b-row>
@@ -463,7 +484,7 @@
 							</div>
 						<template slot="modal-footer">
 								<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.modalFacturas.hide()'> Cancelar</b-btn>
-								<b-btn :disabled="!facturasC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedsFacturas" variant="sisbeca-btn-primary" > Procesar Facturas Marcadas</b-btn>
+								<b-btn :disabled="!facturasC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedFacturas" variant="sisbeca-btn-primary" > Procesar Facturas Marcadas</b-btn>
 						</template>
 				</b-modal>
 
@@ -482,7 +503,7 @@
 	  <template slot="modal-footer">
 				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaGeneradaRef.hide()'> No</b-btn>
 				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="generarNomina" variant="sisbeca-btn-primary" > Si </b-btn>
-	   </template>	
+	   </template>
     </b-modal>
 
 </div>
@@ -512,6 +533,7 @@ const app = new Vue({
 		showDate: false,
 		collapse2: true,
 		retroactivo: 0,
+		estipendio: 0,
 		idSelectedSugeridos: 0,
 		selectedStatusFactura: -1,
 		cva: 0,
@@ -543,8 +565,7 @@ const app = new Vue({
 			sortDescNS: false,
 			sortDirectionNS: 'asc',
 			filterNS: null,
-			itemsS:
-			[],
+			itemsS:[],
 			fieldsS: [
 			{ key: 'selected', label: 'Marcar', sortable: true, 'class': 'text-center' },
 			{ key: 'status', label: 'Estatus', sortable: true, 'class': 'text-center' },
@@ -566,8 +587,7 @@ const app = new Vue({
 			filterS: null,
 			mes: '',
 			year: '',
-			facturas:
-			[],
+			facturas:[],
 			fieldsF: [
 			{ key: 'selected', label: 'Marcar', sortable: true, 'class': 'text-center' },
 			{ key: 'status', label: 'Estatus', sortable: true, 'class': 'text-center' },
@@ -583,11 +603,11 @@ const app = new Vue({
 			sortByF: null,
 			sortDescF: false,
 			sortDirectionF: 'asc',
-			filterF: null
-
+			filterF: null,
 	},
 	computed:
 		{
+
 			itemsSComputed(){
 
 				this.itemsS.forEach(function(e,i){
@@ -646,13 +666,12 @@ const app = new Vue({
 				let existe = false
 				if((typeof this.facturas !== 'undefined') && this.facturas.length)
 				{
-					this.facturas.forEach(function(e,i){
-					if(e.selected){
-						existe = true
-					}
-				})
+						this.facturas.forEach(function(e,i){
+						if(e.selected){
+							existe = true
+						}
+						})
 				}
-
 				return existe
 			}
 		},
@@ -695,6 +714,17 @@ const app = new Vue({
 						toastr.error('Ocurrio un error inesperado al generar nomina')
 						this.isLoading = false
 					});
+			},
+			saveEstipendio(){
+				this.itemsS.forEach(function(item,i){
+					if(item.id === this.idSelectedSugeridos){
+						item.nomina.sueldo_base = parseFloat(this.estipendio)
+					}
+				},this)
+				this.$refs.modalEstipendio.hide()
+				toastr.info('Campo Editado Exitosamente');
+
+				this.estipendio = 0
 			},
 			saveRetroactivo(){
 				this.itemsS.forEach(function(item,i){
@@ -754,6 +784,7 @@ const app = new Vue({
 				this.facturas = []
 				this.selectedAllF = false
 				this.selectedStatusFactura = -1
+			//	console.log('HAY FACTURAS:',item.facturas.length)
 				item.facturas.forEach(function(f,i){
 					let url = "{{asset(':url_fact')}}"
 					if(f.factura.url) {
@@ -767,7 +798,8 @@ const app = new Vue({
 						id: f.id,
 						selected: select,
 						link: url,
-						factura: {...f.factura}
+						factura: {...f.factura},
+
 					})
 				},this)
 				this.$root.$emit('bv::show::modal', 'modalEditFacturas', button)
@@ -795,6 +827,11 @@ const app = new Vue({
 
 					});*/
 			},
+			editEstipendio (item, index, button) {
+				this.estipendio = item.nomina.sueldo_base
+				this.idSelectedSugeridos = item.id
+				this.$root.$emit('bv::show::modal', 'modalEditEstipendio', button)
+			},
 			editRetroactivo (item, index, button) {
 				this.retroactivo = item.nomina.retroactivo
 				this.idSelectedSugeridos = item.id
@@ -818,6 +855,8 @@ const app = new Vue({
 				this.selectedAllS = false
 				toastr.info('Becarios seleccionados agregados a lista de no sugeridos');
 
+
+
 			},
 			quitarDeSugeridos (item, index, band) {
 				/*this.modalInfoNS.title = `Row index: ${index}`
@@ -827,7 +866,7 @@ const app = new Vue({
 				let aux = {...item}
 				aux.id =  this.itemsNS.length
 				aux.selected = false
-				aux._rowVariant = aux.is_sugerido ? 'success' : ''
+			//ojo	aux._rowVariant = aux.is_sugerido ? 'success' : ''
 				if( this.itemsNS.length)
 				{
 					aux.id =   this.itemsNS[this.itemsNS.length-1].id + 1
@@ -862,22 +901,32 @@ const app = new Vue({
 				toastr.info('Becarios seleccionados agregados a lista de sugeridos');
 
 			},
-			agregarSelectedsFacturas(){
+			calcularnumfacturas(item){
+				item.num_factura=0;
+				item.facturas.forEach(function(fact,i){
+					if(fact.factura.status === 'cargada'){
+						item.num_factura=item.num_factura+1
+					}
+				})
+			},
+			agregarSelectedFacturas(){
 				///
-				this.itemsS.forEach(function(item,i){
+				this.itemsS.forEach(function(item,j){
 					if(item.id === this.idSelectedSugeridos){
-						//item.facturas= this.facturas
+				//	item.facturas= this.facturas
 						let total = parseFloat(0)
 						this.facturas.forEach(function(fact,i){
 							if(fact.selected){
-								if(fact.factura.status === 'por procesar'){
+								if(fact.factura.status === 'por procesar'){//aprobada
 									total = parseFloat(total) + parseFloat(fact.factura.costo)
+								//	item.num_factura=parseInt(item.num_factura-1)
 								}
 								item.facturas[i] = fact
 								//f.selected = false
 							}
 							fact.selected = false
 						})
+						this.calcularnumfacturas(item)
 						/*
 						let total = parseFloat(0)
 						item.facturas.forEach(function(f,i){
@@ -889,6 +938,7 @@ const app = new Vue({
 						},this)
 						*/
 						item.nomina.monto_libros = parseFloat(total)
+
 					}
 				},this)
 
@@ -908,7 +958,7 @@ const app = new Vue({
 				let aux = {...item}
 				aux.id =  this.itemsS.length
 				aux.selected = false
-				aux._rowVariant = aux.is_sugerido ? '' : 'warning'
+				//ojo aux._rowVariant = aux.is_sugerido ? '' : 'danger'
 				if( this.itemsS.length)
 				{
 					aux.id =   this.itemsS[this.itemsS.length-1].id + 1
@@ -933,6 +983,9 @@ const app = new Vue({
 
 			},
 			resetModalEditRectroactivo () {
+				this.estipendio = 0
+			},
+			resetModalEditEstipendio () {
 				this.retroactivo = 0
 			},
 			resetModalEditCVA () {
@@ -991,7 +1044,7 @@ const app = new Vue({
 				let f = this.fecha.split('/')
 				let url,mes,year
 				if(f.length>1){
-	              mes = f[0]
+	        mes = f[0]
 				  year = f[1]
 					this.mes = mes
 					this.year = year
@@ -1001,11 +1054,15 @@ const app = new Vue({
 				  this.isLoading = true
 				  axios.get(url).then(response =>
 					{
-						if(response.data.res){
+						if(response.data.res==2){
 							this.itemsNS = response.data.noSugeridos
 							this.itemsS = response.data.sugeridos
 							this.seccionS = true
-						} else{
+						}
+						else if(response.data.res==1){
+							toastr.warning('No existe un estipendio definido para el Mes y Año seleccionado');
+						}
+						else{
 							toastr.warning('Ya existe una nomina para la fecha '+ this.fecha);
 						}
 						this.isLoading = false
@@ -1017,7 +1074,6 @@ const app = new Vue({
 					});
 				}
 			}
-
 		}
 	}
 
@@ -1033,8 +1089,8 @@ const app = new Vue({
 		color: #28a745;
 		font-weight: bold;
 	}
-	.warning {
-		color: #ffc107;
+	.danger {
+		color: #dc3545;
 		font-weight: bold;
 	}
 	.f-23{

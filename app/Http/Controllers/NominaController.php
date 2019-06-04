@@ -13,6 +13,7 @@ use avaa\Costo;
 use avaa\User;
 use avaa\BecarioNomina;
 use avaa\FactLibro;
+use avaa\Estipendio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -75,7 +76,7 @@ class NominaController extends Controller
         $nominasfiltro = Nomina::where('mes','=',$mes)->where('year',$anho)->where('status','=','pagado')->get();
 
         $nominasfiltro->each(function ($nominasfiltro){
-        
+
             $nominasfiltro->becarios;
 
             foreach ($nominasfiltro->becarios as $becario)
@@ -113,7 +114,7 @@ class NominaController extends Controller
             ->groupBy('mes','year')
             ->orderby('mes','desc')->orderby('year','desc')->get();
         return View('sisbeca.nomina.procesar')->with('nominas',$nominas)->with('generar',$generar)->with('mes',$mes)->with('anho',$anho);
-        
+
         /*
         $ultimodia = date("Y-m-d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
         $fechagenerar = strtotime ( '-5 day' , strtotime ( $ultimodia ) ) ;//--poner-5
@@ -173,9 +174,9 @@ class NominaController extends Controller
         {
            // flash('Error en la nomina a Consultar no existen registros','danger');
         }
-        
+
     	return View('sisbeca.nomina.procesardetalle')->with('nominas',$nominasfiltro)->with('mes',$mes)->with('anho',$anho);
-    	
+
     }
 
     public function procesardetalleservicio($mes,$anho)
@@ -188,7 +189,7 @@ class NominaController extends Controller
             //$nomina["total_facturas"] = DB::select('select *, sum(precio_unitario*cantidad) AS preciototal, sum(precio_unitario) AS preciounitario, sum(precio_unitario*alicuota) AS iva from reservas_items where id_reserva="'.$reserva->id_reserva.'" group by id_tipohabitacion, pax');;
             $nomina["numero_facturas"] = FactLibro::where('mes','=',$mes)->where('year','=',$anho)->where('becario_id','=',$nomina->datos_id)->count();
         }
-       
+
         return response()->json(['nominas'=>$nominasfiltro]);
     }
     public function updateNominaApi(Request $request)
@@ -200,7 +201,7 @@ class NominaController extends Controller
 
         if(count($nominasaux))
         {
-    
+
             Nomina::where('mes',$mes)->where('year',$year)->where('status','generado')->delete();
             foreach($request->nomina as $n)
             {
@@ -213,7 +214,7 @@ class NominaController extends Controller
                 $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
                 $nomina->datos_id= $n['nomina']['datos_id'];
                 $nomina->sueldo_base = $n['nomina']['sueldo_base'];
-                $nomina->datos_status = $n['status_becario']; 
+                $nomina->datos_status = $n['status_becario'];
                 $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
                 $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
                 $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
@@ -251,10 +252,10 @@ class NominaController extends Controller
                 $bn->user_id = $nomina->datos_id;//--becario_id
                 $bn->nomina_id = $nomina->id;
                 $bn->save();
-                
+
             }
 
-             $nominaBorrador=NomBorrador::where('mes',$mes)->where('year',$year)->where('status','generado')->get(); 
+             $nominaBorrador=NomBorrador::where('mes',$mes)->where('year',$year)->where('status','generado')->get();
             if(count($nominaBorrador)){
                 NomBorrador::where('mes',$mes)->where('year',$year)->where('status','generado')->delete();
 
@@ -270,7 +271,7 @@ class NominaController extends Controller
                 $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
                 $nomina->datos_id= $n['nomina']['datos_id'];
                 $nomina->sueldo_base = $n['nomina']['sueldo_base'] ;
-                $nomina->datos_status = $n['status_becario']; 
+                $nomina->datos_status = $n['status_becario'];
                 $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
                 $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
                 $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
@@ -289,7 +290,7 @@ class NominaController extends Controller
                 $bn->user_id = $nomina->datos_id;//--becario_id
                 $bn->nomborrador_id = $nomina->id;
                 $bn->save();
-                
+
             }
 
 
@@ -303,13 +304,13 @@ class NominaController extends Controller
    }
     public function generarNominaApi(Request $request)
     {
-        
+
         $mes = $request->mes;
         $year = $request->year;
         $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
         if(count($nominasaux) == 0)
         {
-    
+
             $hoy = date('Y-m-d H:m:s');
             foreach($request->nomina as $n)
             {
@@ -322,7 +323,7 @@ class NominaController extends Controller
                 $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
                 $nomina->datos_id= $n['nomina']['datos_id'];
                 $nomina->sueldo_base = $n['nomina']['sueldo_base'];
-                $nomina->datos_status = $n['status_becario']; 
+                $nomina->datos_status = $n['status_becario'];
                 $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
                 $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
                 $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
@@ -360,10 +361,10 @@ class NominaController extends Controller
                 $bn->user_id = $nomina->datos_id;//--becario_id
                 $bn->nomina_id = $nomina->id;
                 $bn->save();
-                
+
             }
 
-             $nominaBorrador=NomBorrador::where('mes',$mes)->where('year',$year)->get(); 
+             $nominaBorrador=NomBorrador::where('mes',$mes)->where('year',$year)->get();
             if(count($nominaBorrador) == 0){
                 foreach($request->nominaBorrador as $n)
                 {
@@ -376,11 +377,11 @@ class NominaController extends Controller
                     $nomina->datos_cuenta = $n['nomina']['datos_cuenta'];
                     $nomina->datos_id= $n['nomina']['datos_id'];
                     $nomina->sueldo_base = $n['nomina']['sueldo_base'] ;
-                    $nomina->datos_status = $n['status_becario']; 
+                    $nomina->datos_status = $n['status_becario'];
                     $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
                     $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
                     $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
-  
+
                     $nomina->monto_libros = 0;
                     $nomina->cva = 0;
                     $nomina->total = $n['nomina']['sueldo_base'] + 0 + 0 + 0;
@@ -390,12 +391,12 @@ class NominaController extends Controller
                     $nomina->fecha_pago = null;
                     $nomina->fecha_generada = $hoy;
                     $nomina->save();
-    
+
                     $bn = new BecarioNomBorrador();
                     $bn->user_id = $nomina->datos_id;//--becario_id
                     $bn->nomborrador_id = $nomina->id;
                     $bn->save();
-                    
+
                 }
             }
 
@@ -428,7 +429,7 @@ class NominaController extends Controller
                $nomina->datos_cuenta = $nominaEdit->datos_cuenta;
                $nomina->datos_id= $nominaEdit->datos_id;
                $nomina->sueldo_base = $nominaEdit->sueldo_base;
-               $nomina->datos_status = $nominaEdit->datos_status; 
+               $nomina->datos_status = $nominaEdit->datos_status;
                $nomina->datos_fecha_ingreso = $nominaEdit->datos_fecha_ingreso;
                $nomina->datos_final_carga_academica = $nominaEdit->datos_final_carga_academica;
                $nomina->datos_fecha_bienvenida = $nominaEdit->datos_fecha_bienvenida;
@@ -450,7 +451,7 @@ class NominaController extends Controller
                           'selected' => false
                        ));
                   }
-      
+
                }
                $nomina->monto_libros = $nominaEdit->monto_libros;
                $nomina->total = $nominaEdit->total;
@@ -491,7 +492,7 @@ class NominaController extends Controller
                     $nomina->datos_cuenta = $nominaEdit->datos_cuenta;
                     $nomina->datos_id= $nominaEdit->datos_id;
                     $nomina->sueldo_base = $nominaEdit->sueldo_base;
-                    $nomina->datos_status = $nominaEdit->datos_status; 
+                    $nomina->datos_status = $nominaEdit->datos_status;
                     $nomina->datos_fecha_ingreso = $nominaEdit->datos_fecha_ingreso;
                     $nomina->datos_final_carga_academica = $nominaEdit->datos_final_carga_academica;
                     $nomina->datos_fecha_bienvenida = $nominaEdit->datos_fecha_bienvenida;
@@ -513,7 +514,7 @@ class NominaController extends Controller
                                 'selected' => false
                             ));
                         }
-            
+
                     }
                     $nomina->monto_libros = $nominaEdit->monto_libros;
                     $nomina->total = $nominaEdit->total;
@@ -544,65 +545,22 @@ class NominaController extends Controller
            return response()->json(['res'=> 0]);
        }
    }
+
     public function getConsultarNominaApi($mes, $year)
     {
 
         $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
-        if(count($nominasaux)==0)
+        $costo= Estipendio::where('anio',$year)->where('mes',$mes)->first();
+        if((count($nominasaux)==0)&&($costo!=NULL))
         {
-            $becarios = Becario::whereIn('status',['activo','probatorio1','probatorio2','egresado'])->get();
-            $costo = Costo::first();
+            $becarios = Becario::whereIn('status',['activo','probatorio1','probatorio2','egresado','inactivo', 'desincorporado'])->get();
+
             $sugeridos = collect();
             $noSugeridos = collect();
             foreach($becarios as $becario)
             {
+
                 $inNomina = false;
-                $diff = 0;
-                $date1 = new DateTime($becario->fecha_bienvenida);
-                $date2 = new DateTime();
-                // Entran en nomina aquellos becarios que su fecha de bienvendida sea mayor a un mes
-                if($becario->fecha_bienvenida != null)
-                {
-                    $diff = $date1->diff($date2);
-
-                    if(($diff->invert == 0) && ($diff->m > 0) || ($diff->y > 0))
-                    {
-                        $inNomina =true;
-                    }
-                    else
-                    {
-                        $inNomina =false;
-                    }
-                }
-
-                if($inNomina)
-                {
-                    //Entran en nomina aquellos becarios cuyo fecha fin de carga academica no sea  mayor a 6 meses
-                    $diff = 0;
-                    $date1 = new DateTime($becario->final_carga_academica);
-                    $date2 = new DateTime();
-                    if ($becario->final_carga_academica != null)
-                    {
-                        $diff = $date2->diff($date1);
-                        if(($diff->invert == 0) || (($diff->invert ==1) && ($diff->m <= 6) && ($diff->y == 0)) )
-                        {
-                            $inNomina =true;
-                        }
-                        else
-                        {
-                            $inNomina =false;
-                        }
-                    }
-                    else
-                    {
-                        $inNomina = true;
-                        if($becario->status === 'egresado')
-                        {
-                            $inNomina = false;
-                        }
-                    }
-                }
-
                 $nomina = new Nomina();
                 $nomina->retroactivo = 0;
                 $nomina->cva = 0;
@@ -612,11 +570,10 @@ class NominaController extends Controller
                 $nomina->datos_email = $becario->user->email;
                 $nomina->datos_cuenta = $becario->cuenta_bancaria;
                 $nomina->datos_id= $becario->user_id;
-                /*$becario->retroactivo=0;//se inicializa el retroactivo en 0 ya que fue cargado para el futuro pago
-                $becario->save(); */
-                $nomina->sueldo_base = $costo->sueldo_becario;
+                $nomina->sueldo_base = $costo->estipendio;
                 $total = 0;
                 $facturas = collect();
+                $num_facturas=0;
                 foreach($becario->factlibros as $factlibro)
                 {
                     if($factlibro->status === 'cargada' || $factlibro->status === 'por procesar')
@@ -624,14 +581,14 @@ class NominaController extends Controller
                         if($factlibro->status === 'por procesar')
                         {
                             $total = $total + $factlibro->costo;
+                            $num_facturas=$num_facturas+1;
                         }
                         $facturas->push(array(
-                           "id" => count($facturas),
-                           "factura" => $factlibro,
-                           'selected' => false
+                            "id" => count($facturas),
+                            "factura" => $factlibro,
+                            'selected' => false
                         ));
-                   }
-       
+                    }
                 }
                 $nomina->monto_libros = $total;
                 $nomina->total = $nomina->sueldo_base + $nomina->retroactivo + $nomina->monto_libros;
@@ -640,38 +597,38 @@ class NominaController extends Controller
                 $nomina->status = 'pendiente';
                 $nomina->fecha_pago = null;
                 $nomina->fecha_generada = null;
-
-                if ($inNomina)
+                if($becario->en_nomina)
                 {
-                  $sugeridos->push(array(
+                    $sugeridos->push(array(
                     "id" => count($sugeridos),
                     "nomina" => $nomina,
                     "facturas" => $facturas,
+                    "num_factura" => $num_facturas,
                     "is_sugerido" => true,
                     "status_becario" => $becario->status,
                     'final_carga_academica' => $becario->final_carga_academica,
                     'fecha_bienvenida' => $becario->fecha_bienvenida,
                     'fecha_ingreso' => $becario->fecha_ingreso,
                     'selected' => false
-
-                    ));
-                }
-                else
-                {
-                    $noSugeridos->push(array(
-                    "id" => count($noSugeridos),
-                    "nomina" => $nomina,
-                    "facturas" => $facturas,
-                    "is_sugerido" => false,
-                    "status_becario" => $becario->status,
-                    'final_carga_academica' => $becario->final_carga_academica,
-                    'fecha_bienvenida' => $becario->fecha_bienvenida,
-                    'fecha_ingreso' => $becario->fecha_ingreso,
-                    'selected' => false
                     ));
 
                 }
-
+                else{
+                    if($becario->status != 'egresado'){
+                        $noSugeridos->push(array(
+                        "id" => count($noSugeridos),
+                        "nomina" => $nomina,
+                        "facturas" => $facturas,
+                        "num_factura" => count($facturas),
+                        "is_sugerido" => false,
+                        "status_becario" => $becario->status,
+                        'final_carga_academica' => $becario->final_carga_academica,
+                        'fecha_bienvenida' => $becario->fecha_bienvenida,
+                        'fecha_ingreso' => $becario->fecha_ingreso,
+                        'selected' => false
+                        ));
+                    }
+                }
 
             }
             return response()->json(['sugeridos'=>$sugeridos,'noSugeridos'=>$noSugeridos,'res'=> 2]);
@@ -679,12 +636,18 @@ class NominaController extends Controller
         }
         else
         {
+            if($costo==NULL){
+                return response()->json(['res'=> 1]);
+            }
+            else{
             return response()->json(['res'=> 0]);
+            }
         }
     }
 
     public function listarNominasApi()
     {
+
         $nominas = DB::table('nominas')
          ->select(DB::raw('count(*) as total_becarios,sum(total) as total_pagado, mes, year,fecha_generada, fecha_pago,sueldo_base, status, id'))
          ->where('status','=','generado')
@@ -697,6 +660,14 @@ class NominaController extends Controller
                      ->orderby('mes','desc')->orderby('year','desc')->get();
         if(count($nominas)>0 || count($nominasPagadas)>0)
         {
+          //  $nomina_aux=$nominas->first();
+         //   $estipendio= Estipendio::where('anio', $nomina_aux->year)->where('mes',$nomina_aux->mes)->first();
+           // dd($estipendio);
+            foreach($nominas as $nomina)
+            {
+                $estipendio= Estipendio::where('anio', $nomina->year)->where('mes',$nomina->mes)->first();
+                $nomina->sueldo_base=$estipendio->estipendio;
+            }
             return response()->json(['nominas'=>$nominas,'nominasPagadas'=>$nominasPagadas,'res'=> 1]);
 
         }
@@ -706,7 +677,7 @@ class NominaController extends Controller
         }
     }
     public function getConsultarFacturasBecarioApi($id)
-    { 
+    {
         $becario = Becario::find($id);
         $facturasAA = collect();
         foreach($becario->factlibros as $factlibro)
@@ -903,7 +874,7 @@ class NominaController extends Controller
         $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','generado')->get();
         $pdf = PDF::loadView('sisbeca.nomina.generadopdf', compact('nominas','mes','anho','mes_completo'));
         $pdf->setPaper('A4', 'landscape');
-        
+
         return $pdf->stream('Nómina Generada '.$mes_completo.'-'.$anho.'.pdf','PDF');
     }
 
@@ -951,7 +922,7 @@ class NominaController extends Controller
                 $mes_completo = "Diciembre";
             break;
         }
-        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','pagado')->get(); 
+        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->where('status','=','pagado')->get();
         $pdf = PDF::loadView('sisbeca.nomina.pagadopdf', compact('nominas','mes','anho','mes_completo'));
         $pdf->setPaper('A4', 'landscape');
         return $pdf->stream('Nómina Pagada '.$mes_completo.'-'.$anho.'.pdf','PDF');
@@ -973,7 +944,7 @@ class NominaController extends Controller
             $nomina->save();
         }
         flash('La nómina fue generada exitosamente.','success');
-        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->get(); 
+        $nominas = Nomina::where('mes',$mes)->where('year',$anho)->get();
         $pdf = PDF::loadView('sisbeca.nomina.pdf', compact('nominas','mes','anho'));
         //return $pdf->download('nomina-pendiente.pdf',array('Attachment'=>0));
         return redirect()->route('nomina.listar');
@@ -983,7 +954,7 @@ class NominaController extends Controller
     {
         $nominas = Nomina::where('mes','=',$mes)->where('year','=',$anho)->where('status','=','generado')->get();
         foreach($nominas as $nomina)
-        { 
+        {
             $nomina->status = 'pagado';
             $nomina->fecha_pago = date('Y-m-d H:m:s');
             $nomina->save();

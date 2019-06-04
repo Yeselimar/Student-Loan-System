@@ -7,7 +7,7 @@
     <p class="text-left"><strong>Becarios Graduados</strong></p>
 
     <div class="table-responsive">
-        
+
         <table id="becarios" class="table table-bordered table-hover" style="border: 1px solid #eee">
             <thead>
                 <tr>
@@ -27,9 +27,11 @@
                         <td class="text-center">{{ $becario->user->cedula }}</td>
                         <td class="text-center">{{ $becario->user->email }}</td>
                         <td class="text-center">{{ $becario->observacion_egresado }}</td>
-                        <td class="text-center">{{ date("d/m/Y", strtotime($nomina->fecha_egresado)) }}</td>
-
-
+                        @if($becario->fecha_egresado!=NULL)
+                        <td class="text-center">{{ date("d/m/Y", strtotime($becario->fecha_egresado)) }}</td>
+                        @else
+                        <td class="text-center"><span class="label label-default">Sin fecha</span></td>
+                        @endif
 
 
 
@@ -47,7 +49,7 @@
             @endif
             </tbody>
         </table>
-        
+
     </div>
 
 </div>

@@ -120,6 +120,7 @@ class Becarios extends Migration
             $table->datetime('fecha_ingreso')->nullable();//debe ser igual al created_at
             $table->datetime('fecha_aprobado')->nullable();//modificar cuando pasa de postulante becario a becario
             $table->datetime('fecha_egreso')->nullable();
+            $table->boolean('en_nomina')->default(true);
 
             //campos para la bienvenida como becario
             $table->datetime('fecha_bienvenida')->nullable();

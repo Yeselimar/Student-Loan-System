@@ -279,6 +279,7 @@ class DirectivoController extends Controller
 
             flash('Disculpe, no existen becarios graduados en el sistema.','danger');
         }
+
         return view('sisbeca.becarios.egresados.listarGraduados')->with('becarios',$becarios);
     }
 

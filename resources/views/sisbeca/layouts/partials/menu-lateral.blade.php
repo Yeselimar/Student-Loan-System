@@ -249,6 +249,8 @@
                     </li>
 
                     @if((Auth::user()->rol==='directivo'))
+
+
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-eject"></i><span class="hide-menu">Egresados</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{route('listar.becariosGraduados')}}">Graduados</a></li>

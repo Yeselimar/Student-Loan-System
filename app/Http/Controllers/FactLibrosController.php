@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use avaa\Http\Controllers\Controller;
 use avaa\FactLibro;
 use avaa\Becario;
+use avaa\Mensaje;
 use Illuminate\Support\Facades\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -53,7 +54,7 @@ class FactLibrosController extends Controller
         $hoy = new DateTime();
         if ($becario->status == 'activo' || $becario->status == 'probatorio1' || $becario->status == 'probatorio2')
         {
-            if(Auth::user()->becario->fecha_inactivo !== null || Auth::user()->becario->fecha_desincorporado <= $hoy) {
+            if(Auth::user()->becario->fecha_inactivo !== null || (Auth::user()->becario->fecha_desincorporado !=null && Auth::user()->becario->fecha_desincorporado <= $hoy)) {
                 flash('Disculpe no puede continuar con este proceso, usted se encuentra a la espera de un cambio de status por parte de la directiva','danger')->important();
                 return redirect()->route('facturas.listar');
             }
@@ -92,8 +93,8 @@ class FactLibrosController extends Controller
             //$mail->send();
 
             //Generar un mensaje
-            $mensaje = new Mensajes();
-            
+            $mensaje = new Mensaje();
+
             flash('La factura fue cargada exitosamente.','success')->important();
 
 
@@ -146,7 +147,7 @@ class FactLibrosController extends Controller
         {
             $factura->status = $request->status;
         }
-       
+
         $factura->save();
 
         $becario = $factura->becario;

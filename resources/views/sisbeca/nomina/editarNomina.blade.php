@@ -77,7 +77,8 @@
 
 							<template slot="estipendio" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.sueldo_base)}}</span>
-								</a>
+								<a v-b-popover.hover.bottom="'Editar Estipendio Individual'" @click.stop="editEstipendio(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
+								<i class="fa fa-pencil"></i></a>
 							</template>
 							<template slot="retroactivo" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.retroactivo)}}</span> <a v-b-popover.hover.bottom="'Editar Retroactivo'" @click.stop="editRetroactivo(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
@@ -328,7 +329,17 @@
 
 		</div>
 	</div>
-
+	<!--Modal Estipendio -->
+	<b-modal id="modalEditEstipendio" hide-header-close ref='modalEstipendio' @hide="resetModalEditEstipendio" :title="'Editar Estipendio Individual'" >
+					<div class="col" style="padding-left: 0px;padding-right: 0px;">
+							<label class="control-label " for="retroactivo">Estipendio</label>
+							<input type="number" name="estipendio" v-model="estipendio"  class="sisbeca-input input-sm" id="estipendio"  style="margin-bottom: 0px">
+					</div>
+			<template slot="modal-footer">
+					<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.modalEstipendio.hide()'> Cancelar</b-btn>
+					<b-btn size="sm" class="float-right sisbeca-btn-primary" variant="sisbeca-btn-primary" @click='saveEstipendio'> Guardar</b-btn>
+			</template>
+	</b-modal>
 	<!-- Info modal -->
 				<b-modal id="modalEditRetroactivo" hide-header-close ref='modalRetroactivo' @hide="resetModalEditRectroactivo" :title="'Editar Retroactivo'" >
 								<div class="col" style="padding-left: 0px;padding-right: 0px;">
@@ -470,7 +481,7 @@
 	  <template slot="modal-footer">
 				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaGeneradaRef.hide()'> No</b-btn>
 				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="generarNomina" variant="sisbeca-btn-primary" > Si </b-btn>
-	   </template>	
+	   </template>
     </b-modal>
 </div>
 @endsection
@@ -501,6 +512,7 @@ const app = new Vue({
 		showDate: false,
 		collapse2: true,
 		retroactivo: 0,
+		estipendio: 0,
 		idSelectedSugeridos: 0,
 		selectedStatusFactura: -1,
 		cva: 0,
@@ -686,6 +698,17 @@ const app = new Vue({
 						this.isLoading = false
 					});
 			},
+			saveEstipendio(){
+				this.itemsS.forEach(function(item,i){
+					if(item.id === this.idSelectedSugeridos){
+						item.nomina.sueldo_base = parseFloat(this.estipendio)
+					}
+				},this)
+				this.$refs.modalEstipendio.hide()
+				toastr.info('Campo Editado Exitosamente');
+
+				this.estipendio = 0
+			},
 			saveRetroactivo(){
 				this.itemsS.forEach(function(item,i){
 					if(item.id === this.idSelectedSugeridos){
@@ -761,6 +784,11 @@ const app = new Vue({
 					})
 				},this)
 				this.$root.$emit('bv::show::modal', 'modalEditFacturas', button)
+			},
+			editEstipendio (item, index, button) {
+				this.estipendio = item.nomina.sueldo_base
+				this.idSelectedSugeridos = item.id
+				this.$root.$emit('bv::show::modal', 'modalEditEstipendio', button)
 			},
 			editRetroactivo (item, index, button) {
 				this.retroactivo = item.nomina.retroactivo
@@ -903,6 +931,9 @@ const app = new Vue({
 					}
 				}
 
+			},
+			resetModalEditEstipendio () {
+				this.estipendio = 0
 			},
 			resetModalEditRectroactivo () {
 				this.retroactivo = 0
