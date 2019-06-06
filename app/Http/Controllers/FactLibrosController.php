@@ -6,6 +6,7 @@ use avaa\Http\Controllers\Controller;
 use avaa\FactLibro;
 use avaa\Becario;
 use avaa\Mensaje;
+use avaa\User;
 use Illuminate\Support\Facades\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -16,7 +17,7 @@ class FactLibrosController extends Controller
 {
     public function verfacturas($mes,$anho,$id)
     {
-        $factlibros = FactLibro::where('becario_id','=',$id)->where('status','=','por procesar')->get();
+        $factlibros = FactLibro::where('becario_id','=',$id)->where('status','=','cargada')->get();
         if($factlibros->count()>0)
         {
             $facturas = $factlibros;

@@ -312,6 +312,7 @@ class NominaController extends Controller
         {
 
             $hoy = date('Y-m-d H:m:s');
+            //dd($request->nomina->nuevoselected);
             foreach($request->nomina as $n)
             {
                 $nomina = new Nomina();
@@ -327,6 +328,8 @@ class NominaController extends Controller
                 $nomina->datos_fecha_ingreso =  $n['fecha_ingreso'];
                 $nomina->datos_final_carga_academica =  $n['final_carga_academica'];
                 $nomina->datos_fecha_bienvenida =  $n['fecha_bienvenida'];
+                $nomina->nuevo_en_nomina =  $n['nuevoselected'];
+
                 foreach($n['facturas'] as $factlibro)
                 {
                     $factura = FactLibro::find($factlibro['factura']['id']);
@@ -434,6 +437,7 @@ class NominaController extends Controller
                $nomina->datos_final_carga_academica = $nominaEdit->datos_final_carga_academica;
                $nomina->datos_fecha_bienvenida = $nominaEdit->datos_fecha_bienvenida;
                $total = 0;
+               $num_facturas=0;
                $facturas = collect();
                $becario = Becario::find($nomina->datos_id);
 
@@ -444,6 +448,10 @@ class NominaController extends Controller
                        if($factlibro->status === 'por procesar')
                        {
                            $total = $total + $factlibro->costo;
+                       }
+                       if($factlibro->status === 'cargada')
+                       {
+                           $num_facturas=$num_facturas+1;
                        }
                        $facturas->push(array(
                           "id" => count($facturas),
@@ -465,6 +473,7 @@ class NominaController extends Controller
                    "id" => count($sugeridos),
                    "nomina" => $nomina,
                    "facturas" => $facturas,
+                "num_factura" => $num_facturas,
                    "is_sugerido" => true,
                    "status_becario" => $nomina->datos_status,
                    'final_carga_academica' => $nomina->datos_final_carga_academica,
@@ -497,6 +506,7 @@ class NominaController extends Controller
                     $nomina->datos_final_carga_academica = $nominaEdit->datos_final_carga_academica;
                     $nomina->datos_fecha_bienvenida = $nominaEdit->datos_fecha_bienvenida;
                     $total = 0;
+                    $num_facturas=0;
                     $facturas = collect();
                     $becario = Becario::find($nomina->datos_id);
 
@@ -507,6 +517,11 @@ class NominaController extends Controller
                             if($factlibro->status === 'por procesar')
                             {
                                 $total = $total + $factlibro->costo;
+
+                            }
+                            if($factlibro->status === 'cargada')
+                            {
+                                $num_facturas=$num_facturas+1;
                             }
                             $facturas->push(array(
                                 "id" => count($facturas),
@@ -528,6 +543,7 @@ class NominaController extends Controller
                         "id" => count($noSugeridos),
                         "nomina" => $nomina,
                         "facturas" => $facturas,
+                        "num_factura" => $num_facturas,
                         "is_sugerido" => false,
                         "status_becario" => $nomina->datos_status,
                         'final_carga_academica' => $nomina->datos_final_carga_academica,
@@ -581,6 +597,10 @@ class NominaController extends Controller
                         if($factlibro->status === 'por procesar')
                         {
                             $total = $total + $factlibro->costo;
+
+                        }
+                        if($factlibro->status === 'cargada')
+                        {
                             $num_facturas=$num_facturas+1;
                         }
                         $facturas->push(array(
@@ -609,7 +629,8 @@ class NominaController extends Controller
                     'final_carga_academica' => $becario->final_carga_academica,
                     'fecha_bienvenida' => $becario->fecha_bienvenida,
                     'fecha_ingreso' => $becario->fecha_ingreso,
-                    'selected' => false
+                    'selected' => false,
+                    'nuevoselected' => false
                     ));
 
                 }
@@ -619,13 +640,14 @@ class NominaController extends Controller
                         "id" => count($noSugeridos),
                         "nomina" => $nomina,
                         "facturas" => $facturas,
-                        "num_factura" => count($facturas),
+                        "num_factura" => $num_facturas,
                         "is_sugerido" => false,
                         "status_becario" => $becario->status,
                         'final_carga_academica' => $becario->final_carga_academica,
                         'fecha_bienvenida' => $becario->fecha_bienvenida,
                         'fecha_ingreso' => $becario->fecha_ingreso,
-                        'selected' => false
+                        'selected' => false,
+                        'nuevoselected' => false
                         ));
                     }
                 }

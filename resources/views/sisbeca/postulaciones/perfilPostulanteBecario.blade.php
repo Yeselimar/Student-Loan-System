@@ -536,13 +536,9 @@
             <div class="modal fade" id="modal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"> &times;</span>
-                        </button>
-
-                        <h5 class="modal-title pull-left"><strong>Confirmación</strong></h5>
-
+                    <div class="modal-header">
+                            <h4 class="modal-title pull-left">Confirmación</h4>
+                            <a class="pull-right mr-1" href="javascript(0)" data-dismiss="modal" ><i class="fa fa-remove"></i></a>
                     </div>
 
                     <form method="POST" action={{route('aprobarParaEntrevista',$postulante->user_id)}} accept-charset="UTF-8">

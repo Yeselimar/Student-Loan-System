@@ -29,7 +29,7 @@ class Nominas extends Migration
             $table->timestamp('datos_final_carga_academica')->nullable();
             $table->timestamp('datos_fecha_bienvenida')->nullable();
             $table->unsignedInteger('datos_id')->nullable();
-
+            $table->boolean('nuevo_en_nomina')->default('0');
             $table->timestamp('fecha_pago')->nullable();
             $table->timestamp('fecha_generada')->nullable();
             $table->timestamps();

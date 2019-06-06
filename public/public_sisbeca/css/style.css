@@ -8,10 +8,57 @@
 @import url(spinners.css);
 @import url(animate.css);
 /*Estilos personalizados seb */
+.custom-checkbox .custom-control-input:checked~.custom-control-label::after{
+  background-color: #28a745;
+}
+.custom-control-input:checked~.custom-control-label::before{
+  background-color: red !important;
+}
 
+.checkbox-img > .custom-control-label::after {
+  border: none !important;
+  border-radius: 0px !important;
+  left: 33% !important;
+  top:25%;
+  /* background-image: url("../images/check.png");*/
+  border-radius: 3px;
+  padding: 8px;
+}
+.checkbox-img> .custom-control-label::before {
+  border: 1px solid #003865;
+  border-radius: 3px;
+  left: 33% !important;
+  top:25%;
+clear: none;
+background: url("../images/off.png") left center no-repeat;
+
+
+  padding: 8px;
+}
+
+.checkbox-center > .custom-control-label::after {
+  border: 1px solid #003865;
+  border-radius: 3px;
+  left: 33% !important;
+  top:25%;
+}
+.checkbox-center> .custom-control-label::before {
+  border: 1px solid #003865;
+  border-radius: 3px;
+  left: 33% !important;
+  top:25%;
+}
+.custom-control-label::before {
+  border: 1px solid #003865;
+  border-radius: 3px;
+}
+.custom-control-label::after {
+  border: 1px solid #003865;
+  border-radius: 3px;
+}
 .circulo-notificacion{
-  border: 1px solid red;
-  background: red;
+  border: 1px solid #dc3545;
+  background: #dc3545;
   border-radius: 100px;
   width: 16px;
   height: 16px;
@@ -44,11 +91,6 @@
   border-radius: 4px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-}
-
-.custom-control-label::after {
-  border: 1px solid #003865;
-  border-radius: 3px;
 }
 .header-seb{
 
@@ -4882,6 +4924,10 @@ footer p {
   .control-bar {
     padding: 15px 15px 40px;
   }
+  .btn{
+    font-size: 10px !important;
+  }
+
 }
 @media (max-width: 360px) {
   .notaxrelated {

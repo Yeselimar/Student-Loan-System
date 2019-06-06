@@ -3,14 +3,10 @@
 @section('content')
 
 <div class="col-lg-12" id="app">
-<div class="d-flex justify-content-between">
-<button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()" v-b-popover.hover="'Actualizar Nomina del '+mes+'/'+year" class="btn sisbeca-btn-primary">
-		Actualizar Nomina @{{mes}}/@{{year}} <i class="fa fa-clone"></i>
-	</button>
+<div class="d-flex justify-content-end">
 	<button @click="regresar" class="btn btn-sm sisbeca-btn-primary">Atrás</button>
 </div>
-
-<div class="mt-4" v-if="seccionS">
+<div v-if="seccionS">
 
  <div class="accordion row" id="accordionExample">
 		<div class="card col-12">
@@ -42,8 +38,14 @@
 									</div>
 								</div>
 							</div>
-							<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span v-if="!selectedAllS">Marcar Todos</span><span v-else>Desmarcar Todos</span></b-form-checkbox>
-							<b-btn size="sm" :disabled="!itemsSC" class="float-right sisbeca-btn-primary" variant="sisbeca-btn-primary" @click="quitarSelectedsDeSugeridos"> Quitar Marcados de Nomina</b-btn>
+							<div class="d-flex" style="flex-wrap: wrap">
+								<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span v-if="!selectedAllS" style="padding-right: 0.5rem">Marcar Todos</span><span v-else style="padding-right: 0.5rem">Desmarcar Todos</span></b-form-checkbox>
+								<b-btn size="sm" :disabled="!itemsSC" class="btn btn-xs sisbeca-btn-primary" style="height:2%" variant="sisbeca-btn-primary" @click="quitarSelectedsDeSugeridos"> <i v-b-popover.hover.bottom="'Sacar los seleccionados de la nomina'" class="fa fa-minus"></i></b-btn>
+								<button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()" v-b-popover.hover="'Actualizar Nomina del '+mes+'/'+year" class="btn sisbeca-btn-primary ml-auto">
+									Actualizar Nomina @{{mes}}/@{{year}} <i class="fa fa-clone"></i>
+								</button>
+							</div>
+
 
 							<b-table
 							show-empty
@@ -63,13 +65,13 @@
 							@filtered="onFilteredS"
 							>
 							<template slot="selected" slot-scope="row">
-									<b-form-checkbox v-model="row.item.selected"></b-form-checkbox>
+									<b-form-checkbox class="checkbox-center" v-model="row.item.selected"></b-form-checkbox>
 							</template>
 							<template slot="status" slot-scope="row">
-								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> Probatorio 1</span>
 								<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 							</template>
 							<template slot="becario" slot-scope="row">
 								<span>@{{row.item.nomina.datos_nombres+' '+row.item.nomina.datos_apellidos}}</span><br/><span>CI:@{{row.item.nomina.datos_cedula}}</span>
@@ -77,9 +79,10 @@
 
 							<template slot="estipendio" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.sueldo_base)}}</span>
-								<a v-b-popover.hover.bottom="'Editar Estipendio Individual'" @click.stop="editEstipendio(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
+								<a v-b-popover.hover.bottom="'Editar Estipendio Individual'" @click.stop="editEstipendio(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary ml-1">
 								<i class="fa fa-pencil"></i></a>
 							</template>
+
 							<template slot="retroactivo" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.retroactivo)}}</span> <a v-b-popover.hover.bottom="'Editar Retroactivo'" @click.stop="editRetroactivo(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
 										<i class="fa fa-pencil"></i>
@@ -92,8 +95,9 @@
 							</template>
 							<template slot="libros" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.monto_libros)}}</span>
-								<a v-b-popover.hover.bottom="'Procesar Facturas'" @click.stop="editFacturas(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
+								<a v-b-popover.hover.bottom="'Procesar Facturas'" @click.stop="editFacturas(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary position-relative">
 										<i class="fa fa-pencil"></i>
+										<div v-if="row.item.num_factura>0" class="circulo-notificacion"><p>@{{row.item.num_factura}}</p></div>
 								</a>
 
 							</template>
@@ -129,10 +133,10 @@
 												<tr>
 													<td class="text-center"> @{{row.item.nomina.datos_nombres }} @{{row.item.nomina.datos_apellidos }}<br/>@{{row.item.nomina.datos_email}}<br/>@{{row.item.nomina.datos_cedula}}<br/> </td>
 													<td class="text-center">
-															<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+															<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> Probatorio 1</span>
 															<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-															<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-															<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+															<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+															<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 														</td>
 													<td class="text-center"><span>@{{row.item.nomina.datos_cuenta}}</span>
 													</td>
@@ -177,7 +181,7 @@
 	<div class="accordion row" id="accordionExample2">
 		<div class="card col-12">
 			<div id="heading2" data-toggle="collapse" class="cursor" @click="collapse2=!collapse2" data-target="#collapseTwo" aria-expanded="2" aria-controls="collapseTwo">
-					<h4 class="warning">Listado de becarios no encontrados en Nomina del @{{mes}}/@{{year}}  <i v-if="!collapse2" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i></h4>
+					<h4 class="danger">Listado de becarios no encontrados en Nomina del @{{mes}}/@{{year}}  <i v-if="!collapse2" class="fa fa-chevron-down f-23"></i> <i v-else  class="fa fa-chevron-up f-23" ></i></h4>
 					<hr/>
 			</div>
 			<div id="collapseTwo" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample2">
@@ -204,8 +208,11 @@
 									</div>
 								</div>
 							</div>
-							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span v-if="!selectedAllNS">Marcar Todos</span><span v-else>Desmarcar Todos</span></b-form-checkbox>
-							<b-btn :disabled="!itemsNSC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > Agregar Marcados a Nomina</b-btn>
+
+							<div class="d-flex">
+								<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span v-if="!selectedAllNS" style="padding-right: 0.5rem">Marcar Todos</span><span v-else style="padding-right: 0.5rem">Desmarcar Todos</span></b-form-checkbox>
+								<b-btn :disabled="!itemsNSC"  size="sm" class="btn btn-xs sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > <i v-b-popover.hover.bottom="'Agregar a Sugeridos'" class="fa fa-plus"></i></b-btn>
+							</div>
 
 							<b-table
 							show-empty
@@ -225,13 +232,13 @@
 							@filtered="onFilteredNS"
 							>
 							<template slot="selected" slot-scope="row">
-									<b-form-checkbox v-model="row.item.selected"></b-form-checkbox>
+									<b-form-checkbox class="checkbox-center" v-model="row.item.selected"></b-form-checkbox>
 							</template>
 							<template slot="status" slot-scope="row">
-								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> Probatorio 1</span>
 								<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+								<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+								<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 							</template>
 							<template slot="becario" slot-scope="row">
 								<span>@{{row.item.nomina.datos_nombres+' '+row.item.nomina.datos_apellidos}}</span><br/><span>CI:@{{row.item.nomina.datos_cedula}}</span>
@@ -282,10 +289,10 @@
 											<tr>
 												<td class="text-center"> @{{row.item.nomina.datos_nombres }} @{{row.item.nomina.datos_apellidos }}<br/>@{{row.item.nomina.datos_email}}<br/>@{{row.item.nomina.datos_cedula}}<br/> </td>
 												<td class="text-center">
-														<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> En Probatorio 1</span>
+														<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> Probatorio 1</span>
 														<span v-else-if="row.item.status_becario=='activo'" class="label label-success">Activo</span>
-														<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">En Probatorio 2</span>
-														<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Egresado</span>
+														<span v-else-if="row.item.status_becario=='egresado'" class="label label-info">Egresado</span>
+														<span v-else-if="row.item.status_becario=='probatorio2'" class="label label-danger">Probatorio 2</span>
 													</td>
 												<td class="text-center"><span>@{{row.item.nomina.datos_cuenta}}</span>
 												</td>
@@ -332,7 +339,7 @@
 	<!--Modal Estipendio -->
 	<b-modal id="modalEditEstipendio" hide-header-close ref='modalEstipendio' @hide="resetModalEditEstipendio" :title="'Editar Estipendio Individual'" >
 					<div class="col" style="padding-left: 0px;padding-right: 0px;">
-							<label class="control-label " for="retroactivo">Estipendio</label>
+							<label class="control-label " for="estipendio">Estipendio</label>
 							<input type="number" name="estipendio" v-model="estipendio"  class="sisbeca-input input-sm" id="estipendio"  style="margin-bottom: 0px">
 					</div>
 			<template slot="modal-footer">
@@ -386,7 +393,7 @@
 												</div>
 											</div>
 										</div>
-										<b-form-checkbox :disabled="(typeof this.facturas === 'undefined') || !this.facturas.length" class="ml-2" v-model="selectedAllF" @change="selectF" > <span v-if="!selectedAllF">Marcar Todas</span><span v-else>Desmarcar Todas</span></b-form-checkbox>
+										<b-form-checkbox :disabled="(typeof this.facturas === 'undefined') || !this.facturas.length" class="ml-2" v-model="selectedAllF" @change="selectF" > <span v-if="!selectedAllF" style="padding-right: 0.5rem">Marcar Todas</span><span v-else style="padding-right: 0.5rem">Desmarcar Todas</span></b-form-checkbox>
 
 										<b-table
 										show-empty
@@ -406,7 +413,7 @@
 										@filtered="onFilteredF"
 										>
 										<template slot="selected" slot-scope="row">
-												<b-form-checkbox v-model="row.item.selected" @change="selectedStatusFactura= -1"></b-form-checkbox>
+												<b-form-checkbox class="checkbox-center" v-model="row.item.selected" @change="selectedStatusFactura= -1"></b-form-checkbox>
 										</template>
 										<template slot="status" slot-scope="row" @click.prevent.stop="">
 											<div @click.prevent.stop="">
@@ -461,6 +468,7 @@
 								</div>
 							</div>
 						<template slot="modal-footer">
+							<div class="letras-pequenas"> Debe procesar las facturas modificadas para ver los cambios reflejados en la Nómina</div>
 								<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.modalFacturas.hide()'> Cancelar</b-btn>
 								<b-btn :disabled="!facturasC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedsFacturas" variant="sisbeca-btn-primary" > Procesar Facturas Marcadas</b-btn>
 						</template>
@@ -762,6 +770,14 @@ const app = new Vue({
 					}
 				},this)
 			},
+		calcularnumfacturas(item){
+				item.num_factura=0;
+				item.facturas.forEach(function(fact,i){
+					if(fact.factura.status === 'cargada'){
+						item.num_factura=item.num_factura+1
+					}
+				})
+			},
 			editFacturas (item,index,button){
 				this.idSelectedSugeridos = item.id
 				this.facturas = []
@@ -888,6 +904,7 @@ const app = new Vue({
 							f.selected = false
 						},this)
 						*/
+						this.calcularnumfacturas(item)
 						item.nomina.monto_libros = parseFloat(total)
 					}
 				},this)
@@ -908,7 +925,7 @@ const app = new Vue({
 				let aux = {...item}
 				aux.id =  this.itemsS.length
 				aux.selected = false
-				aux._rowVariant = aux.is_sugerido ? '' : 'warning'
+			//	aux._rowVariant = aux.is_sugerido ? '' : 'warning'
 				if( this.itemsS.length)
 				{
 					aux.id =   this.itemsS[this.itemsS.length-1].id + 1
@@ -1030,6 +1047,10 @@ const app = new Vue({
 	}
 	.warning {
 		color: #ffc107;
+		font-weight: bold;
+	}
+	.danger {
+		color: #dc3545;
 		font-weight: bold;
 	}
 	.f-23{

@@ -58,7 +58,7 @@
 								</div>
 							</div>
 							<div class="d-flex" style="flex-wrap: wrap">
-							<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span style="padding-left: 1.5rem" v-if="!selectedAllS">Marcar Todos</span><span style="padding-left: 1.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
+							<b-form-checkbox :disabled="!(itemsS.length)" class="ml-2" v-model="selectedAllS" id="sugeridos" @change="selectS" > <span style="padding-right: 0.5rem" v-if="!selectedAllS">Marcar Todos</span><span style="padding-right: 0.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
 							<b-btn size="sm" :disabled="!itemsSC" class="btn btn-xs sisbeca-btn-primary" style="height:2%" variant="sisbeca-btn-primary"  @click.stop="quitarSelectedsDeSugeridos"> 	<i v-b-popover.hover.bottom="'Sacar seleccionados de la Nómina'" class="fa fa-minus"></i></b-btn>
 
 								<button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()
@@ -84,8 +84,11 @@
 							:sort-direction="sortDirectionS"
 							@filtered="onFilteredS"
 							>
+							<template slot="nuevo" slot-scope="row" >
+									<b-form-checkbox class="checkbox-img" v-model="row.item.nuevoselected"></b-form-checkbox>
+							</template>
 							<template slot="selected" slot-scope="row">
-									<b-form-checkbox v-model="row.item.selected"></b-form-checkbox>
+									<b-form-checkbox class="checkbox-center" v-model="row.item.selected"></b-form-checkbox>
 							</template>
 							<template slot="status" slot-scope="row">
 								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning"> Probatorio 1</span>
@@ -98,7 +101,7 @@
 							</template>
 
 							<template slot="estipendio" slot-scope="row">
-								<span>@{{formatomoneda(row.item.nomina.sueldo_base)}}</span><a v-b-popover.hover.bottom="'Editar Estipendio Individual'" @click.stop="editEstipendio(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary">
+								<span>@{{formatomoneda(row.item.nomina.sueldo_base)}}</span><a v-b-popover.hover.bottom="'Editar Estipendio Individual'" @click.stop="editEstipendio(row.item, row.index, $event.target)" class="btn btn-xs sisbeca-btn-primary ml-1">
 								<i class="fa fa-pencil"></i>
 								</a>
 							</template>
@@ -228,7 +231,7 @@
 								</div>
 							</div>
 							<div class="d-flex">
-							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span style="padding-left: 1.5rem" v-if="!selectedAllNS">Marcar Todos</span><span style="padding-left: 1.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
+							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span style="padding-right: 0.5rem" v-if="!selectedAllNS">Marcar Todos</span><span style="padding-right: 0.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
 							<b-btn :disabled="!itemsNSC"  size="sm" class="btn btn-xs sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > 	<i v-b-popover.hover.bottom="'Agregar a Sugeridos'" class="fa fa-plus"></i></b-btn>
 							</div>
 
@@ -251,7 +254,7 @@
 							@filtered="onFilteredNS"
 							>
 							<template slot="selected" slot-scope="row">
-									<b-form-checkbox v-model="row.item.selected"></b-form-checkbox>
+									<b-form-checkbox class="checkbox-center" v-model="row.item.selected"></b-form-checkbox>
 							</template>
 							<template slot="status" slot-scope="row">
 								<span v-if="row.item.status_becario=='probatorio1'" class="label label-warning">Probatorio 1</span>
@@ -433,7 +436,7 @@
 										@filtered="onFilteredF"
 										>
 										<template slot="selected" slot-scope="row">
-												<b-form-checkbox v-model="row.item.selected" @change="selectedStatusFactura= -1"></b-form-checkbox>
+												<b-form-checkbox class="checkbox-center" v-model="row.item.selected" @change="selectedStatusFactura= -1"></b-form-checkbox>
 										</template>
 										<template slot="status" slot-scope="row" @click.prevent.stop="">
 											<div @click.prevent.stop="">
@@ -567,6 +570,7 @@ const app = new Vue({
 			filterNS: null,
 			itemsS:[],
 			fieldsS: [
+			{key: 'nuevo', label: 'Nuevo', sortable: false, 'class': 'text-center'},
 			{ key: 'selected', label: 'Marcar', sortable: true, 'class': 'text-center' },
 			{ key: 'status', label: 'Estatus', sortable: true, 'class': 'text-center' },
 			{ key: 'becario', label: 'Becario', sortable: true, 'class': 'text-center' },
@@ -682,7 +686,7 @@ const app = new Vue({
 				var url = "{{route('generarNomina.api')}}";
 				this.isLoading = true
 				let facturasAll = []
-
+console.log(this.itemsS.nuevoselected)
 				let data = JSON.stringify({
                 mes: parseInt(this.mes),
                 year: parseInt(this.year),
@@ -696,7 +700,7 @@ const app = new Vue({
 				}
 				}).then(response =>
 				{
-					console.log(response)
+					//console.log(response)
 					if(response.data.res){
 						this.seccionS = false
 						this.itemsS = []
@@ -904,7 +908,7 @@ const app = new Vue({
 			calcularnumfacturas(item){
 				item.num_factura=0;
 				item.facturas.forEach(function(fact,i){
-					if(fact.factura.status === 'cargada'){
+					if(fact.factura.status === 'scargada'){
 						item.num_factura=item.num_factura+1
 					}
 				})
