@@ -7,26 +7,16 @@
 	Esta consulta le Muestra la Nómina Sugerida por el Sistema y le permite agregar y quitar becarios de la misma.
 </div>
 <form v-if="showDate"  @submit.prevent.stop="consultar" class=" d-flex" style="padding:6px; background-color: rgba(169, 169, 169, 0.2);">
-
-<!-- <div class="input-append date col-lg-2 col-sm-4 col-md-3 d-flex" id="dp3" data-date-format="mm/yyyy">
-  <input class="span2 sisbeca-input input-sm" autocomplete="off" required placeholder="Seleccione fecha" size="16" type="text" id="fecha">
-  <span class="add-on"><i class="fa fa-calendar"></i></span>
-</div> -->
-<div class="input-group input-append date" style="flex-basis: 25%; margin-right: 5px" data-date-format="mm/yyyy" id="dp3">
-		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-		<input class="form-control" autocomplete="off" required placeholder="Seleccionar fecha" size="16" type="text" id="fecha" >
-</div>
-<button v-b-popover.hover="'Consultar Nomina'" @submit.prevent.stop="consultar" style="flex-basis: 10%; margin-top: 2px; margin-bottom: 0px !important;" class="btn btn sisbeca-btn-primary h-100">
-	Consultar
-</button>
-
+		<div class="input-group input-append date" style="flex-basis: 25%; margin-right: 5px" data-date-format="mm/yyyy" id="dp3">
+				<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				<input class="form-control" autocomplete="off" required placeholder="Seleccionar fecha" size="16" type="text" id="fecha" >
+		</div>
+		<button v-b-popover.hover="'Consultar Nomina'" @submit.prevent.stop="consultar" style="flex-basis: 10%; margin-top: 2px; margin-bottom: 0px !important;" class="btn btn sisbeca-btn-primary h-100">
+			Consultar
+		</button>
 </form>
 
 <div class="mt-4" v-if="seccionS">
-<!-- <button v-if="itemsS.length" @click.prevent.stop="$refs.nominaGeneradaRef.show()
-" v-b-popover.hover="'Generar Nomina con la lista de becarios sugeridos'" class="btn sisbeca-btn-primary">
-		Generar Nomina <i class="fa fa-clone"></i>
-	</button> -->
  <div class="accordion row" id="accordionExample">
 		<div class="card col-12">
 			<div id="heading" data-toggle="collapse" class="cursor" @click="collapse=!collapse" data-target="#collapseOne" aria-expanded="1" aria-controls="collapseOne">
@@ -121,12 +111,10 @@
 										<i class="fa fa-pencil"></i>
 										<div v-if="row.item.num_factura>0" class="circulo-notificacion"><p>@{{row.item.num_factura}}</p></div>
 								</a>
-
 							</template>
 							<template slot="total" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.total)}}</span>
 							</template>
-
 							<template slot="actions" slot-scope="row">
 									<a v-b-popover.hover.bottom="'Detalles'" @click.stop="row.toggleDetails"class="btn btn-xs sisbeca-btn-primary">
 										<i class="fa fa-eye" v-if="!row.detailsShowing"></i> <i v-else class=" fa fa-eye-slash"></i>
@@ -134,12 +122,9 @@
 									<a v-b-popover.hover.bottom="'Quitar de Sugeridos'" @click.stop="quitarDeSugeridos(row.item, row.index,true)" class="btn btn-xs sisbeca-btn-primary">
 											<i class="fa fa-minus"></i>
 									</a>
-
 								</template>
 								<template slot="row-details" slot-scope="row">
 									<div class="table-responsive">
-
-										<!-- data-order='[[ 5, "asc" ],[2,"desc"],[0,"asc"]]'-->
 										<table  class="table striped stacked" >
 											<thead>
 												<tr>
@@ -176,8 +161,6 @@
 														<span v-else-if="obtenerFechaEgreso(row.item.fecha_ingreso) !== '-'">@{{obtenerFechaEgreso(row.item.fecha_ingreso)}}</span>
 														<span v-else class='label label-default'>Sin Fecha Egreso</span>
 													</td>
-
-
 												</tr>
 											</tbody>
 
@@ -185,18 +168,12 @@
 									</div>
 								<hr/>
 								  </template>
-
 						</b-table>
-
 						<b-row class="my-0 pull-right" >
 							<b-pagination :total-rows="totalRowsS" :per-page="parseInt(perPageS)" v-model="currentPageS" class="my-0" />
 						</b-row>
-
-
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</div>
@@ -207,7 +184,6 @@
 					<hr/>
 			</div>
 			<div id="collapseTwo" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample2">
-
 			<div class="table-responsive">
 					<div class="dataTables_wrapper dt-bootstrap4 no-footer">
 						<div class="row">
@@ -234,8 +210,6 @@
 							<b-form-checkbox :disabled="!(itemsNS.length)" class="ml-2" v-model="selectedAllNS" @change="selectNS" > <span style="padding-right: 0.5rem" v-if="!selectedAllNS">Marcar Todos</span><span style="padding-right: 0.5rem" v-else>Desmarcar Todos</span></b-form-checkbox>
 							<b-btn :disabled="!itemsNSC"  size="sm" class="btn btn-xs sisbeca-btn-primary" @click="agregarSelectedsASugeridos" variant="sisbeca-btn-primary" > 	<i v-b-popover.hover.bottom="'Agregar a Sugeridos'" class="fa fa-plus"></i></b-btn>
 							</div>
-
-
 							<b-table
 							show-empty
 							empty-text ="<span class='label label-default'>No existen becarios no sugeridos a entrar en Nomina</span>"
@@ -280,7 +254,6 @@
 							<template slot="total" slot-scope="row">
 								<span>@{{formatomoneda(row.item.nomina.total)}}</span>
 							</template>
-
 							<template slot="actions" slot-scope="row">
 								<a v-b-popover.hover.bottom="'Detalles'" @click.stop="row.toggleDetails"class="btn btn-xs sisbeca-btn-primary">
 									<i class="fa fa-eye" v-if="!row.detailsShowing"></i> <i v-else class="fa fa-eye-slash"></i>
@@ -288,14 +261,10 @@
 								<a v-b-popover.hover.bottom="'Agregar a Sugeridos'"@click.stop="agregarASugeridos(row.item, row.index,true)" class="btn btn-xs sisbeca-btn-primary">
 										<i class="fa fa-plus"></i>
 								</a>
-
-
 							</template>
 							<template slot="row-details" slot-scope="row">
 
 								<div class="table-responsive">
-
-									<!-- data-order='[[ 5, "asc" ],[2,"desc"],[0,"asc"]]'-->
 									<table  class="table stacked striped " >
 										<thead>
 											<tr>
@@ -332,30 +301,19 @@
 													<span v-else-if="obtenerFechaEgreso(row.item.fecha_ingreso) !== '-'">@{{obtenerFechaEgreso(row.item.fecha_ingreso)}}</span>
 													<span v-else class='label label-default'>Sin Fecha Egreso</span>
 												</td>
-
-
 											</tr>
 										</tbody>
-
 									</table>
 								</div>
 								<hr/>
-
 							  </template>
-
 						</b-table>
-
 						<b-row class="my-0 pull-right" >
 							<b-pagination :total-rows="totalRowsNS" :per-page="parseInt(perPageNS)" v-model="currentPageNS" class="my-0" />
 						</b-row>
-
 					</div>
 				</div>
-
-
-
 			</div>
-
 		</div>
 	</div>
 
@@ -398,7 +356,7 @@
 								<div class="dataTables_wrapper dt-bootstrap4 no-footer">
 									<div class="row">
 										<div class="col-sm-12 col-md-6">
-											<div class="dataTables_length" style="">
+											<div class="dataTables_length">
 												<label>Mostrar
 													<select aria-controls="dd" v-model="perPageF" class="custom-select custom-select-sm form-control form-control-sm">
 														<option v-for="(value, key) in pageOptionsF"  :key="key">
@@ -417,7 +375,6 @@
 											</div>
 										</div>
 										<b-form-checkbox :disabled="(typeof this.facturas === 'undefined') || !this.facturas.length" class="ml-2" v-model="selectedAllF" @change="selectF" > <span v-if="!selectedAllF">Marcar Todas</span><span v-else>Desmarcar Todas</span></b-form-checkbox>
-
 										<b-table
 										show-empty
 										empty-text ="<span class='label label-default'>No existen Facturas cargadas del becario</span>"
@@ -484,31 +441,26 @@
 									</b-row>
 
 								</div>
-							</div>
+						</div>
 						<template slot="modal-footer">
 								<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.modalFacturas.hide()'> Cancelar</b-btn>
 								<b-btn :disabled="!facturasC"  size="sm" class="float-right sisbeca-btn-primary" @click="agregarSelectedFacturas" variant="sisbeca-btn-primary" > Procesar Facturas Marcadas</b-btn>
 						</template>
 				</b-modal>
-
-
-
 </div>
 <section v-if="isLoading" class="loading" id="preloader">
       <div>
           <svg class="circular" viewBox="25 25 50 50">
               <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
       </div>
-    </section>
-
+</section>
 		<b-modal id="nominaGeneradaID" hide-header-close ref="nominaGeneradaRef" :title="'Generar Nomina '+mes+'/'+year" >
 	  	¿Estas Seguro que desea generar la Nomina correspondiente al @{{mes}}/@{{year}} con los registros seleccionados ?
 	  <template slot="modal-footer">
 				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaGeneradaRef.hide()'> No</b-btn>
 				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="generarNomina" variant="sisbeca-btn-primary" > Si </b-btn>
-	   </template>
+	  </template>
     </b-modal>
-
 </div>
 @endsection
 
@@ -908,7 +860,7 @@ console.log(this.itemsS.nuevoselected)
 			calcularnumfacturas(item){
 				item.num_factura=0;
 				item.facturas.forEach(function(fact,i){
-					if(fact.factura.status === 'scargada'){
+					if(fact.factura.status === 'cargada'){
 						item.num_factura=item.num_factura+1
 					}
 				})

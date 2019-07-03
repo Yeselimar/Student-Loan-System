@@ -8,6 +8,9 @@
 @import url(spinners.css);
 @import url(animate.css);
 /*Estilos personalizados seb */
+.btn-acciones{
+  margin: 0.15rem;
+}
 .custom-checkbox .custom-control-input:checked~.custom-control-label::after{
   background-color: #28a745;
 }
@@ -5683,6 +5686,23 @@ footer p {
   padding: 5px 10px;
   margin-left: 90px;
 }
+.info-cost-box-content{
+  padding: 5px 10px;
+}
+.info-cost-box-text{
+  display: block;
+  font-size: 14px;
+  padding-top: 20px;
+  text-align: center;
+  position: relative;
+}
+.info-cost-box-number{
+  text-align: right;
+  display: block;
+  font-weight: bold;
+  font-size: 22px;
+  padding: 15px 15px 15px;
+}
 .info-box-number {
   display: block;
   font-weight: bold;
@@ -6198,7 +6218,7 @@ tbody tr td {
   font-family: Verdana, Geneva, sans-serif;
 }
 tbody tr td:last-child {
-  text-align: right;
+  text-align: center;
 }
 .table > tbody > tr > td,
 .table > tbody > tr > th,

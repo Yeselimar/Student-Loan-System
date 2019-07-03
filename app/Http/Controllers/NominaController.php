@@ -307,6 +307,7 @@ class NominaController extends Controller
 
         $mes = $request->mes;
         $year = $request->year;
+        $estipendio=Estipendio::query()->where('mes','=', $mes)->where('anio', '=', $year)->first();
         $nominasaux = Nomina::where('mes',$mes)->where('year',$year)->get();
         if(count($nominasaux) == 0)
         {
@@ -403,7 +404,8 @@ class NominaController extends Controller
                 }
             }
 
-
+            $estipendio->usado_en_nomina= true;
+            $estipendio->save();
             return response()->json(['res'=>1]);
         }
         else
@@ -729,6 +731,7 @@ class NominaController extends Controller
         //$control = count(Nomina::groupby('mes','year')->get());
         $anho = date ( 'Y' , strtotime(date('Y-m-d H:i:s')) );
         $mes = date ( 'm' , strtotime(date('Y-m-d H:i:s')) );
+        $estipendio=Estipendio::query()->where('mes','=', $mes)->where('anio', '=', $anio)->first();
         $nominasaux = Nomina::where('mes',$mes)->where('year',$anho)->get();
 
         if(count($nominasaux)==0)
@@ -810,6 +813,8 @@ class NominaController extends Controller
                    $nomina->status = 'pendiente';
                    $nomina->fecha_pago = null;
                    $nomina->fecha_generada = null;
+
+
                    $nomina->save();
 
                    $bn = new BecarioNomina();
@@ -820,6 +825,8 @@ class NominaController extends Controller
 
 
             }
+
+           // dd('Estipendio', $estipendio , 'Mes:', $mes);
             /*Enviar Alerta al directivo */
             //primero veo si la alerta existe
             if ($inNomina)

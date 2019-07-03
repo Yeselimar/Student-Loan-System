@@ -19,6 +19,7 @@ class Estipendios extends Migration
             $table->double('estipendio',20,2)->default(0);
             $table->unsignedInteger('mes');
             $table->unsignedInteger('anio');
+            $table->boolean('usado_en_nomina')->default(false);
             $table->timestamps();
         });
     }

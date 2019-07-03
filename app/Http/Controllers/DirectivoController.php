@@ -14,6 +14,7 @@ use avaa\Documento;
 use DateTime;
 use avaa\Costo;
 use avaa\Concurso;
+use avaa\Estipendio;
 use Timestamp;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -344,9 +345,39 @@ class DirectivoController extends Controller
         }
 
     //añadir este metodo
-        public function estipendioBecario()
+    public function verestipendios()
+    {
+        return view('sisbeca.costos.estipendio');
+    }
+    public function estipendioBecario($mes , $anio)
+    {
+        $historial=Estipendio::orderBy('created_at', 'DESC')->get();
+        $costos=Estipendio::query()->where('mes','=', $mes)->where('anio', '=', $anio)->first();
+       // dd('el mes:', $mes , 'El anio:', $anio );
+        if(is_null($costos))
         {
-            $costos= Costo::first();
+            $costos=$historial[0]; //el ultimo
+            $id=$costos->id;
+            $res=0;
+            flash('Disculpe, no se ha definido el estipendio para el mes en curso, por favor defínalo.')->error()->important();
+            return response()->json(['costo'=>$costos,'id'=>$id,'historial'=>$historial, 'res'=> $res]);
+        }
+        else
+        {
+            $id=$costos->id;
+            $res=1;
+
+        }
+        return response()->json(['costo'=>$costos,'id'=>$id,'historial'=>$historial, 'res'=> $res]);
+    }
+       /*  public function estipendioBecario()
+        {
+
+            $historial=Estipendio::get();;
+            $costos=$historial[sizeof($historial)-1]; //el ultimo
+
+            $long=sizeof($historial);
+           // dd($long);
             if(is_null($costos))
             {
                 $costos = null;
@@ -357,18 +388,40 @@ class DirectivoController extends Controller
             {
                 $id=$costos->id;
             }
-            return view('sisbeca.costos.estipendio')->with('costo',$costos)->with('id',$id);
-        }
+            return view('sisbeca.costos.estipendio')->with('costo',$costos)->with('id',$id)->with('historial',$historial);
+        } */
         public function actualizarEstipendio(Request $request)
         {
-            $costo = Costo::first();
+           // $costos=Estipendio::query()->where('id','=', $request->get('id'))->first();
+
+           $costos=Estipendio::query()->where('mes','=', $request->get('mes'))->where('anio','=', $request->get('anio'))->first();
+           // dd($costos);
             $costoVal = $request->get('estipendio');
             $costoAux = str_replace(".","",$request->get('estipendio'));
             $costoAux= str_replace(",",".",$costoAux);
-            $costo->sueldo_becario=$costoAux;
+            if(is_null($costos)){
+                $costos =new Estipendio();
+                $hoy = date('Y-m-d');
+                //$costo= array_reverse($costo);
 
-            $costo->save();
-            return response()->json(['success'=>'El Estipendio fue actualizado exitosamente.','costo'=>$costo->sueldo_becario,'costoval'=>$costoVal]);
+                $costos->estipendio=$costoAux;
+                $costos->mes= $request->get('mes');
+                $costos->anio=$request->get('anio');
+                $costos->save();
+                $historial=Estipendio::orderBy('created_at', 'DESC')->get();
+                return response()->json(['success'=>'El Estipendio fue actualizado exitosamente.','costo'=>$costos->estipendio,'costoval'=>$costoVal, 'res'=>1]);
+            }
+            else{
+                if(!$costos->usado_en_nomina){
+                $costos->estipendio=$costoAux;
+                $costos->save();
+                return response()->json(['success'=>'El Estipendio fue actualizado exitosamente.','costo'=>$costos->estipendio,'costoval'=>$costoVal, 'res'=>1]);
+                }
+                else{
+                    return response()->json(['success'=>'El Estipendio del mes seleccionado ya fue utilizado en nómina y no puede ser modificado.','costo'=>$costos->estipendio,'costoval'=>$costoVal, 'res'=>0]);
+                }
+            }
+
         }
 
 }

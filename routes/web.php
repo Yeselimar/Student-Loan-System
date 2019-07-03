@@ -613,7 +613,9 @@ Route::group(["prefix"=>"seb",'middleware'=>'auth'],function ()
 
     Route::group(['middleware'=>'directivo'],function ()
     {
-        Route::get('estipendioBecario',[
+        Route::get('verEstipendios', ['uses' =>'DirectivoController@verestipendios' , 'as'=> 'ver.Estipendios']);
+
+        Route::get('estipendioBecario/mes/{mes}/anio/{anio}',[
             'uses' => 'DirectivoController@estipendioBecario',
             'as' => 'estipendioBecario'
         ]);

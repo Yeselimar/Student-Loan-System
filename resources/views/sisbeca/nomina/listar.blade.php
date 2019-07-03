@@ -1,7 +1,7 @@
 @extends('sisbeca.layouts.main')
 @section('title','Nóminas Generadas')
 @section('content')
-	
+
 <div class="col-lg-12" id="app">
 
 	<div class="table-responsive">
@@ -9,7 +9,7 @@
 			<div class="row">
 				<div class="col-sm-12 col-md-6">
 					<div class="dataTables_length" style="">
-						<label>Mostrar 
+						<label>Mostrar
 							<select aria-controls="dd" v-model="perPage" class="custom-select custom-select-sm form-control form-control-sm">
 								<option v-for="(value, key) in pageOptions" :key="key">
 									@{{value}}
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 
-			<b-table 
+			<b-table
 				show-empty
 				empty-text ="No hay nóminas generadas"
 				empty-filtered-text="
@@ -57,7 +57,7 @@
 				</template>
 
 				<template slot="total_pagado" slot-scope="row">
-					<span>@{{formatomoneda(row.item.total_pagado)}}</span> 
+					<span>@{{formatomoneda(row.item.total_pagado)}}</span>
 				</template>
 
 				<template slot="fecha_generada" slot-scope="row">
@@ -70,38 +70,38 @@
 					<span v-if="row.item.fecha_pago">
 						@{{ fechaformatear(row.item.fecha_pago) }}
 					</span>
-					<span v-else class="label label-default">
+					<span v-else class="label label-default d-flex">
 						Sin fecha de pago
 					</span>
 
 				</template>
-				
-				
+
+
 				<template slot="actions" slot-scope="row">
-						
-				
-					<a v-if="row.item.status === 'generado' && row.item.url_edit" v-b-popover.hover.bottom="'Editar Nomina'" :href="row.item.url_edit" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary">
+
+					<div class="d-flex">
+					<a v-if="row.item.status === 'generado' && row.item.url_edit" v-b-popover.hover.bottom="'Editar Nomina'" :href="row.item.url_edit" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary btn-acciones">
 						<i class="fa fa-pencil"></i>
 					</a>
 
-					<a v-b-popover.hover.bottom="'Generar Nómina en PDF'" target="_blank" :href="row.item.url_pdf" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary">
+				{{--<a v-b-popover.hover.bottom="'Generar Nómina en PDF'" target="_blank" :href="row.item.url_pdf" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary btn-acciones">
 						<i class="fa fa-file-pdf-o"></i>
-					</a>
+					</a>--}}
 
-					<a v-b-popover.hover.bottom="'Generar Nómina en Excel'" :href="row.item.url_excel"  class="btn btn-xs sisbeca-btn-primary">
+					<a v-b-popover.hover.bottom="'Generar Nómina en Excel'" :href="row.item.url_excel"  class="btn btn-xs sisbeca-btn-primary btn-acciones">
 							<i class="fa fa-file-excel-o"></i>
 					</a>
 
-					<a v-b-popover.hover.bottom="'Detalle de la Nómina'" :href="row.item.url_detalle" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary">
+					<a v-b-popover.hover.bottom="'Detalle de la Nómina'" :href="row.item.url_detalle" @click.stop="isLoading=true" class="btn btn-xs sisbeca-btn-primary btn-acciones">
 							<i class="fa fa-eye"></i>
 					</a>
-					
-					<a v-b-popover.hover.bottom="'Pagar Nómina'" :disabled="row.item.url_pagar == null"  @click.stop="nominaPagada(row.item.mes,row.item.year,row.item.url_pagar)" class="btn btn-xs sisbeca-btn-primary">
+
+					<a v-b-popover.hover.bottom="'Pagar Nómina'" :disabled="row.item.url_pagar == null"  @click.stop="nominaPagada(row.item.mes,row.item.year,row.item.url_pagar)" class="btn btn-xs sisbeca-btn-primary btn-acciones">
 							<i class="fa fa-plus"></i>
 					</a>
-						
+				</div>
 				</template>
-						
+
 
 			</b-table>
 
@@ -117,7 +117,7 @@
 	  <template slot="modal-footer">
 				<b-btn size="sm" class="float-right sisbeca-btn-default" variant="sisbeca-btn-default" @click='$refs.nominaPagadaRef.hide()'> No</b-btn>
 				<b-btn  size="sm" class="float-right sisbeca-btn-primary" @click="pagarNomina(mes,year,url_pago)" variant="sisbeca-btn-primary" > Si </b-btn>
-	   </template>	
+	   </template>
     </b-modal>
 	<!-- Cargando.. -->
 	<section v-if="isLoading" class="loading" id="preloader">
@@ -199,7 +199,7 @@ const app = new Vue({
 		pagarNomina(mes,year,url){
 			this.$refs.nominaPagadaRef.hide()
 			this.isLoading = true
-			axios.get(url).then(response => 
+			axios.get(url).then(response =>
 			{
 				if(response.data.res){
 					this.getListarNominas()
@@ -234,21 +234,21 @@ const app = new Vue({
 			{
 				return Number(monto).toLocaleString("es-ES", {minimumFractionDigits: 2});
 			}
-			else 
+			else
 				return 0
 		},
 		getListarNominas()
 		{
 			url = "{{route('listar.nominas.api')}}"
 		  	this.isLoading = true
-		  	axios.get(url).then(response => 
+		  	axios.get(url).then(response =>
 			{
 				if(response.data.res)
 				{
 					this.items = response.data.nominas
 					this.items.forEach(function(nomina,i)
 					{
-						let url_d = "{{ route('nomina.listar.ver',array('mes'=>':m','anho'=>':y')) }}" 
+						let url_d = "{{ route('nomina.listar.ver',array('mes'=>':m','anho'=>':y')) }}"
 						url_d=url_d.replace(':m',nomina.mes)
 						url_d=url_d.replace(':y',nomina.year)
 						nomina.url_detalle = url_d
@@ -272,7 +272,7 @@ const app = new Vue({
 					let nominaP = response.data.nominasPagadas
 					nominaP.forEach(function(nomina,i)
 					{
-						let url_d = "{{ route('nomina.listar.pagadas',array('mes'=>':m','anho'=>':y')) }}" 
+						let url_d = "{{ route('nomina.listar.pagadas',array('mes'=>':m','anho'=>':y')) }}"
 						url_d=url_d.replace(':m',nomina.mes)
 						url_d=url_d.replace(':y',nomina.year)
 						nomina.url_detalle = url_d
@@ -291,7 +291,7 @@ const app = new Vue({
 						this.items.push(nomina)
 					},this)
 
-					
+
 				}
 				else
 				{
@@ -313,7 +313,7 @@ const app = new Vue({
 			return url;
 		}
 	}
-	
+
 });
 </script>
 @endsection
