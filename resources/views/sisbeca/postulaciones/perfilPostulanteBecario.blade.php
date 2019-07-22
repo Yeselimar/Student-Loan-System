@@ -102,9 +102,6 @@
 								<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#informacionadicional" role="tab">Información Adicional</a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#documentos" role="tab">Documentos</a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#documentosentrevista" role="tab">Documentos Entrevista</a> </li>
-
-
-
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -485,33 +482,35 @@
                                         </div>
                                         @if((Auth::user()->rol=='coordinador')||(Auth::user()->rol=='directivo')||(Auth::user()->rol=='entrevistador')||(Auth::user()->rol=='mentor'))
 
-                                                <div class="tab-pane" id="documentosentrevista" role="tabpanel">
-                                                    <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                    <tbody>
-
-                                                                    @foreach($postulante->entrevistadores as $entrevistador)
-                                                                    <tr>
-                                                                            <td class="text-left"><strong> {{$entrevistador->nombreyapellido()}}</strong></td>
-                                                                            <td class="text-left"> <a class="btn btn-xs sisbeca-btn-primary" href="{{asset($entrevistador->documento)}}">Ver Informe</a></td>
-                                                                            <!-- <td class="text-left"> {{$entrevistador->documento}}</td> -->
-                                                                    </tr>
-                                                                    @endforeach
-                                                                    <tr>
-                                                                            <td class="text-left"><strong> Informe Final</strong></td>
-                                                                            <td class="text-left">
-                                                                                @if(!is_null($postulante->documento_final_entrevista))
-                                                                                <a target="_blank" href="{{asset($postulante->documento_final_entrevista)}}" class="btn btn-xs sisbeca-btn-primary"> Ver Informe</a>
-                                                                                @else
-                                                                                <span class="label label-default"><strong>No ha cargado Documento</strong></span>
-                                                                                @endif
-                                                                            </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
+                                        <div class="tab-pane" id="documentosentrevista" role="tabpanel">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                            <tbody>
+                                                            @foreach($entrevistadores as $entrevistador)
+                                                            <tr>
+                                                                    <td class="text-left"><strong> {{$entrevistador->entrevistador->nombreyapellido()}} </strong></td>
+                                                                    @if($entrevistador->documento!=NULL)
+                                                                    <td class="text-left"> <a class="btn btn-xs sisbeca-btn-primary" href="{{url($entrevistador->documento)}}">Ver Informe</a></td>
+                                                                    @else
+                                                                    <td class="text-left"> <span class="label label-default"><strong>No ha cargado Documento</strong></span></td>
+                                                                    @endif 
+                                                            </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                    <td class="text-left"><strong> Informe Final</strong></td>
+                                                                    <td class="text-left">
+                                                                        @if(!is_null($postulante->documento_final_entrevista))
+                                                                        <a target="_blank" href="{{asset($postulante->documento_final_entrevista)}}" class="btn btn-xs sisbeca-btn-primary"> Ver Informe</a>
+                                                                        @else
+                                                                        <span class="label label-default"><strong>No ha cargado Documento</strong></span>
+                                                                        @endif
+                                                                    </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                </div>
-                                            @endif
+                                        </div>
+                                        @endif
                             </div>
 
                         </div>

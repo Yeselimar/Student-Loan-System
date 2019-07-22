@@ -1188,9 +1188,9 @@ h6.h1 {
   fill: #4680ff;
 }
 .bg-success {
-  background: #dc3545 !important;
+  background: #61c35a  !important;
   color: #ffffff;
-  fill: #dc3545;
+  fill: #61c35a;
 }
 .bg-info {
   background: #62d1f3 !important;
@@ -1875,8 +1875,11 @@ textarea {
 }
 
 .fix-sidebar .left-sidebar {
-  position: fixed;
   background: #002040;
+  background-image: url(../images/menu.png);
+  background-size: cover;
+  position: fixed;
+  
  /*  background: linear-gradient(to bottom right, rgb(0, 32, 64) , rgba(27, 18, 76, 0.72));
   background: -webkit-linear-gradient(left top, rgb(0, 32, 64), rgba(27, 18, 76, 0.72));
   background: -o-linear-gradient(bottom right,rgb(0, 32, 64) , rgba(27, 18, 76, 0.72));
@@ -3056,10 +3059,11 @@ panel-default>.panel-heading {
   border-bottom: 1px solid transparent;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
- /* background-color: #f1f1f1;*/
- /* background-color: #002040;*/
-  background: linear-gradient(to bottom right, rgba(0, 32, 64, 0.6), rgba(0, 32, 64, 1));
-
+  /* background-color: #f1f1f1; */
+  background-image: url(../images/menu.png);
+  background-color: #002040;
+  background-size: cover;
+  /* background: linear-gradient(to bottom right, rgba(0, 32, 64, 0.6), rgba(0, 32, 64, 1)); */
   color: white;
   margin-bottom: 20px;
 }

@@ -84,10 +84,10 @@
                         </button>
                     </template>
                     <template v-else>
-                        <button class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
+                        <button v-b-popover.hover="'Ingresar al postulante a ProExcelencia'" class="btn btn-xs sisbeca-btn-success" @click.prevent="mostrarModal(postulante,postulante.imagenes,1)">
                         <i class="fa fa-check" data-target="modal-asignar"></i>
                         </button>
-                        <button class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarModal(postulante,postulante.imagenes,0)">
+                        <button v-b-popover.hover="'Rechazar al postulante a ProExcelencia'" class="btn btn-xs sisbeca-btn-default" @click.prevent="mostrarModal(postulante,postulante.imagenes,0)">
                         <i class="fa fa-times" data-target="modal-asignar"></i>
                         </button>
                     </template>
@@ -163,7 +163,9 @@
                         <div class="panel-heading"> @{{nombreyapellido}}</div>
                         <div class="row panel-body">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <img class="img-responsive w-50 m-b-20" :src="imagen_postulante">
+                                    
+                                            <img :src="imagen_postulante" class="img-rounded img-responsive w-50">
+                                      
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
                                     <div>Edad: @{{edad}}</div>
@@ -388,8 +390,16 @@
             mostrarModalBienvenida:function(postulante)
             {
                 this.id = postulante.user_id;
+                this.lugar = postulante.lugar_bienvenida;
+                this.fecha =  moment(postulante.fecha_bienvenida).format('DD/MM/YYYY hh:mm A');
+          
                 // console.log('ID:' , postulante.user_id);
                 $('#modal-fecha-bienvenida').modal('show');
+            },
+            mostrarModalBienvenidaTodos:function(postulantes)
+            {
+                
+                $('#modal-fecha-bienvenida-todos').modal('show');
             },
             fechadebienvenida: function(id)
             {
@@ -408,10 +418,6 @@
                     this.obtenerpostulantes();
                     toastr.success(response.data.success);
                 });
-            },
-            mostrarModalBienvenidaTodos:function(postulantes)
-            {
-                $('#modal-fecha-bienvenida-todos').modal('show');
             },
             fechadebienvenidaparatodos: function()
             {

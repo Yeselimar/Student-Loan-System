@@ -343,7 +343,9 @@ class CompartidoDirecCoordController extends Controller
             $rechazados = Becario::where('status','=','rechazado')->get();
            // dd($rechazados);
             $becarios = Becario::where('status','=','entrevistado')->orwhere('status','=','activo')->where('acepto_terminos','=',false)->get();
-            return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados);
+            $imagenes = Imagen::where('titulo','=','fotografia')->get();
+         
+            return view('sisbeca.postulaciones.asignarNuevoIngreso')->with('becarios',$becarios)->with('rechazados', $rechazados)->with('imagenes', $imagenes);
         }
 
     }
@@ -578,14 +580,11 @@ class CompartidoDirecCoordController extends Controller
         $usuario = User::find($id);
         if(($usuario->rol==="becario")||($usuario->rol==="postulante_becario"))
         {
-            // dd($id);
             $postulante = Becario::find($id);
             $documentos = Documento::query()->where('user_id','=',$id)->get();
             $img_perfil=Imagen::query()->where('user_id','=',$id)->where('titulo','=','img_perfil')->get();
             $entrevistadores=BecarioEntrevistador::query()->where('becario_id','=',$id)->get();
-            // dd($entrevistadores);
-            // return $entrevistadores;
-            //return $entrevistadores;
+           
             if(is_null($documentos))
             {
                 flash('Disculpe, el postulante seleccionado no tiene documentos.', 'danger')->important();
@@ -606,6 +605,7 @@ class CompartidoDirecCoordController extends Controller
                 $referencia_profesor2 = Documento::where('user_id','=',$id)->where('titulo','=','referencia_profesor2')->first();
                 $ensayo = Documento::where('user_id','=',$id)->where('titulo','=','ensayo')->first();
                 return view('sisbeca.postulaciones.perfilPostulanteBecario')->with('postulante',$postulante)->with('documentos', $documentos)->with('usuario',$usuario)->with('fotografia',$fotografia)->with('cedula',$cedula)->with('constancia_cnu',$constancia_cnu)->with('calificaciones_bachillerato',$calificaciones_bachillerato)->with('constancia_aceptacion',$constancia_aceptacion)->with('constancia_estudios',$constancia_estudios)->with('calificaciones_universidad',$calificaciones_universidad)->with('constancia_trabajo',$constancia_trabajo)->with('declaracion_impuestos',$declaracion_impuestos)->with('recibo_pago',$recibo_pago)->with('referencia_profesor1',$referencia_profesor1)->with('referencia_profesor2',$referencia_profesor2)->with('ensayo',$ensayo)->with('img_perfil',$img_perfil)->with('entrevistadores', $entrevistadores);
+
             }
         }
         else

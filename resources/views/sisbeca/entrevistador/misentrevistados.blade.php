@@ -123,7 +123,7 @@
 									</template>
 						</template>
 
-						<template v-if="postulante.becario.status==='entrevistado' || postulante.becario.status==='rechazado'">
+						<template v-if="postulante.becario.status==='activo' || postulante.becario.status==='rechazado'">
 							<button v-b-popover.hover="'Ocultar de mi lista'" class="btn btn-xs sisbeca-btn-default" @click="ocultardemilista(postulante)">
 	                            <i class="fa fa-eye-slash" ></i>
 	                        </button>

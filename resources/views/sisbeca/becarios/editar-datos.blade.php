@@ -2,7 +2,9 @@
 @section('title','Editar Perfil: '.$becario->user->nombreyapellido())
 @section('content')
 <div class="col-lg-12" id="app">
-	
+<div class="text-right">
+				<a href="{{  URL::previous() }}" class=" btn btn-sm sisbeca-btn-primary">Atrás</a>
+			</div>
 	<ul class="nav nav-tabs" role="tablist">
 	  	<li class="nav-item">
 	    	<a class="nav-link active" href="#datos" role="tab" data-toggle="tab">Datos Personales</a>

@@ -138,9 +138,9 @@
 
                   </div>
                   <hr>
-                 <!--  <div class="xxxx-button">
+                   <div class="xxxx-button">
                      <a href="{{asset(route('programas'))}}#ProExcelencia" title="Mas Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Mas Información</span></a>
-                  </div>-->
+                  </div>
                </div>
             </div>
             <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
@@ -155,9 +155,9 @@
                      </div>
                   </div>
                   <hr>
-               <!--     <div class="plan-button">
+               <div class="xxxx-button">
                      <a target="_blank" href="{{asset(route('programas'))}}#asesoria-educativa" title="Mas Información" class="btn btn-common"><i class="fa fa-plus"></i> <span class="mas-informacion">Mas Información</span></a>
-                  </div>  -->
+               </div>  
                </div>
             </div>
          </div>

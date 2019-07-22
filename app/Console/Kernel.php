@@ -4,7 +4,7 @@ namespace avaa\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use avaa\Console\Commands\CronJob;
+//use avaa\Console\Commands\CronJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        '\avaa\Console\Commands\CronJob',
+      //  '\avaa\Console\Commands\CronJob',
         //
     ];
 
