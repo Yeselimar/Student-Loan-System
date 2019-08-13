@@ -4,19 +4,20 @@
             <td colspan="7">NÓMINA GENERADA: {{$mes_completo}}-{{$anho}}</td>
         </tr>
         <tr>
-            <td style="background-color: #eeeeee">#</td>
-            <td style="background-color: #eeeeee">Nombres</td>
-            <td style="background-color: #eeeeee">Apellidos</td>
-            <td style="background-color: #eeeeee">Cédula</td>
-            <td style="background-color: #eeeeee">N° Cuenta</td>
-            <th style="background-color: #eeeeee">CVA</th>
-            <th style="background-color: #eeeeee">Facturas Libros</th>
-            <th style="background-color: #eeeeee">Retroactivo</th>
-            <th style="background-color: #eeeeee">Estipendio</th>
-            <th style="background-color: #eeeeee">Total a Pagar</th>
-            <th style="background-color: #eeeeee">Beca Aprobada</th>
-            <th style="background-color: #eeeeee">Ingreso</th>
-            <th style="background-color: #eeeeee">Egreso</th>
+            <td style="background-color: #003865; color:#ffffff">#</td>
+            <td style="background-color: #003865; color:#ffffff">APELLIDOS</td>
+            <td style="background-color: #003865; color:#ffffff">NOMBRES</td>
+        
+            <td style="background-color: #003865; color:#ffffff">CEDULA</td>
+            <td style="background-color: #003865; color:#ffffff; margin:50px">N° Cuenta</td>
+            <th style="background-color: #003865; color:#ffffff">CVA</th>
+            <th style="background-color: #003865; color:#ffffff">LIBROS CVA</th>
+            <th style="background-color: #003865; color:#ffffff">RETROACTIVO</th>
+            <th style="background-color: #003865; color:#ffffff">PAGO MENSUAL</th>
+            <th style="background-color: #003865; color:#ffffff">TOTAL A PAGAR</th>
+            <th style="background-color: #003865; color:#ffffff">BECA APROBADA</th>
+            <th style="background-color: #003865; color:#ffffff">INGRESO</th>
+            <th style="background-color: #003865; color:#ffffff">EGRESO</th>
         </tr>                         
     </thead>
     <tbody>
